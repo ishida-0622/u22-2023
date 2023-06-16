@@ -2,75 +2,92 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 export const Signup = () => {
-    const [familyname, setFamilyname] = useState("");
-    const [firstname, setFirstname] = useState("");
-    const [familynameEng, setFamilynameEng] = useState("");
-    const [firstnameEng, setFirstnameEng] = useState("");
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordConfirm, setPasswordConfirm] = useState("");
-    const [child, setChild] = useState("");
-    const [childConfirm, setChildConfirm] = useState("");
-    const [consent, setCnsent] = useState(false);
+    // const [familyname, setFamilyname] = useState("");
+    // const [firstname, setFirstname] = useState("");
+    // const [familynameEng, setFamilynameEng] = useState("");
+    // const [firstnameEng, setFirstnameEng] = useState("");
+    // const [username, setUsername] = useState("");
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    // const [passwordConfirm, setPasswordConfirm] = useState("");
+    // const [child, setChild] = useState("");
+    // const [childConfirm, setChildConfirm] = useState("");
+    // const [consent, setCnsent] = useState(false);
 
-    const changeFamilyname = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFamilyname(event.target.value);
-    };
+    const [formValues, setFormValues] = useState({
+        familyname: "",
+        firstname: "",
+        familynameEng: "",
+        firstnameEng: "",
+        username: "",
+        email: "",
+        password: "",
+        passwordConfirm: "",
+        child: "",
+        childConfirm: "",
+        consent: false,
+    });
 
-    const changeFirstname = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstname(event.target.value);
-    };
+    // const changeFamilyname = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFamilyname(event.target.value);
+    // };
 
-    const changeFamilynameEng = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setFamilynameEng(event.target.value);
-    };
+    // const changeFirstname = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFirstname(event.target.value);
+    // };
 
-    const changeFirstnameEng = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstnameEng(event.target.value);
-    };
+    // const changeFamilynameEng = (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ) => {
+    //     setFamilynameEng(event.target.value);
+    // };
 
-    const changeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
-    };
+    // const changeFirstnameEng = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setFirstnameEng(event.target.value);
+    // };
 
-    const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    };
+    // const changeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setUsername(event.target.value);
+    // };
 
-    const changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    };
+    // const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setEmail(event.target.value);
+    // };
 
-    const changeChild = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChild(event.target.value);
-    };
+    // const changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setPassword(event.target.value);
+    // };
 
-    const changePasswordConfirm = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setPasswordConfirm(event.target.value);
-    };
+    // const changeChild = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setChild(event.target.value);
+    // };
 
-    const changeChildConfirm = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setChildConfirm(event.target.value);
-    };
+    // const changePasswordConfirm = (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ) => {
+    //     setPasswordConfirm(event.target.value);
+    // };
 
-    const changeConsent = () => {
-        setCnsent((val) => !val);
-    };
+    // const changeChildConfirm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     setChildConfirm(event.target.value);
+    // };
+
+    // const changeConsent = () => {
+    //     setCnsent((val) => !val);
+    // };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         // Prevent the browser from reloading the page
         event.preventDefault();
 
-        if (password !== passwordConfirm && child !== childConfirm) {
+        if (
+            formValues.password !== formValues.passwordConfirm &&
+            formValues.child !== formValues.childConfirm
+        ) {
             alert("パスワードとチャイルドロック暗証番号が一致しません。");
-        } else if (child !== childConfirm) {
+        } else if (formValues.child !== formValues.childConfirm) {
             alert("チャイルドロックが一致しません。");
-        } else if (password !== passwordConfirm) {
+        } else if (formValues.password !== formValues.passwordConfirm) {
             alert("パスワードが一致しません。");
         } else {
             const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -78,18 +95,18 @@ export const Signup = () => {
                 throw new Error("内部エラー");
             }
             try {
-                if (consent === true) {
+                if (formValues.consent === true) {
                     const response = await fetch(`${baseUrl}/auth/signup`, {
                         method: "POST",
                         body: JSON.stringify({
-                            familyname: familyname,
-                            firstname: firstname,
-                            familynameEng: familynameEng,
-                            firstnameEng: firstnameEng,
-                            username: username,
-                            email: email,
-                            password: password,
-                            child: child,
+                            familyname: formValues.familyname,
+                            firstname: formValues.firstname,
+                            familynameEng: formValues.familynameEng,
+                            firstnameEng: formValues.firstnameEng,
+                            username: formValues.username,
+                            email: formValues.email,
+                            password: formValues.password,
+                            child: formValues.child,
                         }),
                     });
                     ScreenTransition();
@@ -120,8 +137,13 @@ export const Signup = () => {
                             type="text"
                             name="familyname"
                             id="familyname"
-                            value={familyname}
-                            onChange={(e) => changeFamilyname(e)}
+                            value={formValues.familyname}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    familyname: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -131,8 +153,13 @@ export const Signup = () => {
                             type="text"
                             name="firstname"
                             id="firstname"
-                            value={firstname}
-                            onChange={(e) => changeFirstname(e)}
+                            value={formValues.firstname}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    firstname: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -143,8 +170,13 @@ export const Signup = () => {
                             type="text"
                             name="familynameEng"
                             id="familynameEng"
-                            value={familynameEng}
-                            onChange={(e) => changeFamilynameEng(e)}
+                            value={formValues.familynameEng}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    firstnameEng: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -155,8 +187,13 @@ export const Signup = () => {
                             type="text"
                             name="firstnameEng"
                             id="firstnameEng"
-                            value={firstnameEng}
-                            onChange={(e) => changeFirstnameEng(e)}
+                            value={formValues.firstnameEng}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    firstnameEng: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -167,8 +204,13 @@ export const Signup = () => {
                             type="text"
                             name="username"
                             id="username"
-                            value={username}
-                            onChange={(e) => changeUsername(e)}
+                            value={formValues.username}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    username: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -179,8 +221,13 @@ export const Signup = () => {
                             type="text"
                             name="email"
                             id="email"
-                            value={email}
-                            onChange={(e) => changeEmail(e)}
+                            value={formValues.email}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    email: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                         <select name="emailtype">
@@ -194,8 +241,13 @@ export const Signup = () => {
                             type="password"
                             name="password"
                             id="password"
-                            value={password}
-                            onChange={(e) => changePassword(e)}
+                            value={formValues.password}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    password: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -206,7 +258,13 @@ export const Signup = () => {
                             type="password"
                             name="passwordConfirmation"
                             id="passwordConfirmation"
-                            onChange={changePasswordConfirm}
+                            value={formValues.passwordConfirm}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    passwordConfirm: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -218,8 +276,13 @@ export const Signup = () => {
                             type="text"
                             name="child"
                             id="child"
-                            value={child}
-                            onChange={(e) => changeChild(e)}
+                            value={formValues.child}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    child: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                         <p>設定画面を開く際に必要になります。</p>
@@ -232,7 +295,13 @@ export const Signup = () => {
                             type="text"
                             name="childConfirmation"
                             id="childConfirmation"
-                            onChange={changeChildConfirm}
+                            value={formValues.childConfirm}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    childConfirm: e.target.value,
+                                }))
+                            }
                             required={true}
                         />
                     </label>
@@ -242,8 +311,13 @@ export const Signup = () => {
                             type="checkbox"
                             id="consent"
                             name="consent"
-                            checked={consent}
-                            onChange={changeConsent}
+                            checked={formValues.consent}
+                            onChange={(e) =>
+                                setFormValues((val) => ({
+                                    ...val,
+                                    consent: true,
+                                }))
+                            }
                         />
                         規約に同意する
                     </label>
