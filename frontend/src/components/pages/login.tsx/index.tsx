@@ -82,14 +82,12 @@ export const Login = () => {
                     <button type="submit">ログイン</button>
                 </div>
                 <div>
-                    <Link legacyBehavior href="/password-reset">
-                        <a>IDやパスワードを忘れてしまった方はこちら</a>
+                    <Link href="/password-reset">
+                        IDやパスワードを忘れてしまった方はこちら
                     </Link>
                 </div>
                 <div>
-                    <Link legacyBehavior href="/signup">
-                        <a>アカウント作成がまだの方はこちら</a>
-                    </Link>
+                    <Link href="/signup">アカウント作成がまだの方はこちら</Link>
                 </div>
             </form>
         </div>
