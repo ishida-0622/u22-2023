@@ -2,18 +2,6 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 export const Signup = () => {
-    // const [familyname, setFamilyname] = useState("");
-    // const [firstname, setFirstname] = useState("");
-    // const [familynameEng, setFamilynameEng] = useState("");
-    // const [firstnameEng, setFirstnameEng] = useState("");
-    // const [username, setUsername] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-    // const [passwordConfirm, setPasswordConfirm] = useState("");
-    // const [child, setChild] = useState("");
-    // const [childConfirm, setChildConfirm] = useState("");
-    // const [consent, setCnsent] = useState(false);
-
     const [formValues, setFormValues] = useState({
         familyname: "",
         firstname: "",
@@ -28,56 +16,7 @@ export const Signup = () => {
         consent: false,
     });
 
-    // const changeFamilyname = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setFamilyname(event.target.value);
-    // };
-
-    // const changeFirstname = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setFirstname(event.target.value);
-    // };
-
-    // const changeFamilynameEng = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //     setFamilynameEng(event.target.value);
-    // };
-
-    // const changeFirstnameEng = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setFirstnameEng(event.target.value);
-    // };
-
-    // const changeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setUsername(event.target.value);
-    // };
-
-    // const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setEmail(event.target.value);
-    // };
-
-    // const changePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setPassword(event.target.value);
-    // };
-
-    // const changeChild = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setChild(event.target.value);
-    // };
-
-    // const changePasswordConfirm = (
-    //     event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //     setPasswordConfirm(event.target.value);
-    // };
-
-    // const changeChildConfirm = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     setChildConfirm(event.target.value);
-    // };
-
-    // const changeConsent = () => {
-    //     setCnsent((val) => !val);
-    // };
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        // Prevent the browser from reloading the page
         event.preventDefault();
 
         if (
@@ -99,14 +38,7 @@ export const Signup = () => {
                     const response = await fetch(`${baseUrl}/auth/signup`, {
                         method: "POST",
                         body: JSON.stringify({
-                            familyname: formValues.familyname,
-                            firstname: formValues.firstname,
-                            familynameEng: formValues.familynameEng,
-                            firstnameEng: formValues.firstnameEng,
-                            username: formValues.username,
-                            email: formValues.email,
-                            password: formValues.password,
-                            child: formValues.child,
+                            formValues,
                         }),
                     });
                     ScreenTransition();
@@ -174,7 +106,7 @@ export const Signup = () => {
                             onChange={(e) =>
                                 setFormValues((val) => ({
                                     ...val,
-                                    firstnameEng: e.target.value,
+                                    familynameEng: e.target.value,
                                 }))
                             }
                             required={true}
