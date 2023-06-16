@@ -77,7 +77,7 @@ export const Signup = () => {
                 throw new Error("内部エラー");
             }
             try {
-                const response = await fetch(`${baseUrl}/auth/aignup`, {
+                const response = await fetch(`${baseUrl}/auth/signup`, {
                     method: "POST",
                     body: JSON.stringify({
                         familyname: familyname,
