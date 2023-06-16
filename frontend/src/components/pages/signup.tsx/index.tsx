@@ -77,19 +77,23 @@ export const Signup = () => {
                 throw new Error("内部エラー");
             }
             try {
-                const response = await fetch(`${baseUrl}/auth/signup`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        familyname: familyname,
-                        firstname: firstname,
-                        familynameEng: familynameEng,
-                        firstnameEng: firstnameEng,
-                        username: username,
-                        email: email,
-                        password: password,
-                        child: child,
-                    }),
-                });
+                if (consent === true) {
+                    const response = await fetch(`${baseUrl}/auth/signup`, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            familyname: familyname,
+                            firstname: firstname,
+                            familynameEng: familynameEng,
+                            firstnameEng: firstnameEng,
+                            username: username,
+                            email: email,
+                            password: password,
+                            child: child,
+                        }),
+                    });
+                } else {
+                    alert("規約に同意してください。");
+                }
             } catch (e) {
                 alert("作成に失敗しました");
             }
@@ -110,7 +114,7 @@ export const Signup = () => {
                             id="familyname"
                             value={familyname}
                             onChange={(e) => changeFamilyname(e)}
-                            required
+                            required={true}
                         />
                     </label>
                     <label>
@@ -121,7 +125,7 @@ export const Signup = () => {
                             id="firstname"
                             value={firstname}
                             onChange={(e) => changeFirstname(e)}
-                            required
+                            required={true}
                         />
                     </label>
 
@@ -133,7 +137,7 @@ export const Signup = () => {
                             id="familynameEng"
                             value={familynameEng}
                             onChange={(e) => changeFamilynameEng(e)}
-                            required
+                            required={true}
                         />
                     </label>
 
@@ -145,7 +149,7 @@ export const Signup = () => {
                             id="firstnameEng"
                             value={firstnameEng}
                             onChange={(e) => changeFirstnameEng(e)}
-                            required
+                            required={true}
                         />
                     </label>
 
@@ -157,7 +161,7 @@ export const Signup = () => {
                             id="username"
                             value={username}
                             onChange={(e) => changeUsername(e)}
-                            required
+                            required={true}
                         />
                     </label>
 
@@ -169,7 +173,7 @@ export const Signup = () => {
                             id="email"
                             value={email}
                             onChange={(e) => changeEmail(e)}
-                            required
+                            required={true}
                         />
                         <select name="emailtype">
                             <option value="icloud">@icloud.com</option>
@@ -184,7 +188,7 @@ export const Signup = () => {
                             id="password"
                             value={password}
                             onChange={(e) => changePassword(e)}
-                            required
+                            required={true}
                         />
                     </label>
 
@@ -195,7 +199,7 @@ export const Signup = () => {
                             name="passwordConfirmation"
                             id="passwordConfirmation"
                             onChange={changePasswordConfirm}
-                            required
+                            required={true}
                         />
                     </label>
                 </div>
@@ -208,7 +212,7 @@ export const Signup = () => {
                             id="child"
                             value={child}
                             onChange={(e) => changeChild(e)}
-                            required
+                            required={true}
                         />
                     </label>
 
@@ -219,7 +223,7 @@ export const Signup = () => {
                             name="childConfirmation"
                             id="childConfirmation"
                             onChange={changeChildConfirm}
-                            required
+                            required={true}
                         />
                     </label>
 
