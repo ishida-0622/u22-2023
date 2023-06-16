@@ -214,6 +214,8 @@ export const Signup = () => {
                             onChange={(e) => changeChild(e)}
                             required={true}
                         />
+                        <p>設定画面を開く際に必要になります。</p>
+                        <p>設定画面よりプレイ時間等が確認できます。</p>
                     </label>
 
                     <label>
