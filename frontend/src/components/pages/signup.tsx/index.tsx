@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export const Signup = () => {
     const [familyname, setFamilyname] = useState("");
@@ -91,6 +92,7 @@ export const Signup = () => {
                             child: child,
                         }),
                     });
+                    ScreenTransition();
                 } else {
                     alert("規約に同意してください。");
                 }
@@ -98,6 +100,12 @@ export const Signup = () => {
                 alert("作成に失敗しました");
             }
         }
+    };
+
+    const router = useRouter();
+
+    const ScreenTransition = () => {
+        router.push("/login");
     };
 
     return (
