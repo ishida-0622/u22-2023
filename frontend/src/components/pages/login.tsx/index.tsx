@@ -41,7 +41,7 @@ export const Login = () => {
     const router = useRouter();
 
     const ScreenTransition = () => {
-        router.push("/top");
+        router.push("/");
     };
 
     return (
