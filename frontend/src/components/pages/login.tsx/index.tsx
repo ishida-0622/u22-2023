@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export const Login = () => {
@@ -30,14 +32,22 @@ export const Login = () => {
             // responseの処理
             // responseがtrueの時、画面遷移をする
             // responseがfalseの時、アラートを出す。
+            ScreenTransition();
         } catch (e) {
             alert("データの送信に失敗しました");
         }
     };
 
+    const router = useRouter();
+
+    const ScreenTransition = () => {
+        router.push("/top");
+    };
+
     return (
         <div>
             <h2>ログイン</h2>
+            <p>パパ、ママに入力してもらってね！</p>
             <hr />
             <form method="post" onSubmit={handleSubmit}>
                 <div>
@@ -70,6 +80,16 @@ export const Login = () => {
                 </div>
                 <div>
                     <button type="submit">ログイン</button>
+                </div>
+                <div>
+                    <Link legacyBehavior href="/password-reset">
+                        <a>IDやパスワードを忘れてしまった方はこちら</a>
+                    </Link>
+                </div>
+                <div>
+                    <Link legacyBehavior href="/signup">
+                        <a>アカウント作成がまだの方はこちら</a>
+                    </Link>
                 </div>
             </form>
         </div>
