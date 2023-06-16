@@ -49,7 +49,7 @@ export const Login = () => {
                             id="email"
                             value={email}
                             onChange={changeEmail}
-                            required
+                            required={true}
                         />
                         <select name="emailtype">
                             <option value="icloud">@icloud.com</option>
@@ -64,7 +64,7 @@ export const Login = () => {
                             id="password"
                             value={password}
                             onChange={changePassword}
-                            required
+                            required={true}
                         />
                     </label>
                 </div>
