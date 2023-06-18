@@ -1,4 +1,4 @@
-import { RegistrationSuccessful } from "@/components/pages/registration_successful.tsx";
+import { RegistrationSuccessful } from "@/components/pages/RegistrationSuccessful";
 
 export default function registrationSuccessful() {
     return <RegistrationSuccessful />;
