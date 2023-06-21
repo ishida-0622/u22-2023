@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export const PostAnnouncement = () => {
     const [formValues, setFormValues] = useState({
@@ -88,6 +89,7 @@ export const PostAnnouncement = () => {
                         />
                     </label>
                     <button type="submit">投稿内容を確認</button>
+                    <Link href="/announcement-page">投稿一覧ページへ戻る</Link>
                 </div>
             </form>
         </div>
