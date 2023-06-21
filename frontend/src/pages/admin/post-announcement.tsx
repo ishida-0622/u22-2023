@@ -1,4 +1,4 @@
-import { PostAnnouncement } from "@/components/pages/admin/PostAnnouncement";
+import { PostAnnouncement } from "@/components/pages/PostAnnouncement";
 
 export default function postannouncement() {
     return <PostAnnouncement />;
