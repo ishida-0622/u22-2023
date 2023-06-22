@@ -23,6 +23,7 @@
     "react-modal": "^3.16.1",
     "react-tabs": "^6.0.1",
     "sass": "^1.63.6",
+        "sass": "^1.63.4",
     "typescript": "5.0.2"
   }
 }
