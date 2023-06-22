@@ -196,7 +196,7 @@ export const Signup = () => {
           <label>
             確認用
             <input
-              type="password"
+              type={isHidden ? "password" : "text"}
               name="passwordConfirmation"
               id="passwordConfirmation"
               value={formValues.passwordConfirm}
@@ -208,13 +208,20 @@ export const Signup = () => {
               }
               required={true}
             />
+            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
+              {isHidden ? (
+                <i className="fas fa-eye-slash" />
+              ) : (
+                <i className="fas fa-eye" />
+              )}
+            </span>
           </label>
         </div>
         <div>
           <label>
             チャイルドロック
             <input
-              type="text"
+              type={isHidden ? "password" : "text"}
               name="child"
               id="child"
               value={formValues.child}
@@ -226,6 +233,13 @@ export const Signup = () => {
               }
               required={true}
             />
+            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
+              {isHidden ? (
+                <i className="fas fa-eye-slash" />
+              ) : (
+                <i className="fas fa-eye" />
+              )}
+            </span>
             <p>設定画面を開く際に必要になります。</p>
             <p>設定画面よりプレイ時間等が確認できます。</p>
           </label>
@@ -233,7 +247,7 @@ export const Signup = () => {
           <label>
             チャイルドロック確認用
             <input
-              type="text"
+              type={isHidden ? "password" : "text"}
               name="childConfirmation"
               id="childConfirmation"
               value={formValues.childConfirm}
@@ -245,6 +259,13 @@ export const Signup = () => {
               }
               required={true}
             />
+            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
+              {isHidden ? (
+                <i className="fas fa-eye-slash" />
+              ) : (
+                <i className="fas fa-eye" />
+              )}
+            </span>
           </label>
 
           <label>
