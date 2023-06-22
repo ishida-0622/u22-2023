@@ -13,7 +13,12 @@ export const AccountInfo = () => {
           <Tab>パズルログ</Tab>
           <Tab>えほんログ</Tab>
         </TabList>
-        <TabPanel>a</TabPanel>
+        <TabPanel>
+          <h2>メールアドレス</h2>
+          <h2>パスワード</h2>
+          <h2>チャイルドロック</h2>
+          <h2></h2>
+        </TabPanel>
         <TabPanel>b</TabPanel>
         <TabPanel>c</TabPanel>
         <TabPanel>d</TabPanel>
