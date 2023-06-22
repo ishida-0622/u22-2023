@@ -164,9 +164,6 @@ export const Signup = () => {
               }
               required={true}
             />
-            <select name="emailtype">
-              <option value="icloud">@icloud.com</option>
-            </select>
           </label>
 
           <label>
