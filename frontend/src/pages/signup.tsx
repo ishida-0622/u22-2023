@@ -1,5 +1,5 @@
-import { Signup } from "@/components/pages/signup.tsx";
+import { Signup } from "@/components/pages/signup";
 
 export default function signup() {
-    return <Signup />;
+  return <Signup />;
 }
