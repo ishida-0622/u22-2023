@@ -1,3 +1,4 @@
+import Script from "next/script";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import "react-tabs/style/react-tabs.css";
@@ -14,10 +15,18 @@ export const AccountInfo = () => {
           <Tab>えほんログ</Tab>
         </TabList>
         <TabPanel>
-          <h2>メールアドレス</h2>
-          <h2>パスワード</h2>
-          <h2>チャイルドロック</h2>
-          <h2></h2>
+          <p>クリア回数：---回</p>
+          <p>シール獲得枚数：---枚</p>
+          <p>メールアドレス</p>
+          <input type="text" name="mailadress" readOnly={true} />
+          icould.com
+          <p>パスワード</p>
+          <input type="password" name="passward" readOnly={true} />
+          <p>チャイルドロック</p>
+          <input type="password" name="chilglock" readOnly={true} />
+          <button type="button" name="change">
+            アカウント情報を変更
+          </button>
         </TabPanel>
         <TabPanel>b</TabPanel>
         <TabPanel>c</TabPanel>
