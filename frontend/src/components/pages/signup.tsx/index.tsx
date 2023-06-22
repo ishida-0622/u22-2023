@@ -1,4 +1,5 @@
 import { useState } from "react";
+import  styles  from "./index.module.scss";
 
 export const Signup = () => {
     const [familyname, setFamilyname] = useState("");
@@ -97,59 +98,68 @@ export const Signup = () => {
     };
 
     return (
-        <div>
-            <h2>サインアップ</h2>
-            <hr />
-            <form method="post" onSubmit={handleSubmit}>
+        <div className={`${styles.content}`}>
+            <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
+            <h2 className={`${styles.header}`}>サインアップ</h2>
+                <div className={`${styles.name}`}>
+                    <div className={`${styles.lastname}`}>
+                        <label>
+                            姓名
+                            <input
+                                type="text"
+                                name="familyname"
+                                id="familyname"
+                                value={familyname}
+                                onChange={(e) => changeFamilyname(e)}
+                                required
+                                placeholder = "姓名"
+                            />
+                        </label>
+                    </div>
+                    <div className={`${styles.firstname}`}>
+                        <label>
+                            名前
+                            <input
+                                type="text"
+                                name="firstname"
+                                id="firstname"
+                                value={firstname}
+                                onChange={(e) => changeFirstname(e)}
+                                required
+                            />
+                        </label>
+                    </div>
+                    </div>
+                    <div className={`${styles.english_name}`}>
+                    <div className={`${styles.lastname}`}>
+                        <label>
+                            姓名(ローマ字)
+                            <input
+                                type="text"
+                                name="familynameEng"
+                                id="familynameEng"
+                                value={familynameEng}
+                                onChange={(e) => changeFamilynameEng(e)}
+                                required
+                            />
+                        </label>
+                    </div>
+                    <div className={`${styles.firstname}`}>
+                        <label>
+                            名前(ローマ字)
+                            <input
+                                type="text"
+                                name="firstnameEng"
+                                id="firstnameEng"
+                                value={firstnameEng}
+                                onChange={(e) => changeFirstnameEng(e)}
+                                required
+                            />
+                        </label>
+                    </div>
+                </div>
                 <div>
-                    <label>
-                        姓名
-                        <input
-                            type="text"
-                            name="familyname"
-                            id="familyname"
-                            value={familyname}
-                            onChange={(e) => changeFamilyname(e)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        名前
-                        <input
-                            type="text"
-                            name="firstname"
-                            id="firstname"
-                            value={firstname}
-                            onChange={(e) => changeFirstname(e)}
-                            required
-                        />
-                    </label>
-
-                    <label>
-                        姓名(ローマ字)
-                        <input
-                            type="text"
-                            name="familynameEng"
-                            id="familynameEng"
-                            value={familynameEng}
-                            onChange={(e) => changeFamilynameEng(e)}
-                            required
-                        />
-                    </label>
-
-                    <label>
-                        名前(ローマ字)
-                        <input
-                            type="text"
-                            name="firstnameEng"
-                            id="firstnameEng"
-                            value={firstnameEng}
-                            onChange={(e) => changeFirstnameEng(e)}
-                            required
-                        />
-                    </label>
-
-                    <label>
+                    <label className={`${styles.account}`}>
                         アカウント名
                         <input
                             type="text"
@@ -160,8 +170,9 @@ export const Signup = () => {
                             required
                         />
                     </label>
-
-                    <label>
+                </div>
+                <div>
+                    <label className={`${styles.email}`}>
                         メールアドレス
                         <input
                             type="text"
@@ -171,12 +182,10 @@ export const Signup = () => {
                             onChange={(e) => changeEmail(e)}
                             required
                         />
-                        <select name="emailtype">
-                            <option value="icloud">@icloud.com</option>
-                        </select>
                     </label>
-
-                    <label>
+                </div>
+                <div>
+                    <label className={`${styles.password}`}>
                         パスワード
                         <input
                             type="password"
@@ -187,8 +196,9 @@ export const Signup = () => {
                             required
                         />
                     </label>
-
-                    <label>
+                </div>
+                <div>
+                    <label className={`${styles.password}`}>
                         確認用
                         <input
                             type="password"
@@ -200,7 +210,7 @@ export const Signup = () => {
                     </label>
                 </div>
                 <div>
-                    <label>
+                    <label className={`${styles.password}`}>
                         チャイルドロック
                         <input
                             type="text"
@@ -211,8 +221,9 @@ export const Signup = () => {
                             required
                         />
                     </label>
-
-                    <label>
+                </div>
+                <div>
+                    <label className={`${styles.password}`}>
                         チャイルドロック確認用
                         <input
                             type="text"
@@ -222,7 +233,8 @@ export const Signup = () => {
                             required
                         />
                     </label>
-
+                </div>
+                <div>
                     <label>
                         <input
                             type="checkbox"
@@ -233,7 +245,8 @@ export const Signup = () => {
                         />
                         規約に同意する
                     </label>
-
+                </div>
+                <div>
                     <button type="submit">新規会員登録</button>
                 </div>
             </form>
