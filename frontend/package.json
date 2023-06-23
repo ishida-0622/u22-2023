@@ -28,5 +28,8 @@
     "react-tabs": "^6.0.1",
     "sass": "^1.63.6",
     "typescript": "5.0.2"
+  },
+  "devDependencies": {
+    "@types/react-modal": "^3.16.0"
   }
 }
