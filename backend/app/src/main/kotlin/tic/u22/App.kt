@@ -53,8 +53,16 @@ data class FormValues(
     val consent: Boolean = false
 )
 
-class App : RequestHandler<Map<String, Any>, Unit> {
-    override fun handleRequest(event: Map<String, Any>?, context: Context?): Unit = runBlocking {
+// レスポンス
+data class ApiGatewayResponse(
+    val statusCode: Int,
+    val body: User,
+    val headers: Map<String, String> = mapOf("Content-Type" to "application/json"),
+    val isBase64Encoded: Boolean = false
+)
+
+class App : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): ApiGatewayResponse = runBlocking {
         // eventが正しく送られてきているかを確認
         if (event == null) throw Exception("eventが空です")
 
@@ -77,7 +85,12 @@ class App : RequestHandler<Map<String, Any>, Unit> {
         val child = if(formValues.child.isNotEmpty()) formValues.child else throw Exception("childが空です")
         val user = User(u_id=id, family_name=familyname, last_name=firstname, famiy_name_roma=familynameEng, last_name_roma=firstnameEng, email=email, password=password, child_lock=child, account_name=username)
         // テーブルに登録する
-        val response: PutItemResponse = addUser(user)
+        try{
+            addUser(user)
+        } catch (e: Exception) {
+            throw e
+        }
+        return@runBlocking ApiGatewayResponse(200, user)
     }
 
     suspend fun addUser(user: User): PutItemResponse {
