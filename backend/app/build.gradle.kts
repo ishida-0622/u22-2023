@@ -28,6 +28,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("com.google.code.gson:gson:2.10.1")
 
+    // JSON処理用ライブラリ
+    implementation("com.google.code.gson:gson:2.10.1")
+
     // implementation("org.slf4j:slf4j-simple:1.7.26")
     // implementation(kotlin("stdlib"))
 
