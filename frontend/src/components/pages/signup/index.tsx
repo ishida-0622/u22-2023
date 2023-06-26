@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 export const Signup = () => {
   const [formValues, setFormValues] = useState({
@@ -183,9 +185,9 @@ export const Signup = () => {
             />
             <span onClick={() => setIsHidden((v) => !v)} role="presentation">
               {isHidden ? (
-                <i className="fas fa-eye-slash" />
+                <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
-                <i className="fas fa-eye" />
+                <FontAwesomeIcon icon={faEye} />
               )}
             </span>
           </label>
