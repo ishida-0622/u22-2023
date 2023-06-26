@@ -1,9 +1,12 @@
 import Script from "next/script";
+import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import "react-tabs/style/react-tabs.css";
 
 export const AccountInfo = () => {
+  const [volume, setVolume] = useState(50);
+
   return (
     <div>
       <h1>アカウント情報画面</h1>
@@ -28,7 +31,31 @@ export const AccountInfo = () => {
             アカウント情報を変更
           </button>
         </TabPanel>
-        <TabPanel>b</TabPanel>
+        <TabPanel>
+          <p>フォントサイズ</p>
+          <label>
+            小
+            <input type="radio" name="font-size" />
+          </label>
+          <label>
+            中
+            <input type="radio" name="font-size" />
+          </label>
+          <label>
+            大
+            <input type="radio" name="font-size" />
+          </label>
+          <p>音量</p>
+          <input
+            type="range"
+            name="unci"
+            id="korogunomi"
+            min={0}
+            max={100}
+            value={volume}
+            onChange={(e) => setVolume(Number(e.target.value))}
+          />
+        </TabPanel>
         <TabPanel>c</TabPanel>
         <TabPanel>d</TabPanel>
       </Tabs>
