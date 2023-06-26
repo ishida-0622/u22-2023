@@ -26,6 +26,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation ("com.amazonaws:aws-lambda-java-core:1.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+    implementation("com.google.code.gson:gson:2.8.6")
 
     // implementation("org.slf4j:slf4j-simple:1.7.26")
     // implementation(kotlin("stdlib"))
