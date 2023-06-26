@@ -209,9 +209,9 @@ export const Signup = () => {
             />
             <span onClick={() => setIsHidden((v) => !v)} role="presentation">
               {isHidden ? (
-                <i className="fas fa-eye-slash" />
+                <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
-                <i className="fas fa-eye" />
+                <FontAwesomeIcon icon={faEye} />
               )}
             </span>
           </label>
@@ -234,9 +234,9 @@ export const Signup = () => {
             />
             <span onClick={() => setIsHidden((v) => !v)} role="presentation">
               {isHidden ? (
-                <i className="fas fa-eye-slash" />
+                <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
-                <i className="fas fa-eye" />
+                <FontAwesomeIcon icon={faEye} />
               )}
             </span>
             <p>設定画面を開く際に必要になります。</p>
@@ -260,9 +260,9 @@ export const Signup = () => {
             />
             <span onClick={() => setIsHidden((v) => !v)} role="presentation">
               {isHidden ? (
-                <i className="fas fa-eye-slash" />
+                <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
-                <i className="fas fa-eye" />
+                <FontAwesomeIcon icon={faEye} />
               )}
             </span>
           </label>
