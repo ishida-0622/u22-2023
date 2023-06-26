@@ -52,7 +52,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("tic.kotlin.learning.club.AppKt")
+    mainClass.set("tic.u22.club.AppKt")
 }
 
 tasks.named<Test>("test") {

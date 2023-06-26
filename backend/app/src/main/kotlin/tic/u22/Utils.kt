@@ -1,4 +1,4 @@
-package tic.kotlin.learning.club
+package tic.u22
 
 import aws.sdk.kotlin.services.dynamodb.*
 import aws.sdk.kotlin.services.dynamodb.endpoints.*
