@@ -18,7 +18,8 @@ export const Signup = () => {
     consent: false,
   });
 
-  const [isHidden, setIsHidden] = useState(true);
+  const [isHiddenPass, setIsHiddenPass] = useState(true);
+  const [isHiddenChild, setIsHiddenChild] = useState(true);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -171,7 +172,7 @@ export const Signup = () => {
           <label>
             パスワード
             <input
-              type={isHidden ? "password" : "text"}
+              type={isHiddenPass ? "password" : "text"}
               name="password"
               id="password"
               value={formValues.password}
@@ -183,8 +184,11 @@ export const Signup = () => {
               }
               required={true}
             />
-            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
-              {isHidden ? (
+            <span
+              onClick={() => setIsHiddenPass((v) => !v)}
+              role="presentation"
+            >
+              {isHiddenPass ? (
                 <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
                 <FontAwesomeIcon icon={faEye} />
@@ -195,7 +199,7 @@ export const Signup = () => {
           <label>
             確認用
             <input
-              type={isHidden ? "password" : "text"}
+              type={"password"}
               name="passwordConfirmation"
               id="passwordConfirmation"
               value={formValues.passwordConfirm}
@@ -207,20 +211,13 @@ export const Signup = () => {
               }
               required={true}
             />
-            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
-              {isHidden ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </span>
           </label>
         </div>
         <div>
           <label>
             チャイルドロック
             <input
-              type={isHidden ? "password" : "text"}
+              type={isHiddenChild ? "password" : "text"}
               name="child"
               id="child"
               value={formValues.child}
@@ -232,8 +229,11 @@ export const Signup = () => {
               }
               required={true}
             />
-            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
-              {isHidden ? (
+            <span
+              onClick={() => setIsHiddenChild((v) => !v)}
+              role="presentation"
+            >
+              {isHiddenChild ? (
                 <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
                 <FontAwesomeIcon icon={faEye} />
@@ -246,7 +246,7 @@ export const Signup = () => {
           <label>
             チャイルドロック確認用
             <input
-              type={isHidden ? "password" : "text"}
+              type={"password"}
               name="childConfirmation"
               id="childConfirmation"
               value={formValues.childConfirm}
@@ -258,13 +258,6 @@ export const Signup = () => {
               }
               required={true}
             />
-            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
-              {isHidden ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </span>
           </label>
 
           <label>
