@@ -53,44 +53,45 @@ data class FormValues(
     val consent: Boolean = false
 )
 
-// レスポンス
-data class ApiGatewayResponse(
-    val statusCode: Int,
-    val body: User,
-    val headers: Map<String, String> = mapOf("Content-Type" to "application/json"),
-    val isBase64Encoded: Boolean = false
-)
+class App : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+        // return用の変数
+        var responseJson = ""
+        try {
+            runBlocking {
+                // eventが正しく送られてきているかを確認
+                if (event == null) throw Exception("eventが空です")
 
-class App : RequestHandler<Map<String, Any>, ApiGatewayResponse> {
-    override fun handleRequest(event: Map<String, Any>?, context: Context?): ApiGatewayResponse = runBlocking {
-        // eventが正しく送られてきているかを確認
-        if (event == null) throw Exception("eventが空です")
+                // JSONを解析する
+                val body = event["body"] as String
+                val jsonElement = JsonParser.parseString(body)
+                val formValuesJson = jsonElement.asJsonObject["formValues"]
+                val gson = Gson()
+                val formValues = gson.fromJson(formValuesJson, FormValues::class.java)
 
-        // JSONを解析する
-        val body = event["body"] as String
-        val jsonElement = JsonParser.parseString(body)
-        val formValuesJson = jsonElement.asJsonObject["formValues"]
-        val gson = Gson()
-        val formValues = gson.fromJson(formValuesJson, FormValues::class.java)
-
-        // ユーザーの情報を設定
-        val id = UUID.randomUUID().toString()
-        val familyname = if(formValues.familyname.isNotEmpty()) formValues.familyname else throw Exception("familynameが空です")
-        val firstname = if(formValues.firstname.isNotEmpty()) formValues.firstname else throw Exception("firstnameが空です")
-        val familynameEng = if(formValues.familynameEng.isNotEmpty()) formValues.familynameEng else throw Exception("familynameEngが空です")
-        val firstnameEng = if(formValues.firstnameEng.isNotEmpty()) formValues.firstnameEng else throw Exception("firstnameEngが空です")
-        val username = if(formValues.username.isNotEmpty()) formValues.username else throw Exception("usernameが空です")
-        val email = if(formValues.email.isNotEmpty()) formValues.email else throw Exception("emailが空です")
-        val password = if(formValues.password.isNotEmpty()) formValues.password else throw Exception("passwordが空です")
-        val child = if(formValues.child.isNotEmpty()) formValues.child else throw Exception("childが空です")
-        val user = User(u_id=id, family_name=familyname, last_name=firstname, famiy_name_roma=familynameEng, last_name_roma=firstnameEng, email=email, password=password, child_lock=child, account_name=username)
-        // テーブルに登録する
-        try{
-            addUser(user)
+                // ユーザーの情報を設定
+                val id = UUID.randomUUID().toString()
+                val familyname = if(formValues.familyname.isNotEmpty()) formValues.familyname else throw Exception("familynameが空です")
+                val firstname = if(formValues.firstname.isNotEmpty()) formValues.firstname else throw Exception("firstnameが空です")
+                val familynameEng = if(formValues.familynameEng.isNotEmpty()) formValues.familynameEng else throw Exception("familynameEngが空です")
+                val firstnameEng = if(formValues.firstnameEng.isNotEmpty()) formValues.firstnameEng else throw Exception("firstnameEngが空です")
+                val username = if(formValues.username.isNotEmpty()) formValues.username else throw Exception("usernameが空です")
+                val email = if(formValues.email.isNotEmpty()) formValues.email else throw Exception("emailが空です")
+                val password = if(formValues.password.isNotEmpty()) formValues.password else throw Exception("passwordが空です")
+                val child = if(formValues.child.isNotEmpty()) formValues.child else throw Exception("childが空です")
+                val user = User(u_id=id, family_name=familyname, last_name=firstname, famiy_name_roma=familynameEng, last_name_roma=firstnameEng, email=email, password=password, child_lock=child, account_name=username)
+                // テーブルに登録する
+                try{
+                    addUser(user)
+                    responseJson = Gson().toJson(user)
+                } catch (e: Exception) {
+                    responseJson = Gson().toJson(mapOf("error" to e.message))
+                }
+            }
         } catch (e: Exception) {
-            throw e
+            responseJson = Gson().toJson(mapOf("error" to e.message))
         }
-        return@runBlocking ApiGatewayResponse(200, user)
+        return responseJson
     }
 
     suspend fun addUser(user: User): PutItemResponse {
@@ -114,3 +115,12 @@ fun main() {
     val app = App()
     app.handleRequest(null, null)
 }
+// フロントでの表示
+// const response = await fetch(`${baseUrl}/auth/signup`, {
+//     method: "POST",
+//     body: JSON.stringify({
+//       formValues,
+//     }),
+//   });
+// const data = await response.json(); // レスポンスをjson形式に変換
+// alert(JSON.stringify(data));
