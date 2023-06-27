@@ -59,7 +59,7 @@ export const Signup = () => {
   const router = useRouter();
 
   const ScreenTransition = () => {
-    router.push("/login");
+    router.push("/MessagesentSuccessfully");
   };
 
   return (
