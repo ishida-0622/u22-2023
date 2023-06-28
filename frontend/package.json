@@ -10,6 +10,7 @@
     "fmt": "prettier --write src/**/*.{js,ts,tsx,html,css}"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.0.8",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
