@@ -25,17 +25,17 @@ val utils = Utils()
 
 // データベースに登録する情報
 data class User(
-    val u_id: String,
-    val family_name: String,
-    val last_name: String,
-    val famiy_name_roma: String,
-    val last_name_roma: String,
-    val email: String,
-    val password: String,
-    val child_lock: String,
-    val account_name: String,
-    val limit_time: Int = 1440,
-    val delete_flg: Boolean = false
+    val u_id: String = "000000000",
+    val family_name: String = "",
+    val last_name: String = "",
+    val famiy_name_roma: String = "",
+    val last_name_roma: String = "",
+    val email: String = "",
+    val password: String = "",
+    val child_lock: String = "",
+    val account_name: String = "",
+    val limit_time: Int = 1440, // 初期値
+    val delete_flg: Boolean = false // 初期値
 )
 
 // 解析したJSONを保持するデータクラス
@@ -80,16 +80,18 @@ class App : RequestHandler<Map<String, Any>, String> {
                 val password = if(formValues.password.isNotEmpty()) formValues.password else throw Exception("passwordが空です")
                 val child = if(formValues.child.isNotEmpty()) formValues.child else throw Exception("childが空です")
                 val user = User(u_id=id, family_name=familyname, last_name=firstname, famiy_name_roma=familynameEng, last_name_roma=firstnameEng, email=email, password=password, child_lock=child, account_name=username)
+                // TODO? メールの重複処理?
+                // TODO メールを送信する処理
                 // テーブルに登録する
                 try{
                     addUser(user)
-                    responseJson = Gson().toJson(user)
+                    responseJson = createResponse(true, user)
                 } catch (e: Exception) {
-                    responseJson = Gson().toJson(mapOf("error" to e.message))
+                    responseJson = createResponse(false, error = e.message.toString())
                 }
             }
         } catch (e: Exception) {
-            responseJson = Gson().toJson(mapOf("error" to e.message))
+            throw Exception(e.message)
         }
         return responseJson
     }
@@ -107,6 +109,11 @@ class App : RequestHandler<Map<String, Any>, String> {
             val response = ddb.putItem(req)
             return response
         }
+    }
+
+    fun createResponse(isSuccess: Boolean, data: User = User(), error: String = ""): String {
+        if(isSuccess) return Gson().toJson(mapOf("success" to isSuccess, "data" to data))
+        return Gson().toJson(mapOf("success" to isSuccess, "error" to error))
     }
 }
 
