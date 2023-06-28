@@ -49,7 +49,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("tic.u22.AppKt")
+    mainClass.set("tic.u22.AuthKt")
 }
 
 tasks.named<Test>("test") {
