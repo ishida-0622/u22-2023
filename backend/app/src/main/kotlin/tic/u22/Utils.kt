@@ -114,10 +114,10 @@ class Dynamo(val REGION: String){
     }
   }
 
-  suspend fun searchByKey(usedTableName: String, id: String): Map<String, AttributeValue> {
-    // idとnameをMapにセット
+  suspend fun searchByKey(usedTableName: String, keyName: String, keyVal: String): Map<String, AttributeValue> {
+    // keyValとnameをMapにセット
     val keys = mutableMapOf<String, Any>()
-    keys["id"] = id
+    keys[keyName] = keyVal
 
     val keyToGet = utils.toAttributeValueMap(keys)
     // テーブル名とキーを設定
@@ -143,7 +143,7 @@ class Dynamo(val REGION: String){
     DynamoDbClient { region = REGION }.use { ddb ->
       // テーブル名, 検索条件を指定
       val query = ScanRequest {
-        tableName = TABLE_NAME
+        tableName = usedTableName
         // 条件式を記述: prepared statement
         filterExpression = "${column} ${condition} :value"
         // :valueの値をセット
@@ -160,6 +160,43 @@ class Dynamo(val REGION: String){
           mp.key to mp.value
         }.toMap()
       }
+    }
+  }
+
+  suspend fun deleteByKey(usedTableName: String, keyName: String, keyVal: String): Unit {
+    val keyToGet = mutableMapOf<String, AttributeValue>()
+    keyToGet[keyName] = AttributeValue.S(keyVal)
+
+    val request = DeleteItemRequest {
+        tableName = usedTableName
+        key = keyToGet
+    }
+
+    DynamoDbClient { region = REGION }.use { ddb ->
+        ddb.deleteItem(request)
+        return
+    }
+  }
+
+  suspend fun updateItem(usedTableName: String, keyName: String, keyVal: String, updateColumn: String, updateVal: Any): Unit {
+    val itemKey = mutableMapOf<String, AttributeValue>()
+    itemKey[keyName] = AttributeValue.S(keyVal)
+
+    val updatedValues = mutableMapOf<String, AttributeValueUpdate>()
+    updatedValues[updateColumn] = AttributeValueUpdate {
+        value = utils.toAttributeValue(updateVal)
+        action = AttributeAction.Put
+    }
+
+    val request = UpdateItemRequest {
+        tableName = usedTableName
+        key = itemKey
+        attributeUpdates = updatedValues
+    }
+
+    DynamoDbClient { region = REGION }.use { ddb ->
+        ddb.updateItem(request)
+        return
     }
   }
 }
