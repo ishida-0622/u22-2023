@@ -64,15 +64,22 @@ class Dynamo(val REGION: String){
    * キーを使用して検索する
    *
    * @param usedTableName String: テーブル名
-   * @param keyVal String: キーの値
+   * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    *
    * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
    */
-  suspend fun searchByKey(usedTableName: String, keyVal: String): Map<String, AttributeValue> {
+  suspend fun searchByKey(usedTableName: String, keyVal: List<String>): Map<String, AttributeValue> {
+    if (tableNameToKey[usedTableName] == null) {
+      return throw Exception("usedTableName does not exist")
+    } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
+      return throw Exception("length of keyVal is mismatched")
+    }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
     val keys = mutableMapOf<String, Any>()
-    keys[keyName] = keyVal
+    for(index in 0 until keyName.size) {
+      keys[keyName[index]] = keyVal[index]
+    }
 
     val keyToGet = utils.toAttributeValueMap(keys)
     // テーブル名とキーを設定
@@ -132,12 +139,22 @@ class Dynamo(val REGION: String){
    * キーを用いてデータを削除する
    *
    * @param usedTableName String: テーブル名
-   * @param keyVal String: キーの値
+   * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    */
-  suspend fun deleteByKey(usedTableName: String, keyVal: String): Unit {
+  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Unit {
+    if (tableNameToKey[usedTableName] == null) {
+      return throw Exception("usedTableName does not exist")
+    } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
+      return throw Exception("length of keyVal is mismatched")
+    }
     val keyName = tableNameToKey[usedTableName]!!
-    val keyToGet = mutableMapOf<String, AttributeValue>()
-    keyToGet[keyName] = AttributeValue.S(keyVal)
+    // keyValとnameをMapにセット
+    val keys = mutableMapOf<String, Any>()
+    for(index in 0 until keyName.size) {
+      keys[keyName[index]] = keyVal[index]
+    }
+
+    val keyToGet = utils.toAttributeValueMap(keys)
 
     val request = DeleteItemRequest {
         tableName = usedTableName
@@ -154,14 +171,24 @@ class Dynamo(val REGION: String){
    * キーを用いてデータを更新する
    *
    * @param usedTableName String: テーブル名
-   * @param keyVal String: キーの値
+   * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    * @updateColumn String: 更新対象のカラム名
    * @updateVal Any: 更新後のデータ
    */
-  suspend fun updateItem(usedTableName: String, keyVal: String, updateColumn: String, updateVal: Any): Unit {
+  suspend fun updateItem(usedTableName: String, keyVal: List<String>, updateColumn: String, updateVal: Any): Unit {
+    if (tableNameToKey[usedTableName] == null) {
+      return throw Exception("usedTableName does not exist")
+    } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
+      return throw Exception("length of keyVal is mismatched")
+    }
     val keyName = tableNameToKey[usedTableName]!!
-    val itemKey = mutableMapOf<String, AttributeValue>()
-    itemKey[keyName] = AttributeValue.S(keyVal)
+    // keyValとnameをMapにセット
+    val keys = mutableMapOf<String, Any>()
+    for(index in 0 until keyName.size) {
+      keys[keyName[index]] = keyVal[index]
+    }
+
+    val itemKey = utils.toAttributeValueMap(keys)
 
     val updatedValues = mutableMapOf<String, AttributeValueUpdate>()
     updatedValues[updateColumn] = AttributeValueUpdate {

@@ -90,15 +90,15 @@ class Settings {
 /**
  * テーブル名とそのテーブルのキーを結びつけるマップ
  */
-val tableNameToKey: Map<String, String> = mapOf(
-  "user" to "u_id",
-  "puzzle" to "p_id",
-  "book" to "b_id",
-  "notice" to "n_id",
-  "status" to "u_id",
-  // "l_log" to listOf("u_id", "datetime"),
-  // "p_log" to listOf("u_id", "p_id"),
-  // "b_log" to listOf("u_id", "b_id"),
+val tableNameToKey: Map<String, List<String>> = mapOf(
+  "user" to listOf("u_id"),
+  "puzzle" to listOf("p_id"),
+  "book" to listOf("b_id"),
+  "notice" to listOf("n_id"),
+  "status" to listOf("u_id"),
+  "l_log" to listOf("u_id", "datetime"),
+  "p_log" to listOf("u_id", "p_id"),
+  "b_log" to listOf("u_id", "b_id")
 )
 
 // 全てのデータクラスの親
@@ -222,7 +222,7 @@ data class Status(
  */
 data class LoginLog(
     val u_id: String,
-    val create_date: String = "${LocalDateTime.now()}",
+    val datetime: String = "${LocalDateTime.now()}",
 ): TableBase
 
 /**

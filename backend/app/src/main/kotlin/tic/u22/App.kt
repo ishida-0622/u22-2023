@@ -42,6 +42,10 @@ class App : RequestHandler<Map<String, String>, String> {
         account_name = account_name
     )
 
+    val log = LoginLog(
+        u_id = u_id
+    )
+
     val dynamo = Dynamo(Settings().AWS_REGION)
     val tableName = "user"
 
@@ -54,7 +58,7 @@ class App : RequestHandler<Map<String, String>, String> {
     println("取得完了\n")
 
     println("id検索")
-    println(dynamo.searchByKey(tableName, u_id))
+    println(dynamo.searchByKey(tableName, listOf(u_id)))
     println("検索完了\n")
 
     println("メールアドレスで絞り込み")
@@ -62,8 +66,8 @@ class App : RequestHandler<Map<String, String>, String> {
     println("取得完了\n")
     
     println("メールアドレスを更新")
-    dynamo.updateItem(tableName, u_id, "email", "test@example.com")
-    println(dynamo.searchByKey(tableName, u_id))
+    dynamo.updateItem(tableName, listOf(u_id), "email", "test@example.com")
+    println(dynamo.searchByKey(tableName, listOf(u_id)))
     println("取得完了\n")
     
     println("メールアドレスで絞り込み")
@@ -71,8 +75,16 @@ class App : RequestHandler<Map<String, String>, String> {
     println("取得完了\n")
 
     println("削除")
-    println(dynamo.deleteByKey(tableName, u_id))
+    println(dynamo.deleteByKey(tableName, listOf(u_id)))
     println("削除完了\n")
+
+    println("ログインログを追加")
+    dynamo.addItem("l_log", log)
+    println("追加完了\n")
+
+    println("ログインログを検索")
+    println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
+    println("検索完了\n")
 
     user
     }
