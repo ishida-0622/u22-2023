@@ -1,27 +1,38 @@
-import Link from "next/link";
 import { useRouter } from "next/router";
-// import { useState } from "react";
 
 export const Top = () => {
   const router = useRouter();
 
-  // const ScreenTransition = () => {
-  //   router.push("/");
-  // };
+  const ScreenTransition = (path) => {
+    router.push(path);
+  };
 
   return (
     <div>
-      <h2>ログイン</h2>
       <div>
-        <button type="submit">ログイン</button>
+        <button onClick={() => ScreenTransition("/admin/logout")}>
+          ログアウト
+        </button>
       </div>
       <div>
-        <Link href="/password-reset">
-          IDやパスワードを忘れてしまった方はこちら
-        </Link>
-      </div>
-      <div>
-        <Link href="/signup">アカウント作成がまだの方はこちら</Link>
+        <div>
+          <button onClick={() => ScreenTransition("/admin/book")}>本棚</button>
+        </div>
+        <div>
+          <button onClick={() => ScreenTransition("/admin/puzzle")}>
+            問題
+          </button>
+        </div>
+        <div>
+          <button onClick={() => ScreenTransition("/admin/sticker")}>
+            シール
+          </button>
+        </div>
+        <div>
+          <button onClick={() => ScreenTransition("/admin/news")}>
+            お知らせ
+          </button>
+        </div>
       </div>
     </div>
   );
