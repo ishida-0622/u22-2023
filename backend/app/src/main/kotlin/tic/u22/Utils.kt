@@ -84,7 +84,7 @@ class Utils {
 
 /**
  * DynamoDBの操作に関するクラス
- * 
+ *
  * @param REGION String: リージョン。基本的にはSettings().AWS_REGIONでよい。
  */
 class Dynamo(val REGION: String){
