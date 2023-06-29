@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import  styles  from "./index.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
@@ -62,162 +63,173 @@ export const Signup = () => {
   };
 
   return (
-    <div>
-      <h2>サインアップ</h2>
-      <hr />
-      <form method="post" onSubmit={handleSubmit}>
-        <div>
-          <label>
-            姓名
-            <input
-              type="text"
-              name="familyname"
-              id="familyname"
-              value={formValues.familyname}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  familyname: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-          <label>
-            名前
-            <input
-              type="text"
-              name="firstname"
-              id="firstname"
-              value={formValues.firstname}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  firstname: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            姓名(ローマ字)
-            <input
-              type="text"
-              name="familynameEng"
-              id="familynameEng"
-              value={formValues.familynameEng}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  familynameEng: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            名前(ローマ字)
-            <input
-              type="text"
-              name="firstnameEng"
-              id="firstnameEng"
-              value={formValues.firstnameEng}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  firstnameEng: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            アカウント名
-            <input
-              type="text"
-              name="username"
-              id="username"
-              value={formValues.username}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  username: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            メールアドレス
-            <input
-              type="text"
-              name="email"
-              id="email"
-              value={formValues.email}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  email: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            パスワード
-            <input
-              type={isHidden ? "password" : "text"}
-              name="password"
-              id="password"
-              value={formValues.password}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  password: e.target.value,
-                }))
-              }
-              required={true}
-            />
-            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
-              {isHidden ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </span>
-          </label>
-
-          <label>
-            確認用
-            <input
-              type={isHidden ? "password" : "text"}
-              name="passwordConfirmation"
-              id="passwordConfirmation"
-              value={formValues.passwordConfirm}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  passwordConfirm: e.target.value,
-                }))
-              }
-              required={true}
-            />
-            <span onClick={() => setIsHidden((v) => !v)} role="presentation">
-              {isHidden ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
-            </span>
-          </label>
+    <div className={`${styles.content}`}>
+      <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
+        <h2 className={`${styles.header}`}>サインアップ</h2>
+        <div className={`${styles.name}`}>
+          <div className={`${styles.lastname}`}>
+            <label>
+              姓名
+              <input
+                type="text"
+                name="familyname"
+                id="familyname"
+                value={formValues.familyname}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    familyname: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+          <div className={`${styles.firstname}`}>
+            <label>
+              名前
+              <input
+                type="text"
+                name="firstname"
+                id="firstname"
+                value={formValues.firstname}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    firstname: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
         </div>
+          <div className={`${styles.english_name}`}>
+            <div className={`${styles.lastname}`}>
+              <label>
+                姓名(ローマ字)
+                <input
+                  type="text"
+                  name="familynameEng"
+                  id="familynameEng"
+                  value={formValues.familynameEng}
+                  onChange={(e) =>
+                    setFormValues((val) => ({
+                      ...val,
+                      familynameEng: e.target.value,
+                    }))
+                  }
+                  required={true}
+                />
+              </label>
+            </div>
+            <div className={`${styles.firstname}`}>
+              <label>
+                名前(ローマ字)
+                <input
+                  type="text"
+                  name="firstnameEng"
+                  id="firstnameEng"
+                  value={formValues.firstnameEng}
+                  onChange={(e) =>
+                    setFormValues((val) => ({
+                      ...val,
+                      firstnameEng: e.target.value,
+                    }))
+                  }
+                  required={true}
+                />
+              </label>
+            </div>
+          </div>
+          <div>
+            <label className={`${styles.account}`}>
+              アカウント名
+              <input
+                type="text"
+                name="username"
+                id="username"
+                value={formValues.username}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    username: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+          <div>
+            <label className={`${styles.email}`}>
+              メールアドレス
+              <input
+                type="text"
+                name="email"
+                id="email"
+                value={formValues.email}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    email: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+          <div>
+            <label className={`${styles.password}`}>
+              パスワード
+              <input
+                type={isHidden ? "password" : "text"}
+                name="password"
+                id="password"
+                value={formValues.password}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    password: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+              <span onClick={() => setIsHidden((v) => !v)} role="presentation">
+                {isHidden ? (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} />
+                )}
+              </span>
+            </label>
+          </div>
+          <div>
+            <label className={`${styles.password}`}>
+              確認用
+              <input
+                type={isHidden ? "password" : "text"}
+                name="passwordConfirmation"
+                id="passwordConfirmation"
+                value={formValues.passwordConfirm}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    passwordConfirm: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+              <span onClick={() => setIsHidden((v) => !v)} role="presentation">
+                {isHidden ? (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} />
+                )}
+              </span>
+            </label>
+          </div>
         <div>
-          <label>
+          <label className={`${styles.password}`}>
             チャイルドロック
             <input
               type={isHidden ? "password" : "text"}
@@ -242,8 +254,9 @@ export const Signup = () => {
             <p>設定画面を開く際に必要になります。</p>
             <p>設定画面よりプレイ時間等が確認できます。</p>
           </label>
-
-          <label>
+        </div>
+        <div>
+          <label className={`${styles.password}`}>
             チャイルドロック確認用
             <input
               type={isHidden ? "password" : "text"}
@@ -266,7 +279,8 @@ export const Signup = () => {
               )}
             </span>
           </label>
-
+        </div>
+        <div>
           <label>
             <input
               type="checkbox"
@@ -282,7 +296,8 @@ export const Signup = () => {
             />
             規約に同意する
           </label>
-
+        </div>
+        <div>
           <button type="submit">新規会員登録</button>
         </div>
       </form>
