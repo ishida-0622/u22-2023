@@ -82,9 +82,21 @@ class Utils {
   }
 }
 
+/**
+ * DynamoDBの操作に関するクラス
+ * 
+ * @param REGION String: リージョン。基本的にはSettings().AWS_REGIONでよい。
+ */
 class Dynamo(val REGION: String){
   val utils = Utils()
-  suspend fun add(usedTableName: String, data: TableBase) {
+
+  /**
+   * テーブルに要素を追加する
+   *
+   * @param usedTableName String: テーブル名
+   * @param data TableBase: データクラス
+   */
+  suspend fun addItem(usedTableName: String, data: TableBase) {
     // 型変換
     val itemValues = utils.toAttributeValueMap(utils.toMap(data))
     // テーブル名とitemを指定
@@ -96,6 +108,13 @@ class Dynamo(val REGION: String){
     DynamoDbClient { region = REGION }.use { ddb -> ddb.putItem(req) }
   }
 
+  /**
+   * テーブルの全ての要素を取得する
+   *
+   * @param usedTableName String: テーブル名
+   *
+   * return List<Map<String, AttributeValue>> データ(各データがAttributeValueのMap)
+   */
   suspend fun scanAll(usedTableName: String): List<Map<String, AttributeValue>> {
     DynamoDbClient { region = REGION }.use { ddb ->
       // テーブル名を指定
@@ -114,7 +133,16 @@ class Dynamo(val REGION: String){
     }
   }
 
-  suspend fun searchByKey(usedTableName: String, keyName: String, keyVal: String): Map<String, AttributeValue> {
+  /**
+   * キーを使用して検索する
+   *
+   * @param usedTableName String: テーブル名
+   * @param keyVal String: キーの値
+   *
+   * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
+   */
+  suspend fun searchByKey(usedTableName: String, keyVal: String): Map<String, AttributeValue> {
+    val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
     val keys = mutableMapOf<String, Any>()
     keys[keyName] = keyVal
@@ -139,6 +167,16 @@ class Dynamo(val REGION: String){
     }
   }
   
+  /**
+   * 特定のカラムを使用して検索する
+   *
+   * @param usedTableName String: テーブル名
+   * @param clumn String: 検索に用いるカラム名
+   * @param value Any: 検索するデータ
+   * @param condition String: 検索の演算子(=, <, <=, >, >=, <>)
+   *
+   * return List<Map<String, AttributeValue>> データ(各データがAttributeValueのMap)
+   */
   suspend fun searchByAny(usedTableName: String, column: String, value: Any, condition: String): List<Map<String, AttributeValue>> {
     DynamoDbClient { region = REGION }.use { ddb ->
       // テーブル名, 検索条件を指定
@@ -163,7 +201,14 @@ class Dynamo(val REGION: String){
     }
   }
 
-  suspend fun deleteByKey(usedTableName: String, keyName: String, keyVal: String): Unit {
+  /**
+   * キーを用いてデータを削除する
+   *
+   * @param usedTableName String: テーブル名
+   * @param keyVal String: キーの値
+   */
+  suspend fun deleteByKey(usedTableName: String, keyVal: String): Unit {
+    val keyName = tableNameToKey[usedTableName]!!
     val keyToGet = mutableMapOf<String, AttributeValue>()
     keyToGet[keyName] = AttributeValue.S(keyVal)
 
@@ -178,7 +223,16 @@ class Dynamo(val REGION: String){
     }
   }
 
-  suspend fun updateItem(usedTableName: String, keyName: String, keyVal: String, updateColumn: String, updateVal: Any): Unit {
+  /**
+   * キーを用いてデータを更新する
+   *
+   * @param usedTableName String: テーブル名
+   * @param keyVal String: キーの値
+   * @updateColumn String: 更新対象のカラム名
+   * @updateVal Any: 更新後のデータ
+   */
+  suspend fun updateItem(usedTableName: String, keyVal: String, updateColumn: String, updateVal: Any): Unit {
+    val keyName = tableNameToKey[usedTableName]!!
     val itemKey = mutableMapOf<String, AttributeValue>()
     itemKey[keyName] = AttributeValue.S(keyVal)
 
@@ -201,12 +255,31 @@ class Dynamo(val REGION: String){
   }
 }
 
+
+/**
+ * 実行環境で使用する設定変数
+ */
 class Settings {
     val AWS_REGION = "us-east-1"
     val AWS_BUCKET = "sample"
 }
 
 
+/**
+ * テーブル名とそのテーブルのキーを結びつけるマップ
+ */
+val tableNameToKey: Map<String, String> = mapOf(
+  "user" to "u_id",
+  "puzzle" to "p_id",
+  "book" to "b_id",
+  "notice" to "n_id",
+  "status" to "u_id",
+  // "l_log" to listOf("u_id", "datetime"),
+  // "p_log" to listOf("u_id", "p_id"),
+  // "b_log" to listOf("u_id", "b_id"),
+)
+
+// 全てのデータクラスの親
 interface TableBase {}
 
 /**
@@ -360,9 +433,12 @@ data class BookLog(
     val latest_play_datetime: String = "${LocalDateTime.now()}",
 )
 
+
 /**
- * StatusInfoクラス
  * statusテーブルのstatus_infosへの設定に利用
+ * TODO: 仕様変更に対応して変える
+ * generateDbForm: フロント形式 -> DB形式
+ * generateFrontForm: DB形式(返り値) -> フロント形式
  *
  * @param id: String 本、又はパズルのID
  */
@@ -371,6 +447,7 @@ class StatusInfos(val id: String) {
      * 本の場合：ページ数を基に、データベースに入れる形に変換
      *
      * @param status: Int 現在のページ数
+     *
      * @return List<String> IDと連結したデータ
      */
     fun generateDbForm(status: Int): List<String>{
@@ -381,6 +458,7 @@ class StatusInfos(val id: String) {
      * パズルの場合：ピースの場所数を基に、データベースに入れる形に変換
      *
      * @param status: Int 現在のピース状況数
+     *
      * @return List<String> IDと連結したデータ
      */
     fun generateDbForm(status: List<String>): List<String>{
@@ -391,6 +469,13 @@ class StatusInfos(val id: String) {
       return res
     }
     
+    /**
+     * フロントに渡す形式に変換
+     *
+     * @param status List<String> 取得したstatus_infos
+     *
+     * @return Map<String, Any> フロント形式のステータス情報(マップ)
+     */
     fun generateFrontForm(status: List<String>): Map<String, Any>{
       val res: MutableMap<String, Any> = mutableMapOf("id" to status[0])
       if(status[0].substring(0, 1) == "b") {
