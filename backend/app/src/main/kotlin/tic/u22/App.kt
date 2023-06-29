@@ -6,11 +6,6 @@
  */
 package tic.u22
 
-import aws.sdk.kotlin.services.dynamodb.*
-import aws.sdk.kotlin.services.dynamodb.endpoints.*
-import aws.sdk.kotlin.services.dynamodb.model.*
-import aws.sdk.kotlin.services.dynamodb.paginators.*
-import aws.sdk.kotlin.services.dynamodb.waiters.*
 import aws.sdk.kotlin.services.lambda.*
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
