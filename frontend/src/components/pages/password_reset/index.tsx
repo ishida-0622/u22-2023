@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./index.module.scss";
 
 export const PasswordReset = () => {
   const [email, setEmail] = useState("");
@@ -30,27 +31,36 @@ export const PasswordReset = () => {
     }
   };
 
-  return (
-    <div>
-      <h2>パスワード再発行</h2>
-      <hr />
-      <form method="post" onSubmit={handleSubmit}>
-        <div>
-          <label>
-            メールアドレスを入力
-            <input
-              type="text"
-              name="email"
-              id="email"
-              value={email}
-              onChange={changeEmail}
-              required={true}
-            />
-          </label>
-        </div>
-        <div>
-          <button type="submit">送信する</button>
-        </div>
+    return (
+        <div className={`${styles.main}`}>
+            <div className={`${styles.title_field}`}>
+                <h2 className={`${styles.title}`}>パスワード再発行</h2>
+            </div>
+            <hr />
+            <form method="post" onSubmit={handleSubmit}>
+                <div className={`${styles.email_field}`}>
+                    <label>
+                        <p className={`${styles.email_text}`}>
+                            メールアドレスを入力
+                        </p>
+                        <input className={`${styles.email_form}`}
+                            type="text"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={changeEmail}
+                            required={true}
+                        />
+                        {/**
+                         *  <select name="emailtype">
+                            <option value="icloud">@icloud.com</option>
+                            </select>
+                         */}
+                    </label>
+                </div>
+                <div className={`${styles.submit_button_field}`}>
+                    <button className={`${styles.submit_button}`} type="submit">送信する</button>
+                </div>
       </form>
     </div>
   );
