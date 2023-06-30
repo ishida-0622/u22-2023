@@ -257,6 +257,39 @@ data class BookLog(
     val latest_play_datetime: String = "${LocalDateTime.now()}",
 )
 
+/**
+ * Adminアカウントの判定と作成をするクラス
+ */
+class UseAdmin() {
+
+  /**
+   * Adminアカウントか判定する
+   *
+   * @param u_id String: ユーザーID
+   *
+   * return Boolean: adminアカウントかどうか
+   */
+  fun judgeAdmin(u_id: String): Boolean {
+    if (u_id.substring(0,5)!! == "admin") {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Adminアカウントを作成する
+   *
+   * @param  u_id String: 元のユーザーID
+   *
+   * return String: AdminアカウントにしたユーザーID
+   */
+  fun makeAdmin(u_id: String): String {
+    return "admin${u_id.substring(0,19)}${u_id.substring(24, 36)}"
+  }
+}
+
+
 
 /**
  * statusテーブルのstatus_infosへの設定に利用
