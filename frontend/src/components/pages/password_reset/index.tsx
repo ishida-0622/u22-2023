@@ -2,34 +2,34 @@ import { useState } from "react";
 import styles from "./index.module.scss";
 
 export const PasswordReset = () => {
-    const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
 
-    const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    };
+  const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-        const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-        if (baseUrl === undefined) {
-            throw new Error("内部エラー");
-        }
-        try {
-            const response = await fetch(`${baseUrl}/auth/password-reset`, {
-                method: "POST",
-                body: JSON.stringify({
-                    email: email,
-                }),
-            });
+    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    if (baseUrl === undefined) {
+      throw new Error("内部エラー");
+    }
+    try {
+      const response = await fetch(`${baseUrl}/auth/password-reset`, {
+        method: "POST",
+        body: JSON.stringify({
+          email: email,
+        }),
+      });
 
-            // responseの処理
-            // responseがtrueの時、画面遷移をする
-            // responseがfalseの時、アラートを出す。
-        } catch (e) {
-            alert("データの送信に失敗しました");
-        }
-    };
+      // responseの処理
+      // responseがtrueの時、画面遷移をする
+      // responseがfalseの時、アラートを出す。
+    } catch (e) {
+      alert("データの送信に失敗しました");
+    }
+  };
 
     return (
         <div className={`${styles.main}`}>
@@ -61,7 +61,7 @@ export const PasswordReset = () => {
                 <div className={`${styles.submit_button_field}`}>
                     <button className={`${styles.submit_button}`} type="submit">送信する</button>
                 </div>
-            </form>
-        </div>
-    );
+      </form>
+    </div>
+  );
 };
