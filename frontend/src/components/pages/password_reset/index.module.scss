@@ -1,58 +1,57 @@
 .main {
-    font-family: "UD デジタル 教科書体 NP-B","UD Digi Kyokasho NP-B";
+  font-family: "UD デジタル 教科書体 NP-B", "UD Digi Kyokasho NP-B";
 }
 
 .title_field {
-    margin: 1rem 0 1rem 0;
+  margin: 1rem 0 1rem 0;
 
-    .title {
-        text-align: center;
-        font-weight: bold;
-    }
+  .title {
+    text-align: center;
+    font-weight: bold;
+  }
 }
 
 .email_field {
-    text-align: center;
-    margin: 10rem 0 5rem 0;
+  text-align: center;
+  margin: 10rem 0 5rem 0;
 
-    .emial_text {
-        display: inline-block;
-        font-weight: bold;
-    }
+  .email_text {
+    font-weight: bold;
+  }
 
-    p {
-        font-size: 120%;
-    }
+  p {
+    font-size: 120%;
+  }
 
-    .email_form {
-        display: inline-block;
-        width: 15rem;
-        height: 2.5rem;
-    }
+  .email_form {
+    display: inline-block;
+    width: 15rem;
+    height: 2.5rem;
+  }
 }
 
 .submit_button_field {
-    text-align: center;
-    margin: 10rem 0 0 0;
+  text-align: center;
+  margin: 10rem 0 0 0;
 
-    .submit_button {
-        display: inline-block;
-        color: azure;
-        font-weight: bold;
-        background-color: #df0013;
-        border-bottom: 5px solid #9f000c;
-        border-radius: 100vh;
-        border-color: #9f000c;
-        top: calc(50% - .5em);
-        right: 1rem;
+  .submit_button {
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 5px solid #9f000c;
+    border-radius: 100vh;
+    border-color: #9f000c;
+    top: calc(50% - 0.5em);
+    right: 1rem;
 
-        width: 7rem;
-        height: 3rem;
-    }
+    width: 7rem;
+    height: 3rem;
+  }
 
-    .submit_button:hover {
-        margin-top: 3px;
-        border-bottom: 2px solid #9f000c;
-        cursor: pointer;
-    }
+  .submit_button:hover {
+    margin-top: 3px;
+    border-bottom: 2px solid #9f000c;
+    cursor: pointer;
+  }
 }
