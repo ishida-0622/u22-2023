@@ -118,6 +118,7 @@ interface TableBase {}
  * @param account_name: String アカウント名
  * @param limit_time: Int 使用制限時間(default:1440-設定不要)
  * @param delete_flg: Boolean 退会フラグ(default:false-設定不要)
+ * @param authed: Boolean 認証フラグ(default:false-設定不要)
  */
 data class User(
     val u_id: String,
@@ -130,7 +131,8 @@ data class User(
     val child_lock: String,
     val account_name: String,
     val limit_time: Int = 1440,
-    val delete_flg: Boolean = false
+    val delete_flg: Boolean = false,
+    val authed: Boolean = false
 ): TableBase
 
 /**
