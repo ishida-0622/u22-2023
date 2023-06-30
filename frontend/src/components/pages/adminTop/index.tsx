@@ -20,7 +20,7 @@ export const Top = () => {
   };
 
   const news = () => {
-    router.push("/admin/news");
+    router.push("/admin/announcement-page");
   };
 
   return (
