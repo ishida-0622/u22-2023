@@ -15,9 +15,9 @@ export const Top = () => {
     router.push("/admin/puzzle");
   };
 
-  const sticker = () => {
-    router.push("/admin/sticker");
-  };
+  // const sticker = () => {
+  //   router.push("/admin/sticker");
+  // };
 
   const news = () => {
     router.push("/admin/announcement-page");
@@ -35,9 +35,9 @@ export const Top = () => {
         <div>
           <button onClick={puzzle}>問題</button>
         </div>
-        <div>
+        {/* <div>
           <button onClick={sticker}>シール</button>
-        </div>
+        </div> */}
         <div>
           <button onClick={news}>お知らせ</button>
         </div>
