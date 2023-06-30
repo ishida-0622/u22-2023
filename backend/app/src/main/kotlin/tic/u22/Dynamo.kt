@@ -18,49 +18,6 @@ class Dynamo(val REGION: String){
   val utils = Utils()
 
   /**
-   * テーブルに要素を追加する
-   *
-   * @param usedTableName String: テーブル名
-   * @param data TableBase: データクラス
-   */
-  suspend fun addItem(usedTableName: String, data: TableBase) {
-    // 型変換
-    val itemValues = utils.toAttributeValueMap(utils.toMap(data))
-    // テーブル名とitemを指定
-    val req = PutItemRequest {
-      tableName = usedTableName
-      item = itemValues
-    }
-    // 追加
-    DynamoDbClient { region = REGION }.use { ddb -> ddb.putItem(req) }
-  }
-
-  /**
-   * テーブルの全ての要素を取得する
-   *
-   * @param usedTableName String: テーブル名
-   *
-   * return List<Map<String, AttributeValue>> データ(各データがAttributeValueのMap)
-   */
-  suspend fun scanAll(usedTableName: String): List<Map<String, AttributeValue>> {
-    DynamoDbClient { region = REGION }.use { ddb ->
-      // テーブル名を指定
-      val request = ScanRequest { tableName = usedTableName }
-      // 全件取得
-      val response = ddb.scan(request)
-      // 取得結果を出力
-      if (response.items == null) {
-        return listOf(mapOf())
-      }
-      return response.items!!.map { item ->
-        item.map { mp ->
-          mp.key to mp.value
-        }.toMap()
-      }
-    }
-  }
-
-  /**
    * キーを使用して検索する
    *
    * @param usedTableName String: テーブル名
@@ -98,6 +55,52 @@ class Dynamo(val REGION: String){
       return response.item!!.map { mp ->
         mp.key to mp.value
       }.toMap()
+    }
+  }
+
+  /**
+   * テーブルに要素を追加する
+   *
+   * @param usedTableName String: テーブル名
+   * @param addData TableBase: データクラス
+   */
+  suspend fun addItem(usedTableName: String, addData: TableBase): Boolean {
+    // 型変換
+    val itemValues = utils.toAttributeValueMap(utils.toMap(addData))
+    // 既にプライマリーキーが存在する場合はfalseを返す
+    if (searchByKey(usedTableName, tableNameToKey[usedTableName]!!.map{utils.toMap(addData)[it] as String}).size > 0){return false}
+    // テーブル名とitemを指定
+    val req = PutItemRequest {
+      tableName = usedTableName
+      item = itemValues
+    }
+    // 追加
+    DynamoDbClient { region = REGION }.use { ddb -> ddb.putItem(req) }
+    return true
+  }
+
+  /**
+   * テーブルの全ての要素を取得する
+   *
+   * @param usedTableName String: テーブル名
+   *
+   * return List<Map<String, AttributeValue>> データ(各データがAttributeValueのMap)
+   */
+  suspend fun scanAll(usedTableName: String): List<Map<String, AttributeValue>> {
+    DynamoDbClient { region = REGION }.use { ddb ->
+      // テーブル名を指定
+      val request = ScanRequest { tableName = usedTableName }
+      // 全件取得
+      val response = ddb.scan(request)
+      // 取得結果を出力
+      if (response.items == null) {
+        return listOf(mapOf())
+      }
+      return response.items!!.map { item ->
+        item.map { mp ->
+          mp.key to mp.value
+        }.toMap()
+      }
     }
   }
   
@@ -141,7 +144,7 @@ class Dynamo(val REGION: String){
    * @param usedTableName String: テーブル名
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    */
-  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Unit {
+  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Boolean {
     if (tableNameToKey[usedTableName] == null) {
       return throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
@@ -163,7 +166,7 @@ class Dynamo(val REGION: String){
 
     DynamoDbClient { region = REGION }.use { ddb ->
         ddb.deleteItem(request)
-        return
+        return true
     }
   }
 
