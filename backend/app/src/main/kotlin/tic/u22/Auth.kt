@@ -13,7 +13,7 @@ import com.google.gson.JsonParser
 
 class App : RequestHandler<Map<String, String>, String> {
   override fun handleRequest(event: Map<String, String>?, context: Context?): String{
-    runBlocking {
+    val res = runBlocking {
       if (event == null) {throw Exception("event is null")}
       val u_id = UUID.randomUUID().toString()
       val family_name = if (event["family_name"] != null) {event["family_name"]!!} else {throw Exception("family_name is null")}
@@ -35,8 +35,16 @@ class App : RequestHandler<Map<String, String>, String> {
         child_lock=child_lock,
         account_name=account_name
       )
+
+      val dynamo = Dynamo(Settings().AWS_REGION)
+      val tableName = "user"
+
+      // ユーザーの追加
+      dynamo.addItem(tableName, user)
+      val res: Map<String, String> = mapOf("result" to "true")
+      res
     }
-    return ""
+    return Gson().toJson(res)
   }
 }
 
