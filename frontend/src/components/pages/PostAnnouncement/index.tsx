@@ -49,7 +49,7 @@ export const PostAnnouncement = () => {
   const router = useRouter();
 
   const ScreenTransition = () => {
-    router.push("/announcement-page");
+    router.push("/admin/announcement-page");
   };
 
   return (
