@@ -40,9 +40,7 @@ class App : RequestHandler<Map<String, String>, String> {
       val tableName = "user"
 
       // Emailの重複チェック
-      if (dynamo.searchByAny(tableName, "email", email, "=").isNotEmpty()) {
-        throw Exception("Email already exists")
-      }
+      if (dynamo.searchByAny(tableName, "email", email, "=").isNotEmpty()) {throw Exception("Email already exists")}
 
       // ユーザーの追加
       dynamo.addItem(tableName, user)
