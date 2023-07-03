@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
+import  styles  from "./index.module.scss";
 export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,14 +45,16 @@ export const Login = () => {
     };
 
     return (
-        <div>
+        <div className={`${styles.header}`}>
+            <div className={`${styles.logintext}`}></div>
             <h2>ログイン</h2>
-            <p>パパ、ママに入力してもらってね！</p>
-            <hr />
+            <p>パパ、ママにそうさしてもらってね！</p>
+            <hr/>
             <form method="post" onSubmit={handleSubmit}>
-                <div>
+                <div className="top">
+                    <br></br>
                     <label>
-                        メールアドレス
+                        メールアドレス<br></br>
                         <input
                             type="text"
                             name="email"
@@ -61,13 +63,13 @@ export const Login = () => {
                             onChange={changeEmail}
                             required={true}
                         />
-                        <select name="emailtype">
+                        {/* <select name="emailtype">
                             <option value="icloud">@icloud.com</option>
-                        </select>
-                    </label>
+                        </select> */}
+                    </label><br></br>
 
                     <label>
-                        パスワード
+                        パスワード<br></br>
                         <input
                             type="password"
                             name="password"
@@ -79,8 +81,11 @@ export const Login = () => {
                     </label>
                 </div>
                 <div>
-                    <button type="submit">ログイン</button>
+                    <div className={`${styles.submit_button_field}`}>
+                    <button className={`${styles.submit_button}`}type="submit">ログイン</button>
                 </div>
+                </div>
+                <div className={`${styles.link}`}>
                 <div>
                     <Link href="/password-reset">
                         IDやパスワードを忘れてしまった方はこちら
@@ -88,6 +93,7 @@ export const Login = () => {
                 </div>
                 <div>
                     <Link href="/signup">アカウント作成がまだの方はこちら</Link>
+                </div>
                 </div>
             </form>
         </div>

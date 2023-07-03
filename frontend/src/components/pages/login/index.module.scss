@@ -1,0 +1,63 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin-bottom: 1%;
+    background-color: #7EC7D8;
+}
+.logintext {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1%;
+    background-color: #7EC7D8;
+    /* 必要なスタイルを追加してください */
+}
+
+    .header{
+        text-align: center;
+        font-size: 150%;
+        margin: auto;
+        width: 50%;
+        height: 50%;
+        letter-spacing: 0.05em;
+        margin-bottom: 1%;
+        background-color: #7EC7D8;
+        background-image: url("/images/そうげん.jpg");
+        
+
+        label {
+            margin-bottom: 4rem;
+            display: inline-block;
+            text-align:justify;
+        }
+        input{
+            width: 100%;
+            text-align: left;
+        }
+        button{
+            margin-bottom: 3rem;
+        }
+        .link{
+            font-size: 50%;
+        }
+    }
+    .submit_button {
+        display: inline-block;
+        color: azure;
+        font-weight: bold;
+        background-color: #df0013;
+        border-bottom: 5px solid #9f000c;
+        border-radius: 100vh;
+        border-color: #9f000c;
+        top: calc(50% - .5em);
+        right: 1rem;
+    }
+
+    .submit_button:hover {
+        margin-top: 3px;
+        border-bottom: 2px solid #9f000c;
+        cursor: pointer;
+    }
