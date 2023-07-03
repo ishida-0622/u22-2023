@@ -12,7 +12,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 
 // テスト用コードここから
-class App : RequestHandler<Map<String, String>, String> {
+class Signup : RequestHandler<Map<String, String>, String> {
   override fun handleRequest(event: Map<String, String>?, context: Context?): String{
     val res = runBlocking {
       if (event == null) {throw Exception("event is null")}
