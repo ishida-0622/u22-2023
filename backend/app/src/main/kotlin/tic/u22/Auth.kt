@@ -28,47 +28,58 @@ class Signup : RequestHandler<Map<String, String>, String> {
       // テスト用コードここまで
 
 // 本番環境用コードここから
-/*
-// 解析したJSONを保持するデータクラス
-data class FormValues(
-    val familyname: String = "",
-    val firstname: String = "",
-    val familynameEng: String = "",
-    val firstnameEng: String = "",
-    val username: String = "",
-    val email: String = "",
-    val password: String = "",
-    val passwordConfirm: String = "",
-    val child: String = "",
-    val childConfirm: String = "",
-    val consent: Boolean = false
-)
+// // 解析したJSONを保持するデータクラス
+// data class FormValues(
+//     val familyname: String = "",
+//     val firstname: String = "",
+//     val familynameEng: String = "",
+//     val firstnameEng: String = "",
+//     val username: String = "",
+//     val email: String = "",
+//     val password: String = "",
+//     val passwordConfirm: String = "",
+//     val child: String = "",
+//     val childConfirm: String = "",
+//     val consent: Boolean = false
+// )
 
-class App : RequestHandler<Map<String, Any>, String> {
-  override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
-    val res = runBlocking {
-      // eventが正しく送られてきているかを確認
-      if (event == null) {throw Exception("event is null")}
+// /**
+//  * サインアップを処理するクラス。
+//  * AWS Lambda関数のリクエストハンドラとして実装されています。
+//  */
+// // class Signup : RequestHandler<Map<String, Any>, String> {
+// /**
+//  * Lambda関数のエントリーポイント。
+//  * サインアップリクエストを処理し、ユーザーをデータベースに追加します。
+//  *
+//  * @param event Map<String, String>: Lambda関数へのリクエストイベント
+//  * @param context Context: Lambda関数の実行コンテキスト
+//  * @return String: サインアップ処理の結果を表すJSON形式の文字列
+//  */
+  // override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+  //   val res = runBlocking {
+  //     // eventが正しく送られてきているかを確認
+  //     if (event == null) {throw Exception("event is null")}
 
-      // JSONを解析する
-      val body = event["body"] as String
-      val jsonElement = JsonParser.parseString(body)
-      val formValuesJson = jsonElement.asJsonObject["formValues"]
-      val gson = Gson()
-      val formValues = gson.fromJson(formValuesJson, FormValues::class.java)
+  //     // JSONを解析する
+  //     val body = event["body"] as String
+  //     val jsonElement = JsonParser.parseString(body)
+  //     val formValuesJson = jsonElement.asJsonObject["formValues"]
+  //     val gson = Gson()
+  //     val formValues = gson.fromJson(formValuesJson, FormValues::class.java)
 
-      // ユーザーの情報を設定
-      val u_id = UUID.randomUUID().toString()
-      val family_name = if(formValues.familyname.isNotEmpty()) formValues.familyname else throw Exception("familynameが空です")
-      val first_name = if(formValues.firstname.isNotEmpty()) formValues.firstname else throw Exception("firstnameが空です")
-      val family_name_roma = if(formValues.familynameEng.isNotEmpty()) formValues.familynameEng else throw Exception("familynameEngが空です")
-      val first_name_roma = if(formValues.firstnameEng.isNotEmpty()) formValues.firstnameEng else throw Exception("firstnameEngが空です")
-      val email = if(formValues.email.isNotEmpty()) formValues.email else throw Exception("emailが空です")
-      val password = if(formValues.password.isNotEmpty()) formValues.password else throw Exception("passwordが空です")
-      val child_lock = if(formValues.child.isNotEmpty()) formValues.child else throw Exception("childが空です")
-      val account_name = if(formValues.username.isNotEmpty()) formValues.username else throw Exception("usernameが空です")
-      */
+  //     // ユーザーの情報を設定
+  //     val u_id = UUID.randomUUID().toString()
+  //     val family_name = if(formValues.familyname.isNotEmpty()) formValues.familyname else throw Exception("familynameが空です")
+  //     val first_name = if(formValues.firstname.isNotEmpty()) formValues.firstname else throw Exception("firstnameが空です")
+  //     val family_name_roma = if(formValues.familynameEng.isNotEmpty()) formValues.familynameEng else throw Exception("familynameEngが空です")
+  //     val first_name_roma = if(formValues.firstnameEng.isNotEmpty()) formValues.firstnameEng else throw Exception("firstnameEngが空です")
+  //     val email = if(formValues.email.isNotEmpty()) formValues.email else throw Exception("emailが空です")
+  //     val password = if(formValues.password.isNotEmpty()) formValues.password else throw Exception("passwordが空です")
+  //     val child_lock = if(formValues.child.isNotEmpty()) formValues.child else throw Exception("childが空です")
+  //     val account_name = if(formValues.username.isNotEmpty()) formValues.username else throw Exception("usernameが空です")
       // 本番環境用コードここまで
+
       val user = User(
         u_id=u_id,
         family_name=family_name,
