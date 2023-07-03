@@ -12,8 +12,11 @@ export const Signup = () => {
     username: "",
     email: "",
     password: "",
-    passwordConfirm: "",
     child: "",
+  });
+
+  const [confirm, setConfirm] = useState({
+    passwordConfirm: "",
     childConfirm: "",
     consent: false,
   });
@@ -25,13 +28,13 @@ export const Signup = () => {
     event.preventDefault();
 
     if (
-      formValues.password !== formValues.passwordConfirm &&
-      formValues.child !== formValues.childConfirm
+      formValues.password !== confirm.passwordConfirm &&
+      formValues.child !== confirm.childConfirm
     ) {
       alert("パスワードとチャイルドロック暗証番号が一致しません。");
-    } else if (formValues.child !== formValues.childConfirm) {
+    } else if (formValues.child !== confirm.childConfirm) {
       alert("チャイルドロックが一致しません。");
-    } else if (formValues.password !== formValues.passwordConfirm) {
+    } else if (formValues.password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
     } else {
       const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -39,7 +42,7 @@ export const Signup = () => {
         throw new Error("内部エラー");
       }
       try {
-        if (formValues.consent === true) {
+        if (confirm.consent === true) {
           const response = await fetch(`${baseUrl}/auth/signup`, {
             method: "POST",
             body: JSON.stringify({
@@ -202,7 +205,7 @@ export const Signup = () => {
               type={"password"}
               name="passwordConfirmation"
               id="passwordConfirmation"
-              value={formValues.passwordConfirm}
+              value={confirm.passwordConfirm}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
@@ -249,7 +252,7 @@ export const Signup = () => {
               type={"password"}
               name="childConfirmation"
               id="childConfirmation"
-              value={formValues.childConfirm}
+              value={confirm.childConfirm}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
@@ -265,7 +268,7 @@ export const Signup = () => {
               type="checkbox"
               id="consent"
               name="consent"
-              checked={formValues.consent}
+              checked={confirm.consent}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
