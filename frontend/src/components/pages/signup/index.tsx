@@ -5,34 +5,34 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 export const Signup = () => {
   const [formValues, setFormValues] = useState({
-    familyname: "",
-    firstname: "",
-    familynameEng: "",
-    firstnameEng: "",
-    username: "",
+    family_name: "",
+    first_name: "",
+    family_name_roma: "",
+    first_name_roma: "",
+    account_name: "",
     email: "",
     password: "",
-    child: "",
+    child_lock: "",
   });
 
   const [confirm, setConfirm] = useState({
     passwordConfirm: "",
-    childConfirm: "",
+    child_lockConfirm: "",
     consent: false,
   });
 
   const [isHiddenPass, setIsHiddenPass] = useState(true);
-  const [isHiddenChild, setIsHiddenChild] = useState(true);
+  const [isHiddenchild_lock, setIsHiddenchild_lock] = useState(true);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (
       formValues.password !== confirm.passwordConfirm &&
-      formValues.child !== confirm.childConfirm
+      formValues.child_lock !== confirm.child_lockConfirm
     ) {
       alert("パスワードとチャイルドロック暗証番号が一致しません。");
-    } else if (formValues.child !== confirm.childConfirm) {
+    } else if (formValues.child_lock !== confirm.child_lockConfirm) {
       alert("チャイルドロックが一致しません。");
     } else if (formValues.password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
@@ -75,13 +75,13 @@ export const Signup = () => {
             姓名
             <input
               type="text"
-              name="familyname"
-              id="familyname"
-              value={formValues.familyname}
+              name="family_name"
+              id="family_name"
+              value={formValues.family_name}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
-                  familyname: e.target.value,
+                  family_name: e.target.value,
                 }))
               }
               required={true}
@@ -91,13 +91,13 @@ export const Signup = () => {
             名前
             <input
               type="text"
-              name="firstname"
-              id="firstname"
-              value={formValues.firstname}
+              name="first_name"
+              id="first_name"
+              value={formValues.first_name}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
-                  firstname: e.target.value,
+                  first_name: e.target.value,
                 }))
               }
               required={true}
@@ -108,13 +108,13 @@ export const Signup = () => {
             姓名(ローマ字)
             <input
               type="text"
-              name="familynameEng"
-              id="familynameEng"
-              value={formValues.familynameEng}
+              name="family_name_roma"
+              id="family_name_roma"
+              value={formValues.family_name_roma}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
-                  familynameEng: e.target.value,
+                  family_name_roma: e.target.value,
                 }))
               }
               required={true}
@@ -125,13 +125,13 @@ export const Signup = () => {
             名前(ローマ字)
             <input
               type="text"
-              name="firstnameEng"
-              id="firstnameEng"
-              value={formValues.firstnameEng}
+              name="first_name_roma"
+              id="first_name_roma"
+              value={formValues.first_name_roma}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
-                  firstnameEng: e.target.value,
+                  first_name_roma: e.target.value,
                 }))
               }
               required={true}
@@ -142,13 +142,13 @@ export const Signup = () => {
             アカウント名
             <input
               type="text"
-              name="username"
-              id="username"
-              value={formValues.username}
+              name=" account_name"
+              id=" account_name"
+              value={formValues.account_name}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
-                  username: e.target.value,
+                  account_name: e.target.value,
                 }))
               }
               required={true}
@@ -207,7 +207,7 @@ export const Signup = () => {
               id="passwordConfirmation"
               value={confirm.passwordConfirm}
               onChange={(e) =>
-                setFormValues((val) => ({
+                setConfirm((val) => ({
                   ...val,
                   passwordConfirm: e.target.value,
                 }))
@@ -220,23 +220,23 @@ export const Signup = () => {
           <label>
             チャイルドロック
             <input
-              type={isHiddenChild ? "password" : "text"}
-              name="child"
-              id="child"
-              value={formValues.child}
+              type={isHiddenchild_lock ? "password" : "text"}
+              name="child_lock"
+              id="child_lock"
+              value={formValues.child_lock}
               onChange={(e) =>
                 setFormValues((val) => ({
                   ...val,
-                  child: e.target.value,
+                  child_lock: e.target.value,
                 }))
               }
               required={true}
             />
             <span
-              onClick={() => setIsHiddenChild((v) => !v)}
+              onClick={() => setIsHiddenchild_lock((v) => !v)}
               role="presentation"
             >
-              {isHiddenChild ? (
+              {isHiddenchild_lock ? (
                 <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
                 <FontAwesomeIcon icon={faEye} />
@@ -250,13 +250,13 @@ export const Signup = () => {
             チャイルドロック確認用
             <input
               type={"password"}
-              name="childConfirmation"
-              id="childConfirmation"
-              value={confirm.childConfirm}
+              name="child_lockConfirmation"
+              id="child_lockConfirmation"
+              value={confirm.child_lockConfirm}
               onChange={(e) =>
-                setFormValues((val) => ({
+                setConfirm((val) => ({
                   ...val,
-                  childConfirm: e.target.value,
+                  child_lockConfirm: e.target.value,
                 }))
               }
               required={true}
@@ -270,7 +270,7 @@ export const Signup = () => {
               name="consent"
               checked={confirm.consent}
               onChange={(e) =>
-                setFormValues((val) => ({
+                setConfirm((val) => ({
                   ...val,
                   consent: true,
                 }))
