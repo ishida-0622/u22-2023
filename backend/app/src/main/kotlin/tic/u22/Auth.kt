@@ -30,17 +30,14 @@ class Signup : RequestHandler<Map<String, String>, String> {
 // 本番環境用コードここから
 // // 解析したJSONを保持するデータクラス
 // data class FormValues(
-//     val familyname: String = "",
-//     val firstname: String = "",
-//     val familynameEng: String = "",
-//     val firstnameEng: String = "",
-//     val username: String = "",
-//     val email: String = "",
-//     val password: String = "",
-//     val passwordConfirm: String = "",
-//     val child: String = "",
-//     val childConfirm: String = "",
-//     val consent: Boolean = false
+//     val family_name: String,
+//     val first_name: String ,
+//     val family_name_roma: String,
+//     val first_name_roma: String,
+//     val email: String,
+//     val password: String,
+//     val child_lock: String,
+//     val account_name: String,
 // )
 
 // /**
@@ -97,6 +94,9 @@ class Signup : RequestHandler<Map<String, String>, String> {
 
       // Emailの重複チェック
       if (dynamo.searchByAny(tableName, "email", email, "=").isNotEmpty()) {throw Exception("Email already exists")}
+
+      // メールを送信する処理
+      // TODO
 
       // ユーザーの追加
       dynamo.addItem(tableName, user)
