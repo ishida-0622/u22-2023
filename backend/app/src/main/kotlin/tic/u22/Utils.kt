@@ -1,5 +1,9 @@
 package tic.u22
 
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.file.Files
+import java.util.Base64
 import aws.sdk.kotlin.services.dynamodb.model.*
 import kotlin.reflect.*
 import kotlin.reflect.full.*
@@ -75,6 +79,49 @@ class Utils {
       it.key to toAttributeValue(it.value)
     }.toMap()
   }
+
+  /**
+   * ファイルをBase64のURIに変換する
+   *
+   * @param path String: 変換するファイルのパス(ルートディレクトリはfiles)
+   *
+   * return String 変換後のURI(変換に失敗した場合はエラー内容)
+   */
+  fun encodeToUri(path: String): String {
+    try {
+      val file = File("files/${path}")
+      val contentType = Files.probeContentType(file.toPath())
+      val datas = Files.readAllBytes(file.toPath())
+      val base64str = Base64.getEncoder().encodeToString(datas)
+      return "data:${contentType};base64,${base64str}"
+    } catch(e: Exception) {
+      return "$e"
+    }
+  }
+
+  /**
+   * URIからファイルにデコードする
+   *
+   * @param uri String: 変換前のURI
+   * @param fileName String: パス・ファイル名(拡張子を除く・ルートディレクトリはfiles)
+   *
+   * return 成功した場合は「Done」、失敗した場合はエラー内容
+   */
+  fun decodeFromUri(uri: String, fileName: String): String {
+    try {
+      val formattedUri = mapOf(
+        "type" to uri.split(":")[1].split("/")[0],
+        "extension" to uri.split(";")[0].split("/")[1],
+        "data" to uri.split(",")[1]
+      )
+      val bytes = Base64.getDecoder().decode(formattedUri["data"]);
+      val file = FileOutputStream("files/${fileName}.${formattedUri["extension"]}");
+      file.write(bytes);
+      return "Done"
+    } catch(e: Exception) {
+      return "$e"
+    }
+  }
 }
 
 
@@ -83,7 +130,7 @@ class Utils {
  */
 class Settings {
     val AWS_REGION = "us-east-1"
-    val AWS_BUCKET = "sample"
+    val AWS_BUCKET = "club-katogi"
 }
 
 
@@ -270,7 +317,7 @@ class UseAdmin() {
    * return Boolean: adminアカウントかどうか
    */
   fun judgeAdmin(u_id: String): Boolean {
-    if (u_id.substring(0,5)!! == "admin") {
+    if (u_id.substring(0,5) == "admin") {
       return true
     } else {
       return false
