@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     implementation("aws.sdk.kotlin:dynamodb:0.18.0-beta")
+    implementation("aws.sdk.kotlin:s3:0.18.0-beta")
     implementation("aws.sdk.kotlin:lambda:0.18.0-beta")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation ("com.amazonaws:aws-lambda-java-core:1.2.2")
