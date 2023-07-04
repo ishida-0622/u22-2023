@@ -92,6 +92,26 @@ class App : RequestHandler<Map<String, String>, String> {
     }
 }
 
+class S3Sample : RequestHandler<Map<String, String>, String> {
+    val utils = Utils()
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
+
+    override fun handleRequest(event: Map<String, String>?, context: Context?): String{
+        val res = runBlocking{
+            // S3からファイルを取得してfilesディレクトリに保存
+            s3.getObject(bucketName, "photo1.png", "photo1.png")
+            // 取得したファイルをURI形式に変換
+            val uri = utils.encodeToUri("./photo1.png")
+            // URIからファイルを生成
+            utils.decodeFromUri(uri, "./photo1_encoded")
+            // 生成したファイルをS3にアップロード
+            s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
+        }
+        return res
+    }
+}
+
 fun main() {
     // handlerを起動
     val app = App()
