@@ -15,21 +15,24 @@ import kotlin.reflect.full.*
 import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
-import com.google.gson.JsonParser
 
-class App : RequestHandler<Map<String, String>, String> {
-    override fun handleRequest(event: Map<String, String>?, context: Context?): String{
+val gson = Gson()
+val utils = Utils()
+class App : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
         val res = runBlocking {
             if (event == null) {throw Exception("event is null")}
+            if (event["body"] == null) {throw Exception("body is null")}
+            val body = utils.formatJsonEnv(event["body"]!!)
             val u_id = UUID.randomUUID().toString()
-            val family_name = if (event["family_name"] != null) {event["family_name"]!!} else {throw Exception("family_name is null")}
-            val first_name = if (event["first_name"] != null) {event["first_name"]!!} else {throw Exception("first_name is null")}
-            val family_name_roma = if (event["family_name_roma"] != null) {event["family_name_roma"]!!} else {throw Exception("family_name_roma is null")}
-            val first_name_roma = if (event["first_name_roma"] != null) {event["first_name_roma"]!!} else {throw Exception("first_name_roma is null")}
-            val email = if (event["email"] != null) {event["email"]!!} else {throw Exception("email is null")}
-            val password = if (event["password"] != null) {event["password"]!!} else {throw Exception("password is null")}
-            val child_lock = if (event["child_lock"] != null) {event["child_lock"]!!} else {throw Exception("child_lock is null")}
-            val account_name = if (event["account_name"] != null) {event["account_name"]!!} else {throw Exception("account_name is null")}
+            val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
+            val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
+            val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
+            val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
+            val email = if (body["email"] != null) {body["email"]!! as String} else {throw Exception("email is null")}
+            val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
+            val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
+            val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
             val user = User(
                 u_id = u_id,
                 family_name = family_name,
@@ -86,7 +89,7 @@ class App : RequestHandler<Map<String, String>, String> {
             println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
             println("検索完了\n")
 
-            user
+            mapOf("result" to user)
         }
         return Gson().toJson(res)
     }
