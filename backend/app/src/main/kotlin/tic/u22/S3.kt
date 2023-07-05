@@ -100,7 +100,7 @@ class S3(val REGION: String) {
     }
 
     /**
-     * オブジェクトをダウンロードする
+     * オブジェクトを削除する
      *
      * @param bucketName String: バケット名。基本的にはSettings().AWS_BUCKETでよい。
      * @param objectName String: S3のキー。パスとファイル名のこと。例: images/img.png ※"./"は不要
