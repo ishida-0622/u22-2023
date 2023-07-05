@@ -23,7 +23,7 @@ class S3(val REGION: String) {
      *
      * return List<Map<String, String>>: オブジェクトの一覧
      */
-    suspend fun listBucketObjects(bucketName: String): List<Map<String, String>> {
+    suspend fun listObjects(bucketName: String): List<Map<String, String>> {
         val request = ListObjectsRequest {
             bucket = bucketName
         }
@@ -98,6 +98,37 @@ class S3(val REGION: String) {
             return "$e"
         }
     }
+
+    /**
+     * オブジェクトをダウンロードする
+     *
+     * @param bucketName String: バケット名。基本的にはSettings().AWS_BUCKETでよい。
+     * @param objectName String: S3のキー。パスとファイル名のこと。例: images/img.png ※"./"は不要
+     *
+     * return String: 成功: Done, 失敗: エラー内容
+     */
+    suspend fun deleteObject(bucketName: String, objectName: String): String {
+        try {
+            val objectId = ObjectIdentifier {
+                key = objectName
+            }
+            val delOb = Delete {
+                objects = listOf(objectId)
+            }
+            val request = DeleteObjectsRequest {
+                bucket = bucketName
+                delete = delOb
+            }
+            S3Client { region = REGION }.use { s3 ->
+                s3.deleteObjects(request)
+            }
+            return "Done"
+        } catch (e: Exception) {
+            return "$e"
+        }
+    }
+
+
 
     /**
      * ファイルサイズKbで計算する(プライベート関数)
