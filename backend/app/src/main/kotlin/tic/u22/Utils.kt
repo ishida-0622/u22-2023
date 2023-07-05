@@ -8,6 +8,8 @@ import aws.sdk.kotlin.services.dynamodb.model.*
 import kotlin.reflect.*
 import kotlin.reflect.full.*
 import java.time.LocalDateTime
+import com.google.gson.JsonParser
+import com.google.gson.Gson
 
 class Utils {
   /**
@@ -120,6 +122,23 @@ class Utils {
       return "Done"
     } catch(e: Exception) {
       return "$e"
+    }
+  }
+
+  /**
+   * 受け取ったJSONを、KotlinのMapオブジェクトに変換する(テスト・本番環境で同じソースを使用するためのメソッド)
+   *
+   * @param json Any(String||Map<*, *>): 変換したいオブジェクト
+   *
+   * return Map<String, Any>: 変換後のオブジェクト(引数の型が求められているものでない場合はエラーを返す)
+   */
+  fun formatJsonEnv(json: Any): Map<String, Any> {
+    if (json::class.simpleName == "String") {
+      return gson.fromJson(json as String, Map::class.java) as Map<String, Any>
+    } else if (json::class.simpleName == "LinkedHashMap") {
+      return json as Map<String, Any>
+    } else {
+      return throw Exception("The json's type is not allowed")
     }
   }
 }
