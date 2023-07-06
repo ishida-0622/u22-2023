@@ -5,14 +5,14 @@ export const Menubar = () => {
   const router = useRouter();
 
   return (
-    <div className={``}>
-      <button className={``} onClick={() => router.push("/")}>
+    <div className={`${styles.bar}`}>
+      <button className={`${styles.top}`} onClick={() => router.push("/")}>
         トップ
       </button>
-      <button className={``} onClick={() => router.push("/puzzle/select")}>
+      <button className={`${styles.pazzle}`} onClick={() => router.push("/puzzle/select")}>
         パズル
       </button>
-      <button className={``} onClick={() => router.push("/book/select")}>
+      <button className={`${styles.book}`} onClick={() => router.push("/book/select")}>
         えほん
       </button>
     </div>
