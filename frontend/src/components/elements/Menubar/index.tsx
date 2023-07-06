@@ -9,10 +9,16 @@ export const Menubar = () => {
       <button className={`${styles.top}`} onClick={() => router.push("/")}>
         トップ
       </button>
-      <button className={`${styles.pazzle}`} onClick={() => router.push("/puzzle/select")}>
+      <button
+        className={`${styles.puzzle}`}
+        onClick={() => router.push("/puzzle/select")}
+      >
         パズル
       </button>
-      <button className={`${styles.book}`} onClick={() => router.push("/book/select")}>
+      <button
+        className={`${styles.book}`}
+        onClick={() => router.push("/book/select")}
+      >
         えほん
       </button>
     </div>
