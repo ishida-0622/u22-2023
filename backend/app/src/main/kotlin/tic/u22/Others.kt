@@ -10,3 +10,24 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+
+class ScanUsers : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      val utils = Utils()
+      val dynamo = Dynamo(Settings().AWS_REGION)
+      val tableName = "user"
+
+      if (event == null) {throw Exception("event is null")}
+      if (event["body"] == null) {throw Exception("body is null")}
+      val body = utils.formatJsonEnv(event["body"]!!)
+      if (body["id"] == null) {throw Exception("id is null")}
+      val id: List<String> = if (body["id"] != null) {body["id"]!! as List<String>} else {throw Exception("id is null")}
+
+      // 検索
+      val users = dynamo.searchByKey(tableName, id)
+      users
+    }
+    return Gson().toJson(res)
+  }
+}
