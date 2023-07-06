@@ -16,15 +16,37 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 
+// GsonとUtilsのインスタンス化
 val gson = Gson()
 val utils = Utils()
+
+/**
+ * サンプルソースクラス
+ *
+ * RequestHandlerを継承している
+ *
+ * 第二引数のStringが返り値の型(JSONなのでString)
+ */
 class App : RequestHandler<Map<String, Any>, String> {
+
+    /**
+     * Lambda関数で実行される関数。
+     *
+     * @param event Map<String, Any>?: Lambda関数に渡される引数
+     * @param context Context?: Context
+     *
+     * return String: フロントに渡すJSON
+     */
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        // 非同期処理開始
         val res = runBlocking {
-            if (event == null) {throw Exception("event is null")}
-            if (event["body"] == null) {throw Exception("body is null")}
-            val body = utils.formatJsonEnv(event["body"]!!)
-            val u_id = UUID.randomUUID().toString()
+            if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+            if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+            val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+            val u_id = UUID.randomUUID().toString()                         // 一意のUUIDを生成
+
+            // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
             val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
             val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
             val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
@@ -33,6 +55,8 @@ class App : RequestHandler<Map<String, Any>, String> {
             val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
             val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
             val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
+            
+            // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
             val user = User(
                 u_id = u_id,
                 family_name = family_name,
@@ -45,13 +69,16 @@ class App : RequestHandler<Map<String, Any>, String> {
                 account_name = account_name
             )
 
+            // LoginLogデータクラスにユーザーIDを渡し、log変数にインスタンス化して渡す
             val log = LoginLog(
                 u_id = u_id
             )
 
+            // DynamoDBのインスタンス化、テーブル名の設定
             val dynamo = Dynamo(Settings().AWS_REGION)
             val tableName = "user"
 
+            // 以下DBの処理実行・ログの出力
             println("ユーザーを追加")
             dynamo.addItem(tableName, user)
             println("追加完了\n")
@@ -89,17 +116,32 @@ class App : RequestHandler<Map<String, Any>, String> {
             println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
             println("検索完了\n")
 
+            // {"result": {結果の連想配列}}
             mapOf("result" to user)
         }
-        return Gson().toJson(res)
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
 
+/**
+ * S3サンプルソースクラス
+ *
+ * RequestHandlerを継承している
+ *
+ * 第二引数のStringが返り値の型(JSONなのでString)
+ */
 class S3Sample : RequestHandler<Map<String, String>, String> {
-    val utils = Utils()
-    val s3 = S3(Settings().AWS_REGION)
-    val bucketName = Settings().AWS_BUCKET
+    val s3 = S3(Settings().AWS_REGION)          // S3のインスタンス化
+    val bucketName = Settings().AWS_BUCKET      // バケット名の設定
 
+    /**
+     * Lambda関数で実行される関数。
+     *
+     * @param event Map<String, Any>?: Lambda関数に渡される引数
+     * @param context Context?: Context
+     *
+     * return String: フロントに渡すJSON
+     */
     override fun handleRequest(event: Map<String, String>?, context: Context?): String{
         val res = runBlocking{
             // S3からファイルを取得してfilesディレクトリに保存
@@ -115,6 +157,7 @@ class S3Sample : RequestHandler<Map<String, String>, String> {
     }
 }
 
+// ローカル環境実行用
 fun main() {
     // handlerを起動
     val app = App()
