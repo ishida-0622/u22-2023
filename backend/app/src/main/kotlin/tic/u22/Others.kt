@@ -22,11 +22,12 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
       if (event["body"] == null) {throw Exception("body is null")}
       val body = utils.formatJsonEnv(event["body"]!!)
       if (body["id"] == null) {throw Exception("id is null")}
-      val id: List<String> = if (body["id"] != null) {body["id"]!! as List<String>} else {throw Exception("id is null")}
+      val id: List<List<String>> = if (body["id"] != null) {body["id"]!! as List<List<String>>} else {throw Exception("id is null")}
 
       // 検索
-      val users = dynamo.searchByKey(tableName, id)
-      users
+      val users = dynamo.searchByKeys(tableName, id)
+      val res = mapOf("result" to users)
+      res
     }
     return Gson().toJson(res)
   }
