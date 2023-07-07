@@ -26,10 +26,10 @@ class Dynamo(val REGION: String){
    * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
    */
   suspend fun searchByKey(usedTableName: String, keyVal: List<String>): Map<String, AttributeValue> {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      return throw Exception("length of keyVal is mismatched")
+      throw Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
@@ -67,14 +67,14 @@ class Dynamo(val REGION: String){
    * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
    */
   suspend fun searchByKeys(usedTableName: String, keyVal: List<List<String>>): List<Map<String, AttributeValue>> {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (keyVal.size == 0) {
-      return throw Exception("length of keyVal is zero")
+      throw Exception("length of keyVal is zero")
     } else {
       for (item in keyVal) {
         if (tableNameToKey[usedTableName]!!.size != item.size) {
-          return throw Exception("length of keyVal is mismatched")
+          throw Exception("length of keyVal is mismatched")
         }
       }
     }
@@ -203,10 +203,10 @@ class Dynamo(val REGION: String){
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    */
   suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Boolean {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      return throw Exception("length of keyVal is mismatched")
+      throw Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
@@ -239,10 +239,10 @@ class Dynamo(val REGION: String){
    * return 成功時はDONE, 失敗時はエラーを返す
    */
   suspend fun updateItem(usedTableName: String, keyVal: List<String>, update: Map<String, Any>): String {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      return throw Exception("length of keyVal is mismatched")
+      Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
