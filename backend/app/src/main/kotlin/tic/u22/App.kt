@@ -44,7 +44,8 @@ class App : RequestHandler<Map<String, Any>, String> {
             if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
             if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
             val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
-            val u_id = UUID.randomUUID().toString()                         // 一意のUUIDを生成
+            val u_id = UUID.randomUUID().toString()   
+            val u_id2 = UUID.randomUUID().toString()                      // 一意のUUIDを生成
 
             // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
             val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
@@ -69,6 +70,18 @@ class App : RequestHandler<Map<String, Any>, String> {
                 account_name = account_name
             )
 
+            val user2 = User(
+                u_id = u_id2,
+                family_name = family_name,
+                first_name = first_name,
+                family_name_roma = family_name_roma,
+                first_name_roma = first_name_roma,
+                email = email,
+                password = password,
+                child_lock = child_lock,
+                account_name = account_name
+            )
+
             // LoginLogデータクラスにユーザーIDを渡し、log変数にインスタンス化して渡す
             val log = LoginLog(
                 u_id = u_id
@@ -81,6 +94,7 @@ class App : RequestHandler<Map<String, Any>, String> {
             // 以下DBの処理実行・ログの出力
             println("ユーザーを追加")
             dynamo.addItem(tableName, user)
+            dynamo.addItem(tableName, user2)
             println("追加完了\n")
 
             println("全件取得")
@@ -89,6 +103,10 @@ class App : RequestHandler<Map<String, Any>, String> {
 
             println("id検索")
             println(dynamo.searchByKey(tableName, listOf(u_id)))
+            println("検索完了\n")
+
+            println("id検索(複数)")
+            println(dynamo.searchByKeys(tableName, listOf(listOf(u_id), listOf(u_id2), listOf("undefined"))))
             println("検索完了\n")
 
             println("メールアドレスで絞り込み")
