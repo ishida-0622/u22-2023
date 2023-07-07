@@ -59,6 +59,64 @@ class Dynamo(val REGION: String){
   }
 
   /**
+   * キーを使用して検索する
+   *
+   * @param usedTableName String: テーブル名
+   * @param keyVal List<List<String>>: [キーの値[パーティションキー, (ソートキー)], (..)]
+   *
+   * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
+   */
+  suspend fun searchByKeys(usedTableName: String, keyVal: List<List<String>>): List<Map<String, AttributeValue>> {
+    if (tableNameToKey[usedTableName] == null) {
+      return throw Exception("usedTableName does not exist")
+    } else if (keyVal.size == 0) {
+      return throw Exception("length of keyVal is zero")
+    } else {
+      for (item in keyVal) {
+        if (tableNameToKey[usedTableName]!!.size != item.size) {
+          return throw Exception("length of keyVal is mismatched")
+        }
+      }
+    }
+    val keyName = tableNameToKey[usedTableName]!!
+    // keyValとnameをMapにセット
+    // val keys = mutableMapOf<String, Any>()
+
+    val keys: List<Map<String, Any>> = keyVal.map{
+      it.map { item ->
+        keyName[it.indexOf(item)] to item
+      }.toMap()
+    }
+    
+    val keyToGets = keys.map {
+      utils.toAttributeValueMap(it)
+    }
+    // テーブル名とキーを設定
+    val reqs = keyToGets.map{
+      GetItemRequest {
+        key = it
+        tableName = usedTableName
+      }
+    }
+
+    DynamoDbClient { region = REGION }.use { ddb ->
+      // 取得
+      val responses = reqs.map{
+        val response = ddb.getItem(it)
+        // 取得結果を出力
+        if (response.item == null) {
+          mapOf()
+        } else {
+          response.item!!.map { mp ->
+            mp.key to mp.value
+          }.toMap()
+        }
+      }
+      return responses
+    }
+  }
+
+  /**
    * テーブルに要素を追加する
    *
    * @param usedTableName String: テーブル名
