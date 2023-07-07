@@ -62,7 +62,7 @@ class Dynamo(val REGION: String){
    * キーを使用して検索する
    *
    * @param usedTableName String: テーブル名
-   * @param keyVal List<String>: [キーの値[パーティションキー, (ソートキー)], (..)]
+   * @param keyVal List<List<String>>: [キーの値[パーティションキー, (ソートキー)], (..)]
    *
    * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
    */
