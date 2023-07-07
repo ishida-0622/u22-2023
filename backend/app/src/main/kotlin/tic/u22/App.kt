@@ -114,9 +114,9 @@ class App : RequestHandler<Map<String, Any>, String> {
             println("取得完了\n")
             
             println("メールアドレスを更新")
-            dynamo.updateItem(tableName, listOf(u_id), "email", "test@example.com")
+            dynamo.updateItem(tableName, listOf(u_id), mapOf("email" to "test@example.com"))
             println(dynamo.searchByKey(tableName, listOf(u_id)))
-            println("取得完了\n")
+            println("更新完了\n")
             
             println("メールアドレスで絞り込み")
             println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
