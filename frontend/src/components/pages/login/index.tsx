@@ -57,6 +57,7 @@ export const Login = () => {
                         メールアドレス<br></br>
                         <input
                             type="text"
+                            className="box"
                             name="email"
                             id="email"
                             value={email}
@@ -72,6 +73,7 @@ export const Login = () => {
                         パスワード<br></br>
                         <input
                             type="password"
+                            className="box"
                             name="password"
                             id="password"
                             value={password}
