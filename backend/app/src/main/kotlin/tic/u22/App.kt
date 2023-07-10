@@ -102,7 +102,8 @@ class App : RequestHandler<Map<String, Any>, String> {
             println("取得完了\n")
 
             println("id検索")
-            println(dynamo.searchByKey(tableName, listOf(u_id)))
+            val result = dynamo.searchByKey(tableName, listOf(u_id))
+            println(result)
             println("検索完了\n")
 
             println("id検索(複数)")
@@ -135,7 +136,7 @@ class App : RequestHandler<Map<String, Any>, String> {
             println("検索完了\n")
 
             // {"result": {結果の連想配列}}
-            mapOf("result" to user)
+            mapOf("result" to utils.toMap(utils.attributeValueToObject(result, "user")))
         }
         return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
