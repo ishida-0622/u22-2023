@@ -44,7 +44,7 @@ class App : RequestHandler<Map<String, Any>, String> {
             if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
             if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
             val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
-            val u_id = UUID.randomUUID().toString()   
+            val u_id = UUID.randomUUID().toString()
             val u_id2 = UUID.randomUUID().toString()                      // 一意のUUIDを生成
 
             // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
