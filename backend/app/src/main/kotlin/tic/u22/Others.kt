@@ -13,7 +13,7 @@ import com.google.gson.JsonParser
 /**
  * 任意の個数のIDを受け取りユーザーの情報を取得する
  *
- * @param id List<String>: {
+ * @param id List<String>: {body: {id: ["id1","id2"]}}
  *
  * return List<Map<String, AttributeValue>>
  */
