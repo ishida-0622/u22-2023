@@ -51,22 +51,21 @@ export const Login = () => {
             <p>パパ、ママにそうさしてもらってね！</p>
             <hr/>
             <form method="post" onSubmit={handleSubmit}>
-                <div className="top">
-                    <br></br>
+                <div>
+                    <br></br> 
                     <label>
-                        メールアドレス<br></br>
+                    <span>メールアドレス</span><br></br>
                         <input
-                            type="text"
-                            className="box"
+                        // className={`${styles.input_wrapper}`}
+                            type="email"
                             name="email"
                             id="email"
+                            placeholder=" "
                             value={email}
                             onChange={changeEmail}
                             required={true}
                         />
-                        {/* <select name="emailtype">
-                            <option value="icloud">@icloud.com</option>
-                        </select> */}
+                        
                     </label><br></br>
 
                     <label>

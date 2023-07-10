@@ -5,7 +5,7 @@
     justify-content: center;
     height: 100vh;
     margin-bottom: 1%;
-    // background-color: #7EC7D8;
+    /* background-color: #7EC7D8 */;
 }
 
 .logintext {
@@ -13,7 +13,7 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 1%;
-    // background-color: #7EC7D8;
+    /* background-color: #7EC7D8; */
     /* 必要なスタイルを追加してください */
 }
 
@@ -67,3 +67,17 @@
         border-bottom: 2px solid #9f000c;
         cursor: pointer;
     }
+//     .input_wrapper{
+//         position: relative;
+//     }
+//     .input_wrapper span{
+//         position: absolute;
+//         inset: 1rem auto auto 1rem;
+//     }
+// input:focus + span,
+// input:not(:placeholder-shown) + span {
+//     font-size: .8rem;
+//     inset: -.5em auto auto 1rem;
+//     background-color: #fff;
+//     padding: 0 .5em;
+// }
