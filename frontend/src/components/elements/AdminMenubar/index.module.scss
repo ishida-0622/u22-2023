@@ -1,0 +1,34 @@
+.dropdown {
+  display: flex;
+}
+
+.menu {
+  width: 300px;
+  text-align: center;
+}
+
+.menu_title {
+  background: #090032;
+  color: #ffffff;
+}
+
+.sub_menu {
+  background: #b9b9b9;
+  position: relative;
+}
+
+.sub_menu > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+}
+
+.sub_menu > ul > li > a {
+  display: none;
+  color: #ffffff;
+}
+
+.menu:hover a {
+  display: inline-block;
+}
