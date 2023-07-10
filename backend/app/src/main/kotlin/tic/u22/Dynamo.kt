@@ -234,7 +234,6 @@ class Dynamo(val REGION: String){
    * @param usedTableName String: テーブル名
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    * @updates Map<String, Any>: {更新対象のカラム名: 更新後のデータ}
-   * @updateVal Any: 更新後のデータ
    *
    * return 成功時はDONE, 失敗時はエラーを返す
    */
