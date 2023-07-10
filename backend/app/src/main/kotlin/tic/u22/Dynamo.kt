@@ -126,7 +126,7 @@ class Dynamo(val REGION: String){
     // 型変換
     val itemValues = utils.toAttributeValueMap(utils.toMap(addData))
     // 既にプライマリーキーが存在する場合はfalseを返す
-    if (searchByKey(usedTableName, tableNameToKey[usedTableName]!!.map{utils.toMap(addData)[it] as String}).size > 0){return false}
+    if (searchByKey(usedTableName, tableNameToKey[usedTableName]!!.map{utils.toMap(addData)[it].toString()}).size > 0){return false}
     // テーブル名とitemを指定
     val req = PutItemRequest {
       tableName = usedTableName
