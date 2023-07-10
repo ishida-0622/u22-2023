@@ -1,3 +1,4 @@
+import Router from "next/router";
 import { SetStateAction, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
@@ -69,7 +70,11 @@ export const AccountInfo = () => {
           <input type="password" name="passward" readOnly={true} />
           <p>チャイルドロック</p>
           <input type="password" name="chilglock" readOnly={true} />
-          <button type="button" name="account_change">
+          <button
+            type="button"
+            name="account_change"
+            onClick={() => Router.push("/account-info/edit")}
+          >
             アカウント情報を変更
           </button>
         </TabPanel>
