@@ -10,3 +10,14 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+
+class setStatus: RequestHandler<Map<String, Any>?, String> {
+	override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+		val res = runBlocking {
+			if (event == null) {throw Exception("event is null")}
+			if (event["body"] == null) {throw Exception("body is null")}
+			val body = utils.formatJsonEnv(event["body"]!!)
+		}
+		return gson.toJson(res)
+	}
+}
