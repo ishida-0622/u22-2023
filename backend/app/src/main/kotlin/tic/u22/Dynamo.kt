@@ -26,10 +26,10 @@ class Dynamo(val REGION: String){
    * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
    */
   suspend fun searchByKey(usedTableName: String, keyVal: List<String>): Map<String, AttributeValue> {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      return throw Exception("length of keyVal is mismatched")
+      throw Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
@@ -67,14 +67,14 @@ class Dynamo(val REGION: String){
    * return List<Map<String, AttributeValue>> AttributeValueMapのデータ
    */
   suspend fun searchByKeys(usedTableName: String, keyVal: List<List<String>>): List<Map<String, AttributeValue>> {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (keyVal.size == 0) {
-      return throw Exception("length of keyVal is zero")
+      throw Exception("length of keyVal is zero")
     } else {
       for (item in keyVal) {
         if (tableNameToKey[usedTableName]!!.size != item.size) {
-          return throw Exception("length of keyVal is mismatched")
+          throw Exception("length of keyVal is mismatched")
         }
       }
     }
@@ -117,7 +117,7 @@ class Dynamo(val REGION: String){
   }
 
   /**
-   * テーブルに要素を追加する
+   * テーブルに要素を追加する(複数要素の追加はこのメソッド自体を複数回呼び出すこと)
    *
    * @param usedTableName String: テーブル名
    * @param addData TableBase: データクラス
@@ -126,7 +126,7 @@ class Dynamo(val REGION: String){
     // 型変換
     val itemValues = utils.toAttributeValueMap(utils.toMap(addData))
     // 既にプライマリーキーが存在する場合はfalseを返す
-    if (searchByKey(usedTableName, tableNameToKey[usedTableName]!!.map{utils.toMap(addData)[it] as String}).size > 0){return false}
+    if (searchByKey(usedTableName, tableNameToKey[usedTableName]!!.map{utils.toMap(addData)[it].toString()}).size > 0){return false}
     // テーブル名とitemを指定
     val req = PutItemRequest {
       tableName = usedTableName
@@ -203,10 +203,10 @@ class Dynamo(val REGION: String){
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    */
   suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Boolean {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      return throw Exception("length of keyVal is mismatched")
+      throw Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
@@ -233,14 +233,16 @@ class Dynamo(val REGION: String){
    *
    * @param usedTableName String: テーブル名
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
-   * @updateColumn String: 更新対象のカラム名
+   * @updates Map<String, Any>: {更新対象のカラム名: 更新後のデータ}
    * @updateVal Any: 更新後のデータ
+   *
+   * return 成功時はDONE, 失敗時はエラーを返す
    */
-  suspend fun updateItem(usedTableName: String, keyVal: List<String>, updateColumn: String, updateVal: Any): Unit {
-    if (tableNameToKey[usedTableName] == null) {
-      return throw Exception("usedTableName does not exist")
+  suspend fun updateItem(usedTableName: String, keyVal: List<String>, update: Map<String, Any>): String {
+    if (!tableNameToKey.containsKey(usedTableName)) {
+      throw Exception("usedTableName does not exist")
     } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      return throw Exception("length of keyVal is mismatched")
+      Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
     // keyValとnameをMapにセット
@@ -251,21 +253,26 @@ class Dynamo(val REGION: String){
 
     val itemKey = utils.toAttributeValueMap(keys)
 
-    val updatedValues = mutableMapOf<String, AttributeValueUpdate>()
-    updatedValues[updateColumn] = AttributeValueUpdate {
-        value = utils.toAttributeValue(updateVal)
-        action = AttributeAction.Put
-    }
+    try {
+      val updatedValues = update.map{
+        it.key to AttributeValueUpdate {
+          value = utils.toAttributeValue(it.value)
+          action = AttributeAction.Put
+        }
+      }.toMap()
 
-    val request = UpdateItemRequest {
-        tableName = usedTableName
-        key = itemKey
-        attributeUpdates = updatedValues
-    }
+      val request = UpdateItemRequest {
+          tableName = usedTableName
+          key = itemKey
+          attributeUpdates = updatedValues
+      }
 
-    DynamoDbClient { region = REGION }.use { ddb ->
-        ddb.updateItem(request)
-        return
+      DynamoDbClient { region = REGION }.use { ddb ->
+          ddb.updateItem(request)
+          return "DONE"
+      }
+    } catch(e:Exception) {
+      return "$e"
     }
   }
 }
