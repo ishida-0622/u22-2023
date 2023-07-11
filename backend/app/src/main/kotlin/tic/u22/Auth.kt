@@ -18,7 +18,6 @@ import com.google.gson.JsonParser
 class Quit: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
-            val utils = Utils()
             if (event == null) {
                 throw Exception("event is null")
             }
