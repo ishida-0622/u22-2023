@@ -332,7 +332,7 @@ data class User(
  * @param description: String 概要
  * @param icon: String アイコン(default有-設定不要)
  * @param words: List<List<String>> 単語(正解順に格納・[[単語, 形状のS3キー, 音声のS3キー]*単語数])([ [word, ${Settings().AWS_BUCKET}/puzzle/shape/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/voice/<ファイル名>], ])
- * @param illust_keys: List<List<String>> 特定の語順で出すイラスト([ [1, 0, 2, ${Settings().AWS_BUCKET}/puzzle/${title}/photo/<ファイル名>],])
+ * @param illust_keys: List<List<String>> 特定の語順で出すイラスト([ [1, 0, 2, ${Settings().AWS_BUCKET}/puzzle/${title}/<ファイル名>],])
  * @param create_date: String 作成日時(default:NOW()-設定不要)
  * @param update_date: String 更新日時(default:NOW()-設定不要)
  */
