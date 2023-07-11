@@ -143,14 +143,6 @@ class Utils {
               }else{throw Exception("words type is ng")}
             }
           }else{throw Exception("words type is ng")}},
-          illust_keys = if(values["illust_keys"] == null){throw Exception("illust_keys is null")} else {if(values["illust_keys"]!! is List<Any?>){
-            val valuesIllust = values["illust_keys"] as List<Any?>
-            valuesIllust.map{
-              if(it is List<Any?>){
-                it.map{ item -> if(item is String){item}else{throw Exception("illust_keys type is ng")} }
-              }else{throw Exception("illust_keys type is ng")}
-            }
-          }else{throw Exception("illust_keys type is ng")}},
           create_date  = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}},
           update_date  = if(values["update_date"] == null){throw Exception("update_date is null")} else {if(values["update_date"]!! is String){values["update_date"] as String}else{throw Exception("update_date type is ng")}}
         )
@@ -332,7 +324,6 @@ data class User(
  * @param description: String 概要
  * @param icon: String アイコン(default有-設定不要)
  * @param words: List<List<String>> 単語(正解順に格納・[[単語, 形状のS3キー, 音声のS3キー]*単語数])([ [word, ${Settings().AWS_BUCKET}/puzzle/shape/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/voice/<ファイル名>], ])
- * @param illust_keys: List<List<String>> 特定の語順で出すイラスト([ [1, 0, 2, ${Settings().AWS_BUCKET}/puzzle/${title}/<ファイル名>],])
  * @param create_date: String 作成日時(default:NOW()-設定不要)
  * @param update_date: String 更新日時(default:NOW()-設定不要)
  */
@@ -342,7 +333,6 @@ data class Puzzle(
     val description: String,
     val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
     val words: List<List<String>>,
-    val illust_keys: List<List<String>>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
 ): TableBase
