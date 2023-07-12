@@ -80,7 +80,9 @@ response
 
 ```json
 {
-    "response_status": "success or fail"
+    "response_status": "success or fail",
+    "result": {},
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -102,6 +104,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -123,6 +126,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -206,6 +210,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -236,6 +241,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -265,6 +271,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -286,6 +293,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -343,7 +351,7 @@ response
 ```json
 {
     "response_status": "success or fail",
-    "puzzle": {
+    "result": {
         "title": "title1",
         "description": "description1",
         "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
@@ -377,6 +385,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -404,6 +413,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -462,6 +472,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -490,6 +501,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -511,6 +523,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -574,7 +587,7 @@ response
 ```json
 {
     "response_status": "success or fail",
-    "book": {
+    "result": {
         "b_id": "b_id",
         "title_jp": "title_jp",
         "title_en": "title_en",
@@ -611,6 +624,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -634,6 +648,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -683,6 +698,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -728,6 +744,7 @@ response
 ```json
 {
     "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
