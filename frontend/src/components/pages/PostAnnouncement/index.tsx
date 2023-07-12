@@ -11,7 +11,6 @@ export const PostAnnouncement = () => {
   const [formValues, setFormValues] = useState({
     title: "",
     content: "",
-    name: "",
   });
 
   //モーダルウィンドウの表示/非表示を表すbool値を宣言
@@ -90,22 +89,6 @@ export const PostAnnouncement = () => {
                 required={true}
               ></textarea>
             </label>
-            <label>
-              投稿者名
-              <input
-                type="text"
-                name="name"
-                id="name"
-                value={formValues.name}
-                onChange={(e) =>
-                  setFormValues((val) => ({
-                    ...val,
-                    name: e.target.value,
-                  }))
-                }
-                required={true}
-              />
-            </label>
             <button type="submit">投稿内容を確認</button>
             <Link href="/announcement-page">投稿一覧ページへ戻る</Link>
           </div>
@@ -116,7 +99,6 @@ export const PostAnnouncement = () => {
           <h2>投稿内容を確認してください。</h2>
           <div>題名:「{formValues.title}」</div>
           <div>投稿内容：「{formValues.content}」</div>
-          <div>投稿者名：「{formValues.name}」</div>
           <button type="button" onClick={sendNews}>
             投稿する
           </button>
