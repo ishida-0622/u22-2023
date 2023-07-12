@@ -109,7 +109,7 @@ response
 }
 ```
 
-### [Quit]()
+### [Quit](https://8zwezzqs9c.execute-api.us-east-1.amazonaws.com/default/Quit)
 
 退会する
 
@@ -131,7 +131,7 @@ response
 }
 ```
 
-### [ScanUsers]()
+### [ScanUsers](https://o6qv3rm65l.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
 
 指定のユーザー ID の情報をすべて取得する
 
