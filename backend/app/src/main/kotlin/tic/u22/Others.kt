@@ -35,7 +35,6 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
       val res = mapOf("result" to users.map{
         utils.toMap(utils.attributeValueToObject(it, "user"))
       })
-      res
     }
     return gson.toJson(res)
   }
