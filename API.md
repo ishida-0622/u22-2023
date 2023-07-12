@@ -4,6 +4,20 @@
 
 尚完成済みの API については、ゲートウェイ URL を各説明のタイトルに設定してある。
 
+response.JSON のテンプレート
+
+response
+
+```json
+{
+    "response_status": "success、又はfailを返します",
+    "result": {
+        "必要に応じてデータが入ります": "key-value、若しくは配列で返されます"
+    },
+    "error": "エラー内容(response_statusがfailの時に、エラーの原因を返します)"
+}
+```
+
 ## ページ内リンク
 
 -   [認証(アカウント)系](#認証アカウント系)
@@ -66,7 +80,7 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail"
 }
 ```
 
@@ -87,7 +101,7 @@ response
 
 ```json
 {
-    "result": "success or fail",
+    "response_status": "success or fail",
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -108,7 +122,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -128,6 +143,7 @@ response
 
 ```json
 {
+    "response_status": "success or fail",
     "result": [
         {
             "u_id": "u_id1",
@@ -157,7 +173,8 @@ response
             "delete_flg": "delete_flg2",
             "authed": "authed2"
         }
-    ]
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -188,7 +205,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -217,7 +235,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -245,7 +264,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -265,7 +285,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -283,6 +304,7 @@ response
 
 ```json
 {
+    "response_status": "success or fail",
     "result": [
         {
             "title": "title1",
@@ -298,7 +320,8 @@ response
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
-    ]
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -319,7 +342,7 @@ response
 
 ```json
 {
-    "result": "success or fail",
+    "response_status": "success or fail",
     "puzzle": {
         "title": "title1",
         "description": "description1",
@@ -353,7 +376,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -363,11 +387,15 @@ response
 
 request
 
-```json
+```jsonc
 {
     "u_id": "u_id",
     "p_id": "p_id",
-    "words": ["N", "I", "a pen"] //[I] [have] [a pen]が正解の時、現在のピースが[(空)] [I] [a pen]である時の例
+    "words": [
+        "N",
+        "I",
+        "a pen"
+    ] /* [I] [have] [a pen]が正解の時、現在のピースが[(空)] [I] [a pen]である時の例 */
 }
 ```
 
@@ -375,7 +403,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -393,11 +422,17 @@ request
 
 response
 
-```json
+```jsonc
 {
-    "result": "success or fail",
-    "p_id": "p_id",
-    "words": ["N", "I", "a pen"], //[I] [have] [a pen]が正解の時、現在のピースが[(空)] [I] [a pen]である時の例
+    "response_status": "success or fail",
+    "result": {
+        "p_id": "p_id",
+        "words": [
+            "N",
+            "I",
+            "a pen"
+        ] /* [I] [have] [a pen]が正解の時、現在のピースが[(空)] [I] [a pen]である時の例 */
+    },
     "error": "エラー内容(ゲームステータスが2でない等)"
 }
 ```
@@ -426,7 +461,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -453,7 +489,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -473,7 +510,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -491,6 +529,7 @@ response
 
 ```json
 {
+    "response_status": "success or fail",
     "result": [
         {
             "b_id": "b_id1",
@@ -512,7 +551,8 @@ response
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
-    ]
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -533,7 +573,7 @@ response
 
 ```json
 {
-    "result": "success or fail",
+    "response_status": "success or fail",
     "book": {
         "b_id": "b_id",
         "title_jp": "title_jp",
@@ -570,7 +610,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -584,7 +625,7 @@ request
 {
     "u_id": "u_id",
     "b_id": "b_id",
-    "page": "1" //現在のページ数
+    "page": "現在のページ数(int)"
 }
 ```
 
@@ -592,7 +633,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -612,9 +654,11 @@ response
 
 ```json
 {
-    "result": "success or fail",
-    "b_id": "b_id",
-    "page": ["ページ数"],
+    "response_status": "success or fail",
+    "result": {
+        "b_id": "b_id",
+        "page": "ページ数"
+    },
     "error": "エラー内容(ゲームステータスが4でない等)"
 }
 ```
@@ -638,7 +682,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -682,7 +727,8 @@ response
 
 ```json
 {
-    "result": "success or fail"
+    "response_status": "success or fail",
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -700,6 +746,7 @@ response
 
 ```json
 {
+    "response_status": "success or fail",
     "result": [
         {
             "n_id": "n_id1",
@@ -713,7 +760,8 @@ response
             "content": "content2",
             "create_date": "create_date2"
         }
-    ]
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -735,6 +783,7 @@ response
 
 ```json
 {
+    "response_status": "success or fail",
     "result": [
         {
             "u_id": "u_id",
@@ -744,7 +793,8 @@ response
             "u_id": "u_id",
             "datetime": "datetime2"
         }
-    ]
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -766,6 +816,7 @@ response
 
 ```json
 {
+    "response_status": "success or fail",
     "result": [
         {
             "u_id": "u_id",
@@ -775,7 +826,8 @@ response
             "u_id": "u_id",
             "datetime": "date2"
         }
-    ]
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -785,17 +837,18 @@ response
 
 request
 
-```json
+```jsonc
 {
     "u_id": "u_id",
-    "p_id": "p_id" // 任意：指定した場合は特定のパズルのログを、指定しなかった場合は該当ユーザーの全てのログを取得する
+    "p_id": "p_id" /* 任意：指定した場合は特定のパズルのログを、指定しなかった場合は該当ユーザーの全てのログを取得する */
 }
 ```
 
 response
 
-```json
+```jsonc
 {
+    "response_status": "success or fail",
     "result": [
         {
             "u_id": "u_id",
@@ -808,8 +861,9 @@ response
             "p_id": "p_id2",
             "play_times": "プレイ回数",
             "latest_play_datetime": "最後にプレイした日時"
-        } // p_idを指定した場合は、resultの配列要素は1つのみ
-    ]
+        } /* p_idを指定した場合は、resultの配列要素は1つのみ */
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -819,17 +873,18 @@ response
 
 request
 
-```json
+```jsonc
 {
     "u_id": "u_id",
-    "b_id": "b_id" // 任意：指定した場合は特定の読み聞かせのログを、指定しなかった場合は該当ユーザーの全てのログを取得する
+    "b_id": "b_id" /* 任意：指定した場合は特定の読み聞かせのログを、指定しなかった場合は該当ユーザーの全てのログを取得する */
 }
 ```
 
 response
 
-```json
+```jsonc
 {
+    "response_status": "success or fail",
     "result": [
         {
             "u_id": "u_id",
@@ -842,8 +897,9 @@ response
             "b_id": "b_id2",
             "play_times": "プレイ回数",
             "latest_play_datetime": "最後にプレイした日時"
-        } // b_idを指定した場合は、resultの配列要素は1つのみ
-    ]
+        } /* b_idを指定した場合は、resultの配列要素は1つのみ */
+    ],
+    "error": "エラー内容(failの時のみ)"
 }
 ```
 
@@ -861,12 +917,16 @@ request
 
 response
 
-```json
+```jsonc
 {
+    "response_status": "success or fail",
     "result": {
         "u_id": "u_id",
         "game_status": "0~5",
-        "status_infos": ["status_infos"] // 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり)
-    }
+        "status_infos": [
+            "status_infos"
+        ] /* 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり) */
+    },
+    "error": "エラー内容(failの時のみ)"
 }
 ```
