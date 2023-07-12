@@ -28,7 +28,6 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
       if (event == null) {throw Exception("event is null")}
       if (event["body"] == null) {throw Exception("body is null")}
       val body = utils.formatJsonEnv(event["body"]!!)
-      if (body["u_id"] == null) {throw Exception("body[u_id] is null")}
       val u_id: List<String> = if (body["u_id"] != null) {body["u_id"]!! as List<String>} else {throw Exception("body[u_id] is null")}
 
       // 検索
