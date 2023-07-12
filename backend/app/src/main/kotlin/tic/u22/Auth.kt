@@ -18,21 +18,25 @@ import com.google.gson.JsonParser
 class Quit: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
-            if (event == null) {
-                throw Exception("event is null")
-            }
-            if (event["body"] == null) {
-                throw Exception("body is null")
-            }
-            val body = utils.formatJsonEnv(event["body"]!!)
-            val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+            try {
+                if (event == null) {
+                    throw Exception("event is null")
+                }
+                if (event["body"] == null) {
+                    throw Exception("body is null")
+                }
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
 
-            // ユーザーの退会処理
-            val dynamo = Dynamo(Settings().AWS_REGION)
-            val tableName = "user"
+                // ユーザーの退会処理
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "user"
 
-            val result = dynamo.updateItem(tableName, listOf(u_id),mapOf("delete_flg" to true))
-            if(result == "DONE"){mapOf("result" to "success")}else{mapOf("result" to "fail")}
+                val result = dynamo.updateItem(tableName, listOf(u_id),mapOf("delete_flg" to true))
+                if(result == "DONE"){mapOf("result" to "success")}else{mapOf("response_status" to "success", "result" to "fail")}
+            } catch(e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
         }
 
         return gson.toJson(res)

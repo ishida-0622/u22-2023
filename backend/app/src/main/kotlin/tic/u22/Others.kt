@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+
 /**
  * 任意の個数のIDを受け取りユーザーの情報を取得する
  *
@@ -21,20 +22,24 @@ import com.google.gson.JsonParser
 class ScanUsers : RequestHandler<Map<String, Any>, String> {
   override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
     val res = runBlocking {
-      val utils = Utils()
-      val dynamo = Dynamo(Settings().AWS_REGION)
-      val tableName = "user"
+      try {
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "user"
 
-      if (event == null) {throw Exception("event is null")}
-      if (event["body"] == null) {throw Exception("body is null")}
-      val body = utils.formatJsonEnv(event["body"]!!)
-      val u_id: List<String> = if (body["u_id"] != null) {body["u_id"]!! as List<String>} else {throw Exception("body[u_id] is null")}
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: List<String> = if (body["u_id"] != null) {body["u_id"]!! as List<String>} else {throw Exception("body[u_id] is null")}
 
-      // 検索
-      val users = dynamo.searchByKeys(tableName, u_id.map { listOf(it) })
-      mapOf("result" to users.map{
-        utils.toMap(utils.attributeValueToObject(it, "user"))
-      })
+        // 検索
+        val users = dynamo.searchByKeys(tableName, u_id.map { listOf(it) })
+        mapOf("response_status" to "success",
+          "result" to users.map{
+          utils.toMap(utils.attributeValueToObject(it, "user"))
+        })
+      } catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
     }
     return gson.toJson(res)
   }
