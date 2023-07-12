@@ -66,7 +66,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -87,7 +87,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail",
+    "result": "success or fail",
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -108,7 +108,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -120,7 +120,7 @@ request
 
 ```json
 {
-    "u_id": ["u_id1", "u_id2", ...]
+    "u_id": ["u_id1", "u_id2"]
 }
 ```
 
@@ -156,7 +156,7 @@ response
             "limit_time": "limit_time2",
             "delete_flg": "delete_flg2",
             "authed": "authed2"
-        }, ...
+        }
     ]
 }
 ```
@@ -188,7 +188,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -217,7 +217,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -245,7 +245,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -265,7 +265,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -297,7 +297,7 @@ response
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI2",
             "create_date": "create_date2",
             "update_date": "update_date2"
-        }, ...
+        }
     ]
 }
 ```
@@ -319,7 +319,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail",
+    "result": "success or fail",
     "puzzle": {
         "title": "title1",
         "description": "description1",
@@ -353,7 +353,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -375,7 +375,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -395,9 +395,9 @@ response
 
 ```json
 {
-    "result": "success" or "fail",
+    "result": "success or fail",
     "p_id": "p_id",
-    "words": ["N", "I", "a pen"],   //[I] [have] [a pen]が正解の時、現在のピースが[(空)] [I] [a pen]である時の例
+    "words": ["N", "I", "a pen"], //[I] [have] [a pen]が正解の時、現在のピースが[(空)] [I] [a pen]である時の例
     "error": "エラー内容(ゲームステータスが2でない等)"
 }
 ```
@@ -418,7 +418,7 @@ request
     "author": "auhor",
     "thumbnail": "サムネイル写真のURI",
     "pdf": "PDFファイルのURI",
-    "voice": ["1ページ目読み聞かせ音声のURI", "2ページ目読み聞かせ音声のURI", ...]
+    "voice": ["1ページ目読み聞かせ音声のURI", "2ページ目読み聞かせ音声のURI"]
 }
 ```
 
@@ -426,7 +426,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -445,7 +445,7 @@ request
     "author": "auhor",
     "thumbnail": "サムネイル写真のURI",
     "pdf": "PDFファイルのURI",
-    "voice": ["1ページ目読み聞かせ音声のURI", "2ページ目読み聞かせ音声のURI", ...]
+    "voice": ["1ページ目読み聞かせ音声のURI", "2ページ目読み聞かせ音声のURI"]
 }
 ```
 
@@ -453,7 +453,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -473,7 +473,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -511,7 +511,7 @@ response
             "thumbnail": "サムネイル写真のURI2",
             "create_date": "create_date2",
             "update_date": "update_date2"
-        }, ...
+        }
     ]
 }
 ```
@@ -533,7 +533,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail",
+    "result": "success or fail",
     "book": {
         "b_id": "b_id",
         "title_jp": "title_jp",
@@ -542,7 +542,10 @@ response
         "author": "auhor",
         "thumbnail": "サムネイル写真のURI",
         "pdf": "PDFファイルのURI",
-        "voice": ["1ページ目読み聞かせ音声のURI", "2ページ目読み聞かせ音声のURI", ...],
+        "voice": [
+            "1ページ目読み聞かせ音声のURI",
+            "2ページ目読み聞かせ音声のURI"
+        ],
         "create_date": "create_date1",
         "update_date": "update_date1"
     },
@@ -567,7 +570,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -589,7 +592,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -609,7 +612,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail",
+    "result": "success or fail",
     "b_id": "b_id",
     "page": ["ページ数"],
     "error": "エラー内容(ゲームステータスが4でない等)"
@@ -635,7 +638,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -679,7 +682,7 @@ response
 
 ```json
 {
-    "result": "success" or "fail"
+    "result": "success or fail"
 }
 ```
 
@@ -709,7 +712,7 @@ response
             "title": "title2",
             "content": "content2",
             "create_date": "create_date2"
-        }, ...
+        }
     ]
 }
 ```
@@ -740,7 +743,7 @@ response
         {
             "u_id": "u_id",
             "datetime": "datetime2"
-        }, ...
+        }
     ]
 }
 ```
@@ -771,7 +774,7 @@ response
         {
             "u_id": "u_id",
             "datetime": "date2"
-        }, ...
+        }
     ]
 }
 ```
@@ -798,14 +801,14 @@ response
             "u_id": "u_id",
             "p_id": "p_id1",
             "play_times": "プレイ回数",
-            "latest_play_datetime": "最後にプレイした日時",
+            "latest_play_datetime": "最後にプレイした日時"
         },
         {
             "u_id": "u_id",
             "p_id": "p_id2",
             "play_times": "プレイ回数",
-            "latest_play_datetime": "最後にプレイした日時",
-        }, ...  // p_idを指定した場合は、resultの配列要素は1つのみ
+            "latest_play_datetime": "最後にプレイした日時"
+        } // p_idを指定した場合は、resultの配列要素は1つのみ
     ]
 }
 ```
@@ -832,14 +835,14 @@ response
             "u_id": "u_id",
             "b_id": "b_id1",
             "play_times": "プレイ回数",
-            "latest_play_datetime": "最後にプレイした日時",
+            "latest_play_datetime": "最後にプレイした日時"
         },
         {
             "u_id": "u_id",
             "b_id": "b_id2",
             "play_times": "プレイ回数",
-            "latest_play_datetime": "最後にプレイした日時",
-        }, ...  // b_idを指定した場合は、resultの配列要素は1つのみ
+            "latest_play_datetime": "最後にプレイした日時"
+        } // b_idを指定した場合は、resultの配列要素は1つのみ
     ]
 }
 ```
@@ -863,7 +866,7 @@ response
     "result": {
         "u_id": "u_id",
         "game_status": "0~5",
-        "status_infos": null or ["status_infos"]    // 内容はテーブル設計書を参照、詳細はBEリーダーまで
+        "status_infos": ["status_infos"] // 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり)
     }
 }
 ```
