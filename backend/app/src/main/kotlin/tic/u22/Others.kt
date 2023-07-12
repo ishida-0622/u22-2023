@@ -32,7 +32,7 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
 
       // 検索
       val users = dynamo.searchByKeys(tableName, u_id.map { listOf(it) })
-      val res = mapOf("result" to users.map{
+      mapOf("result" to users.map{
         utils.toMap(utils.attributeValueToObject(it, "user"))
       })
     }
