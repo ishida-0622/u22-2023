@@ -528,7 +528,7 @@ response
 }
 ```
 
-### [GetBooks]()
+### [GetBooks](https://m9f4abj6rc.execute-api.us-east-1.amazonaws.com/default/GetBooks)
 
 本を全件取得する
 
