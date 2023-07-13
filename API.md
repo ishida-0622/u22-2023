@@ -109,7 +109,7 @@ response
 }
 ```
 
-### [Quit](https://8zwezzqs9c.execute-api.us-east-1.amazonaws.com/default/Quit)
+### [Quit](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Quit)
 
 退会する
 
@@ -131,7 +131,7 @@ response
 }
 ```
 
-### [ScanUsers](https://o6qv3rm65l.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
+### [ScanUsers](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
 
 指定のユーザー ID の情報をすべて取得する
 
@@ -182,7 +182,7 @@ response
 }
 ```
 
-### [UpdateUser](https://sf6p9wvnmj.execute-api.us-east-1.amazonaws.com/default/updateUser)
+### [UpdateUser](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdateUser)
 
 ユーザー情報を変更する
 
@@ -538,7 +538,7 @@ response
 }
 ```
 
-### [GetBooks](https://m9f4abj6rc.execute-api.us-east-1.amazonaws.com/default/GetBooks)
+### [GetBooks](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetBooks)
 
 本を全件取得する
 
