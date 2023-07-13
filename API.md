@@ -318,6 +318,11 @@ response
             "title": "title1",
             "description": "description1",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
+            "words": [
+                ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+            ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
@@ -325,6 +330,11 @@ response
             "title": "title2",
             "description": "description2",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI2",
+            "words": [
+                ["He", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["has", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["a ball", "シルエットのURI", "イラストのURI", "音声のURI"]
+            ],
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
@@ -551,6 +561,11 @@ response
             "summary": "summary1",
             "author": "auhor1",
             "thumbnail": "サムネイル写真のURI1",
+            "pdf": "PDFファイルのURI1",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI1",
+                "2ページ目読み聞かせ音声のURI1"
+            ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
@@ -561,6 +576,11 @@ response
             "summary": "summary2",
             "author": "auhor2",
             "thumbnail": "サムネイル写真のURI2",
+            "pdf": "PDFファイルのURI2",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI2",
+                "2ページ目読み聞かせ音声のURI2"
+            ],
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
@@ -599,8 +619,8 @@ response
             "1ページ目読み聞かせ音声のURI",
             "2ページ目読み聞かせ音声のURI"
         ],
-        "create_date": "create_date1",
-        "update_date": "update_date1"
+        "create_date": "create_date",
+        "update_date": "update_date"
     },
     "error": "エラー内容(ユーザーのゲームステータスが0でない、等)"
 }
