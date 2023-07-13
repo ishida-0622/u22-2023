@@ -59,6 +59,8 @@ class ScanStatus : RequestHandler<Map<String, Any>, String> {
         val u_id: List<String> = if (body["u_id"] != null) {body["u_id"]!! as List<String>} else {throw Exception("body[u_id] is null")}
 
         val userStatus = dynamo.searchByKey(tableName, u_id)
+        mapOf("response_status" to "success",
+          "result" to utils.toMap(utils.attributeValueToObject(userStatus, tableName)))
       } catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
       }
