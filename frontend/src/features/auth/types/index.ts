@@ -12,3 +12,9 @@ export type User = {
   delete_flg: boolean;
   authed: boolean;
 };
+
+export type Status = {
+  u_id: string;
+  game_status: number;
+  status_infos?: string[] | { b_id: string; page: number };
+};
