@@ -333,7 +333,7 @@ response
 }
 ```
 
-### [StartPuzzle]()
+### [StartPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/StartPuzzle)
 
 パズルを開始する
 
@@ -920,7 +920,7 @@ response
 }
 ```
 
-### [ScanStatus]()
+### [ScanStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanStatus)
 
 ゲームステータスを取得する
 
