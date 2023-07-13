@@ -45,7 +45,14 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
   }
 }
 
-
+/**
+ * u_idを受け取り、ユーザーの情報を取得する
+ *
+ * @param event Map<String, Any>?: u_id:"value"
+ * @param context Context?: Context
+ *
+ * return String : "result": {"game_status: value","result": [value,...] "u_id": u_id}
+ */
 class ScanStatus : RequestHandler<Map<String, Any>, String> {
   override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
     val res = runBlocking {
