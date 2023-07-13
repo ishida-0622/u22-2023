@@ -44,3 +44,23 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
     return gson.toJson(res)
   }
 }
+
+
+class ScanStatus : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "status"
+
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: List<String> = if (body["u_id"] != null) {body["u_id"]!! as List<String>} else {throw Exception("body[u_id] is null")}
+      } catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
