@@ -1,5 +1,5 @@
-import { Puzzle } from "@/features/puzzle/types";
 import { ApiResponse } from "@/types/api";
+import { Puzzle } from "@/features/puzzle/types";
 
 export type GetAllPuzzleRequest = {};
 
