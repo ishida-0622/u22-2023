@@ -182,26 +182,26 @@ response
 }
 ```
 
-### [UpdateUser]()
+### [UpdateUser](https://sf6p9wvnmj.execute-api.us-east-1.amazonaws.com/default/updateUser)
 
 ユーザー情報を変更する
 
+パスワードとその他の情報は同時に変更できません。パスワードの変更時は、request.json に u_id と password のみを追加してください。また、パスワードを変更しない通常のユーザー情報更新については、逆にパスワードを含めないでください。
+
 request
 
-```json
+```jsonc
 {
-    "u_id": "u_id",
-    "family_name": "family_name",
-    "first_name": "first_name",
-    "family_name_roma": "family_name_roma",
-    "first_name_roma": "first_name_roma",
-    "email": "email",
-    "password": "password",
-    "child_lock": "child_lock",
-    "account_name": "account_name",
-    "limit_time": "limit_time",
-    "delete_flg": "delete_flg",
-    "authed": "authed"
+    "u_id": "u_id" /* 必須 */,
+    "family_name": "family_name" /* パスワード変更時は含めない */,
+    "first_name": "first_name" /* パスワード変更時は含めない */,
+    "family_name_roma": "family_name_roma" /* パスワード変更時は含めない */,
+    "first_name_roma": "first_name_roma" /* パスワード変更時は含めない */,
+    "email": "email" /* パスワード変更時は含めない */,
+    "password": "password" /* パスワード変更以外は含めない */,
+    "child_lock": "child_lock" /* パスワード変更時は含めない */,
+    "account_name": "account_name" /* パスワード変更時は含めない */,
+    "limit_time": "limit_time" /* パスワード変更時は含めない */
 }
 ```
 
