@@ -22,6 +22,7 @@ repositories {
 
 dependencies {
     implementation("aws.sdk.kotlin:dynamodb:0.18.0-beta")
+    implementation("aws.sdk.kotlin:s3:0.18.0-beta")
     implementation("aws.sdk.kotlin:lambda:0.18.0-beta")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation ("com.amazonaws:aws-lambda-java-core:1.2.2")
@@ -41,6 +42,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+    implementation ("com.google.code.gson:gson:2.8.6")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
