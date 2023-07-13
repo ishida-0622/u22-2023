@@ -2,6 +2,8 @@ import { useState } from "react";
 import styles from "./index.module.scss";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 
 export const PostAnnouncementList = () => {
   const [posts, setPosts] = useState([
@@ -40,8 +42,12 @@ export const PostAnnouncementList = () => {
     <main>
       {posts.map((post) => (
         <div key={post.n_id} className={`${styles.posts}`}>
-          <h3>{post.title}</h3>
-          <button onClick={handleSubmit}></button>
+          <h3>
+            {post.title}
+            <button onClick={handleSubmit}>
+              <FontAwesomeIcon icon={faBell} />
+            </button>
+          </h3>
         </div>
       ))}
       <div>
