@@ -109,7 +109,7 @@ response
 }
 ```
 
-### [Quit](https://8zwezzqs9c.execute-api.us-east-1.amazonaws.com/default/Quit)
+### [Quit](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Quit)
 
 退会する
 
@@ -131,7 +131,7 @@ response
 }
 ```
 
-### [ScanUsers](https://o6qv3rm65l.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
+### [ScanUsers](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
 
 指定のユーザー ID の情報をすべて取得する
 
@@ -182,7 +182,7 @@ response
 }
 ```
 
-### [UpdateUser](https://sf6p9wvnmj.execute-api.us-east-1.amazonaws.com/default/updateUser)
+### [UpdateUser](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdateUser)
 
 ユーザー情報を変更する
 
@@ -318,6 +318,11 @@ response
             "title": "title1",
             "description": "description1",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
+            "words": [
+                ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+            ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
@@ -325,6 +330,11 @@ response
             "title": "title2",
             "description": "description2",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI2",
+            "words": [
+                ["He", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["has", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["a ball", "シルエットのURI", "イラストのURI", "音声のURI"]
+            ],
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
@@ -333,7 +343,7 @@ response
 }
 ```
 
-### [StartPuzzle]()
+### [StartPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/StartPuzzle)
 
 パズルを開始する
 
@@ -528,7 +538,7 @@ response
 }
 ```
 
-### [GetBooks]()
+### [GetBooks](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetBooks)
 
 本を全件取得する
 
@@ -551,6 +561,11 @@ response
             "summary": "summary1",
             "author": "auhor1",
             "thumbnail": "サムネイル写真のURI1",
+            "pdf": "PDFファイルのURI1",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI1",
+                "2ページ目読み聞かせ音声のURI1"
+            ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
@@ -561,6 +576,11 @@ response
             "summary": "summary2",
             "author": "auhor2",
             "thumbnail": "サムネイル写真のURI2",
+            "pdf": "PDFファイルのURI2",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI2",
+                "2ページ目読み聞かせ音声のURI2"
+            ],
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
@@ -599,8 +619,8 @@ response
             "1ページ目読み聞かせ音声のURI",
             "2ページ目読み聞かせ音声のURI"
         ],
-        "create_date": "create_date1",
-        "update_date": "update_date1"
+        "create_date": "create_date",
+        "update_date": "update_date"
     },
     "error": "エラー内容(ユーザーのゲームステータスが0でない、等)"
 }
@@ -920,7 +940,7 @@ response
 }
 ```
 
-### [ScanStatus]()
+### [ScanStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanStatus)
 
 ゲームステータスを取得する
 

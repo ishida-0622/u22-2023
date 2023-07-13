@@ -44,3 +44,38 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
     return gson.toJson(res)
   }
 }
+
+/**
+ * u_idを受け取り、ユーザーの情報を取得する
+ *
+ * @param event Map<String, Any>?: u_id:"value"
+ * @param context Context?: Context
+ *
+ * return String : "result": {"game_status: value","result": [value,...] "u_id": u_id}
+ */
+class ScanStatus : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "status"
+
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("body[u_id] is null")}
+
+        val userStatus = dynamo.searchByKey(tableName, listOf(u_id))
+        if (userStatus.isNotEmpty()) {
+          mapOf("response_status" to "success",
+            "result" to utils.toMap(utils.attributeValueToObject(userStatus, tableName)))
+        } else {
+          mapOf("response_status" to "fail", "error" to "the value for this u_id does not exist")
+        }
+      } catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
