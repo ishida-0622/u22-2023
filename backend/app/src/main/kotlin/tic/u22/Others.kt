@@ -56,14 +56,14 @@ class ScanStatus : RequestHandler<Map<String, Any>, String> {
         if (event == null) {throw Exception("event is null")}
         if (event["body"] == null) {throw Exception("body is null")}
         val body = utils.formatJsonEnv(event["body"]!!)
-        val u_id: List<String> = if (body["u_id"] != null) {body["u_id"]!! as List<String>} else {throw Exception("body[u_id] is null")}
+        val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("body[u_id] is null")}
 
-        val userStatus = dynamo.searchByKey(tableName, u_id)
+        val userStatus = dynamo.searchByKey(tableName, listOf(u_id))
         if (userStatus.isNotEmpty()) {
           mapOf("response_status" to "success",
             "result" to utils.toMap(utils.attributeValueToObject(userStatus, tableName)))
         } else {
-          mapOf("response_status" to "fail", "error" to "u_id is not found")
+          mapOf("response_status" to "fail", "error" to "the value for this u_id does not exist")
         }
       } catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
