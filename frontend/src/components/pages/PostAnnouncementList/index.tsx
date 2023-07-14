@@ -4,20 +4,23 @@ import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { Notice } from "@/features/notice/types";
+
+Modal.setAppElement("#__next");
 
 export const PostAnnouncementList = () => {
-  const [posts, setPosts] = useState([
+  const [posts, setPosts] = useState<Notice[]>([
     {
       n_id: "n_id1",
       title: "title1",
       content: "content1",
-      create_date: "2023-07-13T16:20:59Z",
+      datetime: "2023-07-13T16:20:59Z",
     },
     {
       n_id: "n_id2",
       title: "title2",
       content: "content2",
-      create_date: "2023-07-30T16:21:59Z",
+      datetime: "2023-07-30T16:21:59Z",
     },
   ]);
 
@@ -28,8 +31,9 @@ export const PostAnnouncementList = () => {
   /** モーダルウィンドウを非表示にする関数 */
   const closeModal = () => setModalIsOpen(false);
 
-  const detail = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Notice) => {
     event.preventDefault();
+    // setNews(event)
     openModal();
   };
 
@@ -38,13 +42,15 @@ export const PostAnnouncementList = () => {
     router.push("/admin/post-announcement");
   };
 
+  const [news, setNews] = useState<Notice>();
+
   return (
     <main>
       {posts.map((post) => (
         <div key={post.n_id} className={`${styles.posts}`}>
           <h3>
             {post.title}
-            <button onClick={detail}>
+            <button onClick={(e) => detail(e, post)}>
               <FontAwesomeIcon icon={faBell} />
             </button>
           </h3>
@@ -55,12 +61,10 @@ export const PostAnnouncementList = () => {
       </div>
 
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        {posts.map((post) => (
-          <div key={post.n_id} className={`${styles.posts}`}>
-            <div>題名:「{post.title}」</div>
-            <div>投稿内容：「{post.content}」</div>
-          </div>
-        ))}
+        <div className={`${styles.posts}`}>
+          {news && <div>題名:「{news.title}」</div>}
+          {news && <div>投稿内容：「{news.content}」</div>}
+        </div>
       </Modal>
     </main>
   );
