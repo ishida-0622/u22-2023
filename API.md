@@ -516,7 +516,7 @@ response
 }
 ```
 
-### [DeleteBook]()
+### [DeleteBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeleteBook)
 
 本を削除する
 

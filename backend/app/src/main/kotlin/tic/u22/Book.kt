@@ -39,3 +39,38 @@ class GetBooks: RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)
     }
 }
+
+class DeleteBook: RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {
+                    throw Exception("event is null")
+                }
+                if (event["body"] == null) {
+                    throw Exception("body is null")
+                }
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "book"
+
+                val result = dynamo.deleteByKey(tableName, listOf(b_id))
+                val dummyMap: Map<String, String> = mapOf()
+                if (result == "DONE"){
+                    mapOf(
+                        "response_status" to "success",
+                        "result" to dummyMap
+                    )
+                } else {
+                    throw Exception("$result")
+                }
+            } catch(e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+
+        return gson.toJson(res)
+    }
+}
