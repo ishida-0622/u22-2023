@@ -201,30 +201,36 @@ class Dynamo(val REGION: String){
    *
    * @param usedTableName String: テーブル名
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
+   *
+   * return String: 成功時はDONE、失敗時はエラー文を返す
    */
-  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Boolean {
-    if (!tableNameToKey.containsKey(usedTableName)) {
-      throw Exception("usedTableName does not exist")
-    } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      throw Exception("length of keyVal is mismatched")
-    }
-    val keyName = tableNameToKey[usedTableName]!!
-    // keyValとnameをMapにセット
-    val keys = mutableMapOf<String, Any>()
-    for(index in 0 until keyName.size) {
-      keys[keyName[index]] = keyVal[index]
-    }
+  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): String {
+    try{
+      if (!tableNameToKey.containsKey(usedTableName)) {
+        throw Exception("usedTableName does not exist")
+      } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
+        throw Exception("length of keyVal is mismatched")
+      }
+      val keyName = tableNameToKey[usedTableName]!!
+      // keyValとnameをMapにセット
+      val keys = mutableMapOf<String, Any>()
+      for(index in 0 until keyName.size) {
+        keys[keyName[index]] = keyVal[index]
+      }
 
-    val keyToGet = utils.toAttributeValueMap(keys)
+      val keyToGet = utils.toAttributeValueMap(keys)
 
-    val request = DeleteItemRequest {
-        tableName = usedTableName
-        key = keyToGet
-    }
+      val request = DeleteItemRequest {
+          tableName = usedTableName
+          key = keyToGet
+      }
 
-    DynamoDbClient { region = REGION }.use { ddb ->
-        ddb.deleteItem(request)
-        return true
+      DynamoDbClient { region = REGION }.use { ddb ->
+          ddb.deleteItem(request)
+          return "DONE"
+      }
+    } catch(e: Exception){
+      return "$e"
     }
   }
 
