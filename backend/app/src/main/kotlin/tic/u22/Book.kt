@@ -56,6 +56,7 @@ class DeleteBook: RequestHandler<Map<String, Any>, String> {
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "book"
 
+                if (dynamo.searchByKey(tableName, listOf(b_id)).isEmpty()){ throw Exception("this b_id does not be registered") }
                 val result = dynamo.deleteByKey(tableName, listOf(b_id))
                 val dummyMap: Map<String, String> = mapOf()
                 if (result == "DONE"){
