@@ -22,10 +22,14 @@ repositories {
 
 dependencies {
     implementation("aws.sdk.kotlin:dynamodb:0.18.0-beta")
+    implementation("aws.sdk.kotlin:s3:0.18.0-beta")
     implementation("aws.sdk.kotlin:lambda:0.18.0-beta")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation ("com.amazonaws:aws-lambda-java-core:1.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+
+    // JSON処理用ライブラリ
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // implementation("org.slf4j:slf4j-simple:1.7.26")
     // implementation(kotlin("stdlib"))
@@ -38,6 +42,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:31.1-jre")
+    implementation ("com.google.code.gson:gson:2.8.6")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -49,7 +54,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass.set("tic.kotlin.learning.club.AppKt")
+    mainClass.set("tic.u22.AppKt")
 }
 
 tasks.named<Test>("test") {
