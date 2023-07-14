@@ -1,42 +1,123 @@
+import useSWR from "swr";
+import { User } from "@/features/auth/types";
 import Router from "next/router";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import "react-tabs/style/react-tabs.css";
+import {
+  ScanUsersRequest,
+  ScanUsersResponse,
+} from "@/features/auth/types/scanUsers";
+import { BookLog, PuzzleLog } from "@/features/log/types";
+import {
+  ScanPuzzleLogRequest,
+  ScanPuzzleLogResponse,
+} from "@/features/log/types/scanPuzzleLog";
+import {
+  ScanBookLogRequest,
+  ScanBookLogResponse,
+} from "@/features/log/types/scanBookLog";
 
 export const AccountInfo = () => {
+  const userDataFetcher = async (url: string) => {
+    const request: ScanUsersRequest = { u_id: ["1"] };
+    // const response = await fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify(request),
+    // });
+    // const json: ScanUsersResponse = await response.json();
+    // return json.result[0];
+    const mock: User = {
+      u_id: "1",
+      family_name: "あ",
+      first_name: "あ",
+      family_name_roma: "a",
+      first_name_roma: "a",
+      email: "mail@mail.com",
+      password: "tintin",
+      child_lock: "tntn",
+      account_name: "tintin",
+      limit_time: 100,
+      delete_flg: false,
+      authed: true,
+    };
+    return mock;
+  };
+
+  const puzzleLogFetcher = async (url: string) => {
+    const request: ScanPuzzleLogRequest = {
+      u_id: "1",
+    };
+    // const response = await fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify(request),
+    // });
+    // const json: ScanPuzzleLogResponse = await response.json();
+    // return json.result;
+    const mock: PuzzleLog[] = [
+      {
+        u_id: "user",
+        p_id: "1234",
+        play_times: 4,
+        latest_play_datetime: "2023-07-06T16:23:44Z",
+      },
+      {
+        u_id: "user",
+        p_id: "1235",
+        play_times: 100,
+        latest_play_datetime: "2023-07-06T16:23:44Z",
+      },
+    ];
+    return mock;
+  };
+
+  const bookLogFetcher = async (url: string) => {
+    const request: ScanBookLogRequest = {
+      u_id: "1",
+    };
+    // const response = await fetch(url, {
+    //   method: "POST",
+    //   body: JSON.stringify(request),
+    // });
+    // const json: ScanBookLogResponse = await response.json();
+    // return json.result;
+    const mock: BookLog[] = [
+      {
+        u_id: "user",
+        b_id: "1234",
+        play_times: 4,
+        latest_play_datetime: "2023-07-06T16:23:44Z",
+      },
+      {
+        u_id: "user",
+        b_id: "1235",
+        play_times: 100,
+        latest_play_datetime: "2023-07-06T16:23:44Z",
+      },
+    ];
+    return mock;
+  };
+
+  const { data: userData, error: userDataError } = useSWR(
+    "https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUsers",
+    userDataFetcher
+  );
+
+  const { data: puzzleLogs, error: puzzleLogError } = useSWR(
+    // TODO:URL
+    "https://github.com/ishida-0622/u22-2023/blob/main",
+    puzzleLogFetcher
+  );
+
+  const { data: bookLogs, error: bookLogError } = useSWR(
+    "https://github.com/ishida-0622/u22-2023/blob/main/API.md#scanp_log",
+    bookLogFetcher
+  );
+
   const [volume, setVolume] = useState(50);
   const [selectedHour, setSelectedHour] = useState("00");
   const [selectedMinute, setSelectedMinute] = useState("00");
-  const [puzzleLogs, setPuzzleLogs] = useState([
-    {
-      userId: "user",
-      puzzleId: "1234",
-      playCount: 4,
-      lastPlayTime: "2023-07-06T16:23:44Z",
-    },
-    {
-      userId: "user",
-      puzzleId: "1235",
-      playCount: 100,
-      lastPlayTime: "2023-07-06T16:23:44Z",
-    },
-  ]);
-
-  const [bookLogs, setBookLogs] = useState([
-    {
-      userId: "user",
-      bookId: "1234",
-      playCount: 4,
-      lastReadTime: "2023-07-06T16:23:44Z",
-    },
-    {
-      userId: "user",
-      bookId: "1235",
-      playCount: 100,
-      lastReadTime: "2023-07-06T16:23:44Z",
-    },
-  ]);
 
   const handleHourChange = (event: {
     target: { value: SetStateAction<string> };
@@ -49,6 +130,37 @@ export const AccountInfo = () => {
   }) => {
     setSelectedMinute(event.target.value);
   };
+
+  useEffect(() => {
+    if (userData) {
+      setSelectedHour(
+        Math.floor(userData.limit_time / 60)
+          .toString()
+          .padStart(2, "0")
+      );
+      setSelectedMinute((userData.limit_time % 60).toString().padStart(2, "0"));
+    }
+  }, [userData]);
+
+  if (userDataError || puzzleLogError || bookLogError) {
+    return (
+      <p>
+        {userDataError
+          ? userDataError
+          : puzzleLogError
+          ? puzzleLogError
+          : bookLogError}
+      </p>
+    );
+  }
+
+  if (
+    userData === undefined ||
+    puzzleLogs === undefined ||
+    bookLogs === undefined
+  ) {
+    return <p>Now Loading</p>;
+  }
 
   return (
     <div>
@@ -64,16 +176,31 @@ export const AccountInfo = () => {
           <p>クリア回数：---回</p>
           <p>シール獲得枚数：---枚</p>
           <p>メールアドレス</p>
-          <input type="text" name="mailadress" readOnly={true} />
-          icould.com
+          <input
+            type="text"
+            name="emailaddress"
+            value={userData.email}
+            readOnly={true}
+          />
           <p>パスワード</p>
-          <input type="password" name="passward" readOnly={true} />
+          <input
+            type="password"
+            name="password"
+            value={userData.password}
+            readOnly={true}
+          />
           <p>チャイルドロック</p>
-          <input type="password" name="chilglock" readOnly={true} />
+          <input
+            type="password"
+            name="child_lock"
+            value={userData.child_lock}
+            readOnly={true}
+          />
+          <br />
           <button
             type="button"
             name="account_change"
-            onClick={() => Router.push("/account-info/edit")}
+            // onClick={() => Router.push("/account-info/edit")}
           >
             アカウント情報を変更
           </button>
@@ -134,20 +261,20 @@ export const AccountInfo = () => {
         <TabPanel>
           パズルログ
           {puzzleLogs.map((log) => (
-            <div key={log.puzzleId}>
-              <div>No.{log.puzzleId}</div>
-              <div>クリア回数：{log.playCount}</div>
-              <div>最終クリア時刻{log.lastPlayTime}</div>
+            <div key={log.p_id}>
+              <div>No.{log.p_id}</div>
+              <div>クリア回数：{log.play_times}</div>
+              <div>最終クリア時刻{log.latest_play_datetime}</div>
             </div>
           ))}
         </TabPanel>
         <TabPanel>
           えほんログ
           {bookLogs.map((log) => (
-            <div key={log.bookId}>
-              <div>No.{log.bookId}</div>
-              <div>絵本タイトル：{log.playCount}</div>
-              <div>読んだ時間{log.lastReadTime}</div>
+            <div key={log.b_id}>
+              <div>No.{log.b_id}</div>
+              <div>絵本タイトル：{log.play_times}</div>
+              <div>読んだ時間{log.latest_play_datetime}</div>
             </div>
           ))}
         </TabPanel>
