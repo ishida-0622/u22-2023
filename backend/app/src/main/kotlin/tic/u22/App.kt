@@ -147,7 +147,7 @@ class App : RequestHandler<Map<String, Any>, String> {
 }
 
 /**
- * S3サンプルソースクラス
+ * S3サンプルソースクラス**一旦使用予定なし**
  *
  * RequestHandlerを継承している
  *
