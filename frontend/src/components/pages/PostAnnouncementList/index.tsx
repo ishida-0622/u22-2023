@@ -28,7 +28,7 @@ export const PostAnnouncementList = () => {
   /** モーダルウィンドウを非表示にする関数 */
   const closeModal = () => setModalIsOpen(false);
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const detail = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     openModal();
   };
@@ -44,7 +44,7 @@ export const PostAnnouncementList = () => {
         <div key={post.n_id} className={`${styles.posts}`}>
           <h3>
             {post.title}
-            <button onClick={handleSubmit}>
+            <button onClick={detail}>
               <FontAwesomeIcon icon={faBell} />
             </button>
           </h3>
@@ -56,7 +56,7 @@ export const PostAnnouncementList = () => {
 
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
         {posts.map((post) => (
-          <div>
+          <div key={post.n_id} className={`${styles.posts}`}>
             <div>題名:「{post.title}」</div>
             <div>投稿内容：「{post.content}」</div>
           </div>
