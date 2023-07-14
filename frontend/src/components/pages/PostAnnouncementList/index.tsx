@@ -3,8 +3,8 @@ import styles from "./index.module.scss";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { Notice } from "@/features/notice/types";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 Modal.setAppElement("#__next");
 
@@ -33,7 +33,7 @@ export const PostAnnouncementList = () => {
 
   const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Notice) => {
     event.preventDefault();
-    // setNews(event)
+    setNews(post);
     openModal();
   };
 
@@ -51,13 +51,17 @@ export const PostAnnouncementList = () => {
           <h3>
             {post.title}
             <button onClick={(e) => detail(e, post)}>
-              <FontAwesomeIcon icon={faBell} />
+              <FontAwesomeIcon icon={faPen} />
             </button>
           </h3>
         </div>
       ))}
       <div>
-        <button onClick={postannouncement}>新規作成</button>
+        {/* <button onClick={postannouncement}>新規作成♡</button> */}
+        <button onClick={postannouncement}>
+          新規作成
+          <FontAwesomeIcon icon={faPen} />
+        </button>
       </div>
 
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
