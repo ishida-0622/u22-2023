@@ -63,9 +63,10 @@ export const Signup = () => {
   };
 
   return (
-    <div className={`${styles.content}`}>
+    <div className={`${styles.container}`}>
       <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
         <h2 className={`${styles.header}`}>サインアップ</h2>
+        <hr/>
         <div className={`${styles.name}`}>
           <div className={`${styles.lastname}`}>
             <label>
@@ -142,8 +143,8 @@ export const Signup = () => {
               </label>
             </div>
           </div>
-          <div>
-            <label className={`${styles.account}`}>
+          <div className={`${styles.account}`}>
+            <label>
               アカウント名
               <input
                 type="text"
@@ -160,8 +161,8 @@ export const Signup = () => {
               />
             </label>
           </div>
-          <div>
-            <label className={`${styles.email}`}>
+          <div className={`${styles.email}`}>
+            <label>
               メールアドレス
               <input
                 type="text"
@@ -178,8 +179,8 @@ export const Signup = () => {
               />
             </label>
           </div>
-          <div>
-            <label className={`${styles.password}`}>
+          <div className={`${styles.password}`}>
+            <label>
               パスワード
               <input
                 type={isHidden ? "password" : "text"}
@@ -203,8 +204,8 @@ export const Signup = () => {
               </span>
             </label>
           </div>
-          <div>
-            <label className={`${styles.password}`}>
+          <div className={`${styles.password}`}>
+            <label>
               確認用
               <input
                 type={isHidden ? "password" : "text"}
@@ -228,8 +229,8 @@ export const Signup = () => {
               </span>
             </label>
           </div>
-        <div>
-          <label className={`${styles.password}`}>
+        <div className={`${styles.password}`}>
+          <label>
             チャイルドロック
             <input
               type={isHidden ? "password" : "text"}
@@ -251,12 +252,12 @@ export const Signup = () => {
                 <FontAwesomeIcon icon={faEye} />
               )}
             </span>
-            <p>設定画面を開く際に必要になります。</p>
-            <p>設定画面よりプレイ時間等が確認できます。</p>
           </label>
+          <p>設定画面を開く際に必要になります。</p>
+          <p>設定画面よりプレイ時間等が確認できます。</p>
         </div>
-        <div>
-          <label className={`${styles.password}`}>
+        <div className={`${styles.password}`}>
+          <label>
             チャイルドロック確認用
             <input
               type={isHidden ? "password" : "text"}
@@ -280,7 +281,7 @@ export const Signup = () => {
             </span>
           </label>
         </div>
-        <div>
+        <div className={`${styles.checkbox}`}>
           <label>
             <input
               type="checkbox"
@@ -294,11 +295,11 @@ export const Signup = () => {
                 }))
               }
             />
-            規約に同意する
           </label>
+          <p>規約に同意する</p>
         </div>
-        <div>
-          <button type="submit">新規会員登録</button>
+        <div className={`${styles.submit_button_field}`}>
+          <button className={`${styles.submit_button}`} type="submit">新規会員登録</button>
         </div>
       </form>
     </div>

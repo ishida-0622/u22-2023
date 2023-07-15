@@ -1,17 +1,37 @@
-.content {
-    font-size: 18px;
-    background-color: skyblue;
+.container {
+    font-size: 150%;
+    background-color: #7EC7D8;
+    input {
+        width: 100%;
+        text-align: left;
+        border-top-left-radius: 15em;
+        border-top-right-radius: 15em;
+        border-bottom-left-radius: 15em;
+        border-bottom-right-radius: 15em;
+        border-radius: 40em 40em 40em 40em;
+        border: 0.25em solid palevioletred;
+    }
+    p {
+        font-size: 100%;
+        color: purple;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    span {
+        position: absolute;
+        margin-top: 0.7%;
+        margin-left: 1%;
+    }
 }
 .header {
+    font-size: 180%;
     text-align: center;
 }
 .form {
-    z-index: 1;
-    background: #FFFFFF;
-    max-width: 650px;
-    margin: 0 auto 100%;
-    padding: 1em;
-    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.3);
+    max-width: 50%;
+    margin: 0 auto 0%;
+    padding: 2em;
     justify-content: space-between;
 }
 .name {
@@ -32,34 +52,42 @@
 .email {
     display: flex;
     flex-direction: column;
+    margin-top: 2%;
 }
 .password {
     display: flex;
     flex-direction: column;
+    margin-top: 2%;
 }
-.check_password {
+.checkbox {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    input[type="checkbox"] {
+        width: 1em; 
+        height: 1em;
+    }
 }
-.form button {
-    text-transform: uppercase;
-    outline: 0;
-    background: #49aa4d;
-    width: 100%;
-    border: 0;
-    padding: 10px;
-    color: #FFFFFF;
-    font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
+.submit_button_field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+.submit_button {
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 5px solid #9f000c;
+    border-radius: 100vh;
+    border-color: #9f000c;
+    top: calc(50% - .5em);
+    right: 1rem;
+}
+.submit_button:hover {
+    margin-top: 3px;
+    border-bottom: 2px solid #9f000c;
     cursor: pointer;
-}
-.form button:hover {
-    background: #24942a;
-}
-.PasswordReveal {
-    left: auto;
-    position: absolute;
-    right: 10px;
-    top: 10px;
 }
