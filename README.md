@@ -192,3 +192,40 @@ const foo = () => {
 ## バックエンド
 
 かとーぎくんよろしく ♡
+よろしくされた♡
+
+必ずAPI.mdを参照しながら開発を進めてください。返すJSONの形式など特に要注意です。
+
+また、基本的にはApp.ktを基に引数の受け取り・nullチェックなどを行ってください
+
+以下、注意事項です
+
+-  DocStringや各コメント文はちゃんと書きましょう(複雑な処理やコレクションなどスコープがネストするパターンは特に)
+-  non-null-assertionを行う場合は、必ずその前にnullチェックを行ってください
+-  nullや型違いなどのエラーをキャッチする場合は、if文で例外を投げてください：以下例
+```kotlin
+// BAD
+if(!body.containsKey("u_id")){ return } else { /* 処理 */ }
+
+// GOOD
+if(!body.containsKey("u_id")){ throw Exception("u_id does not exist") }
+/* 処理 */
+```
+-  上記のエラーは最後にresponseとして投げるので、try-catchをrunBlocking内に記述してください
+-  必ず実行確認を取ってからプルリクを送ってください
+-  原則valを使用してください
+-  MapやListはMutable○○を使用しないでください(原則)
+```kotlin
+// nums = [1, 2, 3]<-これがあるとして
+// NG
+val lst: MutableList<Int> = MutableListOf()
+for(item in nums) {
+  lst.add(nums*2)
+}
+
+// GOOD
+val lst: List<Int> = nums.map{
+  it*2
+}
+```
+-  上記2つをめちゃめちゃ解決してくれるのが、mapコレクションです。めっちゃ使いましょう。
