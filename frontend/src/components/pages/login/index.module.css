@@ -1,0 +1,43 @@
+@charset "UTF-8";
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin-bottom: 1%;
+}
+
+.logintext {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1%;
+  /* 必要なスタイルを追加してください */
+}
+
+.header {
+  text-align: center;
+  font-size: 150%;
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  letter-spacing: 0.05em;
+  margin-bottom: 1%;
+}
+.header label {
+  margin-bottom: 4rem;
+  display: inline-block;
+  text-align: justify;
+}
+.header input {
+  width: 100%;
+  text-align: left;
+}
+.header button {
+  margin-bottom: 3rem;
+}
+.header .link {
+  font-size: 50%;
+}
+/*# sourceMappingURL=index.module.css.map */

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
+import  styles  from "./index.module.scss";
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,36 +44,58 @@ export const Login = () => {
     router.push("/");
   };
 
-  return (
-    <div>
-      <h2>ログイン</h2>
-      <p>パパ、ママに入力してもらってね！</p>
-      <hr />
-      <form method="post" onSubmit={handleSubmit}>
-        <div>
-          <label>
-            メールアドレス
-            <input
-              type="text"
-              name="email"
-              id="email"
-              value={email}
-              onChange={changeEmail}
-              required={true}
-            />
-          </label>
+    return (
+        <div className={`${styles.header}`}>
+            <div className={`${styles.logintext}`}></div>
+            <h2>ログイン</h2>
+            <p>パパ、ママにそうさしてもらってね！</p>
+            <hr/>
+            <form method="post" onSubmit={handleSubmit}>
+                <div className="top">
+                    <br></br>
+                    <label>
+                        メールアドレス<br></br>
+                        <input
+                            type="text"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={changeEmail}
+                            required={true}
+                        />
+                        {/* <select name="emailtype">
+                            <option value="icloud">@icloud.com</option>
+                        </select> */}
+                    </label><br></br>
 
-          <label>
-            パスワード
-            <input
-              type="password"
-              name="password"
-              id="password"
-              value={password}
-              onChange={changePassword}
-              required={true}
-            />
-          </label>
+                    <label>
+                        パスワード<br></br>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            value={password}
+                            onChange={changePassword}
+                            required={true}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <div className={`${styles.submit_button_field}`}>
+                    <button className={`${styles.submit_button}`}type="submit">ログイン</button>
+                </div>
+                </div>
+                <div className={`${styles.link}`}>
+                <div>
+                    <Link href="/password-reset">
+                        IDやパスワードを忘れてしまった方はこちら
+                    </Link>
+                </div>
+                <div>
+                    <Link href="/signup">アカウント作成がまだの方はこちら</Link>
+                </div>
+                </div>
+            </form>
         </div>
         <div>
           <button type="submit">ログイン</button>
