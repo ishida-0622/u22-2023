@@ -1,27 +1,27 @@
 .container {
-    font-size: 150%;
+    font-size: 1.5rem;
     background-color: #7EC7D8;
     input {
         width: 100%;
         text-align: left;
-        border-top-left-radius: 15em;
-        border-top-right-radius: 15em;
-        border-bottom-left-radius: 15em;
-        border-bottom-right-radius: 15em;
-        border-radius: 40em 40em 40em 40em;
-        border: 0.25em solid palevioletred;
+        border-top-left-radius: 15rem;
+        border-top-right-radius: 15rem;
+        border-bottom-left-radius: 15rem;
+        border-bottom-right-radius: 15rem;
+        border-radius: 40rem;
+        border: 0.25rem solid palevioletred;
     }
     p {
         font-size: 100%;
-        color: purple;
+        color: rgb(160, 72, 160);
         display: flex;
         justify-content: center;
         align-items: center;
     }
     span {
         position: absolute;
-        margin-top: 0.7%;
-        margin-left: 1%;
+        margin-top: 0.5%;
+        margin-left: 0.5%;
     }
 }
 .header {
@@ -31,7 +31,7 @@
 .form {
     max-width: 50%;
     margin: 0 auto 0%;
-    padding: 2em;
+    padding: 2rem;
     justify-content: space-between;
 }
 .name {
@@ -42,8 +42,8 @@
 }
 .lastname,
 .firstname {
-    width: calc(50% - 2em);
-    margin: 1em;
+    width: calc(50% - 2rem);
+    margin: 1rem;
 }
 .account {
     display: flex;
@@ -65,8 +65,8 @@
     align-items: center;
     margin-top: 5%;
     input[type="checkbox"] {
-        width: 1em; 
-        height: 1em;
+        width: 0.5%;
+        height: 0.5%;
     }
 }
 .submit_button_field {
@@ -80,14 +80,14 @@
     color: azure;
     font-weight: bold;
     background-color: #df0013;
-    border-bottom: 5px solid #9f000c;
+    border-bottom: 50% solid #9f000c;
     border-radius: 100vh;
     border-color: #9f000c;
-    top: calc(50% - .5em);
+    top: calc(50% - 0.5rem);
     right: 1rem;
 }
 .submit_button:hover {
-    margin-top: 3px;
-    border-bottom: 2px solid #9f000c;
+    margin-top: 0.2rem;
+    border-bottom: 0.1rem solid #9f000c;
     cursor: pointer;
 }
