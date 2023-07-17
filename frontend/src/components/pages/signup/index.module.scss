@@ -1,0 +1,104 @@
+.container {
+  font-size: 1.5rem;
+  background-color: #7ec7d8;
+  input {
+    width: 100%;
+    text-align: left;
+    border-top-left-radius: 15rem;
+    border-top-right-radius: 15rem;
+    border-bottom-left-radius: 15rem;
+    border-bottom-right-radius: 15rem;
+    border-radius: 40rem;
+    border: 0.25rem solid palevioletred;
+  }
+  p {
+    font-size: 100%;
+    color: rgb(160, 72, 160);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  span {
+    position: absolute;
+    margin-top: 0.5%;
+    margin-left: 0.5%;
+  }
+}
+
+.header {
+  font-size: 180%;
+  text-align: center;
+}
+
+.form {
+  max-width: 50%;
+  margin: 0 auto 0%;
+  padding: 2rem;
+  justify-content: space-between;
+}
+
+.name,
+.english_name {
+  display: flex;
+}
+
+.lastname {
+  margin: 1rem 0.5rem 1rem 0;
+}
+
+.firstname {
+  margin: 1rem 0 1rem 0.5rem;
+}
+
+.account {
+  display: flex;
+  flex-direction: column;
+}
+
+.email {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+}
+
+.password {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+}
+
+.checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+  input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.submit_button_field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 5%;
+}
+
+.submit_button {
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #df0013;
+  border-bottom: 50% solid #9f000c;
+  border-radius: 100vh;
+  border-color: #9f000c;
+  top: calc(50% - 0.5rem);
+  right: 1rem;
+}
+
+.submit_button:hover {
+  margin-top: 0.2rem;
+  border-bottom: 0.1rem solid #9f000c;
+  cursor: pointer;
+}

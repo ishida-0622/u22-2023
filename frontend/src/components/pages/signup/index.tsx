@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import styles from "./index.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { SignUpRequest } from "@/features/auth/types/signup";
 
 export const Signup = () => {
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<SignUpRequest>({
     family_name: "",
     first_name: "",
     family_name_roma: "",
@@ -17,22 +19,22 @@ export const Signup = () => {
 
   const [confirm, setConfirm] = useState({
     passwordConfirm: "",
-    child_lockConfirm: "",
+    childLockConfirm: "",
     consent: false,
   });
 
   const [isHiddenPass, setIsHiddenPass] = useState(true);
-  const [isHiddenchild_lock, setIsHiddenchild_lock] = useState(true);
+  const [isHiddenChildLock, setIsHiddenChildLock] = useState(true);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (
       formValues.password !== confirm.passwordConfirm &&
-      formValues.child_lock !== confirm.child_lockConfirm
+      formValues.child_lock !== confirm.childLockConfirm
     ) {
       alert("パスワードとチャイルドロック暗証番号が一致しません。");
-    } else if (formValues.child_lock !== confirm.child_lockConfirm) {
+    } else if (formValues.child_lock !== confirm.childLockConfirm) {
       alert("チャイルドロックが一致しません。");
     } else if (formValues.password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
@@ -66,84 +68,92 @@ export const Signup = () => {
   };
 
   return (
-    <div>
-      <h2>サインアップ</h2>
-      <hr />
-      <form method="post" onSubmit={handleSubmit}>
-        <div>
-          <label>
-            姓名
-            <input
-              type="text"
-              name="family_name"
-              id="family_name"
-              value={formValues.family_name}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  family_name: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-          <label>
-            名前
-            <input
-              type="text"
-              name="first_name"
-              id="first_name"
-              value={formValues.first_name}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  first_name: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            姓名(ローマ字)
-            <input
-              type="text"
-              name="family_name_roma"
-              id="family_name_roma"
-              value={formValues.family_name_roma}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  family_name_roma: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
-          <label>
-            名前(ローマ字)
-            <input
-              type="text"
-              name="first_name_roma"
-              id="first_name_roma"
-              value={formValues.first_name_roma}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  first_name_roma: e.target.value,
-                }))
-              }
-              required={true}
-            />
-          </label>
-
+    <div className={`${styles.container}`}>
+      <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
+        <h2 className={`${styles.header}`}>サインアップ</h2>
+        <div className={`${styles.name}`}>
+          <div className={`${styles.lastname}`}>
+            <label>
+              姓名
+              <input
+                type="text"
+                name="familyname"
+                id="familyname"
+                value={formValues.family_name}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    family_name: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+          <div className={`${styles.firstname}`}>
+            <label>
+              名前
+              <input
+                type="text"
+                name="firstname"
+                id="firstname"
+                value={formValues.first_name}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    first_name: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+        </div>
+        <div className={`${styles.english_name}`}>
+          <div className={`${styles.lastname}`}>
+            <label>
+              姓名(ローマ字)
+              <input
+                type="text"
+                name="familynameEng"
+                id="familynameEng"
+                value={formValues.family_name_roma}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    family_name_roma: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+          <div className={`${styles.firstname}`}>
+            <label>
+              名前(ローマ字)
+              <input
+                type="text"
+                name="firstnameEng"
+                id="firstnameEng"
+                value={formValues.first_name_roma}
+                onChange={(e) =>
+                  setFormValues((val) => ({
+                    ...val,
+                    first_name_roma: e.target.value,
+                  }))
+                }
+                required={true}
+              />
+            </label>
+          </div>
+        </div>
+        <div className={`${styles.account}`}>
           <label>
             アカウント名
             <input
               type="text"
-              name=" account_name"
-              id=" account_name"
+              name="username"
+              id="username"
               value={formValues.account_name}
               onChange={(e) =>
                 setFormValues((val) => ({
@@ -154,7 +164,8 @@ export const Signup = () => {
               required={true}
             />
           </label>
-
+        </div>
+        <div className={`${styles.email}`}>
           <label>
             メールアドレス
             <input
@@ -171,7 +182,8 @@ export const Signup = () => {
               required={true}
             />
           </label>
-
+        </div>
+        <div className={`${styles.password}`}>
           <label>
             パスワード
             <input
@@ -198,11 +210,12 @@ export const Signup = () => {
               )}
             </span>
           </label>
-
+        </div>
+        <div className={`${styles.password}`}>
           <label>
             確認用
             <input
-              type={"password"}
+              type={isHiddenPass ? "password" : "text"}
               name="passwordConfirmation"
               id="passwordConfirmation"
               value={confirm.passwordConfirm}
@@ -214,13 +227,23 @@ export const Signup = () => {
               }
               required={true}
             />
+            <span
+              onClick={() => setIsHiddenPass((v) => !v)}
+              role="presentation"
+            >
+              {isHiddenPass ? (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </span>
           </label>
         </div>
-        <div>
+        <div className={`${styles.password}`}>
           <label>
             チャイルドロック
             <input
-              type={isHiddenchild_lock ? "password" : "text"}
+              type={isHiddenChildLock ? "password" : "text"}
               name="child_lock"
               id="child_lock"
               value={formValues.child_lock}
@@ -233,36 +256,48 @@ export const Signup = () => {
               required={true}
             />
             <span
-              onClick={() => setIsHiddenchild_lock((v) => !v)}
+              onClick={() => setIsHiddenChildLock((v) => !v)}
               role="presentation"
             >
-              {isHiddenchild_lock ? (
+              {isHiddenChildLock ? (
                 <FontAwesomeIcon icon={faEyeSlash} />
               ) : (
                 <FontAwesomeIcon icon={faEye} />
               )}
             </span>
-            <p>設定画面を開く際に必要になります。</p>
-            <p>設定画面よりプレイ時間等が確認できます。</p>
           </label>
-
+          <p>設定画面を開く際に必要になります。</p>
+          <p>設定画面よりプレイ時間等が確認できます。</p>
+        </div>
+        <div className={`${styles.password}`}>
           <label>
             チャイルドロック確認用
             <input
               type={"password"}
               name="child_lockConfirmation"
               id="child_lockConfirmation"
-              value={confirm.child_lockConfirm}
+              value={confirm.childLockConfirm}
               onChange={(e) =>
                 setConfirm((val) => ({
                   ...val,
-                  child_lockConfirm: e.target.value,
+                  childLockConfirm: e.target.value,
                 }))
               }
               required={true}
             />
+            <span
+              onClick={() => setIsHiddenChildLock((v) => !v)}
+              role="presentation"
+            >
+              {isHiddenChildLock ? (
+                <FontAwesomeIcon icon={faEyeSlash} />
+              ) : (
+                <FontAwesomeIcon icon={faEye} />
+              )}
+            </span>
           </label>
-
+        </div>
+        <div className={`${styles.checkbox}`}>
           <label>
             <input
               type="checkbox"
@@ -272,14 +307,17 @@ export const Signup = () => {
               onChange={(e) =>
                 setConfirm((val) => ({
                   ...val,
-                  consent: true,
+                  consent: !val.consent,
                 }))
               }
             />
-            規約に同意する
           </label>
-
-          <button type="submit">新規会員登録</button>
+          <p>規約に同意する</p>
+        </div>
+        <div className={`${styles.submit_button_field}`}>
+          <button className={`${styles.submit_button}`} type="submit">
+            新規会員登録
+          </button>
         </div>
       </form>
     </div>
