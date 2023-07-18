@@ -6,6 +6,8 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { SignUpRequest } from "@/features/auth/types/signup";
 
 export const Signup = () => {
+  const router = useRouter();
+
   const [formValues, setFormValues] = useState<SignUpRequest>({
     family_name: "",
     first_name: "",
@@ -34,34 +36,37 @@ export const Signup = () => {
       formValues.child_lock !== confirm.childLockConfirm
     ) {
       alert("パスワードとチャイルドロック暗証番号が一致しません。");
-    } else if (formValues.child_lock !== confirm.childLockConfirm) {
+      return;
+    }
+    if (formValues.child_lock !== confirm.childLockConfirm) {
       alert("チャイルドロックが一致しません。");
-    } else if (formValues.password !== confirm.passwordConfirm) {
+      return;
+    }
+    if (formValues.password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
-    } else {
-      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-      if (baseUrl === undefined) {
-        throw new Error("内部エラー");
-      }
-      try {
-        if (confirm.consent === true) {
-          const response = await fetch(`${baseUrl}/auth/signup`, {
-            method: "POST",
-            body: JSON.stringify({
-              formValues,
-            }),
-          });
-          ScreenTransition();
-        } else {
-          alert("規約に同意してください。");
-        }
-      } catch (e) {
-        alert("作成に失敗しました");
-      }
+      return;
+    }
+    if (!confirm.consent) {
+      alert("規約に同意してください。");
+      return;
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    if (baseUrl === undefined) {
+      throw new Error("内部エラー");
+    }
+    try {
+      const response = await fetch(`${baseUrl}/auth/signup`, {
+        method: "POST",
+        body: JSON.stringify({
+          formValues,
+        }),
+      });
+      ScreenTransition();
+    } catch (e) {
+      alert("作成に失敗しました");
     }
   };
-
-  const router = useRouter();
 
   const ScreenTransition = () => {
     router.push("/MessagesentSuccessfully");
