@@ -278,7 +278,8 @@ val tableNameToKey: Map<String, List<String>> = mapOf(
   "status" to listOf("u_id"),
   "l_log" to listOf("u_id", "datetime"),
   "p_log" to listOf("u_id", "p_id"),
-  "b_log" to listOf("u_id", "b_id")
+  "b_log" to listOf("u_id", "b_id"),
+  "sequence" to listOf("tablename")
 )
 
 // 全てのデータクラスの親
@@ -433,6 +434,11 @@ data class BookLog(
     val b_id: String = "p0000",
     val play_times: Int = 0,
     val latest_play_datetime: String = "${LocalDateTime.now()}",
+): TableBase
+
+data class Sequence(
+    val tablename: String,
+    val next_seq: Int
 ): TableBase
 
 /**
