@@ -217,7 +217,7 @@ response
 
 ## パズル系
 
-### [RegisterPuzzle]()
+### [RegisterPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterPuzzle)
 
 パズルを登録する
 
