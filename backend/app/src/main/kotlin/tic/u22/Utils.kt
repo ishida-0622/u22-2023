@@ -252,7 +252,7 @@ class Utils {
    */
   fun formatJsonEnv(json: Any): Map<String, Any> {
     if (json is String) {
-      return gson.fromJson(json as String, Map::class.java) as Map<String, Any>
+      return gson.fromJson(json, Map::class.java) as Map<String, Any>
     } else if (json::class.simpleName == "LinkedHashMap") {
       return json as Map<String, Any>
     } else {
