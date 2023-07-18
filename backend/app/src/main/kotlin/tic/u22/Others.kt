@@ -14,22 +14,14 @@ import com.google.gson.JsonParser
 
 
 /**
- * サンプルソースクラス
+ * u_idを受け取ってログインログを返す
  *
- * RequestHandlerを継承している
- *
- * 第二引数のStringが返り値の型(JSONなのでString)
- */
-class Others : RequestHandler<Map<String, Any>, String> {
+ * @param event Map<String, Any>?: Lambda関数に渡される引数
+ * @param context Context?: Context
 
-    /**
-     * Lambda関数で実行される関数。
-     *
-     * @param event Map<String, Any>?: Lambda関数に渡される引数
-     * @param context Context?: Context
-     *
-     * return String: フロントに渡すJSON
-     */
+ * return String : "result": {"datatime": "hoge","u_id":"hoge"}
+ */
+class ScanL_log : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
         // 非同期処理開始
