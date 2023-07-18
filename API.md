@@ -769,7 +769,7 @@ response
 }
 ```
 
-### [GetNotices]()
+### [GetNotices](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetNotices)
 
 お知らせを全件取得する
 
