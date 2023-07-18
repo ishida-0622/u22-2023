@@ -251,7 +251,7 @@ class Utils {
    * return Map<String, Any>: 変換後のオブジェクト(引数の型が求められているものでない場合はエラーを返す)
    */
   fun formatJsonEnv(json: Any): Map<String, Any> {
-    if (json::class.simpleName == "String") {
+    if (json is String) {
       return gson.fromJson(json as String, Map::class.java) as Map<String, Any>
     } else if (json::class.simpleName == "LinkedHashMap") {
       return json as Map<String, Any>
