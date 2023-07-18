@@ -20,7 +20,7 @@ import com.google.gson.JsonParser
  * return String : "result": [{"n_id":"n_id", "title":"title", "content":"content", "create_date":"create_date"}]
  */
 
-class getNotice : RequestHandler<Map<String, Any>, String> {
+class getNotices : RequestHandler<Map<String, Any>, String> {
   override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
     val res = runBlocking {
       try {
@@ -34,7 +34,7 @@ class getNotice : RequestHandler<Map<String, Any>, String> {
           "result" to notices.map {
             utils.toMap(utils.attributeValueToObject(it, tableName))})
         } else {
-          mapOf("response_status" to "fail", "error" to "Failed to retrieve notices")
+          throw Exception("Failed to retrieve notices")
         }
       } catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
