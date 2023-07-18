@@ -20,7 +20,7 @@ import com.google.gson.JsonParser
  * return String : "result": [{"n_id":"n_id", "title":"title", "content":"content", "create_date":"create_date"}]
  */
 
-class getNotices : RequestHandler<Map<String, Any>, String> {
+class GetNotices : RequestHandler<Map<String, Any>, String> {
   override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
     val res = runBlocking {
       try {
