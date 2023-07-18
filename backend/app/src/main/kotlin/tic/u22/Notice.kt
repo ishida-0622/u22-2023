@@ -12,7 +12,12 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 
 /**
- * 
+ * 全てのお知らせを返す
+ *
+ * @param event Map<String, Any>? : null
+ * @param context Context? : null
+ *
+ * return String : "result": [{"n_id":"n_id", "title":"title", "content":"content", "create_date":"create_date"}]
  */
 
 class getNotice : RequestHandler<Map<String, Any>, String> {
