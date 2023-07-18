@@ -106,7 +106,7 @@ class Utils {
    * userデータクラスの場合、{"u_id": AttributeValue.S(u_id), ... , "authed": AttributeValue.Bool(authed)}となる。
    *
    * @param attribute Map<String, AttributeValue>: AttributeValueのMap(データベースから取得したデータ)
-   * @param tableType String: テーブル名( user | puzzle | book | notice | status | l_log | p_log | b_log )
+   * @param tableType String: テーブル名( user | puzzle | book | notice | status | l_log | p_log | b_log | sequence )
    *
    * return TableBase: 指定のデータクラスに変換されたオブジェクト
    */
@@ -184,6 +184,10 @@ class Utils {
           b_id = if(values["b_id"] == null){throw Exception("b_id is null")} else {if(values["b_id"]!! is String){values["b_id"] as String}else{throw Exception("b_id type is ng")}},
           play_times = if(values["play_times"] == null){throw Exception("play_times is null")} else {if(values["play_times"]!! is String){(values["play_times"] as String).toInt()}else{throw Exception("play_times type is ng")}},
           latest_play_datetime = if(values["latest_play_datetime"] == null){throw Exception("latest_play_datetime is null")} else {if(values["latest_play_datetime"]!! is String){values["latest_play_datetime"] as String}else{throw Exception("latest_play_datetime type is ng")}}
+        )
+        "sequence" -> Sequence(
+          tablename = if(values["tablename"] == null){throw Exception("tablename is null")} else {if(values["tablename"]!! is String){values["tablename"] as String}else{throw Exception("tablename type is ng")}},
+          now_seq = if(values["now_seq"] == null){throw Exception("now_seq is null")} else {if(values["now_seq"]!! is String){(values["now_seq"] as String).toInt()}else{throw Exception("now_seq type is ng")}}
         )
         else -> throw Exception("none type")
       }
@@ -436,9 +440,15 @@ data class BookLog(
     val latest_play_datetime: String = "${LocalDateTime.now()}",
 ): TableBase
 
+/**
+ * Sequenceデータクラス(テーブル:sequence)
+ *
+ * @param tablename: String | puzzle | book | notice |
+ * @param now_seq: Int: 現在の最新のID番号
+ */
 data class Sequence(
     val tablename: String,
-    val next_seq: Int
+    val now_seq: Int
 ): TableBase
 
 /**
