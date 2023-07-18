@@ -86,3 +86,44 @@ class GetPuzzles: RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)
     }
 }
+
+
+class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
+
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "puzzle"
+
+                val seq = dynamo.updateSequence(tableName)
+                val id = "${seq}".padStart(4, '0')
+                val title = if (body["title"] != null) {body["title"]!! as String} else {throw Exception("title is null")}
+                val description = if (body["description"] != null) {body["description"]!! as String} else {throw Exception("description is null")}
+                val icon = if (body["icon"] != null) {body["icon"]!! as String} else {throw Exception("icon is null")}
+                val words = if (body["words"] != null) {body["words"]!! as List<List<String>>} else {throw Exception("words is null")}
+                
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val puzzle = Puzzle(
+                    p_id = "p${id}",
+                    title = title,
+                    description = description,
+                    icon = icon,
+                    words = words
+                )
+
+                dynamo.addItem(tableName, puzzle)
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success", "result" to dummyMap)
+            } catch (e:Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}
