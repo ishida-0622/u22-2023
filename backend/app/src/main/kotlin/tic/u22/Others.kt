@@ -41,16 +41,14 @@ class ScanL_log : RequestHandler<Map<String, Any>, String> {
                 println("検索完了\n")
 
                 // {"result": {結果の連想配列}}
-                if (result.isNotEmpty()) {
-                    mapOf(
-                        "response_status" to "success",
-                        "result" to result.map{
-                            utils.toMap(utils.attributeValueToObject(it, tableName))
-                })} else {
-                    mapOf("response_status" to "fail",
-                        "error" to "the value for this u_id does not exist"
-                    )
+                if(result.isEmpty()){
+                    throw Exception("the value for this u_id is not exist")
                 }
+                mapOf(
+                    "response_status" to "success",
+                    "result" to result.map{
+                        utils.toMap(utils.attributeValueToObject(it, tableName))
+                    })
             } catch(e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
             }
