@@ -1,16 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User as FirebaseUser } from "firebase/auth";
 import { Status, User } from "@/features/auth/types";
 
 export type UserState = {
   user: User | null;
-  firebaseUser: FirebaseUser | null;
+  uid: string | null;
   status: Status | null;
 };
 
 const initialState: UserState = {
   user: null,
-  firebaseUser: null,
+  uid: null,
   status: null,
 };
 
@@ -18,8 +17,8 @@ export const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    updateFirebaseUser(state, action: PayloadAction<FirebaseUser>) {
-      state.firebaseUser = action.payload;
+    updateUid(state, action: PayloadAction<string>) {
+      state.uid = action.payload;
     },
     updateUser(state, action: PayloadAction<User>) {
       state.user = action.payload;
@@ -32,3 +31,5 @@ export const userSlice = createSlice({
     },
   },
 });
+
+export const { updateUid, updateUser, updateStatus } = userSlice.actions;
