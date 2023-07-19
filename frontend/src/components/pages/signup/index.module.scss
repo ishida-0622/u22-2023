@@ -31,7 +31,7 @@
 }
 
 .form {
-  max-width: 50%;
+  max-width: max(50%, 480px);
   margin: 0 auto 0%;
   padding: 2rem;
   justify-content: space-between;
