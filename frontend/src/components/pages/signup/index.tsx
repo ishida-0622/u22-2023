@@ -1,12 +1,22 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "./index.module.scss";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+
+import { auth } from "@/features/auth/firebase";
+import { RootState } from "@/store";
+import { updateUid, updateUser } from "@/store/user";
 import { SignUpRequest } from "@/features/auth/types/signup";
+
+import styles from "./index.module.scss";
 
 export const Signup = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((store: RootState) => store.user);
 
   const [formValues, setFormValues] = useState<SignUpRequest>({
     family_name: "",
@@ -25,25 +35,21 @@ export const Signup = () => {
     consent: false,
   });
 
-  const [isHiddenPass, setIsHiddenPass] = useState(true);
-  const [isHiddenChildLock, setIsHiddenChildLock] = useState(true);
+  const [isHiddenPass, setIsHiddenPass] = useState({ pass: true, check: true });
+  const [isHiddenChildLock, setIsHiddenChildLock] = useState({
+    pass: true,
+    check: true,
+  });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (
-      formValues.password !== confirm.passwordConfirm &&
-      formValues.child_lock !== confirm.childLockConfirm
-    ) {
-      alert("パスワードとチャイルドロック暗証番号が一致しません。");
+    if (formValues.password !== confirm.passwordConfirm) {
+      alert("パスワードが一致しません。");
       return;
     }
     if (formValues.child_lock !== confirm.childLockConfirm) {
       alert("チャイルドロックが一致しません。");
-      return;
-    }
-    if (formValues.password !== confirm.passwordConfirm) {
-      alert("パスワードが一致しません。");
       return;
     }
     if (!confirm.consent) {
@@ -56,20 +62,47 @@ export const Signup = () => {
       throw new Error("内部エラー");
     }
     try {
-      const response = await fetch(`${baseUrl}/auth/signup`, {
-        method: "POST",
-        body: JSON.stringify({
-          formValues,
-        }),
+      Promise.all([
+        (async (): Promise<void> => {
+          return new Promise((resolve, reject) => {
+            createUserWithEmailAndPassword(
+              auth,
+              formValues.email,
+              formValues.password
+            )
+              .then((res) => {
+                dispatch(
+                  updateUser({
+                    ...formValues,
+                    u_id: res.user.uid,
+                    limit_time: 2147483647,
+                    delete_flg: false,
+                    authed: false,
+                  })
+                );
+                dispatch(updateUid(res.user.uid));
+                resolve();
+              })
+              .catch((e) => reject(e));
+          });
+        })(),
+        // TODO:バックエンドのサインアップ処理
+        // fetch(`${baseUrl}/auth/signup`, {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     formValues,
+        //   }),
+        // });
+      ]).then(() => {
+        screenTransition();
       });
-      ScreenTransition();
     } catch (e) {
       alert("作成に失敗しました");
     }
   };
 
-  const ScreenTransition = () => {
-    router.push("/MessagesentSuccessfully");
+  const screenTransition = () => {
+    router.push("/foo");
   };
 
   return (
@@ -192,7 +225,7 @@ export const Signup = () => {
           <label>
             パスワード
             <input
-              type={isHiddenPass ? "password" : "text"}
+              type={isHiddenPass.pass ? "password" : "text"}
               name="password"
               id="password"
               value={formValues.password}
@@ -205,14 +238,10 @@ export const Signup = () => {
               required={true}
             />
             <span
-              onClick={() => setIsHiddenPass((v) => !v)}
+              onClick={() => setIsHiddenPass((v) => ({ ...v, pass: !v.pass }))}
               role="presentation"
             >
-              {isHiddenPass ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
+              <FontAwesomeIcon icon={isHiddenPass.pass ? faEyeSlash : faEye} />
             </span>
           </label>
         </div>
@@ -220,7 +249,7 @@ export const Signup = () => {
           <label>
             確認用
             <input
-              type={isHiddenPass ? "password" : "text"}
+              type={isHiddenPass.check ? "password" : "text"}
               name="passwordConfirmation"
               id="passwordConfirmation"
               value={confirm.passwordConfirm}
@@ -233,14 +262,12 @@ export const Signup = () => {
               required={true}
             />
             <span
-              onClick={() => setIsHiddenPass((v) => !v)}
+              onClick={() =>
+                setIsHiddenPass((v) => ({ ...v, check: !v.check }))
+              }
               role="presentation"
             >
-              {isHiddenPass ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
+              <FontAwesomeIcon icon={isHiddenPass.check ? faEyeSlash : faEye} />
             </span>
           </label>
         </div>
@@ -248,7 +275,7 @@ export const Signup = () => {
           <label>
             チャイルドロック
             <input
-              type={isHiddenChildLock ? "password" : "text"}
+              type={isHiddenChildLock.pass ? "password" : "text"}
               name="child_lock"
               id="child_lock"
               value={formValues.child_lock}
@@ -261,14 +288,14 @@ export const Signup = () => {
               required={true}
             />
             <span
-              onClick={() => setIsHiddenChildLock((v) => !v)}
+              onClick={() =>
+                setIsHiddenChildLock((v) => ({ ...v, pass: !v.pass }))
+              }
               role="presentation"
             >
-              {isHiddenChildLock ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
+              <FontAwesomeIcon
+                icon={isHiddenChildLock.pass ? faEyeSlash : faEye}
+              />
             </span>
           </label>
           <p>設定画面を開く際に必要になります。</p>
@@ -278,7 +305,7 @@ export const Signup = () => {
           <label>
             チャイルドロック確認用
             <input
-              type={"password"}
+              type={isHiddenChildLock.check ? "password" : "text"}
               name="child_lockConfirmation"
               id="child_lockConfirmation"
               value={confirm.childLockConfirm}
@@ -291,14 +318,14 @@ export const Signup = () => {
               required={true}
             />
             <span
-              onClick={() => setIsHiddenChildLock((v) => !v)}
+              onClick={() =>
+                setIsHiddenChildLock((v) => ({ ...v, check: !v.check }))
+              }
               role="presentation"
             >
-              {isHiddenChildLock ? (
-                <FontAwesomeIcon icon={faEyeSlash} />
-              ) : (
-                <FontAwesomeIcon icon={faEye} />
-              )}
+              <FontAwesomeIcon
+                icon={isHiddenChildLock.check ? faEyeSlash : faEye}
+              />
             </span>
           </label>
         </div>
