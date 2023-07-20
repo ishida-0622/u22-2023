@@ -7,9 +7,10 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "fmt": "prettier --write src/**/*.{js,ts,tsx,html,css}"
+    "fmt": "prettier --write src/**/*.{ts,tsx,css,scss}"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^2.6.3",
     "@dnd-kit/core": "^6.0.8",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
@@ -23,6 +24,7 @@
     "@types/react-dom": "18.0.11",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "firebase": "^10.0.0",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -31,6 +33,7 @@
     "react-tabs": "^6.0.1",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0",
     "sass": "^1.63.6",
     "swr": "^2.2.0",
     "typescript": "5.0.2"
