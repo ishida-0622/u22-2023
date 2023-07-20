@@ -41,109 +41,113 @@ class App : RequestHandler<Map<String, Any>, String> {
 
         // 非同期処理開始
         val res = runBlocking {
-            if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
-            if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
-            val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
-            val u_id = UUID.randomUUID().toString()   
-            val u_id2 = UUID.randomUUID().toString()                      // 一意のUUIDを生成
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                val u_id = UUID.randomUUID().toString()
+                val u_id2 = UUID.randomUUID().toString()                      // 一意のUUIDを生成
 
-            // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
-            val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
-            val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
-            val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
-            val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
-            val email = if (body["email"] != null) {body["email"]!! as String} else {throw Exception("email is null")}
-            val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
-            val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
-            val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
-            
-            // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
-            val user = User(
-                u_id = u_id,
-                family_name = family_name,
-                first_name = first_name,
-                family_name_roma = family_name_roma,
-                first_name_roma = first_name_roma,
-                email = email,
-                password = password,
-                child_lock = child_lock,
-                account_name = account_name
-            )
+                // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
+                val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
+                val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
+                val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
+                val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
+                val email = if (body["email"] != null) {body["email"]!! as String} else {throw Exception("email is null")}
+                val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
+                val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
+                val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
+                
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val user = User(
+                    u_id = u_id,
+                    family_name = family_name,
+                    first_name = first_name,
+                    family_name_roma = family_name_roma,
+                    first_name_roma = first_name_roma,
+                    email = email,
+                    password = password,
+                    child_lock = child_lock,
+                    account_name = account_name
+                )
 
-            val user2 = User(
-                u_id = u_id2,
-                family_name = family_name,
-                first_name = first_name,
-                family_name_roma = family_name_roma,
-                first_name_roma = first_name_roma,
-                email = email,
-                password = password,
-                child_lock = child_lock,
-                account_name = account_name
-            )
+                val user2 = User(
+                    u_id = u_id2,
+                    family_name = family_name,
+                    first_name = first_name,
+                    family_name_roma = family_name_roma,
+                    first_name_roma = first_name_roma,
+                    email = email,
+                    password = password,
+                    child_lock = child_lock,
+                    account_name = account_name
+                )
 
-            // LoginLogデータクラスにユーザーIDを渡し、log変数にインスタンス化して渡す
-            val log = LoginLog(
-                u_id = u_id
-            )
+                // LoginLogデータクラスにユーザーIDを渡し、log変数にインスタンス化して渡す
+                val log = LoginLog(
+                    u_id = u_id
+                )
 
-            // DynamoDBのインスタンス化、テーブル名の設定
-            val dynamo = Dynamo(Settings().AWS_REGION)
-            val tableName = "user"
+                // DynamoDBのインスタンス化、テーブル名の設定
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "user"
 
-            // 以下DBの処理実行・ログの出力
-            println("ユーザーを追加")
-            dynamo.addItem(tableName, user)
-            dynamo.addItem(tableName, user2)
-            println("追加完了\n")
+                // 以下DBの処理実行・ログの出力
+                println("ユーザーを追加")
+                dynamo.addItem(tableName, user)
+                dynamo.addItem(tableName, user2)
+                println("追加完了\n")
 
-            println("全件取得")
-            println(dynamo.scanAll(tableName))
-            println("取得完了\n")
+                println("全件取得")
+                println(dynamo.scanAll(tableName))
+                println("取得完了\n")
 
-            println("id検索")
-            val result = dynamo.searchByKey(tableName, listOf(u_id))
-            println(result)
-            println("検索完了\n")
+                println("id検索")
+                val result = dynamo.searchByKey(tableName, listOf(u_id))
+                println(result)
+                println("検索完了\n")
 
-            println("id検索(複数)")
-            println(dynamo.searchByKeys(tableName, listOf(listOf(u_id), listOf(u_id2), listOf("undefined"))))
-            println("検索完了\n")
+                println("id検索(複数)")
+                println(dynamo.searchByKeys(tableName, listOf(listOf(u_id), listOf(u_id2), listOf("undefined"))))
+                println("検索完了\n")
 
-            println("メールアドレスで絞り込み")
-            println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
-            println("取得完了\n")
-            
-            println("メールアドレスを更新")
-            dynamo.updateItem(tableName, listOf(u_id), mapOf("email" to "test@example.com"))
-            println(dynamo.searchByKey(tableName, listOf(u_id)))
-            println("更新完了\n")
-            
-            println("メールアドレスで絞り込み")
-            println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
-            println("取得完了\n")
+                println("メールアドレスで絞り込み")
+                println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
+                println("取得完了\n")
+                
+                println("メールアドレスを更新")
+                dynamo.updateItem(tableName, listOf(u_id), mapOf("email" to "test@example.com"))
+                println(dynamo.searchByKey(tableName, listOf(u_id)))
+                println("更新完了\n")
+                
+                println("メールアドレスで絞り込み")
+                println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
+                println("取得完了\n")
 
-            println("削除")
-            println(dynamo.deleteByKey(tableName, listOf(u_id)))
-            println("削除完了\n")
+                println("削除")
+                println(dynamo.deleteByKey(tableName, listOf(u_id)))
+                println("削除完了\n")
 
-            println("ログインログを追加")
-            dynamo.addItem("l_log", log)
-            println("追加完了\n")
+                println("ログインログを追加")
+                dynamo.addItem("l_log", log)
+                println("追加完了\n")
 
-            println("ログインログを検索")
-            println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
-            println("検索完了\n")
+                println("ログインログを検索")
+                println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
+                println("検索完了\n")
 
-            // {"result": {結果の連想配列}}
-            mapOf("result" to utils.toMap(utils.attributeValueToObject(result, "user")))
+                // {"result": {結果の連想配列}}
+                mapOf("response_status" to "success", "result" to utils.toMap(utils.attributeValueToObject(result, "user")))
+            } catch (e:Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
         }
         return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
 
 /**
- * S3サンプルソースクラス
+ * S3サンプルソースクラス**一旦使用予定なし**
  *
  * RequestHandlerを継承している
  *

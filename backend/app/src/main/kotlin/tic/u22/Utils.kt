@@ -106,7 +106,7 @@ class Utils {
    * userデータクラスの場合、{"u_id": AttributeValue.S(u_id), ... , "authed": AttributeValue.Bool(authed)}となる。
    *
    * @param attribute Map<String, AttributeValue>: AttributeValueのMap(データベースから取得したデータ)
-   * @param tableType String: テーブル名( user | puzzle | book | notice | status | l_log | p_log | b_log )
+   * @param tableType String: テーブル名( user | puzzle | book | notice | status | l_log | p_log | b_log | sequence )
    *
    * return TableBase: 指定のデータクラスに変換されたオブジェクト
    */
@@ -143,14 +143,6 @@ class Utils {
               }else{throw Exception("words type is ng")}
             }
           }else{throw Exception("words type is ng")}},
-          illust_keys = if(values["illust_keys"] == null){throw Exception("illust_keys is null")} else {if(values["illust_keys"]!! is List<Any?>){
-            val valuesIllust = values["illust_keys"] as List<Any?>
-            valuesIllust.map{
-              if(it is List<Any?>){
-                it.map{ item -> if(item is String){item}else{throw Exception("illust_keys type is ng")} }
-              }else{throw Exception("illust_keys type is ng")}
-            }
-          }else{throw Exception("illust_keys type is ng")}},
           create_date  = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}},
           update_date  = if(values["update_date"] == null){throw Exception("update_date is null")} else {if(values["update_date"]!! is String){values["update_date"] as String}else{throw Exception("update_date type is ng")}}
         )
@@ -192,6 +184,10 @@ class Utils {
           b_id = if(values["b_id"] == null){throw Exception("b_id is null")} else {if(values["b_id"]!! is String){values["b_id"] as String}else{throw Exception("b_id type is ng")}},
           play_times = if(values["play_times"] == null){throw Exception("play_times is null")} else {if(values["play_times"]!! is String){(values["play_times"] as String).toInt()}else{throw Exception("play_times type is ng")}},
           latest_play_datetime = if(values["latest_play_datetime"] == null){throw Exception("latest_play_datetime is null")} else {if(values["latest_play_datetime"]!! is String){values["latest_play_datetime"] as String}else{throw Exception("latest_play_datetime type is ng")}}
+        )
+        "sequence" -> Sequence(
+          tablename = if(values["tablename"] == null){throw Exception("tablename is null")} else {if(values["tablename"]!! is String){values["tablename"] as String}else{throw Exception("tablename type is ng")}},
+          now_seq = if(values["now_seq"] == null){throw Exception("now_seq is null")} else {if(values["now_seq"]!! is String){(values["now_seq"] as String).toInt()}else{throw Exception("now_seq type is ng")}}
         )
         else -> throw Exception("none type")
       }
@@ -255,8 +251,8 @@ class Utils {
    * return Map<String, Any>: 変換後のオブジェクト(引数の型が求められているものでない場合はエラーを返す)
    */
   fun formatJsonEnv(json: Any): Map<String, Any> {
-    if (json::class.simpleName == "String") {
-      return gson.fromJson(json as String, Map::class.java) as Map<String, Any>
+    if (json is String) {
+      return gson.fromJson(json, Map::class.java) as Map<String, Any>
     } else if (json::class.simpleName == "LinkedHashMap") {
       return json as Map<String, Any>
     } else {
@@ -286,7 +282,8 @@ val tableNameToKey: Map<String, List<String>> = mapOf(
   "status" to listOf("u_id"),
   "l_log" to listOf("u_id", "datetime"),
   "p_log" to listOf("u_id", "p_id"),
-  "b_log" to listOf("u_id", "b_id")
+  "b_log" to listOf("u_id", "b_id"),
+  "sequence" to listOf("tablename")
 )
 
 // 全てのデータクラスの親
@@ -331,8 +328,7 @@ data class User(
  * @param title: String タイトル
  * @param description: String 概要
  * @param icon: String アイコン(default有-設定不要)
- * @param words: List<List<String>> 単語(正解順に格納・[[単語, 形状のS3キー, 音声のS3キー]*単語数])([ [word, ${Settings().AWS_BUCKET}/puzzle/shape/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/voice/<ファイル名>], ])
- * @param illust_keys: List<List<String>> 特定の語順で出すイラスト([ [1, 0, 2, ${Settings().AWS_BUCKET}/puzzle/${title}/photo/<ファイル名>],])
+ * @param words: List<List<String>> 単語(正解順に格納・[[単語, 形状のS3キー, イラストのS3キー, 音声のS3キー]*単語数])([ [word, ${Settings().AWS_BUCKET}/puzzle/shape/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/image/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/voice/<ファイル名>], ])
  * @param create_date: String 作成日時(default:NOW()-設定不要)
  * @param update_date: String 更新日時(default:NOW()-設定不要)
  */
@@ -342,7 +338,6 @@ data class Puzzle(
     val description: String,
     val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
     val words: List<List<String>>,
-    val illust_keys: List<List<String>>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
 ): TableBase
@@ -358,7 +353,7 @@ data class Puzzle(
  * @param author: String 著者
  * @param thumbnail: String サムネイルのS3キー(default有-設定不要(デフォルトではpng))
  * @param pdf: String PDFのS3キー(default有-設定不要)
- * @param voice_keys: List<String> 音声のS3キー(ページ順)
+ * @param voice_keys: List<String> 音声のS3キー(ページ順 ["${Settings().AWS_BUCKET}/book/${b_id}/1.mp3", ...])
  * @param create_date: String 作成日時(default:NOW()-設定不要)
  * @param update_date: String 更新日時(default:NOW()-設定不要)
  */
@@ -443,6 +438,17 @@ data class BookLog(
     val b_id: String = "p0000",
     val play_times: Int = 0,
     val latest_play_datetime: String = "${LocalDateTime.now()}",
+): TableBase
+
+/**
+ * Sequenceデータクラス(テーブル:sequence)
+ *
+ * @param tablename: String | puzzle | book | notice |
+ * @param now_seq: Int: 現在の最新のID番号
+ */
+data class Sequence(
+    val tablename: String,
+    val now_seq: Int
 ): TableBase
 
 /**
