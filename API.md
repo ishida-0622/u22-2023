@@ -700,7 +700,7 @@ response
 
 ## お知らせ系
 
-### [RegisterNotice]()
+### [RegisterNotice](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterNotice)
 
 お知らせを登録する
 
