@@ -3,6 +3,10 @@ import { useRouter } from "next/router";
 import Modal from "react-modal";
 import { NowLoading } from "@/components/elements/NowLoading";
 import Link from "next/link";
+import {
+  RegisterNoticeRequest,
+  RegisterNoticeResponse,
+} from "@/features/notice/types/register";
 
 // Modalを表示するHTML要素のidを指定
 Modal.setAppElement("#__next");
@@ -33,12 +37,20 @@ export const PostAnnouncement = () => {
       throw new Error("内部エラー");
     }
     try {
-      const response = await fetch(`${baseUrl}/auth/postannounce`, {
+      const request = await fetch(`${baseUrl}/RegisterNotice`, {
         method: "POST",
         body: JSON.stringify({
           formValues,
         }),
       });
+
+      const response = await fetch(`${baseUrl}/RegisterNotice`, {
+        method: "POST",
+        body: JSON.stringify({}),
+      });
+      const data: RegisterNoticeRequest = await request.json();
+      const TF: RegisterNoticeResponse = await response.json();
+
       ScreenTransition();
     } catch (e) {
       alert("作成に失敗しました");
@@ -90,7 +102,7 @@ export const PostAnnouncement = () => {
               ></textarea>
             </label>
             <button type="submit">投稿内容を確認</button>
-            <Link href="/announcement-page">投稿一覧ページへ戻る</Link>
+            <Link href="/admin/announcement-page">投稿一覧ページへ戻る</Link>
           </div>
         </form>
       </div>
