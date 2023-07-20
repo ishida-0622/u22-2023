@@ -1,28 +1,16 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import styles from "./index.module.scss";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Notice } from "@/features/notice/types";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { GetAllNoticeResponse } from "@/features/notice/types/get";
 
 Modal.setAppElement("#__next");
 
 export const PostAnnouncementList = () => {
-  const [posts, setPosts] = useState<Notice[]>([
-    {
-      n_id: "n_id1",
-      title: "title1",
-      content: "content1",
-      datetime: "2023-07-13T16:20:59Z",
-    },
-    {
-      n_id: "n_id2",
-      title: "title2",
-      content: "content2",
-      datetime: "2023-07-30T16:21:59Z",
-    },
-  ]);
+  const [posts, setPosts] = useState<Notice[]>([]);
 
   //モーダルウィンドウの表示/非表示を表すbool値を宣言
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -44,6 +32,27 @@ export const PostAnnouncementList = () => {
 
   const [news, setNews] = useState<Notice>();
 
+  useLayoutEffect(() => {
+    const pullannouncement = async () => {
+      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+      if (baseUrl === undefined) {
+        throw new Error("内部エラー");
+      }
+      try {
+        const response = await fetch(`${baseUrl}/GetNotices`, {
+          method: "POST",
+          body: JSON.stringify({}),
+        });
+        const data: GetAllNoticeResponse = await response.json();
+        setPosts(data.result);
+      } catch (e) {
+        alert("データの取得に失敗しました");
+        console.error(e);
+      }
+    };
+    pullannouncement();
+  }, []);
+
   return (
     <main>
       {posts.map((post) => (
@@ -57,7 +66,6 @@ export const PostAnnouncementList = () => {
         </div>
       ))}
       <div>
-        {/* <button onClick={postannouncement}>新規作成♡</button> */}
         <button onClick={postannouncement}>
           新規作成
           <FontAwesomeIcon icon={faPen} />
@@ -66,8 +74,19 @@ export const PostAnnouncementList = () => {
 
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <div className={`${styles.posts}`}>
-          {news && <div>題名:「{news.title}」</div>}
-          {news && <div>投稿内容：「{news.content}」</div>}
+          {news && (
+            <div>
+              <b>題名:</b>「{news.title}」
+            </div>
+          )}
+          {news && (
+            <div>
+              <b>投稿内容：</b>「{news.content}」
+            </div>
+          )}
+        </div>
+        <div>
+          <button onClick={closeModal}>CLOSE</button>
         </div>
       </Modal>
     </main>
