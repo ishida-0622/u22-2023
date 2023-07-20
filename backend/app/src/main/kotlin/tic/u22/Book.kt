@@ -11,6 +11,9 @@ import kotlinx.coroutines.runBlocking
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 
+/**
+ * 本をすべて取得する
+ */
 class GetBooks: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
@@ -40,6 +43,9 @@ class GetBooks: RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * 本を削除する
+ */
 class DeleteBook: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
