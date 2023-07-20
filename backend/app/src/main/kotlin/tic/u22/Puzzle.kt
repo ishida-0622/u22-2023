@@ -127,3 +127,32 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
+
+class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "puzzle"
+
+                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 0))
+                if(updated != "DONE"){
+                    throw Exception("failed to update game status: $updated")
+                } else {
+                    mapOf("response_status" to "success")
+                }
+            }
+            catch(e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
+    }
+}
