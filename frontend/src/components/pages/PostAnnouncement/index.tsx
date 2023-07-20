@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
-import { NowLoading } from "@/components/elements/NowLoading";
 import Link from "next/link";
 import {
   RegisterNoticeRequest,
@@ -12,7 +11,7 @@ import {
 Modal.setAppElement("#__next");
 
 export const PostAnnouncement = () => {
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<RegisterNoticeRequest>({
     title: "",
     content: "",
   });
@@ -29,30 +28,23 @@ export const PostAnnouncement = () => {
     openModal();
   };
 
-  const sendNews = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const sendNews = async () => {
     const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
     if (baseUrl === undefined) {
       throw new Error("内部エラー");
     }
     try {
-      const request = await fetch(`${baseUrl}/RegisterNotice`, {
-        method: "POST",
-        body: JSON.stringify({
-          formValues,
-        }),
-      });
-
       const response = await fetch(`${baseUrl}/RegisterNotice`, {
         method: "POST",
-        body: JSON.stringify({}),
+        body: JSON.stringify(formValues),
       });
-      const data: RegisterNoticeRequest = await request.json();
-      const TF: RegisterNoticeResponse = await response.json();
-
+      const json: RegisterNoticeResponse = await response.json();
+      if (json.response_status === "fail") {
+        throw new Error(json.error);
+      }
       ScreenTransition();
     } catch (e) {
+      console.error(e);
       alert("作成に失敗しました");
     }
   };
