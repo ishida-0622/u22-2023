@@ -44,6 +44,10 @@ class Quit: RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * ユーザー情報を変更する
+ * パスワードとその他情報の同時更新はできないように制御される
+ */
 class UpdateUser : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
