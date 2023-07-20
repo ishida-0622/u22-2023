@@ -459,7 +459,7 @@ response
 
 ## 読み聞かせ系
 
-### [RegisterBook]()
+### [RegisterBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterBook)
 
 本を登録する
 
