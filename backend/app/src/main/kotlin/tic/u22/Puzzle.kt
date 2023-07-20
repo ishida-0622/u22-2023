@@ -139,10 +139,25 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
                 val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
                 val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
 
+                // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "puzzle"
 
-                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 0))
+                var playTimes: Int
+                val log = dynamo.searchByKey("puzzle", listOf(p_id))
+                if (log["play_times"] != null) {
+                    playTimes = (utils.toKotlinType(log["play_times"]!!) as String).toInt()
+                } else {
+                    throw Exception("puzzle play_times is null")
+                }
+                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
+                val p_log = PuzzleLog(
+                    u_id = u_id,
+                    p_id = p_id,
+                    play_times = playTimes + 1
+                )
+                dynamo.addItem("puzzle_log", p_log)
+
                 if(updated != "DONE"){
                     throw Exception("failed to update game status: $updated")
                 } else {
