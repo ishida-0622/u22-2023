@@ -837,6 +837,8 @@ response
 
 ### [ScanLoginDates]()
 
+実装少し先になります
+
 ログインボーナスように、指定範囲のログイン日を取得する
 
 request
