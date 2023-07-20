@@ -804,7 +804,7 @@ response
 
 ## その他(ログ・ステータス等)
 
-### [ScanL_log]()
+### [ScanL_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanL_log)
 
 ログインログを取得する
 
