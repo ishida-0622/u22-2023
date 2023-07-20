@@ -11,6 +11,9 @@ import kotlinx.coroutines.runBlocking
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 
+/**
+ * パズルを開始する
+ */
 class StartPuzzle : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
@@ -57,7 +60,9 @@ class StartPuzzle : RequestHandler<Map<String, Any>, String> {
     }
 }
 
-
+/**
+ * パズルをすべて取得する
+ */
 class GetPuzzles: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
@@ -87,7 +92,9 @@ class GetPuzzles: RequestHandler<Map<String, Any>, String> {
     }
 }
 
-
+/**
+ * パズルを登録する
+ */
 class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
 
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
