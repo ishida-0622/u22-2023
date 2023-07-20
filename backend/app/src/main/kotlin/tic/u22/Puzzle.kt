@@ -141,22 +141,23 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
 
                 // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
-                val tableName = "puzzle"
+                val table_p_log = "p_log"
+                val table_status = "status"
 
-                var playTimes: Int
-                val log = dynamo.searchByKey("puzzle", listOf(p_id))
+                val playTimes: Int
+                val log = dynamo.searchByKey(table_p_log, listOf(u_id, p_id))
                 if (log["play_times"] != null) {
                     playTimes = (utils.toKotlinType(log["play_times"]!!) as String).toInt()
                 } else {
                     throw Exception("puzzle play_times is null")
                 }
-                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
+                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
                 val p_log = PuzzleLog(
                     u_id = u_id,
                     p_id = p_id,
                     play_times = playTimes + 1
                 )
-                dynamo.addItem("puzzle_log", p_log)
+                // dynamo.addItem("p_log", p_log)
 
                 if(updated != "DONE"){
                     throw Exception("failed to update game status: $updated")
