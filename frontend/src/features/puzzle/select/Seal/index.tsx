@@ -12,24 +12,29 @@ export const Seal = ({
   title,
   description,
   icon,
-}: PuzzleSealType) => {
+  className
+}: PuzzleSealType & { className?: string }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const startPuzzle = () => Router.push(`/puzzle/play/${puzzleId}`);
 
   return (
-    <div>
-      <div className={styles.sealWrapper} onClick={openModal}>
+    <div className={`${styles.seal_modal}`}>
+      <div className={`${styles.sealWrapper} ${className}`} onClick={openModal}>
         <p>No.{puzzleId}</p>
-        <Image src={icon} alt="icon" width={100} height={100} />
+        <Image className={`${styles.seal}`} src={icon} alt="icon" width={120} height={120} />
       </div>
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        <h3>{title}</h3>
-        <p>{description}</p>
-        <button onClick={closeModal}>もどる</button>
-        <button onClick={startPuzzle}>プレイ</button>
-      </Modal>
+      <div className={`${styles.modal}`}>
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+          <div className={`${styles.modal_contents}`}>
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <button className={`${styles.back_button}`} onClick={closeModal}>もどる</button>
+            <button className={`${styles.play_button}`} onClick={startPuzzle}>あそぶ</button>
+          </div>
+        </Modal>
+      </div>
     </div>
   );
 };
