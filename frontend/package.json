@@ -7,9 +7,11 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "next lint",
-    "fmt": "prettier --write src/**/*.{js,ts,tsx,html,css}"
+    "fmt": "prettier --write src/**/*.{ts,tsx,css,scss}"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^2.6.3",
+    "@dnd-kit/core": "^6.0.8",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-brands-svg-icons": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
@@ -31,6 +33,7 @@
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",
     "sass": "^1.63.6",
+    "swr": "^2.2.0",
     "typescript": "5.0.2"
   },
   "devDependencies": {
