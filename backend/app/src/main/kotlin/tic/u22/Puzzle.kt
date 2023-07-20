@@ -109,6 +109,7 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                 val tableName = "puzzle"
 
                 val seq = dynamo.updateSequence(tableName)
+                if (seq == -1) {throw Exception("p_id could not be updated.")}
                 val id = "${seq}".padStart(4, '0')
                 val title = if (body["title"] != null) {body["title"]!! as String} else {throw Exception("title is null")}
                 val description = if (body["description"] != null) {body["description"]!! as String} else {throw Exception("description is null")}
