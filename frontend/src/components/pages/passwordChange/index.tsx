@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import  styles from  "./index.module.scss";
 
 export const PasswordChange = () => {
     const [password, setPassword] = useState("");
@@ -47,13 +48,13 @@ export const PasswordChange = () => {
 
     return (
         <div>
-            <h2>パスワード再設定</h2>
+            <h2 className={`${styles.title}`}>パスワード再設定</h2>
             <hr />
             <form method="post" onSubmit={handleSubmit}>
-                <div>
+                <div className={`${styles.password_field}`}>
                     <label>
-                        新しいパスワード
-                        <input
+                        <p className={`${styles.password_text}`}>新しいパスワード</p>
+                        <input className={`${styles.password_form}`}
                             type="password"
                             name="password"
                             id="password"
@@ -61,10 +62,10 @@ export const PasswordChange = () => {
                             onChange={changePassword}
                             required={true}
                         />
-                    </label>
+                    </label><br></br>
                     <label>
-                        確認用
-                        <input
+                    <p className={`${styles.password_retype_field}`}>確認用</p>
+                        <input className={`${styles.password_retype_form}`}
                             type="password"
                             name="passwordConfirm"
                             id="passwordConfirm"
@@ -74,8 +75,8 @@ export const PasswordChange = () => {
                         />
                     </label>
                 </div>
-                <div>
-                    <button type="submit">変更する</button>
+                <div className={`${styles.submit_button_field}`}>
+                    <button className={`${styles.submit_button}`} type="submit">変更する</button>
                 </div>
             </form>
         </div>
