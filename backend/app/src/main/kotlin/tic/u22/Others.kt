@@ -156,7 +156,7 @@ class ScanStatus : RequestHandler<Map<String, Any>, String> {
  * u_id, game_statusを受け取り、ステータスを更新する
  *
  * @param u_id String : u_id
- * @param game_status String : 1 ~ 5
+ * @param game_status Int : 0 ~ 5
  *
  * return String : {"response_status": "success", "result": {}}
  */
@@ -169,6 +169,7 @@ class SetStatus : RequestHandler<Map<String, Any>, String> {
         val body = utils.formatJsonEnv(event["body"]!!)
         val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
         val game_status = if (body["game_status"] != null) {body["game_status"]!! as Int} else {throw Exception("game_status is null")}
+        if (game_status < 0 || game_status > 5) {throw Exception("game_status is out of range")}
 
         val dynamo = Dynamo(Settings().AWS_REGION)
         val tableName = "status"
