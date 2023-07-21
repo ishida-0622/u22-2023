@@ -1,22 +1,29 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
+import Router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
-import { RootState } from "@/store";
 import { updateUid, updateUser } from "@/store/user";
 import { SignUpRequest } from "@/features/auth/types/signup";
 
 import styles from "./index.module.scss";
+import { isLogin } from "@/features/auth/utils/isLogin";
 
 export const Signup = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const user = useSelector((store: RootState) => store.user);
+
+  useEffect(() => {
+    (async () => {
+      const res = await isLogin();
+      if (res) {
+        Router.push("/");
+      }
+    })();
+  }, []);
 
   const [formValues, setFormValues] = useState<SignUpRequest>({
     family_name: "",
@@ -87,12 +94,12 @@ export const Signup = () => {
           });
         })(),
         // TODO:バックエンドのサインアップ処理
-        // fetch(`${baseUrl}/auth/signup`, {
+        // fetch(`${baseUrl}/SignUp`, {
         //   method: "POST",
         //   body: JSON.stringify({
         //     formValues,
         //   }),
-        // });
+        // }),
       ]).then(() => {
         screenTransition();
       });
