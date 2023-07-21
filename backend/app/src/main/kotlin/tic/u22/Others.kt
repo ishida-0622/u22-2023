@@ -90,6 +90,33 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
   }
 }
 
+class ScanP_log: RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+      val res = runBlocking {
+          try {
+            if (event == null) {throw Exception("event is null")}
+            if (event["body"] == null) {throw Exception("body is null")}
+            val body = utils.formatJsonEnv(event["body"]!!)
+            val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("body[u_id] is null")}
+
+              // プレイ履歴の取得
+              val dynamo = Dynamo(Settings().AWS_REGION)
+              val tableName = "p_log"
+              
+              val result = dynamo.searchByAny(tableName, "u_id", u_id, "=")
+              mapOf("response_status" to "success", 
+              "result" to result.map{
+                utils.toMap(utils.attributeValueToObject(it, tableName))
+              })
+          } catch(e: Exception) {
+              mapOf("response_status" to "fail", "error" to "$e")
+          }
+      }
+
+      return gson.toJson(res)
+  }
+}
+
 /**
  * u_idを受け取り、ユーザーの情報を取得する
  *
