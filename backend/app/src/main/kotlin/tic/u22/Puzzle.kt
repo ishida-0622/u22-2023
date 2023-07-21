@@ -128,6 +128,14 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * u_id, p_idを受け取りゲームステータスの変更、ログの追加を行う
+ * 
+ * @param event Map<String, Any>?: "u_id": "u_id", "p_id": "p_id"
+ * 
+ * return String : {"response_status": "success", "result": {}}
+ */
+
 class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
@@ -165,7 +173,7 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
                     val dummyMap: Map<String, String> = mapOf()
                     mapOf("response_status" to "success", "result" to dummyMap)
                 } else {
-                    throw Exception("failed to update game status or failed to update game log")
+                    throw Exception("failed to update game status or failed to update log")
                 }
             }
             catch(e: Exception) {
