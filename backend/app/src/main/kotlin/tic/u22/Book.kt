@@ -76,6 +76,30 @@ class DeleteBook: RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * ゲームステータスを変更し、本の情報を返す
+ *
+ * @param u_id String: u_ID
+ * @param b_id String: b_ID
+ *
+ * return String:
+ * {
+ *   "response_status": "success",
+ *   "result": {
+ *     "b_id": b_id,
+ *     "create_date": 本作成日時,
+ *     "pdf": PDFのS3キー
+ *     "summary": 本の概要S3キー,
+ *     "thumbnail": 本のサムネイルS3キー,
+ *     "title_en": 英語タイトル,
+ *     "title_jp": 日本語タイトル,
+ *     "update_date": 本更新日時,
+ *     "voice_keys": [
+ *       "voice_key1",
+ *       ...
+ *     ]}
+ * }
+ */
 class StartBook : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
         val res = runBlocking {
