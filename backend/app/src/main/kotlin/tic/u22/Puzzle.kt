@@ -147,22 +147,25 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
                 val playTimes: Int
                 val log = dynamo.searchByKey(table_p_log, listOf(u_id, p_id))
                 if (log["play_times"] != null) {
-                    playTimes = (utils.toKotlinType(log["play_times"]!!) as String).toInt()
+                    playTimes = (utils.toKotlinType(log["play_times"]!!) as String).toInt() + 1
                 } else {
-                    throw Exception("puzzle play_times is null")
+                    playTimes = 1
                 }
                 val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
                 val p_log = PuzzleLog(
                     u_id = u_id,
                     p_id = p_id,
-                    play_times = playTimes + 1
+                    play_times = playTimes
                 )
-                // dynamo.addItem("p_log", p_log)
+                // 初プレイ時にはログの追加それ以外はプレイ回数の増加
+                if (playTimes == 1) { dynamo.addItem(table_p_log, p_log) }
+                else { dynamo.updateItem(table_p_log, listOf(u_id, p_id), mapOf("play_times" to playTimes)) }
 
-                if(updated != "DONE"){
-                    throw Exception("failed to update game status: $updated")
+                if(updated == "DONE"){
+                    val dummyMap: Map<String, String> = mapOf()
+                    mapOf("response_status" to "success", "result" to dummyMap)
                 } else {
-                    mapOf("response_status" to "success")
+                    throw Exception("failed to update game status or failed to update game log")
                 }
             }
             catch(e: Exception) {
