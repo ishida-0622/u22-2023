@@ -85,7 +85,7 @@ class StartBook : RequestHandler<Map<String, Any>, String> {
                 val body = utils.formatJsonEnv(event["body"]!!)
 
                 val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
-                val p_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
 
                 // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
@@ -105,11 +105,11 @@ class StartBook : RequestHandler<Map<String, Any>, String> {
                 if(updated != "DONE"){
                     throw Exception("failed to update game status: $updated")
                 }
-                val result = dynamo.searchByKey(tableName, listOf(p_id))
+                val result = dynamo.searchByKey(tableName, listOf(b_id))
 
                 mapOf(
                     "resposne_status" to "success",
-                    "result" to utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                    "result" to utils.toMap(utils.attributeValueToObject(result, "book"))
                 )
             } catch (e: Exception) {
                 mapOf(
