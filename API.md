@@ -54,6 +54,7 @@ response
     -   [パズルプレイログを取得する](#scanp_log)
     -   [読み聞かせプレイログを取得する](#scanb_log)
     -   [ゲームステータスを取得する](#scanstatus)
+    -   [ゲームステータスを更新する](#setstatus)
 
 ## 認証(アカウント)系
 
@@ -109,7 +110,7 @@ response
 }
 ```
 
-### [Quit](https://8zwezzqs9c.execute-api.us-east-1.amazonaws.com/default/Quit)
+### [Quit](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Quit)
 
 退会する
 
@@ -131,7 +132,7 @@ response
 }
 ```
 
-### [ScanUsers](https://o6qv3rm65l.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
+### [ScanUsers](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
 
 指定のユーザー ID の情報をすべて取得する
 
@@ -182,26 +183,26 @@ response
 }
 ```
 
-### [UpdateUser]()
+### [UpdateUser](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdateUser)
 
 ユーザー情報を変更する
 
+パスワードとその他の情報は同時に変更できません。パスワードの変更時は、request.json に u_id と password のみを追加してください。また、パスワードを変更しない通常のユーザー情報更新については、逆にパスワードを含めないでください。
+
 request
 
-```json
+```jsonc
 {
-    "u_id": "u_id",
-    "family_name": "family_name",
-    "first_name": "first_name",
-    "family_name_roma": "family_name_roma",
-    "first_name_roma": "first_name_roma",
-    "email": "email",
-    "password": "password",
-    "child_lock": "child_lock",
-    "account_name": "account_name",
-    "limit_time": "limit_time",
-    "delete_flg": "delete_flg",
-    "authed": "authed"
+    "u_id": "u_id" /* 必須 */,
+    "family_name": "family_name" /* パスワード変更時は含めない */,
+    "first_name": "first_name" /* パスワード変更時は含めない */,
+    "family_name_roma": "family_name_roma" /* パスワード変更時は含めない */,
+    "first_name_roma": "first_name_roma" /* パスワード変更時は含めない */,
+    "email": "email" /* パスワード変更時は含めない */,
+    "password": "password" /* パスワード変更以外は含めない */,
+    "child_lock": "child_lock" /* パスワード変更時は含めない */,
+    "account_name": "account_name" /* パスワード変更時は含めない */,
+    "limit_time": "limit_time" /* パスワード変更時は含めない */
 }
 ```
 
@@ -217,7 +218,7 @@ response
 
 ## パズル系
 
-### [RegisterPuzzle]()
+### [RegisterPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterPuzzle)
 
 パズルを登録する
 
@@ -298,7 +299,7 @@ response
 }
 ```
 
-### [GetPuzzles]()
+### [GetPuzzles](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetPuzzles)
 
 パズルを全件取得する
 
@@ -318,6 +319,11 @@ response
             "title": "title1",
             "description": "description1",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
+            "words": [
+                ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+            ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
@@ -325,6 +331,11 @@ response
             "title": "title2",
             "description": "description2",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI2",
+            "words": [
+                ["He", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["has", "シルエットのURI", "イラストのURI", "音声のURI"],
+                ["a ball", "シルエットのURI", "イラストのURI", "音声のURI"]
+            ],
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
@@ -333,7 +344,7 @@ response
 }
 ```
 
-### [StartPuzzle]()
+### [StartPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/StartPuzzle)
 
 パズルを開始する
 
@@ -367,7 +378,7 @@ response
 }
 ```
 
-### [FinishPuzzle]()
+### [FinishPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishPuzzle)
 
 パズルを終了する
 
@@ -449,7 +460,7 @@ response
 
 ## 読み聞かせ系
 
-### [RegisterBook]()
+### [RegisterBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterBook)
 
 本を登録する
 
@@ -506,7 +517,7 @@ response
 }
 ```
 
-### [DeleteBook]()
+### [DeleteBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeleteBook)
 
 本を削除する
 
@@ -528,7 +539,7 @@ response
 }
 ```
 
-### [GetBooks]()
+### [GetBooks](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetBooks)
 
 本を全件取得する
 
@@ -551,6 +562,11 @@ response
             "summary": "summary1",
             "author": "auhor1",
             "thumbnail": "サムネイル写真のURI1",
+            "pdf": "PDFファイルのURI1",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI1",
+                "2ページ目読み聞かせ音声のURI1"
+            ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
@@ -561,6 +577,11 @@ response
             "summary": "summary2",
             "author": "auhor2",
             "thumbnail": "サムネイル写真のURI2",
+            "pdf": "PDFファイルのURI2",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI2",
+                "2ページ目読み聞かせ音声のURI2"
+            ],
             "create_date": "create_date2",
             "update_date": "update_date2"
         }
@@ -599,8 +620,8 @@ response
             "1ページ目読み聞かせ音声のURI",
             "2ページ目読み聞かせ音声のURI"
         ],
-        "create_date": "create_date1",
-        "update_date": "update_date1"
+        "create_date": "create_date",
+        "update_date": "update_date"
     },
     "error": "エラー内容(ユーザーのゲームステータスが0でない、等)"
 }
@@ -680,7 +701,7 @@ response
 
 ## お知らせ系
 
-### [RegisterNotice]()
+### [RegisterNotice](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterNotice)
 
 お知らせを登録する
 
@@ -749,7 +770,7 @@ response
 }
 ```
 
-### [GetNotices]()
+### [GetNotices](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetNotices)
 
 お知らせを全件取得する
 
@@ -784,7 +805,7 @@ response
 
 ## その他(ログ・ステータス等)
 
-### [ScanL_log]()
+### [ScanL_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanL_log)
 
 ログインログを取得する
 
@@ -817,6 +838,8 @@ response
 
 ### [ScanLoginDates]()
 
+実装少し先になります
+
 ログインボーナスように、指定範囲のログイン日を取得する
 
 request
@@ -848,7 +871,7 @@ response
 }
 ```
 
-### [ScanP_log]()
+### [ScanP_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanP_log)
 
 パズルプレイログを取得する
 
@@ -920,7 +943,7 @@ response
 }
 ```
 
-### [ScanStatus]()
+### [ScanStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanStatus)
 
 ゲームステータスを取得する
 
@@ -944,6 +967,29 @@ response
             "status_infos"
         ] /* 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり) */
     },
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [SetStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SetStatus)
+
+ゲームステータスを取得する
+
+request
+
+```jsonc
+{
+    "u_id": "u_id",
+    "game_status": 0 /* 0~4の数値(int) */
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
