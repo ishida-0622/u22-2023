@@ -151,3 +151,41 @@ class ScanStatus : RequestHandler<Map<String, Any>, String> {
     return gson.toJson(res)
   }
 }
+
+/**
+ * u_id, game_statusを受け取り、ステータスを更新する
+ *
+ * @param u_id String : u_id
+ * @param game_status Int : 0 ~ 4
+ *
+ * return String : {"response_status": "success", "result": {}}
+ */
+class SetStatus : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+        val game_status = if (body["game_status"] != null) {body["game_status"]!! as Int} else {throw Exception("game_status is null")}
+        if (game_status < 0 || game_status > 4) {throw Exception("game_status is out of range")}
+
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "status"
+
+        val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to game_status))
+        if (updated == "DONE"){
+          val dummyMap: Map<String, String> = mapOf()
+          mapOf("response_status" to "success", "result" to dummyMap)
+        } else {
+          mapOf("response_status" to "fail", "error" to "failed to update game status: $updated")
+        }
+      }
+      catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
