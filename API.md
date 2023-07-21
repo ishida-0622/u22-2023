@@ -54,6 +54,7 @@ response
     -   [パズルプレイログを取得する](#scanp_log)
     -   [読み聞かせプレイログを取得する](#scanb_log)
     -   [ゲームステータスを取得する](#scanstatus)
+    -   [ゲームステータスを更新する](#setstatus)
 
 ## 認証(アカウント)系
 
@@ -377,7 +378,7 @@ response
 }
 ```
 
-### [FinishPuzzle]()
+### [FinishPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishPuzzle)
 
 パズルを終了する
 
@@ -870,7 +871,7 @@ response
 }
 ```
 
-### [ScanP_log]()
+### [ScanP_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanP_log)
 
 パズルプレイログを取得する
 
@@ -966,6 +967,29 @@ response
             "status_infos"
         ] /* 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり) */
     },
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [SetStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SetStatus)
+
+ゲームステータスを取得する
+
+request
+
+```jsonc
+{
+    "u_id": "u_id",
+    "game_status": 0 /* 0~4の数値(int) */
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
