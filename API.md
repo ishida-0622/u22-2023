@@ -907,7 +907,7 @@ response
 }
 ```
 
-### [ScanB_log]()
+### [ScanB_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanB_log)
 
 読み聞かせプレイログを取得する
 
