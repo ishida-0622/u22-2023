@@ -117,7 +117,7 @@ class ScanP_log: RequestHandler<Map<String, Any>, String> {
   }
 }
 
-class Scanb_log: RequestHandler<Map<String, Any>, String> {
+class ScanB_log: RequestHandler<Map<String, Any>, String> {
   override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
       val res = runBlocking {
           try {
