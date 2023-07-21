@@ -54,6 +54,7 @@ response
     -   [パズルプレイログを取得する](#scanp_log)
     -   [読み聞かせプレイログを取得する](#scanb_log)
     -   [ゲームステータスを取得する](#scanstatus)
+    -   [ゲームステータスを更新する](#setstatus)
 
 ## 認証(アカウント)系
 
@@ -217,7 +218,7 @@ response
 
 ## パズル系
 
-### [RegisterPuzzle]()
+### [RegisterPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterPuzzle)
 
 パズルを登録する
 
@@ -377,7 +378,7 @@ response
 }
 ```
 
-### [FinishPuzzle]()
+### [FinishPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishPuzzle)
 
 パズルを終了する
 
@@ -459,7 +460,7 @@ response
 
 ## 読み聞かせ系
 
-### [RegisterBook]()
+### [RegisterBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterBook)
 
 本を登録する
 
@@ -700,7 +701,7 @@ response
 
 ## お知らせ系
 
-### [RegisterNotice]()
+### [RegisterNotice](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RegisterNotice)
 
 お知らせを登録する
 
@@ -769,7 +770,7 @@ response
 }
 ```
 
-### [GetNotices]()
+### [GetNotices](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/GetNotices)
 
 お知らせを全件取得する
 
@@ -804,7 +805,7 @@ response
 
 ## その他(ログ・ステータス等)
 
-### [ScanL_log]()
+### [ScanL_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanL_log)
 
 ログインログを取得する
 
@@ -837,6 +838,8 @@ response
 
 ### [ScanLoginDates]()
 
+実装少し先になります
+
 ログインボーナスように、指定範囲のログイン日を取得する
 
 request
@@ -868,7 +871,7 @@ response
 }
 ```
 
-### [ScanP_log]()
+### [ScanP_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanP_log)
 
 パズルプレイログを取得する
 
@@ -904,7 +907,7 @@ response
 }
 ```
 
-### [ScanB_log]()
+### [ScanB_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanB_log)
 
 読み聞かせプレイログを取得する
 
@@ -964,6 +967,29 @@ response
             "status_infos"
         ] /* 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり) */
     },
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [SetStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SetStatus)
+
+ゲームステータスを取得する
+
+request
+
+```jsonc
+{
+    "u_id": "u_id",
+    "game_status": 0 /* 0~4の数値(int) */
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```

@@ -11,6 +11,9 @@ import kotlinx.coroutines.runBlocking
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 
+/**
+ * 本をすべて取得する
+ */
 class GetBooks: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
@@ -40,6 +43,9 @@ class GetBooks: RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * 本を削除する
+ */
 class DeleteBook: RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
@@ -140,6 +146,56 @@ class StartBook : RequestHandler<Map<String, Any>, String> {
                     "response_status" to "fail",
                     "error" to "$e"
                 )
+            }
+        }
+        return gson.toJson(res)
+    }
+}
+
+ /**
+ * 本を登録する
+ */
+class RegisterBook : RequestHandler<Map<String, Any>, String> {
+
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "book"
+
+                val seq = dynamo.updateSequence(tableName)
+                if (seq == -1) {throw Exception("b_id could not be updated.")}
+                val id = "${seq}".padStart(4, '0')
+                val title_jp = if (body["title_jp"] != null) {body["title_jp"]!! as String} else {throw Exception("title_jp is null")}
+                val title_en = if (body["title_en"] != null) {body["title_en"]!! as String} else {throw Exception("title_en is null")}
+                val summary = if (body["summary"] != null) {body["summary"]!! as String} else {throw Exception("summary is null")}
+                val author = if (body["author"] != null) {body["author"]!! as String} else {throw Exception("author is null")}
+                val thumbnail = if (body["thumbnail"] != null) {body["thumbnail"]!! as String} else {throw Exception("thumbnail is null")}
+                val pdf = if (body["pdf"] != null) {body["pdf"]!! as String} else {throw Exception("pdf is null")}
+                val voice_keys = if (body["voice_keys"] != null && body["voice_keys"]!! is List<Any?>) {body["voice_keys"]!! as List<String>} else if (body["voice_keys"] == null) {throw Exception("voice_keys is null")} else {throw Exception("voice_keys is not List")}
+
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val book = Book(
+                    b_id = "b${id}",
+                    title_jp = title_jp,
+                    title_en = title_en,
+                    summary = summary,
+                    author = author,
+                    thumbnail = thumbnail,
+                    pdf = pdf,
+                    voice_keys = voice_keys,
+                )
+
+                dynamo.addItem(tableName, book)
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success", "result" to dummyMap)
+            } catch (e:Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
             }
         }
         return gson.toJson(res)       // JSONに変換してフロントに渡す

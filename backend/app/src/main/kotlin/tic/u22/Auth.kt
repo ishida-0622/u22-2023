@@ -44,6 +44,10 @@ class Quit: RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * ユーザー情報を変更する
+ * パスワードとその他情報の同時更新はできないように制御される
+ */
 class UpdateUser : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
@@ -71,9 +75,9 @@ class UpdateUser : RequestHandler<Map<String, Any>, String> {
                 
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "user"
-                println(dynamo.searchByKey("user", listOf(u_id)))
-                val result = dynamo.updateItem("user", listOf(u_id), updateInfos)
-                println(dynamo.searchByKey("user", listOf(u_id)))
+                println(dynamo.searchByKey(tableName, listOf(u_id)))
+                val result = dynamo.updateItem(tableName, listOf(u_id), updateInfos)
+                println(dynamo.searchByKey(tableName, listOf(u_id)))
                 val dummyMap: Map<String, String> = mapOf()
                 
                 if (result == "DONE") {
