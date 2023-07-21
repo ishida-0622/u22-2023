@@ -87,28 +87,9 @@ response
 }
 ```
 
-### [LogIn]()
+### [Login]()
 
-ログインする
-
-request
-
-```json
-{
-    "u_id": "u_id",
-    "password": "password"
-}
-```
-
-response
-
-```json
-{
-    "response_status": "success or fail",
-    "result": {},
-    "error": "エラー内容(failの時のみ)"
-}
-```
+Lambda 関数ではなく、認証 Only になりました
 
 ### [Quit](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Quit)
 
