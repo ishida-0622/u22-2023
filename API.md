@@ -590,7 +590,7 @@ response
 }
 ```
 
-### [StartBook]()
+### [StartBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/StartBook)
 
 読み聞かせを開始する
 
