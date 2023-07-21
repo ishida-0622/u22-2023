@@ -173,9 +173,13 @@ class SetStatus : RequestHandler<Map<String, Any>, String> {
         val dynamo = Dynamo(Settings().AWS_REGION)
         val tableName = "status"
 
-        dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to game_status))
-        val dummyMap: Map<String, String> = mapOf()
-        mapOf("response_status" to "success", "result" to dummyMap)
+        val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to game_status))
+        if (updated == "DONE"){
+          val dummyMap: Map<String, String> = mapOf()
+          mapOf("response_status" to "success", "result" to dummyMap)
+        } else {
+          mapOf("response_status" to "fail", "error" to "failed to update game status: $updated")
+        }
       }
       catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
