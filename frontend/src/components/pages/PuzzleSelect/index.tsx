@@ -1,6 +1,9 @@
 import { useLayoutEffect, useState } from "react";
 import { Seal } from "@/features/puzzle/select/Seal";
-import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
+import {
+  GetAllPuzzleRequest,
+  GetAllPuzzleResponse,
+} from "@/features/puzzle/types/get";
 import styles from "@/components/pages/PuzzleSelect/index.module.scss";
 import { Menubar } from "@/components/elements/Menubar";
 import BackgroundImage from "@/features/puzzle/select/images/puzzle-select-background.jpg";
@@ -18,12 +21,19 @@ export const PuzzleSelect = () => {
         throw new Error('API endpoint is undefined. check ".env.local"');
       }
       try {
-        // TODO:API完成時に書き換える
-        // const response = await fetch(`${baseUrl}/puzzle/puzzles`);
+        const req: GetAllPuzzleRequest = {};
+        // TODO:API完成時に書き換え
+        // const response = await fetch(`${baseUrl}/GetPuzzles`, {
+        //   method: "POST",
+        //   body: JSON.stringify(req),
+        // });
         const response = await fetch(
           "http://localhost:3000/api/puzzle/puzzles"
         );
         const json: GetAllPuzzleResponse = await response.json();
+        if (json.response_status === "fail") {
+          throw new Error(json.error);
+        }
         setPuzzles(json.result);
       } catch (error) {
         if (error instanceof Error) {
