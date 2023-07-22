@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "@/features/auth/firebase";
 import { RootState } from "@/store";
-import { userSlice, updateUid } from "@/store/user";
+import { updateUid, updateUser } from "@/store/user";
 import {
   ScanUsersRequest,
   ScanUsersResponse,
@@ -28,6 +28,7 @@ export const Login = () => {
 
   const fetchUserData = async () => {
     if (uid === null) {
+      console.warn("uid is null");
       return;
     }
     const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -57,7 +58,7 @@ export const Login = () => {
     }
     const userData = res.result[0];
     // グローバルステートを更新
-    dispatch(userSlice.actions.updateUser(userData));
+    dispatch(updateUser(userData));
   };
 
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
