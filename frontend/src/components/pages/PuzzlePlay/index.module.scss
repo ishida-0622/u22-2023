@@ -1,0 +1,26 @@
+// UI班へ
+// ピースのCSSは src/features/puzzle/play/Piece/index.module.scss を
+// ボード（はめるとこ）のCSSは src/features/puzzle/play/Board/index.module.scss を編集してください
+// このコメントはプルリクを送る際には削除してください
+
+.piece {
+  position: relative;
+  width: fit-content;
+}
+
+.piece_text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.preview_image_wrapper {
+  position: relative;
+
+  .image {
+    position: absolute;
+  }
+}
