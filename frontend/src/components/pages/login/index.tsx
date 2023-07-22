@@ -1,31 +1,33 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "@/features/auth/firebase";
 import { RootState } from "@/store";
-import { userSlice } from "@/store/user";
+import { userSlice, updateUid } from "@/store/user";
 import {
   ScanUsersRequest,
   ScanUsersResponse,
 } from "@/features/auth/types/scanUsers";
+import { isLogin } from "@/features/auth/utils/isLogin";
 
 import styles from "./index.module.scss";
+import { getLoginUser } from "@/features/auth/utils/getLoginUser";
 
 export const Login = () => {
   const router = useRouter();
 
   const dispatch = useDispatch();
   const user = useSelector((store: RootState) => store.user);
-  const firebaseUser = useSelector((store: RootState) => store.firebaseUser);
+  const uid = useSelector((store: RootState) => store.uid);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const fetchUserData = async () => {
-    if (firebaseUser === null) {
+    if (uid === null) {
       return;
     }
     const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -33,47 +35,30 @@ export const Login = () => {
       throw new Error("内部エラー");
     }
 
-    try {
-      const req: ScanUsersRequest = {
-        u_id: [firebaseUser.uid],
-      };
+    const req: ScanUsersRequest = {
+      u_id: [uid],
+    };
 
-      // ユーザー情報を取得
-      const res: ScanUsersResponse = await (
-        await fetch(`${baseUrl}/ScanUsers`, {
-          method: "POST",
-          body: JSON.stringify(req),
-        })
-      ).json();
+    // ユーザー情報を取得
+    const res: ScanUsersResponse = await (
+      await fetch(`${baseUrl}/ScanUsers`, {
+        method: "POST",
+        body: JSON.stringify(req),
+      })
+    ).json();
 
-      // failだった場合はエラーを投げる
-      if (res.response_status === "fail") {
-        throw new Error(res.error);
-      }
-      // ユーザー情報が空の場合はエラーを投げる
-      if (res.result.length === 0) {
-        throw new Error("user data is not found");
-      }
-      const userData = res.result[0];
-      // グローバルステートを更新
-      dispatch(userSlice.actions.updateUser(userData));
-    } catch (e) {
-      console.error(e);
+    // failだった場合はエラーを投げる
+    if (res.response_status === "fail") {
+      throw new Error(res.error);
     }
+    // ユーザー情報が空の場合はエラーを投げる
+    if (res.result.length === 0) {
+      throw new Error("user data is not found");
+    }
+    const userData = res.result[0];
+    // グローバルステートを更新
+    dispatch(userSlice.actions.updateUser(userData));
   };
-
-  // 既にログイン済みだった場合はTOPに飛ばす
-  if (firebaseUser && user) {
-    router.push("/");
-    return null;
-  }
-  // ログイン済みだがユーザー情報が無い場合は取得してから飛ばす
-  if (firebaseUser) {
-    fetchUserData().then(() => {
-      router.push("/");
-      return null;
-    });
-  }
 
   const changeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -93,7 +78,7 @@ export const Login = () => {
       // ログイン処理
       const response = await signInWithEmailAndPassword(auth, email, password);
       // グローバルステートを更新
-      dispatch(userSlice.actions.updateFirebaseUser(response.user));
+      dispatch(updateUid(response.user.uid));
       // ユーザー情報を取得
       await fetchUserData();
       ScreenTransition();
@@ -102,6 +87,30 @@ export const Login = () => {
       alert("ログインに失敗しました");
     }
   };
+
+  useEffect(() => {
+    isLogin().then((res) => {
+      if (res) {
+        if (user && uid) {
+          router.push("/");
+        } else if (uid) {
+          fetchUserData().then(() => {
+            router.push("/");
+          });
+        } else {
+          getLoginUser().then((res) => {
+            if (res) {
+              dispatch(updateUid(res.uid));
+              fetchUserData().then(() => {
+                router.push("/");
+              });
+            }
+          });
+        }
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const ScreenTransition = () => {
     router.push("/");
