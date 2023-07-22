@@ -83,6 +83,124 @@ class Utils {
   }
 
   /**
+   * AttrbuteValueをKotlinの型に変換する
+   *
+   * @param v AttributeValue: AttributeValueの値(データベースから取得したカラムなど)
+   *
+   * retrun Any?: Kotlinの型に変換されたv
+   */
+  fun toKotlinType(v: AttributeValue): Any? {
+    return when(v) {
+      is AttributeValue.S -> v.asS()
+      is AttributeValue.N -> v.asN()
+      is AttributeValue.Bool -> v.asBool()
+      is AttributeValue.L -> v.asL().map{toKotlinType(it)}
+      is AttributeValue.Null -> null
+      else -> throw Exception("not supported type")
+    }
+  }
+
+  /**
+   * AttributeValueをTableBaseのデータクラスに変換する
+   * このメソッドでデータクラスに変換する際は、必ずデータクラスの変数の内容を含めること。
+   * userデータクラスの場合、{"u_id": AttributeValue.S(u_id), ... , "authed": AttributeValue.Bool(authed)}となる。
+   *
+   * @param attribute Map<String, AttributeValue>: AttributeValueのMap(データベースから取得したデータ)
+   * @param tableType String: テーブル名( user | puzzle | book | notice | status | l_log | p_log | b_log | sequence )
+   *
+   * return TableBase: 指定のデータクラスに変換されたオブジェクト
+   */
+  fun attributeValueToObject(attribute: Map<String, AttributeValue>, tableType: String): TableBase {
+    try {
+      val values = attribute.map{
+        it.key to toKotlinType(it.value)
+      }.toMap()
+      return when (tableType) {
+        "user" -> User(
+          u_id = if(values["u_id"] == null){throw Exception("u_id is null")} else {if(values["u_id"]!! is String){values["u_id"] as String}else{throw Exception("u_id type is ng")}},
+          family_name = if(values["family_name"] == null){throw Exception("family_name is null")} else {if(values["family_name"]!! is String){values["family_name"] as String}else{throw Exception("family_name type is ng")}},
+          first_name = if(values["first_name"] == null){throw Exception("first_name is null")} else {if(values["first_name"]!! is String){values["first_name"] as String}else{throw Exception("first_name type is ng")}},
+          family_name_roma = if(values["family_name_roma"] == null){throw Exception("family_name_roma is null")} else {if(values["family_name_roma"]!! is String){values["family_name_roma"] as String}else{throw Exception("family_name_roma type is ng")}},
+          first_name_roma = if(values["first_name_roma"] == null){throw Exception("first_name_roma is null")} else {if(values["first_name_roma"]!! is String){values["first_name_roma"] as String}else{throw Exception("first_name_roma type is ng")}},
+          email = if(values["email"] == null){throw Exception("email is null")} else {if(values["email"]!! is String){values["email"] as String}else{throw Exception("email type is ng")}},
+          password = if(values["password"] == null){throw Exception("password is null")} else {if(values["password"]!! is String){values["password"] as String}else{throw Exception("password type is ng")}},
+          child_lock = if(values["child_lock"] == null){throw Exception("child_lock is null")} else {if(values["child_lock"]!! is String){values["child_lock"] as String}else{throw Exception("child_lock type is ng")}},
+          account_name = if(values["account_name"] == null){throw Exception("account_name is null")} else {if(values["account_name"]!! is String){values["account_name"] as String}else{throw Exception("account_name type is ng")}},
+          limit_time = if(values["limit_time"] == null){throw Exception("limit_time is null")} else {if(values["limit_time"]!! is String){(values["limit_time"] as String).toInt()}else{throw Exception("limit_time type is ng")}},
+          delete_flg = if(values["delete_flg"] == null){throw Exception("delete_flg is null")} else {if(values["delete_flg"]!! is Boolean){values["delete_flg"] as Boolean}else{throw Exception("delete_flg type is ng")}},
+          authed = if(values["authed"] == null){throw Exception("authed is null")} else {if(values["authed"]!! is Boolean){values["authed"] as Boolean}else{throw Exception("authed type is ng")}}
+        )
+        "puzzle" ->  Puzzle(
+          p_id = if(values["p_id"] == null){throw Exception("p_id is null")} else {if(values["p_id"]!! is String){values["p_id"] as String}else{throw Exception("p_id type is ng")}},
+          title = if(values["title"] == null){throw Exception("title is null")} else {if(values["title"]!! is String){values["title"] as String}else{throw Exception("title type is ng")}},
+          description = if(values["description"] == null){throw Exception("description is null")} else {if(values["description"]!! is String){values["description"] as String}else{throw Exception("description type is ng")}},
+          icon = if(values["icon"] == null){throw Exception("icon is null")} else {if(values["icon"]!! is String){values["icon"] as String}else{throw Exception("icon type is ng")}},
+          words = if(values["words"] == null){throw Exception("words is null")} else {if(values["words"]!! is List<Any?>){
+            val valuesWords = values["words"] as List<Any?>
+            valuesWords.map{
+              if(it is List<Any?>){
+                it.map{ item -> if(item is String){item}else{throw Exception("words type is ng")} }
+              }else{throw Exception("words type is ng")}
+            }
+          }else{throw Exception("words type is ng")}},
+          create_date  = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}},
+          update_date  = if(values["update_date"] == null){throw Exception("update_date is null")} else {if(values["update_date"]!! is String){values["update_date"] as String}else{throw Exception("update_date type is ng")}}
+        )
+        "book" -> Book(
+          b_id = if(values["b_id"] == null){throw Exception("b_id is null")} else {if(values["b_id"]!! is String){values["b_id"] as String}else{throw Exception("b_id type is ng")}},
+          title_jp = if(values["title_jp"] == null){throw Exception("title_jp is null")} else {if(values["title_jp"]!! is String){values["title_jp"] as String}else{throw Exception("title_jp type is ng")}},
+          title_en = if(values["title_en"] == null){throw Exception("title_en is null")} else {if(values["title_en"]!! is String){values["title_en"] as String}else{throw Exception("title_en type is ng")}},
+          summary = if(values["summary"] == null){throw Exception("summary is null")} else {if(values["summary"]!! is String){values["summary"] as String}else{throw Exception("summary type is ng")}},
+          author = if(values["author"] == null){throw Exception("author is null")} else {if(values["author"]!! is String){values["author"] as String}else{throw Exception("author type is ng")}},
+          thumbnail = if(values["thumbnail"] == null){throw Exception("thumbnail is null")} else {if(values["thumbnail"]!! is String){values["thumbnail"] as String}else{throw Exception("thumbnail type is ng")}},
+          pdf = if(values["pdf"] == null){throw Exception("pdf is null")} else {if(values["pdf"]!! is String){values["pdf"] as String}else{throw Exception("pdf type is ng")}},
+          voice_keys = if(values["voice_keys"] == null){throw Exception("voice_keys is null")} else {if(values["voice_keys"]!! is List<Any?>){(values["voice_keys"] as List<Any?>).map{ if(it is String){it}else{throw Exception("voice_keys type is ng")}}}else{throw Exception("voice_keys type is ng")}},
+          create_date = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}},
+          update_date = if(values["update_date"] == null){throw Exception("update_date is null")} else {if(values["update_date"]!! is String){values["update_date"] as String}else{throw Exception("update_date type is ng")}}
+        )
+        "notice" -> Notice(
+          n_id = if(values["n_id"] == null){throw Exception("n_id is null")} else {if(values["n_id"]!! is String){values["n_id"] as String}else{throw Exception("n_id type is ng")}},
+          title = if(values["title"] == null){throw Exception("title is null")} else {if(values["title"]!! is String){values["title"] as String}else{throw Exception("title type is ng")}},
+          content = if(values["content"] == null){throw Exception("content is null")} else {if(values["content"]!! is String){values["content"] as String}else{throw Exception("content type is ng")}},
+          create_date = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}}
+        )
+        "status" -> Status(
+          u_id = if(values["u_id"] == null){throw Exception("u_id is null")} else {if(values["u_id"]!! is String){values["u_id"] as String}else{throw Exception("u_id type is ng")}},
+          game_status = if(values["game_status"] == null){throw Exception("game_status is null")} else {if(values["game_status"]!! is String){(values["game_status"] as String).toInt()}else{throw Exception("game_status type is ng")}},
+          status_infos = if(values["status_infos"] == null){null} else {if(values["status_infos"]!! is List<Any?>){(values["status_infos"] as List<Any?>).map{ if(it is String){it}else{throw Exception("status_infos type is ng")}}}else{throw Exception("status_infos type is ng")}}
+        )
+        "l_log" -> LoginLog(
+          u_id = if(values["u_id"] == null){throw Exception("u_id is null")} else {if(values["u_id"]!! is String){values["u_id"] as String}else{throw Exception("u_id type is ng")}},
+          datetime = if(values["datetime"] == null){throw Exception("datetime is null")} else {if(values["datetime"]!! is String){values["datetime"] as String}else{throw Exception("datetime type is ng")}}
+        )
+        "p_log" -> PuzzleLog(
+          u_id = if(values["u_id"] == null){throw Exception("u_id is null")} else {if(values["u_id"]!! is String){values["u_id"] as String}else{throw Exception("u_id type is ng")}},
+          p_id = if(values["p_id"] == null){throw Exception("p_id is null")} else {if(values["p_id"]!! is String){values["p_id"] as String}else{throw Exception("p_id type is ng")}},
+          play_times = if(values["play_times"] == null){throw Exception("play_times is null")} else {if(values["play_times"]!! is String){(values["play_times"] as String).toInt()}else{throw Exception("play_times type is ng")}},
+          latest_play_datetime = if(values["latest_play_datetime"] == null){throw Exception("latest_play_datetime is null")} else {if(values["latest_play_datetime"]!! is String){values["latest_play_datetime"] as String}else{throw Exception("latest_play_datetime type is ng")}}
+        )
+        "b_log" -> BookLog(
+          u_id = if(values["u_id"] == null){throw Exception("u_id is null")} else {if(values["u_id"]!! is String){values["u_id"] as String}else{throw Exception("u_id type is ng")}},
+          b_id = if(values["b_id"] == null){throw Exception("b_id is null")} else {if(values["b_id"]!! is String){values["b_id"] as String}else{throw Exception("b_id type is ng")}},
+          play_times = if(values["play_times"] == null){throw Exception("play_times is null")} else {if(values["play_times"]!! is String){(values["play_times"] as String).toInt()}else{throw Exception("play_times type is ng")}},
+          latest_play_datetime = if(values["latest_play_datetime"] == null){throw Exception("latest_play_datetime is null")} else {if(values["latest_play_datetime"]!! is String){values["latest_play_datetime"] as String}else{throw Exception("latest_play_datetime type is ng")}}
+        )
+        "sequence" -> Sequence(
+          tablename = if(values["tablename"] == null){throw Exception("tablename is null")} else {if(values["tablename"]!! is String){values["tablename"] as String}else{throw Exception("tablename type is ng")}},
+          now_seq = if(values["now_seq"] == null){throw Exception("now_seq is null")} else {if(values["now_seq"]!! is String){(values["now_seq"] as String).toInt()}else{throw Exception("now_seq type is ng")}}
+        )
+        else -> throw Exception("none type")
+      }
+    } catch(e: Exception) {
+      println("$e")
+      println("could not serialized")
+      return LoginLog(
+        u_id = "$e"
+      )
+    }
+  }
+
+  /**
    * ファイルをBase64のURIに変換する
    *
    * @param path String: 変換するファイルのパス(ルートディレクトリはfiles)
@@ -133,12 +251,12 @@ class Utils {
    * return Map<String, Any>: 変換後のオブジェクト(引数の型が求められているものでない場合はエラーを返す)
    */
   fun formatJsonEnv(json: Any): Map<String, Any> {
-    if (json::class.simpleName == "String") {
-      return gson.fromJson(json as String, Map::class.java) as Map<String, Any>
+    if (json is String) {
+      return gson.fromJson(json, Map::class.java) as Map<String, Any>
     } else if (json::class.simpleName == "LinkedHashMap") {
       return json as Map<String, Any>
     } else {
-      return throw Exception("The json's type is not allowed")
+      throw Exception("The json's type is not allowed")
     }
   }
 }
@@ -164,7 +282,8 @@ val tableNameToKey: Map<String, List<String>> = mapOf(
   "status" to listOf("u_id"),
   "l_log" to listOf("u_id", "datetime"),
   "p_log" to listOf("u_id", "p_id"),
-  "b_log" to listOf("u_id", "b_id")
+  "b_log" to listOf("u_id", "b_id"),
+  "sequence" to listOf("tablename")
 )
 
 // 全てのデータクラスの親
@@ -209,8 +328,7 @@ data class User(
  * @param title: String タイトル
  * @param description: String 概要
  * @param icon: String アイコン(default有-設定不要)
- * @param words: List<List<String>> 単語(正解順に格納・[[単語, 形状のS3キー, 音声のS3キー]*単語数])([ [word, ${Settings().AWS_BUCKET}/puzzle/shape/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/voice/<ファイル名>], ])
- * @param illust_keys: List<List<String>> 特定の語順で出すイラスト([ [1, 0, 2, ${Settings().AWS_BUCKET}/puzzle/${title}/photo/<ファイル名>],])
+ * @param words: List<List<String>> 単語(正解順に格納・[[単語, 形状のS3キー, イラストのS3キー, 音声のS3キー]*単語数])([ [word, ${Settings().AWS_BUCKET}/puzzle/shape/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/image/<ファイル名>, ${Settings().AWS_BUCKET}/puzzle/voice/<ファイル名>], ])
  * @param create_date: String 作成日時(default:NOW()-設定不要)
  * @param update_date: String 更新日時(default:NOW()-設定不要)
  */
@@ -220,7 +338,6 @@ data class Puzzle(
     val description: String,
     val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
     val words: List<List<String>>,
-    val illust_keys: List<List<String>>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
 ): TableBase
@@ -236,7 +353,7 @@ data class Puzzle(
  * @param author: String 著者
  * @param thumbnail: String サムネイルのS3キー(default有-設定不要(デフォルトではpng))
  * @param pdf: String PDFのS3キー(default有-設定不要)
- * @param voice_keys: List<String> 音声のS3キー(ページ順)
+ * @param voice_keys: List<String> 音声のS3キー(ページ順 ["${Settings().AWS_BUCKET}/book/${b_id}/1.mp3", ...])
  * @param create_date: String 作成日時(default:NOW()-設定不要)
  * @param update_date: String 更新日時(default:NOW()-設定不要)
  */
@@ -318,10 +435,21 @@ data class PuzzleLog(
  */
 data class BookLog(
     val u_id: String,
-    val p_id: String = "p0000",
+    val b_id: String = "p0000",
     val play_times: Int = 0,
     val latest_play_datetime: String = "${LocalDateTime.now()}",
-)
+): TableBase
+
+/**
+ * Sequenceデータクラス(テーブル:sequence)
+ *
+ * @param tablename: String | puzzle | book | notice |
+ * @param now_seq: Int: 現在の最新のID番号
+ */
+data class Sequence(
+    val tablename: String,
+    val now_seq: Int
+): TableBase
 
 /**
  * Adminアカウントの判定と作成をするクラス

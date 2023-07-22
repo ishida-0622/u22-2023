@@ -1,14 +1,14 @@
 export * from "./puzzleSeal";
 
-export type PuzzleType = {
-  puzzleId: string;
+export type Puzzle = {
+  p_id: string;
   title: string;
   description: string;
   icon: string;
-  words: string[];
-  shape_keys: string[];
-  illust_keys: string[];
-  voice_keys: string[];
+  words: PuzzleWord[];
   create_date: string;
   update_date: string;
 };
+
+/** 単語, シルエット, イラスト, 音声 */
+export type PuzzleWord = [string, string, string, string];
