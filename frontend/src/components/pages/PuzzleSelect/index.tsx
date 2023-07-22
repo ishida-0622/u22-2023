@@ -1,16 +1,14 @@
 import { useLayoutEffect, useState } from "react";
 import { Seal } from "@/features/puzzle/select/Seal";
-import {
-  GetPuzzlesResponse,
-  PuzzleSealType,
-} from "@/features/puzzle/types/puzzleSeal";
+import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
 import styles from "@/components/pages/PuzzleSelect/index.module.scss";
 import { Menubar } from "@/components/elements/Menubar";
 import BackgroundImage from "@/features/puzzle/select/images/puzzle-select-background.jpg";
 import Image from "next/image";
+import { Puzzle } from "@/features/puzzle/types";
 
 export const PuzzleSelect = () => {
-  const [puzzles, setPuzzles] = useState<PuzzleSealType[]>([]);
+  const [puzzles, setPuzzles] = useState<Puzzle[]>([]);
 
   useLayoutEffect(() => {
     const fetchPuzzles = async () => {
@@ -23,10 +21,10 @@ export const PuzzleSelect = () => {
         // TODO:API完成時に書き換える
         // const response = await fetch(`${baseUrl}/puzzle/puzzles`);
         const response = await fetch(
-          `${baseUrl || "http://localhost:3000/api"}/puzzle/puzzles`
+          "http://localhost:3000/api/puzzle/puzzles"
         );
-        const json: GetPuzzlesResponse = await response.json();
-        setPuzzles(json.items);
+        const json: GetAllPuzzleResponse = await response.json();
+        setPuzzles(json.result);
       } catch (error) {
         if (error instanceof Error) {
           alert("パズル取得中にエラーが発生しました");
@@ -42,13 +40,16 @@ export const PuzzleSelect = () => {
 
   return (
     <div className={`${styles.container}`}>
-      <div className={`${styles.seal_field}`}>
+      <div>
         {puzzles.map((puzzle, i) => (
-          <div className={`item_${i}`}>
+          <div
+            key={`${puzzle.title}${puzzle.create_date}`}
+            className={`item_${i}`}
+          >
             <div className={`${styles.items}`}>
               <div className={`seal_${i}`}>
                 <Seal
-                  key={`${puzzle.puzzleId}${i}`}
+                  key={`${puzzle.title}${i}`}
                   className={`${styles.seal}`}
                   {...puzzle}
                 />
@@ -68,7 +69,11 @@ export const PuzzleSelect = () => {
         ))}
       </div>
       <Menubar />
-      <Image className={`${styles.background}`} src={BackgroundImage} alt="Background Image" />
+      <Image
+        className={`${styles.background}`}
+        src={BackgroundImage}
+        alt="Background Image"
+      />
     </div>
   );
 };
