@@ -13,15 +13,15 @@ export const PuzzlePlay = () => {
   const router = useRouter();
   // 問題id
   const { id } = router.query;
-  if (typeof id !== "string") {
-    throw new Error("TODO:");
-  }
+  // if (typeof id !== "string") {
+  //   throw new Error("TODO:");
+  // }
 
   const fetcher = async (key: string) => {
     const req: StartPuzzleRequest = {
       // TODO:Reduxからuidを取得
       u_id: "",
-      p_id: id,
+      p_id: id as string,
     };
     return fetch(key, {
       method: "POST",
@@ -123,9 +123,9 @@ export const PuzzlePlay = () => {
   }
 
   const pieces = puzzleData.words.map((word) => (
-    <Piece key={word[0]} id={word[0]} className={`${styles.piece}`}>
+    <Piece key={word[0]} id={word[0]}>
       <Image src={word[2]} alt={word[0]} width={100} height={100} />
-      <span className={`${styles.piece_text}`}>{word[0]}</span>
+      <span>{word[0]}</span>
     </Piece>
   ));
 
