@@ -1,5 +1,4 @@
 .container {
-
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -50,7 +49,7 @@
     top: 0.5rem;
     display: inline-block;
     width: 7.5rem;
-    height: 2.0rem;
+    height: 2rem;
     border-radius: 50%;
     background: radial-gradient(#525252, #ffffff00);
     animation: animationZoom2 3s ease-in-out infinite;
@@ -63,19 +62,19 @@
 
   @keyframes animationZoom2 {
     50% {
-      transform: scale(1.1)
+      transform: scale(1.1);
     }
   }
 
   .star_field {
-    transition: .5s;
+    transition: 0.5s;
     transform: rotateZ(0deg);
 
     .stars {
       position: relative;
       width: 0;
       height: 0;
-      border-bottom: 1.0rem solid #ffe434;
+      border-bottom: 1rem solid #ffe434;
       border-right: 1.5rem solid transparent;
       border-left: 1.5rem solid transparent;
       transform: rotate(-37deg);
@@ -87,7 +86,7 @@
       position: absolute;
       top: 0;
       left: -1.5rem;
-      border-bottom: 1.0rem solid #ffe434;
+      border-bottom: 1rem solid #ffe434;
       border-right: 1.5rem solid transparent;
       border-left: 1.5rem solid transparent;
       transform: rotate(-71.5deg);
@@ -99,7 +98,7 @@
       position: absolute;
       top: 0;
       left: -1.5rem;
-      border-bottom: 1.0rem solid #ffe434;
+      border-bottom: 1rem solid #ffe434;
       border-right: 1.5rem solid transparent;
       border-left: 1.5rem solid transparent;
       transform: rotate(71.5deg);
@@ -108,6 +107,6 @@
   }
 
   .star_field:hover {
-    transform: rotateZ( 360deg ) ;
+    transform: rotateZ(360deg);
   }
 }
