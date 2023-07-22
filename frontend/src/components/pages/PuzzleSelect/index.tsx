@@ -4,6 +4,10 @@ import {
   GetPuzzlesResponse,
   PuzzleSealType,
 } from "@/features/puzzle/types/puzzleSeal";
+import styles from "@/components/pages/PuzzleSelect/index.module.scss";
+import { Menubar } from "@/components/elements/Menubar";
+import BackgroundImage from "@/features/puzzle/select/images/puzzle-select-background.jpg";
+import Image from "next/image";
 
 export const PuzzleSelect = () => {
   const [puzzles, setPuzzles] = useState<PuzzleSealType[]>([]);
@@ -37,12 +41,34 @@ export const PuzzleSelect = () => {
   }, []);
 
   return (
-    <div>
-      <div>{/* TODO:スタートの画像 */}</div>
-      {puzzles.map((puzzle) => (
-        <Seal key={puzzle.puzzleId} {...puzzle} />
-      ))}
-      <div>{/* TODO:ゴールの画像 */}</div>
+    <div className={`${styles.container}`}>
+      <div className={`${styles.seal_field}`}>
+        {puzzles.map((puzzle, i) => (
+          <div className={`item_${i}`}>
+            <div className={`${styles.items}`}>
+              <div className={`seal_${i}`}>
+                <Seal
+                  key={`${puzzle.puzzleId}${i}`}
+                  className={`${styles.seal}`}
+                  {...puzzle}
+                />
+              </div>
+              <div className={`shadow_${i}`}>
+                <div className={`${styles.shadow}`}></div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {Array.from({ length: 12 }, (_, i) => (
+          <div key={`star_key_${i}`} className={`star_${i}`}>
+            <div className={`${styles.star_field}`}>
+              <div className={`${styles.stars}`}></div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Menubar />
+      <Image className={`${styles.background}`} src={BackgroundImage} alt="Background Image" />
     </div>
   );
 };
