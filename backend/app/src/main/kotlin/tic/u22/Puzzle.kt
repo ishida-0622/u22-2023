@@ -191,3 +191,52 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)
     }
 }
+
+class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try{
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+
+                // DynamoDBのインスタンス化、テーブル名の設定
+                val dynamo = Dynamo(Settings().AWS_REGION)
+
+                val status = dynamo.searchByKey("status", listOf(u_id))
+                if (!status.containsKey("u_id")) {
+                    throw Exception("this u_id does not exist")
+                } else if (!status.containsKey("game_status")) {
+                    throw Exception("unexpected error: this u_id does not game_status")
+                }
+                if((utils.toKotlinType(status["game_status"]!!) as String).toInt() != 2) {
+                    throw Exception("game status is not 2: now is ${(utils.toKotlinType(status["game_status"]!!) as String).toInt()}")
+                }
+
+                val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 1))
+                if(updated != "DONE"){
+                    throw Exception("failed to update game status: $updated")
+                }
+
+                // ここにリスタートのコードを記入
+
+                // 変更予定
+                // val result = dynamo.searchByKey("puzzle", listOf(p_id))
+
+                mapOf(
+                    "resposne_status" to "success",
+                    "result" to utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                )
+            } catch (e: Exception) {
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}
