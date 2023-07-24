@@ -26,11 +26,7 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const fetchUserData = async () => {
-    if (uid === null) {
-      console.warn("uid is null");
-      return;
-    }
+  const fetchUserData = async (uid: string) => {
     const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
     if (baseUrl === undefined) {
       throw new Error("内部エラー");
@@ -81,7 +77,7 @@ export const Login = () => {
       // グローバルステートを更新
       dispatch(updateUid(response.user.uid));
       // ユーザー情報を取得
-      await fetchUserData();
+      await fetchUserData(response.user.uid);
       ScreenTransition();
     } catch (e) {
       console.error(e);
@@ -95,14 +91,14 @@ export const Login = () => {
         if (user && uid) {
           router.push("/");
         } else if (uid) {
-          fetchUserData().then(() => {
+          fetchUserData(uid).then(() => {
             router.push("/");
           });
         } else {
           getLoginUser().then((res) => {
             if (res) {
               dispatch(updateUid(res.uid));
-              fetchUserData().then(() => {
+              fetchUserData(res.uid).then(() => {
                 router.push("/");
               });
             }
