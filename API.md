@@ -205,15 +205,44 @@ response
 
 request
 
-```json
+```jsonc
 {
     "title": "title",
     "description": "description",
     "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
     "words": [
-        ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+        {
+            "word": "I",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "have",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "a pen",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "am",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": true /* ダミーピースか否か */
+        }
     ]
 }
 ```
@@ -241,9 +270,38 @@ request
     "description": "description",
     "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
     "words": [
-        ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+        {
+            "word": "I",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "have",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "a pen",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "am",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": true /* ダミーピースか否か */
+        }
     ]
 }
 ```
@@ -297,25 +355,85 @@ response
     "response_status": "success or fail",
     "result": [
         {
+            "p_id": "p_id1",
             "title": "title1",
             "description": "description1",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
             "words": [
-                ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+                {
+                    "word": "I",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "have",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "a pen",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "am",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": true /* ダミーピースか否か */
+                }
             ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
         {
+            "p_id": "p_id2",
             "title": "title2",
             "description": "description2",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI2",
             "words": [
-                ["He", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["has", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["a ball", "シルエットのURI", "イラストのURI", "音声のURI"]
+                {
+                    "word": "He",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "has",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "a ball",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "is",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": true /* ダミーピースか否か */
+                }
             ],
             "create_date": "create_date2",
             "update_date": "update_date2"
@@ -344,16 +462,46 @@ response
 {
     "response_status": "success or fail",
     "result": {
-        "title": "title1",
-        "description": "description1",
-        "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
+        "p_id": "p_id",
+        "title": "title",
+        "description": "description",
+        "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
         "words": [
-            ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-            ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-            ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+            {
+                "word": "I",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "have",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "a pen",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "am",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": true /* ダミーピースか否か */
+            }
         ],
-        "create_date": "create_date1",
-        "update_date": "update_date1"
+        "create_date": "create_date",
+        "update_date": "update_date"
     },
     "error": "エラー内容(ユーザーのゲームステータスが0でない、等)"
 }
@@ -392,7 +540,7 @@ request
 {
     "u_id": "u_id",
     "p_id": "p_id",
-    "words": [
+    "saved_data": [
         "N",
         "I",
         "a pen"
@@ -428,8 +576,49 @@ response
 {
     "response_status": "success or fail",
     "result": {
-        "p_id": "p_id",
-        "words": [
+        "puzzle_info": {
+            "p_id": "p_id",
+            "title": "title",
+            "description": "description",
+            "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
+            "words": [
+                {
+                    "word": "I",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "have",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "a pen",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "am",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": true /* ダミーピースか否か */
+                }
+            ],
+            "create_date": "create_date",
+            "update_date": "update_date"
+        },
+        "saved_data": [
             "N",
             "I",
             "a pen"
