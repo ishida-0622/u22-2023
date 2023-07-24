@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Modal from "react-modal";
 import { NowLoading } from "@/components/elements/NowLoading";
 import Link from "next/link";
-
+import styles from "./index.module.scss"
 // Modalを表示するHTML要素のidを指定
 Modal.setAppElement("#__next");
 
