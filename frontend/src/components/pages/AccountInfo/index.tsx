@@ -21,33 +21,20 @@ import {
 
 export const AccountInfo = () => {
   const userDataFetcher = async (url: string) => {
-    const request: ScanUsersRequest = { u_id: ["1"] };
-    // const response = await fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(request),
-    // });
-    // const json: ScanUsersResponse = await response.json();
-    // return json.result[0];
-    const mock: User = {
-      u_id: "1",
-      family_name: "あ",
-      first_name: "あ",
-      family_name_roma: "a",
-      first_name_roma: "a",
-      email: "mail@mail.com",
-      password: "tintin",
-      child_lock: "tntn",
-      account_name: "tintin",
-      limit_time: 100,
-      delete_flg: false,
-      authed: true,
+    const request: ScanUsersRequest = {
+      u_id: ["92be8e7e-00da-448a-9e73-3cd0c60f6a35"],
     };
-    return mock;
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(request),
+    });
+    const json: ScanUsersResponse = await response.json();
+    return json.result[0];
   };
 
   const puzzleLogFetcher = async (url: string) => {
     const request: ScanPuzzleLogRequest = {
-      u_id: "1",
+      u_id: "92be8e7e-00da-448a-9e73-3cd0c60f6a35",
     };
     // const response = await fetch(url, {
     //   method: "POST",
