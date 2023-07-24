@@ -826,11 +826,11 @@ response
 
 request
 
-```json
+```jsonc
 {
     "u_id": "u_id",
     "b_id": "b_id",
-    "page": "現在のページ数(int)"
+    "saved_data": 1 /* 現在のページ数 */
 }
 ```
 
@@ -858,12 +858,26 @@ request
 
 response
 
-```json
+```jsonc
 {
     "response_status": "success or fail",
     "result": {
-        "b_id": "b_id",
-        "page": "ページ数"
+        "book_info": {
+            "b_id": "b_id",
+            "title_jp": "title_jp",
+            "title_en": "title_en",
+            "summary": "summary",
+            "author": "auhor",
+            "thumbnail": "サムネイル写真のURI",
+            "pdf": "PDFファイルのURI",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI",
+                "2ページ目読み聞かせ音声のURI"
+            ],
+            "create_date": "create_date",
+            "update_date": "update_date"
+        },
+        "saved_data": 1 /* 現在のページ数 */
     },
     "error": "エラー内容(ゲームステータスが4でない等)"
 }
