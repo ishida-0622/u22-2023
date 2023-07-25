@@ -111,10 +111,6 @@ export const PuzzleList = () => {
                     />
                     <p>{word.voice}</p>
                     <audio controls src={word.voice} />
-
-                    {/* <p>{word.is_displayed}</p>
-                    <p>{word.is_dummy}</p> */}
-
                     <hr />
                   </div>
                 ))}
