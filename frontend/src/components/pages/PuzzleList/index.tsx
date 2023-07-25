@@ -11,8 +11,8 @@ import Image from "next/image";
 Modal.setAppElement("#__next");
 
 export const PuzzleList = () => {
-  const [posts, setPosts] = useState<Omit<Puzzle, "p_id">[]>([]);
-  const [puzzle, setPazzle] = useState<Omit<Puzzle, "p_id">>();
+  const [posts, setPosts] = useState<Puzzle[]>([]);
+  const [puzzle, setPazzle] = useState<Puzzle>();
   //モーダルウィンドウの表示/非表示を表すbool値を宣言
   const [modalIsOpen, setModalIsOpen] = useState(false);
   /** モーダルウィンドウを表示にする関数 */
@@ -20,10 +20,7 @@ export const PuzzleList = () => {
   /** モーダルウィンドウを非表示にする関数 */
   const closeModal = () => setModalIsOpen(false);
 
-  const detail = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    post: Omit<Puzzle, "p_id">
-  ) => {
+  const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Puzzle) => {
     event.preventDefault();
     setPazzle(post);
     openModal();
