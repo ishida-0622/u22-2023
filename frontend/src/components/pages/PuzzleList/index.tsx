@@ -99,13 +99,22 @@ export const PuzzleList = () => {
                 <b>問題：</b>「
                 {puzzle.words.map((word) => (
                   <div>
-                    <p>単語：{word[0]}</p>
-                    <p>シルエットのURI：{word[1]}</p>
-                    <Image src={word[1]} alt="" width={150} height={100} />
-                    <p>イラストのURI：{word[2]}</p>
-                    <Image src={word[2]} alt="" width={150} height={100} />
-                    <p>{word[3]}</p>
-                    <audio controls src={word[3]} />
+                    <p>単語：{word.word}</p>
+                    <p>シルエットのURI：{word.shadow}</p>
+                    <Image src={word.shadow} alt="" width={150} height={100} />
+                    <p>イラストのURI：{word.illustration}</p>
+                    <Image
+                      src={word.illustration}
+                      alt=""
+                      width={150}
+                      height={100}
+                    />
+                    <p>{word.voice}</p>
+                    <audio controls src={word.voice} />
+
+                    {/* <p>{word.is_displayed}</p>
+                    <p>{word.is_dummy}</p> */}
+
                     <hr />
                   </div>
                 ))}
