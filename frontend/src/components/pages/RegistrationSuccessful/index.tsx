@@ -15,7 +15,7 @@ export const RegistrationSuccessful = () => {
   return (
     <div className={`${styles.container}`}>
       <div className={`${styles.child}`}>
-        <p>登録が完了しました</p>
+        <p className={`${styles.text}`}>登録が完了しました</p>
       <div className={`${styles.submit_button_field}`}>
         <button type="submit" onClick={handleSubmit} className={`${styles.submit_button}`} >
           ログインする

@@ -1,28 +1,40 @@
 .container {
     font-family: arial;
-    font-size: 24%;
+    font-size: 130%;
     margin: 0%;
-    width: 0%;
-    height: 0%;
+    width: 50%;
+    height: 50%;
     /* 準備 */
     position: relative;
+    position:absolute;
+    top: 60%;
+    text-align: center;
+    /*transform: translateY(-25%)*/
+    /*background-color #fff;*/
+    
+    .text{
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 .child {
-    width: 50em;
-    height: 50em;
+    width: 50%;
+    height: 50%;
+    /*margin: 0%;*/
     /* 水平・垂直方向の中央揃え */
     position: absolute;
-    top: 50em;
-    left: 50em;
-    margin: -25em 0 0 -25em; /* 完全に中央に配置するため、上・左の margin を負の数に設定 */
+    top: 0%;
+    /*left: 115%;*/
+    /*transform: translate(-50%, -50%);*/
 }
+
 .submit_button {
     display: inline-block;
     color: azure;
     font-weight: bold;
     background-color: #df0013;
-    border-bottom: 5px solid #9f000c;
+    border-bottom: 5% solid #9f000c;
     border-radius: 100vh;
     border-color: #9f000c;
     top: calc(50% - .5em);
@@ -30,7 +42,7 @@
 }
 
 .submit_button:hover {
-    margin-top: 3px;
-    border-bottom: 2px solid #9f000c;
+    margin-top: 0.18rem;
+    border-bottom: 0.12rem solid #9f000c;
     cursor: pointer;
 }
