@@ -1,7 +1,10 @@
 import Router, { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
@@ -88,7 +91,12 @@ export const Signup = () => {
                   })
                 );
                 dispatch(updateUid(res.user.uid));
-                resolve();
+                const redirectUrl =
+                  process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
+                sendEmailVerification(
+                  res.user,
+                  redirectUrl ? { url: redirectUrl } : undefined
+                ).then(() => resolve());
               })
               .catch((e) => reject(e));
           });
