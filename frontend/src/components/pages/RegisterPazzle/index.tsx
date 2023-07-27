@@ -130,12 +130,14 @@ export const RegisterPazzle = () => {
                 }}
                 required={true}
               />
-              <Image
-                src={formValues.icon}
-                alt=""
-                width={100}
-                height={100}
-              ></Image>
+              {formValues.icon !== "" && (
+                <Image
+                  src={formValues.icon}
+                  alt=""
+                  width={100}
+                  height={100}
+                ></Image>
+              )}
             </label>
             <label>
               問題の文章
