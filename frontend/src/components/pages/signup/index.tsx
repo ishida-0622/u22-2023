@@ -109,7 +109,7 @@ export const Signup = () => {
   };
 
   const screenTransition = () => {
-    router.push("/");
+    router.push("/send-email");
   };
 
   return (
