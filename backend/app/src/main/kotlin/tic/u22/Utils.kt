@@ -29,11 +29,53 @@ class Utils {
           prop.get(obj)?.let { value ->
             if (value::class.isData) {
               toMap(value)
+            } else if(value is List<*>) {
+              toMapInList(value)
+            } else if (value is Map<*, *>) {
+              toMapInMap(value)
             } else {
               value
             }
           }
     }
+  }
+
+  /**
+   * toMap内で見つかったListにデータクラスがないか検証して変換する
+   */
+  private fun toMapInList(lst: List<*>): List<*> {
+    return lst.map{
+      if (it == null) {
+        null
+      } else if(it is List<*>) {
+        toMapInList(it)
+      } else if (it is Map<*, *>) {
+        toMapInMap(it)
+      } else if (it::class.isData) {
+        toMap(it)
+      } else {
+        it
+      }
+    }
+  }
+
+  /**
+   * toMap内で見つかったMapにデータクラスがないか検証して変換する
+   */
+  private fun toMapInMap(mp: Map<*, *>): Map<*, *> {
+    return mp.map{
+      if(it.value == null){
+        it.key to null
+      } else if(it.value is List<*>) {
+        it.key to toMapInList(it.value as List<*>)
+      } else if (it.value is Map<*, *>) {
+        it.key to toMapInMap(it.value as Map<*, *>)
+      } else if ((it.value!!)::class.isData) {
+        it.key to toMap(it.value as Any)
+      } else {
+        it.key to it.value
+      }
+    }.toMap()
   }
 
   /**
@@ -51,6 +93,23 @@ class Utils {
   }
 
   /**
+   * MapをAttributeValue.M型に変換する
+   *
+   * @param mp 変換したいMap
+   *
+   * @return 変換されたMap
+   */
+  fun toAttributeValueM(mp: Map<*, *>): AttributeValue.M {
+    val res = mp.map{
+      if(!(it.key is String)) {
+        throw Exception("key is not String while convert to AttributeValue.M")
+      }
+      it.key as String to toAttributeValue(it.value)
+    }.toMap()
+    return AttributeValue.M(res)
+  }
+
+  /**
    * valueをAttributeValue型に変換する
    *
    * @param value 変換したい値
@@ -65,6 +124,7 @@ class Utils {
       null -> AttributeValue.Null(true)
       is ByteArray -> AttributeValue.B(value)
       is List<Any?> -> toAttributeValueList(value)
+      is Map<*, *> -> toAttributeValueM(value)
       else -> AttributeValue.S(value as String)
     }
   }
@@ -95,6 +155,7 @@ class Utils {
       is AttributeValue.N -> v.asN()
       is AttributeValue.Bool -> v.asBool()
       is AttributeValue.L -> v.asL().map{toKotlinType(it)}
+      is AttributeValue.M -> v.asM().map{it.key to toKotlinType(it.value)}
       is AttributeValue.Null -> null
       else -> throw Exception("not supported type")
     }
@@ -136,15 +197,28 @@ class Utils {
           description = if(values["description"] == null){throw Exception("description is null")} else {if(values["description"]!! is String){values["description"] as String}else{throw Exception("description type is ng")}},
           icon = if(values["icon"] == null){throw Exception("icon is null")} else {if(values["icon"]!! is String){values["icon"] as String}else{throw Exception("icon type is ng")}},
           words = if(values["words"] == null){throw Exception("words is null")} else {if(values["words"]!! is List<Any?>){
-            val valuesWords = values["words"] as List<Any?>
-            valuesWords.map{
-              if(it is List<Any?>){
-                it.map{ item -> if(item is String){item}else{throw Exception("words type is ng")} }
-              }else{throw Exception("words type is ng")}
+            val wordVal = values["words"]!! as List<Any?>
+            wordVal.map{
+              if(it is Map<*, *>){
+                it.map{ item ->
+                  if(!(item.key is String && item.value is AttributeValue)){throw Exception("type of word (inside) is ng")}
+                }
+                attributeValueToObject(it as Map<String, AttributeValue>, "word") as Word
+              } else {
+                throw Exception("type of word is ng")
+              }
             }
           }else{throw Exception("words type is ng")}},
           create_date  = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}},
           update_date  = if(values["update_date"] == null){throw Exception("update_date is null")} else {if(values["update_date"]!! is String){values["update_date"] as String}else{throw Exception("update_date type is ng")}}
+        )
+        "word" -> Word(
+          word = if(values["word"] == null){throw Exception("word is null")} else {if(values["word"]!! is String){values["word"] as String}else{throw Exception("word type is ng")}},
+          shadow = if(values["shadow"] == null){throw Exception("shadow is null")} else {if(values["shadow"]!! is String){values["shadow"] as String}else{throw Exception("shadow type is ng")}},
+          illustration = if(values["illustration"] == null){throw Exception("illustration is null")} else {if(values["illustration"]!! is String){values["illustration"] as String}else{throw Exception("illustration type is ng")}},
+          voice = if(values["voice"] == null){throw Exception("voice is null")} else {if(values["voice"]!! is String){values["voice"] as String}else{throw Exception("voice type is ng")}},
+          is_displayed = if(values["is_displayed"] == null){throw Exception("is_displayed is null")} else {if(values["is_displayed"]!! is Boolean){values["is_displayed"] as Boolean}else{throw Exception("is_displayed type is ng")}},
+          is_dummy = if(values["is_dummy"] == null){throw Exception("is_dummy is null")} else {if(values["is_dummy"]!! is Boolean){values["is_dummy"] as Boolean}else{throw Exception("is_dummy type is ng")}},
         )
         "book" -> Book(
           b_id = if(values["b_id"] == null){throw Exception("b_id is null")} else {if(values["b_id"]!! is String){values["b_id"] as String}else{throw Exception("b_id type is ng")}},
@@ -337,9 +411,18 @@ data class Puzzle(
     val title: String,
     val description: String,
     val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
-    val words: List<List<String>>,
+    val words: List<Word>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
+): TableBase
+
+data class Word(
+    val word: String,
+    val shadow: String,
+    val illustration: String,
+    val voice: String,
+    val is_displayed: Boolean,
+    val is_dummy: Boolean
 ): TableBase
 
 /**
