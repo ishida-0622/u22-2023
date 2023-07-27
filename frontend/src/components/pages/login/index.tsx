@@ -15,6 +15,8 @@ import { isLogin } from "@/features/auth/utils/isLogin";
 
 import styles from "./index.module.scss";
 import { getLoginUser } from "@/features/auth/utils/getLoginUser";
+import image from "./images/A.jpg";
+import { Image } from "./images/B.jpg";
 
 export const Login = () => {
   const router = useRouter();
@@ -117,6 +119,7 @@ export const Login = () => {
     <div className={styles.container}>
       <div className={`${styles.header}`}>
         <div className={`${styles.logintext}`}></div>
+        <Image  src={imageA}/>
         <h2>ログイン</h2>
         <p>パパ、ママにそうさしてもらってね！</p>
         <hr />
