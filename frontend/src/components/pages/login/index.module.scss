@@ -1,86 +1,65 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin-bottom: 1%;
-    /* background-color: #7EC7D8 */;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  // margin-bottom: 1%;
+  background-color: #7ec7d8;
 }
 
 .logintext {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1%;
-    /* background-color: #7EC7D8; */
-    /* 必要なスタイルを追加してください */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // margin-bottom: 1%;
+  background-color: #7ec7d8;
 }
 
-    .header{
-        text-align: center;
-        font-size: 145%;
-        margin: auto;
-        width: 100%;
-        height: 100%;
-        letter-spacing: 0.05em;
-        margin-bottom: 1%;
-        background-color: #7EC7D8;
+.header {
+  text-align: center;
+  font-size: 150%;
+  margin: 0;
+  // width: 50%;
+  width: 100%;
+  // height: 50%;
+  height: 100%;
+  letter-spacing: 0.05rem;
+  // margin-bottom: 1%;
+  background-color: #7ec7d8;
+  background-image: url("./images/meadow.jpg");
+  background-size: cover;
+  label {
+    margin-bottom: 4rem;
+    display: inline-block;
+    text-align: justify;
+  }
+  input {
+    width: 100%;
+    text-align: left;
+  }
+  button {
+    margin-bottom: 3rem;
+  }
+  .link {
+    font-size: 50%;
+  }
+}
 
-        label {
-            margin-bottom: 6.4%;
-            display: inline-block;
-            text-align:justify;
+.submit_button {
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #df0013;
+  border-bottom: 5px solid #9f000c;
+  border-radius: 100vh;
+  border-color: #9f000c;
+  top: calc(50% - 0.5rem);
+  right: 1rem;
+}
 
-        input{
-            width: 100%;
-            text-align: left;
-            border-top-left-radius: 15em;
-            border-top-right-radius: 15em;
-            border-bottom-left-radius: 15em;
-            border-bottom-right-radius: 15em;
-            border-radius: 40em 40em 40em 40em;
-            border: 0.25em solid palevioletred;
-
-
-            
-        }
-        }
-        button{
-            margin-bottom: 3rem;
-        }
-        .link{
-            font-size: 50%;
-        }
-    }
-    .submit_button {
-        display: inline-block;
-        color: azure;
-        font-weight: bold;
-        background-color: #df0013;
-        border-bottom: 5px solid #9f000c;
-        border-radius: 100vh;
-        border-color: #9f000c;
-        top: calc(50% - .5em);
-        right: 1rem;
-    }
-
-    .submit_button:hover {
-        margin-top: 3px;
-        border-bottom: 2px solid #9f000c;
-        cursor: pointer;
-    }
-//     .input_wrapper{
-//         position: relative;
-//     }
-//     .input_wrapper span{
-//         position: absolute;
-//         inset: 1rem auto auto 1rem;
-//     }
-// input:focus + span,
-// input:not(:placeholder-shown) + span {
-//     font-size: .8rem;
-//     inset: -.5em auto auto 1rem;
-//     background-color: #fff;
-//     padding: 0 .5em;
-// }
+.submit_button:hover {
+  margin-top: 3px;
+  border-bottom: 2px solid #9f000c;
+  cursor: pointer;
+}
