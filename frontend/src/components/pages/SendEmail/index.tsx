@@ -11,7 +11,10 @@ export const SendEmail = () => {
       Router.push("/signup");
       return;
     }
-    sendEmailVerification(user);
+    // 環境変数からURLを取得
+    const redirectUrl = process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
+    // メールを送信
+    sendEmailVerification(user, redirectUrl ? { url: redirectUrl } : undefined);
   };
 
   useEffect(() => {
