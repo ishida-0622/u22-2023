@@ -201,3 +201,35 @@ class RegisterBook : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
+
+class PauseBook : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+                val saved_data = if (body["saved_data"] != null) {body["saved_data"]!! as String} else {throw Exception("saved_data is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "status"
+
+                if (dynamo.searchByKey("book", listOf(b_id)).isEmpty()) {throw Exception("b_id is not exist")}
+                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 4, "status_infos" to listOf(b_id, saved_data)))
+
+                if (updated == "DONE"){
+                    val dummyMap: Map<String, String> = mapOf()
+                    mapOf("response_status" to "success", "result" to dummyMap)
+                } else {
+                    throw Exception("failed to update status")
+                }
+            }
+            catch (e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
+    }
+}
