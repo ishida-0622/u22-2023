@@ -70,8 +70,6 @@ request
     "first_name": "first_name",
     "family_name_roma": "family_name_roma",
     "first_name_roma": "first_name_roma",
-    "email": "email",
-    "password": "password",
     "child_lock": "child_lock",
     "account_name": "account_name"
 }
@@ -137,13 +135,10 @@ response
             "first_name": "first_name1",
             "family_name_roma": "family_name_roma1",
             "first_name_roma": "first_name_roma1",
-            "email": "email1",
-            "password": "password1",
             "child_lock": "child_lock1",
             "account_name": "account_name1",
             "limit_time": "limit_time1",
             "delete_flg": "delete_flg1",
-            "authed": "authed1"
         },
         {
             "u_id": "u_id2",
@@ -151,13 +146,10 @@ response
             "first_name": "first_name2",
             "family_name_roma": "family_name_roma2",
             "first_name_roma": "first_name_roma2",
-            "email": "email2",
-            "password": "password2",
             "child_lock": "child_lock2",
             "account_name": "account_name2",
             "limit_time": "limit_time2",
             "delete_flg": "delete_flg2",
-            "authed": "authed2"
         }
     ],
     "error": "エラー内容(failの時のみ)"
@@ -174,16 +166,14 @@ request
 
 ```jsonc
 {
-    "u_id": "u_id" /* 必須 */,
-    "family_name": "family_name" /* パスワード変更時は含めない */,
-    "first_name": "first_name" /* パスワード変更時は含めない */,
-    "family_name_roma": "family_name_roma" /* パスワード変更時は含めない */,
-    "first_name_roma": "first_name_roma" /* パスワード変更時は含めない */,
-    "email": "email" /* パスワード変更時は含めない */,
-    "password": "password" /* パスワード変更以外は含めない */,
-    "child_lock": "child_lock" /* パスワード変更時は含めない */,
-    "account_name": "account_name" /* パスワード変更時は含めない */,
-    "limit_time": "limit_time" /* パスワード変更時は含めない */
+    "u_id": "u_id",
+    "family_name": "family_name",
+    "first_name": "first_name",
+    "family_name_roma": "family_name_roma",
+    "first_name_roma": "first_name_roma",
+    "child_lock": "child_lock",
+    "account_name": "account_name",
+    "limit_time": "limit_time"
 }
 ```
 
