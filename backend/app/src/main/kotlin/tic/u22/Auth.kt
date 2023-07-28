@@ -46,7 +46,6 @@ class Quit: RequestHandler<Map<String, Any>, String> {
 
 /**
  * ユーザー情報を変更する
- * パスワードとその他情報の同時更新はできないように制御される
  */
 class UpdateUser : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
@@ -64,15 +63,8 @@ class UpdateUser : RequestHandler<Map<String, Any>, String> {
                 if (body["first_name"] != null) {updateInfos["first_name"] = (body["first_name"]!! as String)}
                 if (body["family_name_roma"] != null) {updateInfos["family_name_roma"] = (body["family_name_roma"]!! as String)}
                 if (body["first_name_roma"] != null) {updateInfos["first_name_roma"] = (body["first_name_roma"]!! as String)}
-                if (body["email"] != null) {updateInfos["email"] = (body["email"]!! as String)}
                 if (body["child_lock"] != null) {updateInfos["child_lock"] = (body["child_lock"]!! as String)}
                 if (body["account_name"] != null) {updateInfos["account_name"] = (body["account_name"]!! as String)}
-                if (body["password"] != null && updateInfos.size == 0) {
-                    updateInfos["password"] = (body["password"]!! as String)
-                } else if (body["password"] != null) {
-                    throw Exception("password and other elements cannot be changed at the same time")
-                }
-                
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "user"
                 println(dynamo.searchByKey(tableName, listOf(u_id)))
@@ -85,12 +77,7 @@ class UpdateUser : RequestHandler<Map<String, Any>, String> {
                         "response_status" to "success",
                         "result" to dummyMap
                     )
-                } else {
-                    mapOf(
-                        "response_status" to "fail",
-                        "error" to "$result"
-                    )
-                }
+                } else {throw Exception("$result")}
             } catch(e: Exception) {
                 mapOf(
                     "response_status" to "fail",
