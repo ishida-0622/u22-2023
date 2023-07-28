@@ -160,8 +160,7 @@ class PausePuzzle : RequestHandler<Map<String, Any>, String> {
                 val tableName = "status"
 
                 val puzzle_infos= listOf(p_id, saved_data)
-                dynamo.searchByKey(tableName, listOf(p_id))
-                println(puzzle_infos)
+                if (dynamo.searchByKey("puzzle", listOf(p_id)).isEmpty()) {throw Exception("p_id is not exist")}
                 val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 2, "status_infos" to puzzle_infos))
 
                 if (updated == "DONE"){
