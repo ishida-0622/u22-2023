@@ -145,6 +145,25 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
     }
 }
 
+class PausePuzzle : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+                val saved_data = if (body["saved_data"] != null) {body["saved_data"]!! as List<String>} else {throw Exception("saved_data is null")}
+            }
+            catch (e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
+    }
+}
+
 /**
  * u_id, p_idを受け取りゲームステータスの変更、ログの追加を行う
  * 
