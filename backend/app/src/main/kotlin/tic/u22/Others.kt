@@ -131,7 +131,7 @@ class ScanB_log: RequestHandler<Map<String, Any>, String> {
               val tableName = "b_log"
               
               val result = dynamo.searchByAny(tableName, "u_id", u_id, "=")
-              mapOf("response_status" to "success", 
+              mapOf("response_status" to "success",
               "result" to result.map{
                 utils.toMap(utils.attributeValueToObject(it, tableName))
               })
