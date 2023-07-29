@@ -145,6 +145,15 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * パズルを一時停止する
+ * 
+ * @param u_id String: u_id
+ * @param p_id String: p_id
+ * @param saved_data List<String>: パズル情報
+ * 
+ * return String: {"response_status": "success", "result": {}}
+ */
 class PausePuzzle : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
