@@ -146,6 +146,48 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
 }
 
 /**
+ * パズルを一時停止する
+ * 
+ * @param u_id String: u_id
+ * @param p_id String: p_id
+ * @param saved_data List<String>: パズル情報
+ * 
+ * return String: {"response_status": "success", "result": {}}
+ */
+class PausePuzzle : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+                val saved_data = if (body["saved_data"] != null) {body["saved_data"]!! as List<String>} else {throw Exception("saved_data is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "status"
+
+                val puzzle_infos= listOf(p_id, saved_data)
+                if (dynamo.searchByKey("puzzle", listOf(p_id)).isEmpty()) {throw Exception("p_id is not exist")}
+                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 2, "status_infos" to puzzle_infos))
+
+                if (updated == "DONE"){
+                    val dummyMap: Map<String, String> = mapOf()
+                    mapOf("response_status" to "success", "result" to dummyMap)
+                } else {
+                    throw Exception("failed to update status")
+                }
+            }
+            catch (e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
+    }
+}
+
+/**
  * u_id, p_idを受け取りゲームステータスの変更、ログの追加を行う
  * 
  * @param event Map<String, Any>?: "u_id": "u_id", "p_id": "p_id"
