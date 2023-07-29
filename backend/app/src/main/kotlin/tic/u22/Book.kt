@@ -202,6 +202,16 @@ class RegisterBook : RequestHandler<Map<String, Any>, String> {
     }
 }
 
+
+/**
+ * 読み聞かせを一時停止する
+ * 
+ * @param u_id String: u_id
+ * @param b_id String: b_id
+ * @param saved_data String: ページ番号
+ * 
+ * return String: {"response_status": "success", "result": {}}
+ */
 class PauseBook : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
