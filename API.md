@@ -138,7 +138,7 @@ response
             "child_lock": "child_lock1",
             "account_name": "account_name1",
             "limit_time": "limit_time1",
-            "delete_flg": "delete_flg1",
+            "delete_flg": "delete_flg1"
         },
         {
             "u_id": "u_id2",
@@ -149,7 +149,7 @@ response
             "child_lock": "child_lock2",
             "account_name": "account_name2",
             "limit_time": "limit_time2",
-            "delete_flg": "delete_flg2",
+            "delete_flg": "delete_flg2"
         }
     ],
     "error": "エラー内容(failの時のみ)"
@@ -810,7 +810,7 @@ response
 }
 ```
 
-### [PauseBook]()
+### [PauseBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/PauseBook)
 
 読み聞かせを一時中断する
 
