@@ -112,6 +112,38 @@ response
 }
 ```
 
+### [ScanUser](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUser)
+
+指定のユーザー ID の情報を取得する(存在しない u_id を指定した場合は fail を返す)
+
+request
+
+```json
+{
+    "u_id": "u_id"
+}
+```
+
+response
+
+```json
+{
+    "response_status": "success or fail",
+    "result": {
+        "u_id": "u_id",
+        "family_name": "family_name",
+        "first_name": "first_name",
+        "family_name_roma": "family_name_roma",
+        "first_name_roma": "first_name_roma",
+        "child_lock": "child_lock",
+        "account_name": "account_name",
+        "limit_time": "limit_time",
+        "delete_flg": "delete_flg"
+    },
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
 ### [ScanUsers](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUsers)
 
 指定のユーザー ID の情報をすべて取得する
