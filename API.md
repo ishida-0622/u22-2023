@@ -86,7 +86,7 @@ response
 }
 ```
 
-### [Login]()
+### [Login]
 
 Lambda 関数ではなく、認証 Only になりました
 
