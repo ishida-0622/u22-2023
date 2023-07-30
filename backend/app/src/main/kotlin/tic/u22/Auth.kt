@@ -88,3 +88,54 @@ class UpdateUser : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
+
+
+/**
+ * ユーザー情報を登録する(アプリケーションで使用するデータの登録)
+ */
+class SignUp : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+
+                // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                if (body["family_name"] == null) { throw Exception("family_name is null") }
+                if (body["first_name"] == null) { throw Exception("first_name is null") }
+                if (body["family_name_roma"] == null) { throw Exception("family_name_roma is null") }
+                if (body["first_name_roma"] == null) { throw Exception("first_name_roma is null") }
+                if (body["child_lock"] == null) { throw Exception("child_lock is null") }
+                if (body["account_name"] == null) { throw Exception("account_name is null") }
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "user"
+                val user = User(
+                    u_id = u_id,
+                    family_name = body["family_name"] as String,
+                    first_name = body["first_name"] as String,
+                    family_name_roma = body["family_name_roma"] as String,
+                    first_name_roma = body["first_name_roma"] as String,
+                    child_lock = body["child_lock"] as String,
+                    account_name = body["account_name"] as String
+                )
+
+                if (!dynamo.addItem(tableName, user)){ throw Exception("Failed to add user") }
+                val dummyMap: Map<String, String> = mapOf()
+
+                mapOf(
+                    "response_status" to "success",
+                    "result" to dummyMap
+                )
+            } catch(e: Exception) {
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}

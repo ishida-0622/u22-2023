@@ -58,7 +58,7 @@ response
 
 ## 認証(アカウント)系
 
-### [SignUp]()
+### [SignUp](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SignUp)
 
 サインアップする
 
@@ -66,6 +66,7 @@ request
 
 ```json
 {
+    "u_id": "u_id",
     "family_name": "family_name",
     "first_name": "first_name",
     "family_name_roma": "family_name_roma",
