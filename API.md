@@ -521,7 +521,7 @@ response
 }
 ```
 
-### [PausePuzzle]()
+### [PausePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/PausePuzzle)
 
 パズルを一時中断する
 
