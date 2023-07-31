@@ -19,8 +19,6 @@ class Tables : RequestHandler<Map<String, Any>, String> {
                 first_name = "first_name",
                 family_name_roma = "family_name_roma",
                 first_name_roma = "first_name_roma",
-                email = "email",
-                password = "password",
                 child_lock = "child_lock",
                 account_name = "account_name"
             )
@@ -28,7 +26,40 @@ class Tables : RequestHandler<Map<String, Any>, String> {
                 p_id = "p_id",
                 title = "title",
                 description = "description",
-                words = listOf(listOf("I", "${Settings().AWS_BUCKET}/puzzle/shape/I.png", "${Settings().AWS_BUCKET}/puzzle/image/I.png", "${Settings().AWS_BUCKET}/puzzle/voice/I.mp3"), listOf("have", "${Settings().AWS_BUCKET}/puzzle/shape/have.png", "${Settings().AWS_BUCKET}/puzzle/image/have.png", "${Settings().AWS_BUCKET}/puzzle/voice/have.mp3"), listOf("a pen", "${Settings().AWS_BUCKET}/puzzle/shape/pen.png", "${Settings().AWS_BUCKET}/puzzle/image/pen.png", "${Settings().AWS_BUCKET}/puzzle/voice/a-pen.mp3"))
+                words = listOf(
+                    Word(
+                        word = "I",
+                        shadow = "${Settings().AWS_BUCKET}/puzzle/shadow/I.png",
+                        illustration = "${Settings().AWS_BUCKET}/puzzle/image/I.png",
+                        voice = "${Settings().AWS_BUCKET}/puzzle/voice/I.mp3",
+                        is_displayed = true,
+                        is_dummy = false
+                    ),
+                    Word(
+                        word = "have",
+                        shadow = "${Settings().AWS_BUCKET}/puzzle/shadow/have.png",
+                        illustration = "${Settings().AWS_BUCKET}/puzzle/image/have.png",
+                        voice = "${Settings().AWS_BUCKET}/puzzle/voice/have.mp3",
+                        is_displayed = false,
+                        is_dummy = false
+                    ),
+                    Word(
+                        word = "a pen",
+                        shadow = "${Settings().AWS_BUCKET}/puzzle/shadow/a-pen.png",
+                        illustration = "${Settings().AWS_BUCKET}/puzzle/image/a-pen.png",
+                        voice = "${Settings().AWS_BUCKET}/puzzle/voice/a-pen.mp3",
+                        is_displayed = true,
+                        is_dummy = false
+                    ),
+                    Word(
+                        word = "am",
+                        shadow = "${Settings().AWS_BUCKET}/puzzle/shadow/am.png",
+                        illustration = "${Settings().AWS_BUCKET}/puzzle/image/am.png",
+                        voice = "${Settings().AWS_BUCKET}/puzzle/voice/am.mp3",
+                        is_displayed = false,
+                        is_dummy = true
+                    )
+                )
             )
             val book = Book(
                 b_id = "b_id",
