@@ -104,15 +104,10 @@ export const RegisterPuzzle = () => {
   };
 
   /**
-
    * 画像や音声をURIにしてセットする
-
    * @param e event
-
    * @param index
-
    * @param updateFun 値の更新用のset関数
-
    */
 
   const onChangeHandler = (
@@ -231,18 +226,56 @@ export const RegisterPuzzle = () => {
       <form onSubmit={onSubmitHandler}>
         <div>
           <label>
+            <b>TITLE</b>
+            <input
+              type="text"
+              name="title"
+              id="title"
+              value={title}
+              onChange={changeTitle}
+              required={true}
+            />
+          </label>
+        </div>
+
+        <div>
+          <label>
+            <b>概要</b>
+            <input
+              name="description"
+              id="description"
+              value={description}
+              onChange={changeDescription}
+              required={true}
+            />
+          </label>
+        </div>
+
+        <div>
+          <label>
+            <b>ICON写真をアップロードして下さい</b>
+            <br />
             Icon：
             <input
               type="file"
               accept="image/*"
               onChange={iconOnChangeHandler}
             />
-            {icon && <Image src={icon} alt={"foo"} width={100} height={100} />}
+            {icon && (
+              <Image
+                src={icon}
+                alt={"Icon写真をアップロードしてください"}
+                width={100}
+                height={100}
+              />
+            )}
           </label>
         </div>
 
         <div>
           <label>
+            <b>問題の文章</b>
+            <br />
             Word（,区切りで入力してください）：
             <input
               type="text"
@@ -268,7 +301,7 @@ export const RegisterPuzzle = () => {
                 {images[i] && (
                   <Image
                     src={images[i]!}
-                    alt={"foo"}
+                    alt={"イラスト写真をアップロードしてください"}
                     width={100}
                     height={100}
                   />
@@ -288,7 +321,7 @@ export const RegisterPuzzle = () => {
                 {shadows[i] && (
                   <Image
                     src={shadows[i]!}
-                    alt={"foo"}
+                    alt={"シルエットの写真をアップロードしてください"}
                     width={100}
                     height={100}
                   />
@@ -350,7 +383,7 @@ export const RegisterPuzzle = () => {
                 {dummyImages[i] && (
                   <Image
                     src={dummyImages[i]!}
-                    alt={"foo"}
+                    alt={"イラスト写真をアップロードしてください"}
                     width={100}
                     height={100}
                   />
@@ -370,7 +403,7 @@ export const RegisterPuzzle = () => {
                 {dummyShadows[i] && (
                   <Image
                     src={dummyShadows[i]!}
-                    alt={"foo"}
+                    alt={"シルエットの写真をアップロードしてください"}
                     width={100}
                     height={100}
                   />
@@ -395,8 +428,9 @@ export const RegisterPuzzle = () => {
           ))}
         </div>
 
-        <input type="submit" value="submit" />
+        <input type="submit" value="追加する" />
       </form>
+      <Link href="/admin/puzzle">パズル問題一覧ページへ戻る</Link>
     </main>
   );
 };
