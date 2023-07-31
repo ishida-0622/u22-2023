@@ -57,6 +57,39 @@ class ScanL_log : RequestHandler<Map<String, Any>, String> {
 }
 
 /**
+ * 1つのIDを受け取りユーザーの情報を取得する(IDが存在しない場合はfailを返す)
+ *
+ * @param event Map<String, Any>?: u_id:u_id
+ * @param context Context?: Context
+ *
+ * return String: "result": {"u_id": "u_id", "family_name": "family_name", "first_name": "first_name", "child_lock": "child_lock", "account_name": "account_name"}
+ */
+class ScanUser : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "user"
+
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+
+        // 検索
+        val user = dynamo.searchByKey(tableName, listOf(u_id))
+        if(user.isEmpty()) { throw Exception("this u_id does not exist") }
+        mapOf("response_status" to "success",
+          "result" to utils.toMap(utils.attributeValueToObject(user, "user")))
+      } catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
+
+/**
  * 任意の個数のIDを受け取りユーザーの情報を取得する
  *
  * @param event Map<String, Any>?: u_id:[value1, value2, ...]
@@ -131,7 +164,7 @@ class ScanB_log: RequestHandler<Map<String, Any>, String> {
               val tableName = "b_log"
               
               val result = dynamo.searchByAny(tableName, "u_id", u_id, "=")
-              mapOf("response_status" to "success", 
+              mapOf("response_status" to "success",
               "result" to result.map{
                 utils.toMap(utils.attributeValueToObject(it, tableName))
               })
