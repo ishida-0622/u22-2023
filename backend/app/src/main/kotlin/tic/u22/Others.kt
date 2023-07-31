@@ -248,3 +248,13 @@ class SetStatus : RequestHandler<Map<String, Any>, String> {
     return gson.toJson(res)
   }
 }
+
+/**
+ * ユーザーの指定期間のログイン履歴を取得する
+ * 
+ * @param u_id String : u_id
+ * @param start_date String : 日付
+ * @param end_date String : 日付
+ * 
+ * return "result": [{"u_id": u_id,"date": date},{...}]
+ */
