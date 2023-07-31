@@ -19,6 +19,8 @@ export const PuzzleList = () => {
   const openModal = () => setModalIsOpen(true);
   /** モーダルウィンドウを非表示にする関数 */
   const closeModal = () => setModalIsOpen(false);
+  // 検索
+  const [input, setInput] = useState("");
 
   const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Puzzle) => {
     event.preventDefault();
@@ -29,6 +31,32 @@ export const PuzzleList = () => {
   const router = useRouter();
   const postPuzzle = () => {
     router.push("/admin/register-puzzle");
+  };
+
+  //検索欄への入力値をハンドリング
+  const changeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(event.target.value);
+    search(event.target.value);
+  };
+
+  //検索欄への入力値での絞り込み
+  const search = (value: any) => {
+    if (value === "") {
+      setPosts(posts);
+      return;
+    }
+
+    const searchedPosts = posts.filter(
+      (post) =>
+        Object.values(post).filter(
+          (item) =>
+            item !== undefined &&
+            item !== null &&
+            item.indexOf(value.toUpperCase()) !== -1
+        ).length > 0
+    );
+
+    setPosts(searchedPosts);
   };
 
   useLayoutEffect(() => {
@@ -56,8 +84,14 @@ export const PuzzleList = () => {
   return (
     <main>
       <div>
-        <input type="text" placeholder="検索" />
+        <input
+          type="text"
+          placeholder="検索"
+          value={input}
+          onChange={changeSearch}
+        />
       </div>
+
       {posts.map((post) => (
         <div key={post.title} className={`${styles.posts}`}>
           <h3>
