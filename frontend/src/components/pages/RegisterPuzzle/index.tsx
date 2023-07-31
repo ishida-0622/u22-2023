@@ -223,6 +223,8 @@ export const RegisterPuzzle = () => {
 
   return (
     <main>
+      <h2>パズル問題新規作成</h2>
+      <hr />
       <form onSubmit={onSubmitHandler}>
         <div>
           <label>
