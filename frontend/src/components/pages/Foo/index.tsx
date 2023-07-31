@@ -11,7 +11,7 @@ import Image from "next/image";
 // Modalを表示するHTML要素のidを指定
 Modal.setAppElement("#__next");
 
-export const RegisterPazzle = () => {
+export const Foo = () => {
   const [formValues, setFormValues] = useState<RegisterPuzzleRequest>({
     title: "",
     description: "",

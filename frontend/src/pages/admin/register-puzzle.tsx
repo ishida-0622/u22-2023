@@ -1,5 +1,5 @@
-import { RegisterPazzle } from "@/components/pages/RegisterPazzle";
+import { RegisterPuzzle } from "@/components/pages/RegisterPuzzle";
 
-export default function postannouncement() {
-  return <RegisterPazzle />;
+export default function RegisterPuzzleExport() {
+  return <RegisterPuzzle />;
 }
