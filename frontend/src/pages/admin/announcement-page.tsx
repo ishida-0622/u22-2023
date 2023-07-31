@@ -1,5 +1,5 @@
 import { PostAnnouncementList } from "@/components/pages/PostAnnouncementList";
 
-export default function postannouncement() {
+export default function announcement() {
   return <PostAnnouncementList />;
 }

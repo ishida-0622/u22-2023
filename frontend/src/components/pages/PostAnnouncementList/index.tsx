@@ -26,14 +26,14 @@ export const PostAnnouncementList = () => {
   };
 
   const router = useRouter();
-  const postannouncement = () => {
+  const postAnnouncement = () => {
     router.push("/admin/post-announcement");
   };
 
   const [news, setNews] = useState<Notice>();
 
   useLayoutEffect(() => {
-    const pullannouncement = async () => {
+    const pullAnnouncement = async () => {
       const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
       if (baseUrl === undefined) {
         throw new Error("内部エラー");
@@ -50,7 +50,7 @@ export const PostAnnouncementList = () => {
         console.error(e);
       }
     };
-    pullannouncement();
+    pullAnnouncement();
   }, []);
 
   return (
@@ -66,7 +66,7 @@ export const PostAnnouncementList = () => {
         </div>
       ))}
       <div>
-        <button onClick={postannouncement}>
+        <button onClick={postAnnouncement}>
           新規作成
           <FontAwesomeIcon icon={faPen} />
         </button>
