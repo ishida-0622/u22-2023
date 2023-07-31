@@ -12,7 +12,7 @@ Modal.setAppElement("#__next");
 
 export const PuzzleList = () => {
   const [posts, setPosts] = useState<Puzzle[]>([]);
-  const [puzzle, setPazzle] = useState<Puzzle>();
+  const [puzzle, setPuzzle] = useState<Puzzle>();
   //モーダルウィンドウの表示/非表示を表すbool値を宣言
   const [modalIsOpen, setModalIsOpen] = useState(false);
   /** モーダルウィンドウを表示にする関数 */
@@ -22,17 +22,17 @@ export const PuzzleList = () => {
 
   const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Puzzle) => {
     event.preventDefault();
-    setPazzle(post);
+    setPuzzle(post);
     openModal();
   };
 
   const router = useRouter();
-  const postpuzzle = () => {
+  const postPuzzle = () => {
     router.push("/admin/register-puzzle");
   };
 
   useLayoutEffect(() => {
-    const pullpuzzle = async () => {
+    const pullPuzzle = async () => {
       const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
       if (baseUrl === undefined) {
         throw new Error("内部エラー");
@@ -50,7 +50,7 @@ export const PuzzleList = () => {
         console.error(e);
       }
     };
-    pullpuzzle();
+    pullPuzzle();
   }, []);
 
   return (
@@ -69,7 +69,7 @@ export const PuzzleList = () => {
         </div>
       ))}
       <div>
-        <button onClick={postpuzzle}>
+        <button onClick={postPuzzle}>
           新規作成
           <FontAwesomeIcon icon={faPen} />
         </button>
