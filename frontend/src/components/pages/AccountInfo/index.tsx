@@ -34,71 +34,42 @@ export const AccountInfo = () => {
 
   const puzzleLogFetcher = async (url: string) => {
     const request: ScanPuzzleLogRequest = {
+      // TODO:uid
       u_id: "92be8e7e-00da-448a-9e73-3cd0c60f6a35",
     };
-    // const response = await fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(request),
-    // });
-    // const json: ScanPuzzleLogResponse = await response.json();
-    // return json.result;
-    const mock: PuzzleLog[] = [
-      {
-        u_id: "user",
-        p_id: "1234",
-        play_times: 4,
-        latest_play_datetime: "2023-07-06T16:23:44Z",
-      },
-      {
-        u_id: "user",
-        p_id: "1235",
-        play_times: 100,
-        latest_play_datetime: "2023-07-06T16:23:44Z",
-      },
-    ];
-    return mock;
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(request),
+    });
+    const json: ScanPuzzleLogResponse = await response.json();
+    return json.result;
   };
 
   const bookLogFetcher = async (url: string) => {
     const request: ScanBookLogRequest = {
-      u_id: "1",
+      // TODO:uid
+      u_id: "92be8e7e-00da-448a-9e73-3cd0c60f6a35",
     };
-    // const response = await fetch(url, {
-    //   method: "POST",
-    //   body: JSON.stringify(request),
-    // });
-    // const json: ScanBookLogResponse = await response.json();
-    // return json.result;
-    const mock: BookLog[] = [
-      {
-        u_id: "user",
-        b_id: "1234",
-        play_times: 4,
-        latest_play_datetime: "2023-07-06T16:23:44Z",
-      },
-      {
-        u_id: "user",
-        b_id: "1235",
-        play_times: 100,
-        latest_play_datetime: "2023-07-06T16:23:44Z",
-      },
-    ];
-    return mock;
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(request),
+    });
+    const json: ScanBookLogResponse = await response.json();
+    return json.result;
   };
 
   const { data: userData, error: userDataError } = useSWR(
-    "https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUsers",
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanUsers`,
     userDataFetcher
   );
 
   const { data: puzzleLogs, error: puzzleLogError } = useSWR(
-    // TODO:URL
-    "https://github.com/ishida-0622/u22-2023/blob/main",
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanP_log`,
     puzzleLogFetcher
   );
 
   const { data: bookLogs, error: bookLogError } = useSWR(
-    "https://github.com/ishida-0622/u22-2023/blob/main/API.md#scanp_log",
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanB_log`,
     bookLogFetcher
   );
 
@@ -163,19 +134,23 @@ export const AccountInfo = () => {
           <p>クリア回数：---回</p>
           <p>シール獲得枚数：---枚</p>
           <p>メールアドレス</p>
+          {/*
           <input
             type="text"
             name="emailaddress"
             value={userData.email}
             readOnly={true}
           />
+          */}
           <p>パスワード</p>
+          {/*
           <input
             type="password"
             name="password"
             value={userData.password}
             readOnly={true}
           />
+          */}
           <p>チャイルドロック</p>
           <input
             type="password"
