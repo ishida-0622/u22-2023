@@ -10,6 +10,8 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 /**
@@ -258,3 +260,32 @@ class SetStatus : RequestHandler<Map<String, Any>, String> {
  * 
  * return "result": [{"u_id": u_id,"date": date},{...}]
  */
+class ScanLoginDates : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+        val start_date: String = if (body["start_date"] != null) {body["start_date"]!! as String} else {throw Exception("start_date is null")}
+        val end_date: String = if (body["end_date"] != null) {body["end_date"]!! as String} else {throw Exception("end_date is null")}
+
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "l_log"
+
+        // 全期間のログイン履歴
+        val user_login_logs = dynamo.searchByAny(tableName, "u_id", u_id, "=").map {
+          utils.toMap(utils.attributeValueToObject(it, tableName))
+        }
+
+        mapOf("response_status" to "success",
+          "result" to filtered_logs)
+      }
+      catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
