@@ -275,7 +275,7 @@ class ScanLoginDates : RequestHandler<Map<String, Any>, String> {
         val tableName = "l_log"
 
         // 全期間のログイン履歴
-        val user_login_logs = dynamo.searchByAny(tableName, "u_id", u_id, "=").map {
+        val userLoginLogs = dynamo.searchByAny(tableName, "u_id", u_id, "=").map {
           utils.toMap(utils.attributeValueToObject(it, tableName))
         }
 
@@ -286,14 +286,15 @@ class ScanLoginDates : RequestHandler<Map<String, Any>, String> {
 
         // 指定期間のログイン履歴にフィルターする
         // 開始日と終了日を含む
-        val filtered_logs = user_login_logs.filter {
+        val filteredLogs = userLoginLogs.filter {
           val datetime = it["datetime"] as String
           val date = LocalDate.parse(datetime.substring(0, 10))
+          // datetimeが期間内だった場合はtrueを返し、そうでない場合はfalseを返す
           date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1))
         }
 
         mapOf("response_status" to "success",
-          "result" to filtered_logs)
+          "result" to filteredLogs)
       }
       catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
