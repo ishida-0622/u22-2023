@@ -114,16 +114,20 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                 val title = if (body["title"] != null) {body["title"]!! as String} else {throw Exception("title is null")}
                 val description = if (body["description"] != null) {body["description"]!! as String} else {throw Exception("description is null")}
                 val icon = if (body["icon"] != null) {body["icon"]!! as String} else {throw Exception("icon is null")}
-                val words = if (body["words"] != null) {(body["words"]!! as List<Map<String, Any>>).map{
+                if (body["words"] == null) {throw Exception("words is null")}
+                if (!(body["words"]!! is List<*>)) {throw Exception("words is not List")}
+                val words = (body["words"] as List<Any>).map{
+                    if(!(it is Map<*, *>)) {throw Exception("words is List, but not List<Map>")}
+                    val item = it as Map<String, Any>
                     Word(
-                        word = it["word"] as String,
-                        shadow = it["shadow"] as String,
-                        illustration = it["illustration"] as String,
-                        voice = it["voice"] as String,
-                        is_displayed = it["is_displayed"] as Boolean,
-                        is_dummy = it["is_dummy"] as Boolean
+                        word = if(item["word"] == null) {throw Exception("word in words is null")} else {item["word"] as String},
+                        shadow = if(item["shadow"] == null) {throw Exception("shadow in words is null")} else {item["shadow"] as String},
+                        illustration = if(item["illustration"] == null) {throw Exception("illustration in words is null")} else {item["illustration"] as String},
+                        voice = if(item["voice"] == null) {throw Exception("voice in words is null")} else {item["voice"] as String},
+                        is_displayed = if(item["is_displayed"] == null) {throw Exception("is_displayed in words is null")} else {item["is_displayed"] as Boolean},
+                        is_dummy = if(item["is_dummy"] == null) {throw Exception("is_dummy in words is null")} else {item["is_dummy"] as Boolean}
                     )
-                }} else {throw Exception("words is null")}
+                }
                 
                 // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
                 val puzzle = Puzzle(
@@ -163,7 +167,9 @@ class PausePuzzle : RequestHandler<Map<String, Any>, String> {
                 val body = utils.formatJsonEnv(event["body"]!!)
                 val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
                 val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
-                val saved_data = if (body["saved_data"] != null) {body["saved_data"]!! as List<String>} else {throw Exception("saved_data is null")}
+                if (body["saved_data"] == null) {throw Exception("saved_data is null")}
+                val saved_data = if (body["saved_data"]!! is List<*>) {body["saved_data"]!! as List<Any>} else {throw Exception("saved_data is not List")}
+                
 
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "status"
