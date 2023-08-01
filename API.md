@@ -340,7 +340,7 @@ response
 }
 ```
 
-### [DeletePuzzle]()
+### [DeletePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeletePuzzle)
 
 パズルを削除する
 
