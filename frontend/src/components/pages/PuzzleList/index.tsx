@@ -11,6 +11,7 @@ import Image from "next/image";
 Modal.setAppElement("#__next");
 
 export const PuzzleList = () => {
+  // const [allPosts, setAllPosts] = useState<Puzzle[]>([]);
   const [posts, setPosts] = useState<Puzzle[]>([]);
   const [puzzle, setPuzzle] = useState<Puzzle>();
   //モーダルウィンドウの表示/非表示を表すbool値を宣言
@@ -20,7 +21,7 @@ export const PuzzleList = () => {
   /** モーダルウィンドウを非表示にする関数 */
   const closeModal = () => setModalIsOpen(false);
   // 検索
-  const [input, setInput] = useState("");
+  // const [input, setInput] = useState("");
 
   const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Puzzle) => {
     event.preventDefault();
@@ -34,30 +35,42 @@ export const PuzzleList = () => {
   };
 
   //検索欄への入力値をハンドリング
-  const changeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.target.value);
-    search(event.target.value);
-  };
+  // const changeSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInput(event.target.value);
+  //   search(event.target.value);
+  // };
 
   //検索欄への入力値での絞り込み
-  const search = (value: any) => {
-    if (value === "") {
-      setPosts(posts);
-      return;
-    }
+  // const search = (value: string) => {
+  //   if (value === "") {
+  //     setPosts(allPosts);
+  //     return;
+  //   }
 
-    const searchedPosts = posts.filter(
-      (post) =>
-        Object.values(post).filter(
-          (item) =>
-            item !== undefined &&
-            item !== null &&
-            item.indexOf(value.toUpperCase()) !== -1
-        ).length > 0
-    );
+  // const regex = new RegExp(value.toUpperCase(),"i");
 
-    setPosts(searchedPosts);
-  };
+  // const searchedPosts = allPosts.filter((post) => {
+  //   for (const key in post) {
+  //     const item = post[key];
+  //     if (item !== undefined && item !== null && regex.test(item)) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // });
+
+  // const searchedPosts = posts.filter(
+  //   (post) =>
+  //     Object.values(post).filter(
+  //       (item) =>
+  //         item !== undefined &&
+  //         item !== null &&
+  //         item.indexOf(value.toUpperCase()) !== -1
+  //     ).length > 0
+  // );
+
+  // setPosts(searchedPosts);
+  // };
 
   useLayoutEffect(() => {
     const pullPuzzle = async () => {
@@ -71,6 +84,7 @@ export const PuzzleList = () => {
           body: JSON.stringify({}),
         });
         const data: GetAllPuzzleResponse = await response.json();
+        // setAllPosts(data.result);
         setPosts(data.result);
         console.log(data.result);
       } catch (e) {
@@ -83,14 +97,14 @@ export const PuzzleList = () => {
 
   return (
     <main>
-      <div>
+      {/* <div>
         <input
           type="text"
           placeholder="検索"
           value={input}
           onChange={changeSearch}
         />
-      </div>
+      </div> */}
 
       {posts.map((post) => (
         <div key={post.title} className={`${styles.posts}`}>
