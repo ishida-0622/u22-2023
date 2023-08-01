@@ -211,6 +211,9 @@ class Dynamo(val REGION: String){
       } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
         throw Exception("length of keyVal is mismatched")
       }
+
+      if(searchByKey(usedTableName, keyVal).isEmpty()){ throw Exception("the data for this key is not exist") }
+
       val keyName = tableNameToKey[usedTableName]!!
       // keyValとnameをMapにセット
       val keys = mutableMapOf<String, Any>()
