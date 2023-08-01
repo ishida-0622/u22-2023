@@ -279,6 +279,19 @@ class ScanLoginDates : RequestHandler<Map<String, Any>, String> {
           utils.toMap(utils.attributeValueToObject(it, tableName))
         }
 
+        // yyyy-MM-ddからyyyyMMddにフォーマットする
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val start = LocalDate.parse(start_date, dateFormatter)
+        val end = LocalDate.parse(end_date, dateFormatter)
+
+        // 指定期間のログイン履歴にフィルターする
+        // 開始日と終了日を含む
+        val filtered_logs = user_login_logs.filter {
+          val datetime = it["datetime"] as String
+          val date = LocalDate.parse(datetime.substring(0, 10))
+          date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1))
+        }
+
         mapOf("response_status" to "success",
           "result" to filtered_logs)
       }
