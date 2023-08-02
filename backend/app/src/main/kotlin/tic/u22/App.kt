@@ -16,90 +16,149 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 
+// GsonとUtilsのインスタンス化
 val gson = Gson()
 val utils = Utils()
+
+/**
+ * サンプルソースクラス
+ *
+ * RequestHandlerを継承している
+ *
+ * 第二引数のStringが返り値の型(JSONなのでString)
+ */
 class App : RequestHandler<Map<String, Any>, String> {
+
+    /**
+     * Lambda関数で実行される関数。
+     *
+     * @param event Map<String, Any>?: Lambda関数に渡される引数
+     * @param context Context?: Context
+     *
+     * return String: フロントに渡すJSON
+     */
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        // 非同期処理開始
         val res = runBlocking {
-            if (event == null) {throw Exception("event is null")}
-            if (event["body"] == null) {throw Exception("body is null")}
-            val body = utils.formatJsonEnv(event["body"]!!)
-            val u_id = UUID.randomUUID().toString()
-            val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
-            val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
-            val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
-            val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
-            val email = if (body["email"] != null) {body["email"]!! as String} else {throw Exception("email is null")}
-            val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
-            val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
-            val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
-            val user = User(
-                u_id = u_id,
-                family_name = family_name,
-                first_name = first_name,
-                family_name_roma = family_name_roma,
-                first_name_roma = first_name_roma,
-                email = email,
-                password = password,
-                child_lock = child_lock,
-                account_name = account_name
-            )
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                val u_id = UUID.randomUUID().toString()
+                val u_id2 = UUID.randomUUID().toString()                      // 一意のUUIDを生成
 
-            val log = LoginLog(
-                u_id = u_id
-            )
+                // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
+                val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
+                val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
+                val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
+                val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
+                val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
+                val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
+                
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val user = User(
+                    u_id = u_id,
+                    family_name = family_name,
+                    first_name = first_name,
+                    family_name_roma = family_name_roma,
+                    first_name_roma = first_name_roma,
+                    child_lock = child_lock,
+                    account_name = account_name
+                )
 
-            val dynamo = Dynamo(Settings().AWS_REGION)
-            val tableName = "user"
+                val user2 = User(
+                    u_id = u_id2,
+                    family_name = family_name,
+                    first_name = first_name,
+                    family_name_roma = family_name_roma,
+                    first_name_roma = first_name_roma,
+                    child_lock = child_lock,
+                    account_name = account_name
+                )
 
-            println("ユーザーを追加")
-            dynamo.addItem(tableName, user)
-            println("追加完了\n")
+                // LoginLogデータクラスにユーザーIDを渡し、log変数にインスタンス化して渡す
+                val log = LoginLog(
+                    u_id = u_id
+                )
 
-            println("全件取得")
-            println(dynamo.scanAll(tableName))
-            println("取得完了\n")
+                // DynamoDBのインスタンス化、テーブル名の設定
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "user"
 
-            println("id検索")
-            println(dynamo.searchByKey(tableName, listOf(u_id)))
-            println("検索完了\n")
+                // 以下DBの処理実行・ログの出力
+                println("ユーザーを追加")
+                dynamo.addItem(tableName, user)
+                dynamo.addItem(tableName, user2)
+                println("追加完了\n")
 
-            println("メールアドレスで絞り込み")
-            println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
-            println("取得完了\n")
-            
-            println("メールアドレスを更新")
-            dynamo.updateItem(tableName, listOf(u_id), "email", "test@example.com")
-            println(dynamo.searchByKey(tableName, listOf(u_id)))
-            println("取得完了\n")
-            
-            println("メールアドレスで絞り込み")
-            println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
-            println("取得完了\n")
+                println("全件取得")
+                println(dynamo.scanAll(tableName))
+                println("取得完了\n")
 
-            println("削除")
-            println(dynamo.deleteByKey(tableName, listOf(u_id)))
-            println("削除完了\n")
+                println("id検索")
+                val result = dynamo.searchByKey(tableName, listOf(u_id))
+                println(result)
+                println("検索完了\n")
 
-            println("ログインログを追加")
-            dynamo.addItem("l_log", log)
-            println("追加完了\n")
+                println("id検索(複数)")
+                println(dynamo.searchByKeys(tableName, listOf(listOf(u_id), listOf(u_id2), listOf("undefined"))))
+                println("検索完了\n")
 
-            println("ログインログを検索")
-            println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
-            println("検索完了\n")
+                println("メールアドレスで絞り込み")
+                println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
+                println("取得完了\n")
+                
+                println("メールアドレスを更新")
+                dynamo.updateItem(tableName, listOf(u_id), mapOf("email" to "test@example.com"))
+                println(dynamo.searchByKey(tableName, listOf(u_id)))
+                println("更新完了\n")
+                
+                println("メールアドレスで絞り込み")
+                println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
+                println("取得完了\n")
 
-            mapOf("result" to user)
+                println("削除")
+                println(dynamo.deleteByKey(tableName, listOf(u_id)))
+                println("削除完了\n")
+
+                println("ログインログを追加")
+                dynamo.addItem("l_log", log)
+                println("追加完了\n")
+
+                println("ログインログを検索")
+                println(dynamo.searchByKey("l_log", listOf(u_id, log.datetime)))
+                println("検索完了\n")
+
+                // {"result": {結果の連想配列}}
+                mapOf("response_status" to "success", "result" to utils.toMap(utils.attributeValueToObject(result, "user")))
+            } catch (e:Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
         }
-        return Gson().toJson(res)
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
 
+/**
+ * S3サンプルソースクラス**一旦使用予定なし**
+ *
+ * RequestHandlerを継承している
+ *
+ * 第二引数のStringが返り値の型(JSONなのでString)
+ */
 class S3Sample : RequestHandler<Map<String, String>, String> {
-    val utils = Utils()
-    val s3 = S3(Settings().AWS_REGION)
-    val bucketName = Settings().AWS_BUCKET
+    val s3 = S3(Settings().AWS_REGION)          // S3のインスタンス化
+    val bucketName = Settings().AWS_BUCKET      // バケット名の設定
 
+    /**
+     * Lambda関数で実行される関数。
+     *
+     * @param event Map<String, Any>?: Lambda関数に渡される引数
+     * @param context Context?: Context
+     *
+     * return String: フロントに渡すJSON
+     */
     override fun handleRequest(event: Map<String, String>?, context: Context?): String{
         val res = runBlocking{
             // S3からファイルを取得してfilesディレクトリに保存
@@ -115,6 +174,7 @@ class S3Sample : RequestHandler<Map<String, String>, String> {
     }
 }
 
+// ローカル環境実行用
 fun main() {
     // handlerを起動
     val app = App()
