@@ -1,8 +1,8 @@
-import { auth } from "@/features/auth/firebase";
-import { QuitRequest, QuitResponse } from "@/features/auth/types/quit";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import Router from "next/router";
+import { auth } from "@/features/auth/firebase";
+import { User, deleteUser, signInWithEmailAndPassword } from "firebase/auth";
+import { QuitRequest, QuitResponse } from "@/features/auth/types/quit";
 
 export const Quit = () => {
   const [email, setEmail] = useState("");
@@ -11,10 +11,10 @@ export const Quit = () => {
   const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    let user: User;
     let uid: string | null = null;
     try {
-      const user = (await signInWithEmailAndPassword(auth, email, password))
-        .user;
+      user = (await signInWithEmailAndPassword(auth, email, password)).user;
       uid = user.uid;
     } catch {
       alert("メールアドレスかパスワードが間違っています");
@@ -42,6 +42,7 @@ export const Quit = () => {
       if (json.response_status === "fail") {
         throw new Error(json.error);
       }
+      await deleteUser(user);
     } catch (e) {
       console.error(`quit error\n${e}`);
       alert("退会に失敗しました");
