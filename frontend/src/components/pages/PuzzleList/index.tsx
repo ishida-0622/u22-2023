@@ -66,7 +66,7 @@ export const PuzzleList = () => {
           body: JSON.stringify({}),
         });
         const data: GetAllPuzzleResponse = await response.json();
-        // setAllPosts(data.result);
+        setAllPosts(data.result);
         setPosts(data.result);
         console.log(data.result);
       } catch (e) {
