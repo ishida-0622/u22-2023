@@ -114,7 +114,16 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                 val title = if (body["title"] != null) {body["title"]!! as String} else {throw Exception("title is null")}
                 val description = if (body["description"] != null) {body["description"]!! as String} else {throw Exception("description is null")}
                 val icon = if (body["icon"] != null) {body["icon"]!! as String} else {throw Exception("icon is null")}
-                val words = if (body["words"] != null) {body["words"]!! as List<List<String>>} else {throw Exception("words is null")}
+                val words = if (body["words"] != null) {(body["words"]!! as List<Map<String, Any>>).map{
+                    Word(
+                        word = it["word"] as String,
+                        shadow = it["shadow"] as String,
+                        illustration = it["illustration"] as String,
+                        voice = it["voice"] as String,
+                        is_displayed = it["is_displayed"] as Boolean,
+                        is_dummy = it["is_dummy"] as Boolean
+                    )
+                }} else {throw Exception("words is null")}
                 
                 // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
                 val puzzle = Puzzle(
