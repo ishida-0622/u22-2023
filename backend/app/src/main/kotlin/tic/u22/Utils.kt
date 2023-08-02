@@ -155,7 +155,7 @@ class Utils {
       is AttributeValue.N -> v.asN()
       is AttributeValue.Bool -> v.asBool()
       is AttributeValue.L -> v.asL().map{toKotlinType(it)}
-      is AttributeValue.M -> v.asM().map{it.key to toKotlinType(it.value)}
+      is AttributeValue.M -> v.asM().map{it.key to toKotlinType(it.value)}.toMap()
       is AttributeValue.Null -> null
       else -> throw Exception("not supported type")
     }
@@ -183,13 +183,10 @@ class Utils {
           first_name = if(values["first_name"] == null){throw Exception("first_name is null")} else {if(values["first_name"]!! is String){values["first_name"] as String}else{throw Exception("first_name type is ng")}},
           family_name_roma = if(values["family_name_roma"] == null){throw Exception("family_name_roma is null")} else {if(values["family_name_roma"]!! is String){values["family_name_roma"] as String}else{throw Exception("family_name_roma type is ng")}},
           first_name_roma = if(values["first_name_roma"] == null){throw Exception("first_name_roma is null")} else {if(values["first_name_roma"]!! is String){values["first_name_roma"] as String}else{throw Exception("first_name_roma type is ng")}},
-          email = if(values["email"] == null){throw Exception("email is null")} else {if(values["email"]!! is String){values["email"] as String}else{throw Exception("email type is ng")}},
-          password = if(values["password"] == null){throw Exception("password is null")} else {if(values["password"]!! is String){values["password"] as String}else{throw Exception("password type is ng")}},
           child_lock = if(values["child_lock"] == null){throw Exception("child_lock is null")} else {if(values["child_lock"]!! is String){values["child_lock"] as String}else{throw Exception("child_lock type is ng")}},
           account_name = if(values["account_name"] == null){throw Exception("account_name is null")} else {if(values["account_name"]!! is String){values["account_name"] as String}else{throw Exception("account_name type is ng")}},
           limit_time = if(values["limit_time"] == null){throw Exception("limit_time is null")} else {if(values["limit_time"]!! is String){(values["limit_time"] as String).toInt()}else{throw Exception("limit_time type is ng")}},
           delete_flg = if(values["delete_flg"] == null){throw Exception("delete_flg is null")} else {if(values["delete_flg"]!! is Boolean){values["delete_flg"] as Boolean}else{throw Exception("delete_flg type is ng")}},
-          authed = if(values["authed"] == null){throw Exception("authed is null")} else {if(values["authed"]!! is Boolean){values["authed"] as Boolean}else{throw Exception("authed type is ng")}}
         )
         "puzzle" ->  Puzzle(
           p_id = if(values["p_id"] == null){throw Exception("p_id is null")} else {if(values["p_id"]!! is String){values["p_id"] as String}else{throw Exception("p_id type is ng")}},
@@ -200,10 +197,10 @@ class Utils {
             val wordVal = values["words"]!! as List<Any?>
             wordVal.map{
               if(it is Map<*, *>){
-                it.map{ item ->
-                  if(!(item.key is String && item.value is AttributeValue)){throw Exception("type of word (inside) is ng")}
-                }
-                attributeValueToObject(it as Map<String, AttributeValue>, "word") as Word
+                attributeValueToObject(it.map{ item ->
+                  if(!(item.key is String && item.value is Any)){throw Exception("type of word (inside) is ng")}
+                  (item.key as String) to toAttributeValue(item.value)
+                }.toMap(), "word") as Word
               } else {
                 throw Exception("type of word is ng")
               }
@@ -268,9 +265,7 @@ class Utils {
     } catch(e: Exception) {
       println("$e")
       println("could not serialized")
-      return LoginLog(
-        u_id = "$e"
-      )
+      throw Exception("$e")
     }
   }
 
@@ -371,13 +366,10 @@ interface TableBase {}
  * @param first_name: String 名前
  * @param family_name_roma: String ローマ字姓名
  * @param first_name_roma: String ローマ字名前
- * @param email: String メールアドレス
- * @param password: String パスワード
  * @param child_lock: String チャイルドロックパスコード
  * @param account_name: String アカウント名
  * @param limit_time: Int 使用制限時間(default:1440-設定不要)
  * @param delete_flg: Boolean 退会フラグ(default:false-設定不要)
- * @param authed: Boolean 認証フラグ(default:false-設定不要)
  */
 data class User(
     val u_id: String,
@@ -385,13 +377,10 @@ data class User(
     val first_name: String,
     val family_name_roma: String,
     val first_name_roma: String,
-    val email: String,
-    val password: String,
     val child_lock: String,
     val account_name: String,
     val limit_time: Int = 1440,
     val delete_flg: Boolean = false,
-    val authed: Boolean = false
 ): TableBase
 
 /**
