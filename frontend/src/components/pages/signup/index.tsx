@@ -92,6 +92,12 @@ export const Signup = () => {
         throw new Error(json.error);
       }
 
+      const redirectUrl = process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
+      sendEmailVerification(
+        user,
+        redirectUrl ? { url: redirectUrl } : undefined
+      );
+
       screenTransition();
     } catch (e) {
       console.error(e);
