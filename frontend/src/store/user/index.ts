@@ -17,13 +17,13 @@ export const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    updateUid(state, action: PayloadAction<string>) {
+    updateUid(state, action: PayloadAction<string | null>) {
       state.uid = action.payload;
     },
-    updateUser(state, action: PayloadAction<User>) {
+    updateUser(state, action: PayloadAction<User | null>) {
       state.user = action.payload;
     },
-    updateStatus(state, action: PayloadAction<Status>) {
+    updateStatus(state, action: PayloadAction<Status | null>) {
       state.status = action.payload;
     },
     reset(): UserState {
