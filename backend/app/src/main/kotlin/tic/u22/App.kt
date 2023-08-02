@@ -53,8 +53,6 @@ class App : RequestHandler<Map<String, Any>, String> {
                 val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
                 val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
                 val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
-                val email = if (body["email"] != null) {body["email"]!! as String} else {throw Exception("email is null")}
-                val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
                 val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
                 val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
                 
@@ -65,8 +63,6 @@ class App : RequestHandler<Map<String, Any>, String> {
                     first_name = first_name,
                     family_name_roma = family_name_roma,
                     first_name_roma = first_name_roma,
-                    email = email,
-                    password = password,
                     child_lock = child_lock,
                     account_name = account_name
                 )
@@ -77,8 +73,6 @@ class App : RequestHandler<Map<String, Any>, String> {
                     first_name = first_name,
                     family_name_roma = family_name_roma,
                     first_name_roma = first_name_roma,
-                    email = email,
-                    password = password,
                     child_lock = child_lock,
                     account_name = account_name
                 )
@@ -147,7 +141,7 @@ class App : RequestHandler<Map<String, Any>, String> {
 }
 
 /**
- * S3サンプルソースクラス
+ * S3サンプルソースクラス**一旦使用予定なし**
  *
  * RequestHandlerを継承している
  *
