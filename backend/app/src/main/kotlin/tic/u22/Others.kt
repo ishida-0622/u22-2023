@@ -287,7 +287,9 @@ class ScanLoginDates : RequestHandler<Map<String, Any>, String> {
         // 指定期間のログイン履歴にフィルターする
         // 開始日と終了日を含む
         val filteredLogs = userLoginLogs.filter {
+          // datetimeを取り出す
           val datetime = it["datetime"] as String
+          // datetimeの先頭から10文字を取り出し、yyyy-MM-ddの形式をLocalDateに変換する
           val date = LocalDate.parse(datetime.substring(0, 10))
           // datetimeが期間内だった場合はtrueを返し、そうでない場合はfalseを返す
           date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1))
