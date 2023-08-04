@@ -77,6 +77,13 @@ export const PuzzleList = () => {
     pullPuzzle();
   }, []);
 
+  const edit = () => {
+    router.push({
+      pathname: "/admin/puzzle/edit",
+      query: { id: puzzle === undefined ? undefined : puzzle.p_id },
+    });
+  };
+
   return (
     <main>
       <div>
@@ -149,6 +156,7 @@ export const PuzzleList = () => {
               <div>
                 <b>更新日：</b>「{puzzle.update_date}」
               </div>
+              <button onClick={edit}>編集</button>
             </main>
           )}
         </div>
