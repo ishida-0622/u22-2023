@@ -1,19 +1,22 @@
-// import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 // import styles from "./index.module.scss";
 import Modal from "react-modal";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { Puzzle } from "@/features/puzzle/types";
+import { Puzzle } from "@/features/puzzle/types";
 // import { faPen } from "@fortawesome/free-solid-svg-icons";
 // import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
-// import Image from "next/image";
+import Image from "next/image";
 
 Modal.setAppElement("#__next");
 
 export const PuzzleEdit = () => {
-  // const [allPosts, setAllPosts] = useState<Puzzle[]>([]);
-  // const [posts, setPosts] = useState<Puzzle[]>([]);
-  // const [puzzle, setPuzzle] = useState<Puzzle>();
+  const router = useRouter();
+  const [detailId, setDetailId] = useState(router.query.id);
+
+  const [allPosts, setAllPosts] = useState<Puzzle[]>([]);
+  const [posts, setPosts] = useState<Puzzle[]>([]);
+  const [puzzle, setPuzzle] = useState<Puzzle>();
   // //モーダルウィンドウの表示/非表示を表すbool値を宣言
   // const [modalIsOpen, setModalIsOpen] = useState(false);
   // /** モーダルウィンドウを表示にする関数 */
@@ -27,11 +30,6 @@ export const PuzzleEdit = () => {
   //   event.preventDefault();
   //   setPuzzle(post);
   //   openModal();
-  // };
-
-  // const router = useRouter();
-  // const postPuzzle = () => {
-  //   router.push("/admin/register-puzzle");
   // };
 
   // useLayoutEffect(() => {
