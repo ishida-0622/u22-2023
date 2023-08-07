@@ -7,14 +7,18 @@
 package tic.u22
 
 import aws.sdk.kotlin.services.lambda.*
+import aws.sdk.kotlin.services.s3.*
+import aws.sdk.kotlin.services.s3.model.*
+import aws.smithy.kotlin.runtime.content.asByteStream
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
+import com.google.gson.Gson
+import java.io.File
+import java.net.URI
 import java.util.UUID
 import kotlin.reflect.*
 import kotlin.reflect.full.*
 import kotlinx.coroutines.runBlocking
-
-import com.google.gson.Gson
 
 // GsonとUtilsのインスタンス化
 val gson = Gson()
@@ -37,50 +41,84 @@ class App : RequestHandler<Map<String, Any>, String> {
      *
      * return String: フロントに渡すJSON
      */
-    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
 
         // 非同期処理開始
         val res = runBlocking {
             try {
-                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
-                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
-                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                if (event == null) {
+                    throw Exception("event is null")
+                } // event引数のnullチェック
+                if (event["body"] == null) {
+                    throw Exception("body is null")
+                } // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!) // bodyをMapオブジェクトに変換
                 val u_id = UUID.randomUUID().toString()
-                val u_id2 = UUID.randomUUID().toString()                      // 一意のUUIDを生成
+                val u_id2 = UUID.randomUUID().toString() // 一意のUUIDを生成
 
                 // 以下nullチェックを行いながら、値をStringとして受け取って変数に代入する
-                val family_name = if (body["family_name"] != null) {body["family_name"]!! as String} else {throw Exception("family_name is null")}
-                val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
-                val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
-                val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
-                val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
-                val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
-                
-                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
-                val user = User(
-                    u_id = u_id,
-                    family_name = family_name,
-                    first_name = first_name,
-                    family_name_roma = family_name_roma,
-                    first_name_roma = first_name_roma,
-                    child_lock = child_lock,
-                    account_name = account_name
-                )
+                val family_name =
+                        if (body["family_name"] != null) {
+                            body["family_name"]!! as String
+                        } else {
+                            throw Exception("family_name is null")
+                        }
+                val first_name =
+                        if (body["first_name"] != null) {
+                            body["first_name"]!! as String
+                        } else {
+                            throw Exception("first_name is null")
+                        }
+                val family_name_roma =
+                        if (body["family_name_roma"] != null) {
+                            body["family_name_roma"]!! as String
+                        } else {
+                            throw Exception("family_name_roma is null")
+                        }
+                val first_name_roma =
+                        if (body["first_name_roma"] != null) {
+                            body["first_name_roma"]!! as String
+                        } else {
+                            throw Exception("first_name_roma is null")
+                        }
+                val child_lock =
+                        if (body["child_lock"] != null) {
+                            body["child_lock"]!! as String
+                        } else {
+                            throw Exception("child_lock is null")
+                        }
+                val account_name =
+                        if (body["account_name"] != null) {
+                            body["account_name"]!! as String
+                        } else {
+                            throw Exception("account_name is null")
+                        }
 
-                val user2 = User(
-                    u_id = u_id2,
-                    family_name = family_name,
-                    first_name = first_name,
-                    family_name_roma = family_name_roma,
-                    first_name_roma = first_name_roma,
-                    child_lock = child_lock,
-                    account_name = account_name
-                )
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val user =
+                        User(
+                                u_id = u_id,
+                                family_name = family_name,
+                                first_name = first_name,
+                                family_name_roma = family_name_roma,
+                                first_name_roma = first_name_roma,
+                                child_lock = child_lock,
+                                account_name = account_name
+                        )
+
+                val user2 =
+                        User(
+                                u_id = u_id2,
+                                family_name = family_name,
+                                first_name = first_name,
+                                family_name_roma = family_name_roma,
+                                first_name_roma = first_name_roma,
+                                child_lock = child_lock,
+                                account_name = account_name
+                        )
 
                 // LoginLogデータクラスにユーザーIDを渡し、log変数にインスタンス化して渡す
-                val log = LoginLog(
-                    u_id = u_id
-                )
+                val log = LoginLog(u_id = u_id)
 
                 // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
@@ -102,18 +140,23 @@ class App : RequestHandler<Map<String, Any>, String> {
                 println("検索完了\n")
 
                 println("id検索(複数)")
-                println(dynamo.searchByKeys(tableName, listOf(listOf(u_id), listOf(u_id2), listOf("undefined"))))
+                println(
+                        dynamo.searchByKeys(
+                                tableName,
+                                listOf(listOf(u_id), listOf(u_id2), listOf("undefined"))
+                        )
+                )
                 println("検索完了\n")
 
                 println("メールアドレスで絞り込み")
                 println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
                 println("取得完了\n")
-                
+
                 println("メールアドレスを更新")
                 dynamo.updateItem(tableName, listOf(u_id), mapOf("email" to "test@example.com"))
                 println(dynamo.searchByKey(tableName, listOf(u_id)))
                 println("更新完了\n")
-                
+
                 println("メールアドレスで絞り込み")
                 println(dynamo.searchByAny(tableName, "email", "sample@example.com", "="))
                 println("取得完了\n")
@@ -131,12 +174,15 @@ class App : RequestHandler<Map<String, Any>, String> {
                 println("検索完了\n")
 
                 // {"result": {結果の連想配列}}
-                mapOf("response_status" to "success", "result" to utils.toMap(utils.attributeValueToObject(result, "user")))
-            } catch (e:Exception) {
+                mapOf(
+                        "response_status" to "success",
+                        "result" to utils.toMap(utils.attributeValueToObject(result, "user"))
+                )
+            } catch (e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
             }
         }
-        return gson.toJson(res)       // JSONに変換してフロントに渡す
+        return gson.toJson(res) // JSONに変換してフロントに渡す
     }
 }
 
@@ -148,8 +194,8 @@ class App : RequestHandler<Map<String, Any>, String> {
  * 第二引数のStringが返り値の型(JSONなのでString)
  */
 class S3Sample : RequestHandler<Map<String, String>, String> {
-    val s3 = S3(Settings().AWS_REGION)          // S3のインスタンス化
-    val bucketName = Settings().AWS_BUCKET      // バケット名の設定
+    val s3 = S3(Settings().AWS_REGION) // S3のインスタンス化
+    val bucketName = Settings().AWS_BUCKET // バケット名の設定
 
     /**
      * Lambda関数で実行される関数。
@@ -159,17 +205,49 @@ class S3Sample : RequestHandler<Map<String, String>, String> {
      *
      * return String: フロントに渡すJSON
      */
-    override fun handleRequest(event: Map<String, String>?, context: Context?): String{
-        val res = runBlocking{
-            // S3からファイルを取得してfilesディレクトリに保存
-            s3.getObject(bucketName, "photo1.png", "photo1.png")
-            // 取得したファイルをURI形式に変換
-            val uri = utils.encodeToUri("./photo1.png")
-            // URIからファイルを生成
-            utils.decodeFromUri(uri, "./photo1_encoded")
-            // 生成したファイルをS3にアップロード
-            s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
+    override fun handleRequest(event: Map<String, String>?, context: Context?): String {
+        val l = context!!.logger
+        l.log("start!!!")
+        if (event == null) {
+            throw Exception("event is null")
+        } // event引数のnullチェック
+        if (event["body"] == null) {
+            throw Exception("body is null")
+        } // bodyのnullチェック
+        l.log("to json start!!!")
+        val b = utils.formatJsonEnv(event["body"]!!)
+        l.log("to json end!!!")
+        val img =
+                if (b["img"] == null) {
+                    throw Exception("ないっピ...")
+                } else {
+                    b["img"]!! as String
+                }
+        val res = runBlocking {
+            S3Client { region = Settings().AWS_REGION }.use { s3 ->
+                // val a = mapOf("a" to File(URI(img)).asByteStream())
+                val request = PutObjectRequest {
+                    bucket = Settings().AWS_BUCKET
+                    key = "foo.png"
+                    metadata = mapOf("foo" to "bar")
+                    body = File(URI(img)).asByteStream()
+                }
+                s3.putObject(request)
+            }
+            println("success!!!")
+            "foo"
         }
+
+        // val res = runBlocking {
+        //     // S3からファイルを取得してfilesディレクトリに保存
+        //     s3.getObject(bucketName, "photo1.png", "photo1.png")
+        //     // 取得したファイルをURI形式に変換
+        //     val uri = utils.encodeToUri("./photo1.png")
+        //     // URIからファイルを生成
+        //     utils.decodeFromUri(uri, "./photo1_encoded")
+        //     // 生成したファイルをS3にアップロード
+        //     s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
+        // }
         return res
     }
 }
