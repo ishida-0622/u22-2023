@@ -46,11 +46,8 @@ export const PuzzleList = () => {
       setPosts(allPosts);
       return;
     }
-
     const reg = new RegExp(value.toUpperCase(), "i");
-
     const searchedPosts = allPosts.filter((post) => reg.test(post.title));
-
     setPosts(searchedPosts);
   };
 
