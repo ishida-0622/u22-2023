@@ -12,7 +12,7 @@ Modal.setAppElement("#__next");
 
 export const PuzzleEdit = () => {
   const router = useRouter();
-  const [detailId, setDetailId] = useState(router.query.id);
+  const { id } = router.query;
 
   const [allPosts, setAllPosts] = useState<Puzzle[]>([]);
   const [posts, setPosts] = useState<Puzzle[]>([]);
