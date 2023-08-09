@@ -2,7 +2,6 @@ package tic.u22
 
 import aws.sdk.kotlin.services.dynamodb.model.*
 import java.io.File
-import java.io.FileOutputStream
 import java.nio.file.Files
 import java.time.LocalDateTime
 import java.util.Base64
@@ -798,7 +797,7 @@ class Utils {
      *
      * return 成功した場合は「Done」、失敗した場合はエラー内容
      */
-    fun decodeFromUri(uri: String, fileName: String): String {
+    fun decodeFromUri(uri: String): ByteArray? {
         try {
             val formattedUri =
                     mapOf(
@@ -807,11 +806,9 @@ class Utils {
                             "data" to uri.split(",")[1]
                     )
             val bytes = Base64.getDecoder().decode(formattedUri["data"])
-            val file = FileOutputStream("files/${fileName}.${formattedUri["extension"]}")
-            file.write(bytes)
-            return "Done"
+            return bytes
         } catch (e: Exception) {
-            return "$e"
+            return null
         }
     }
 
@@ -835,7 +832,7 @@ class Utils {
 
 /** 実行環境で使用する設定変数 */
 class Settings {
-    val AWS_REGION = "ap-notheast-1"
+    val AWS_REGION = "ap-northeast-1"
     val AWS_BUCKET = "k-ishida-hotfix-s3"
 }
 

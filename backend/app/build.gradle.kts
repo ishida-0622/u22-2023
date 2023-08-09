@@ -21,9 +21,11 @@ repositories {
 }
 
 dependencies {
-    implementation("aws.sdk.kotlin:dynamodb:0.18.0-beta")
-    implementation("aws.sdk.kotlin:s3:0.18.0-beta")
-    implementation("aws.sdk.kotlin:lambda:0.18.0-beta")
+    implementation("aws.sdk.kotlin:dynamodb:0.29.1-beta")
+    implementation("aws.sdk.kotlin:s3:0.29.1-beta")
+    implementation("aws.sdk.kotlin:lambda:0.29.1-beta")
+    // https://mvnrepository.com/artifact/aws.smithy.kotlin/runtime-core-jvm
+    implementation("aws.smithy.kotlin:runtime-core-jvm:0.24.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
     implementation ("com.amazonaws:aws-lambda-java-core:1.2.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")

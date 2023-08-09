@@ -7,14 +7,13 @@
 package tic.u22
 
 import aws.sdk.kotlin.services.lambda.*
-import aws.sdk.kotlin.services.s3.*
+import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.*
-import aws.smithy.kotlin.runtime.content.asByteStream
+import aws.sdk.kotlin.services.s3.putObject
+import aws.smithy.kotlin.runtime.content.ByteStream
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.google.gson.Gson
-import java.io.File
-import java.net.URI
 import java.util.UUID
 import kotlin.reflect.*
 import kotlin.reflect.full.*
@@ -193,9 +192,9 @@ class App : RequestHandler<Map<String, Any>, String> {
  *
  * 第二引数のStringが返り値の型(JSONなのでString)
  */
-class S3Sample : RequestHandler<Map<String, String>, String> {
-    val s3 = S3(Settings().AWS_REGION) // S3のインスタンス化
-    val bucketName = Settings().AWS_BUCKET // バケット名の設定
+class S3Sample : RequestHandler<Map<String, Any>, String> {
+    // val s3 = S3(Settings().AWS_REGION) // S3のインスタンス化
+    // val bucketName = Settings().AWS_BUCKET // バケット名の設定
 
     /**
      * Lambda関数で実行される関数。
@@ -205,8 +204,11 @@ class S3Sample : RequestHandler<Map<String, String>, String> {
      *
      * return String: フロントに渡すJSON
      */
-    override fun handleRequest(event: Map<String, String>?, context: Context?): String {
-        val l = context!!.logger
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val l = context?.logger
+        if (l == null) {
+            throw Exception("logger is null")
+        }
         l.log("start!!!")
         if (event == null) {
             throw Exception("event is null")
@@ -223,6 +225,15 @@ class S3Sample : RequestHandler<Map<String, String>, String> {
                 } else {
                     b["img"]!! as String
                 }
+        val ba = utils.decodeFromUri(img)
+        if (ba == null) {
+            throw Exception("null")
+        }
+        l.log("$ba")
+        // val f = File(a)
+        // l.log("File = $f")
+        // val bs = f.asByteStream()
+        // l.log("byte steam = $bs")
         val res = runBlocking {
             S3Client { region = Settings().AWS_REGION }.use { s3 ->
                 // val a = mapOf("a" to File(URI(img)).asByteStream())
@@ -230,11 +241,11 @@ class S3Sample : RequestHandler<Map<String, String>, String> {
                     bucket = Settings().AWS_BUCKET
                     key = "foo.png"
                     metadata = mapOf("foo" to "bar")
-                    body = File(URI(img)).asByteStream()
+                    body = ByteStream.fromBytes(ba)
                 }
                 s3.putObject(request)
             }
-            println("success!!!")
+            l.log("success!!!")
             "foo"
         }
 
