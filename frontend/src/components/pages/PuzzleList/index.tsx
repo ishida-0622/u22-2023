@@ -46,11 +46,8 @@ export const PuzzleList = () => {
       setPosts(allPosts);
       return;
     }
-
     const reg = new RegExp(value.toUpperCase(), "i");
-
     const searchedPosts = allPosts.filter((post) => reg.test(post.title));
-
     setPosts(searchedPosts);
   };
 
@@ -76,6 +73,13 @@ export const PuzzleList = () => {
     };
     pullPuzzle();
   }, []);
+
+  const edit = () => {
+    router.push({
+      pathname: "/admin/puzzle/edit/[id]",
+      query: { id: puzzle === undefined ? undefined : puzzle.p_id },
+    });
+  };
 
   return (
     <main>
@@ -125,7 +129,7 @@ export const PuzzleList = () => {
               <div>
                 <b>問題：</b>「
                 {puzzle.words.map((word) => (
-                  <div key={word.word}>
+                  <div>
                     <p>単語：{word.word}</p>
                     <p>シルエットのURI：{word.shadow}</p>
                     <Image src={word.shadow} alt="" width={150} height={100} />
@@ -149,6 +153,7 @@ export const PuzzleList = () => {
               <div>
                 <b>更新日：</b>「{puzzle.update_date}」
               </div>
+              <button onClick={edit}>編集</button>
             </main>
           )}
         </div>
