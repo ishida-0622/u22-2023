@@ -3,12 +3,11 @@ import { User } from "@/features/auth/types";
 
 export type SignUpRequest = Pick<
   User,
+  | "u_id"
   | "family_name"
   | "first_name"
   | "family_name_roma"
   | "first_name_roma"
-  | "email"
-  | "password"
   | "child_lock"
   | "account_name"
 >;

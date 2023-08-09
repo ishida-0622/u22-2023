@@ -155,7 +155,7 @@ class Utils {
       is AttributeValue.N -> v.asN()
       is AttributeValue.Bool -> v.asBool()
       is AttributeValue.L -> v.asL().map{toKotlinType(it)}
-      is AttributeValue.M -> v.asM().map{it.key to toKotlinType(it.value)}
+      is AttributeValue.M -> v.asM().map{it.key to toKotlinType(it.value)}.toMap()
       is AttributeValue.Null -> null
       else -> throw Exception("not supported type")
     }
@@ -197,10 +197,10 @@ class Utils {
             val wordVal = values["words"]!! as List<Any?>
             wordVal.map{
               if(it is Map<*, *>){
-                it.map{ item ->
-                  if(!(item.key is String && item.value is AttributeValue)){throw Exception("type of word (inside) is ng")}
-                }
-                attributeValueToObject(it as Map<String, AttributeValue>, "word") as Word
+                attributeValueToObject(it.map{ item ->
+                  if(!(item.key is String && item.value is Any)){throw Exception("type of word (inside) is ng")}
+                  (item.key as String) to toAttributeValue(item.value)
+                }.toMap(), "word") as Word
               } else {
                 throw Exception("type of word is ng")
               }
@@ -265,9 +265,7 @@ class Utils {
     } catch(e: Exception) {
       println("$e")
       println("could not serialized")
-      return LoginLog(
-        u_id = "$e"
-      )
+      throw Exception("$e")
     }
   }
 
