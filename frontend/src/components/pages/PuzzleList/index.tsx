@@ -76,7 +76,7 @@ export const PuzzleList = () => {
 
   const edit = () => {
     router.push({
-      pathname: "/admin/puzzle/edit",
+      pathname: "/admin/puzzle/edit/[id]",
       query: { id: puzzle === undefined ? undefined : puzzle.p_id },
     });
   };
