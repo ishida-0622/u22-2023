@@ -3,14 +3,16 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { ReactNode } from "react";
 
+import styles from "./index.module.scss";
+
 export const Piece = ({
   id,
-  className,
   children,
+  className,
 }: {
   id: UniqueIdentifier;
-  className?: string;
   children?: ReactNode;
+  className?: string;
 }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
@@ -20,6 +22,7 @@ export const Piece = ({
   };
 
   return (
+
     <div
       className={className}
       ref={setNodeRef}
@@ -29,5 +32,6 @@ export const Piece = ({
     >
       {children}
     </div>
+
   );
 };

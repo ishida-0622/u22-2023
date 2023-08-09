@@ -1,5 +1,6 @@
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 import { ReactNode } from "react";
+import styles from "@/features/puzzle/play/Board/index.module.scss"
 
 export const Board = ({
   id,
