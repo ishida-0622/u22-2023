@@ -1,10 +1,8 @@
 import { useLayoutEffect, useState } from "react";
-// import styles from "./index.module.scss";
+import styles from "./index.module.scss";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Puzzle } from "@/features/puzzle/types";
-// import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
 import Image from "next/image";
 
@@ -13,27 +11,7 @@ Modal.setAppElement("#__next");
 export const PuzzleEdit = () => {
   const router = useRouter();
   const { id } = router.query;
-
-  // const [allPosts, setAllPosts] = useState<Puzzle[]>([]);
-  // const [posts, setPosts] = useState<Puzzle[]>([]);
-  // const [puzzle, setPuzzle] = useState<Puzzle>();
-
   const [puzzle, setPuzzle] = useState<Puzzle | undefined>(undefined);
-
-  // //モーダルウィンドウの表示/非表示を表すbool値を宣言
-  // const [modalIsOpen, setModalIsOpen] = useState(false);
-  // /** モーダルウィンドウを表示にする関数 */
-  // const openModal = () => setModalIsOpen(true);
-  // /** モーダルウィンドウを非表示にする関数 */
-  // const closeModal = () => setModalIsOpen(false);
-  // // 検索
-  // const [input, setInput] = useState("");
-
-  // const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Puzzle) => {
-  //   event.preventDefault();
-  //   setPuzzle(post);
-  //   openModal();
-  // };
 
   useLayoutEffect(() => {
     const pullPuzzle = async () => {
@@ -50,7 +28,6 @@ export const PuzzleEdit = () => {
 
         const matchingPuzzle = data.result.find((puzzle) => puzzle.p_id === id);
         if (matchingPuzzle) {
-          // setAllPosts(data.result);
           setPuzzle(matchingPuzzle);
           console.log(data.result);
         } else {
