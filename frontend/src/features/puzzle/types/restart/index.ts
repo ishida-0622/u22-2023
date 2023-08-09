@@ -6,5 +6,5 @@ export type RestartPuzzleRequest = {
 
 export type RestartPuzzleResponse = ApiResponse<{
   p_id: string;
-  words: string[];
+  saved_data: string[];
 }>;
