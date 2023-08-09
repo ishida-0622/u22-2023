@@ -41,11 +41,12 @@ export const PuzzleList = () => {
   };
 
   //検索欄への入力値での絞り込み
-  const search = (value = input) => {
-    if (value === "") {
-      setPosts(allPosts);
-      return;
-    }
+  const search = (value: string) => {
+    // if (value === "") {
+    //   setPosts(allPosts);
+    //   return;
+    // }
+    value = input;
     const reg = new RegExp(value.toUpperCase(), "i");
     const searchedPosts = allPosts.filter((post) => reg.test(post.title));
     setPosts(searchedPosts);
@@ -77,7 +78,7 @@ export const PuzzleList = () => {
   const edit = () => {
     router.push({
       pathname: "/admin/puzzle/edit/[id]",
-      query: { id: puzzle === undefined ? undefined : puzzle.p_id },
+      // query: { id: puzzle === undefined ? undefined : puzzle.p_id },
     });
   };
 
