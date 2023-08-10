@@ -52,14 +52,14 @@ class S3(val REGION: String) {
      *
      * return String: 成功: eTag, 失敗: エラー内容
      */
-    suspend fun putObject(bucketName: String, objectKey: String, objectPath: String, metadataVal: Map<String, String>?): String {
-        val request = PutObjectRequest {
-            bucket = bucketName
-            key = objectKey
-            metadata = metadataVal
-            body = File("files/${objectPath}").asByteStream()
-        }
+    suspend fun putObject(bucketName: String, objectKey: String, objectBytes: ByteArray, metadataVal: Map<String, String>?): String {
         try{
+            val request = PutObjectRequest {
+                bucket = Settings().AWS_BUCKET
+                key = objectKey
+                metadata = metadataVal
+                body = ByteStream.fromBytes(objectBytes)
+            }
             S3Client { region = REGION }.use { s3 ->
                 val response = s3.putObject(request)
                 return "${response.eTag}"
