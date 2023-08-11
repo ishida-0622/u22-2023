@@ -40,7 +40,11 @@ export const PuzzleEdit = () => {
           setTitle(matchingPuzzle.title);
           setDescription(matchingPuzzle.description);
           setIcon(matchingPuzzle.icon);
-          // TODO wordsをセットする処理
+          if (!matchingPuzzle.words) {
+            return;
+          } else {
+            // TODO wordsをセットする処理
+          }
           console.log(data.result);
         } else {
           console.log("Puzzle not found");
