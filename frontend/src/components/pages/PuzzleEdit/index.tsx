@@ -192,10 +192,11 @@ export const PuzzleEdit = () => {
       /^([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+(?:,([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+)*$/
     );
     // 問題文がカンマ区切りの英文かを判定
-    if (!reg.test(word)) {
-      alert("問題文の形式が不正です");
-      return;
-    }
+
+    // if (!reg.test(word)) {
+    //   alert("問題文の形式が不正です");
+    //   return;
+    // }
 
     if (!(dummyWord === "" || reg.test(dummyWord))) {
       alert("ダミー文の形式が不正です");
@@ -270,7 +271,6 @@ export const PuzzleEdit = () => {
       }
     } catch (e) {
       console.error(e);
-
       alert("更新に失敗しました");
     }
   };
@@ -283,7 +283,7 @@ export const PuzzleEdit = () => {
             {/* パズルID */}
             <div>
               <label>
-                <b>パズルID:「{puzzle.p_id}」</b>
+                <b>パズルID:「{p_id}」</b>
               </label>
             </div>
             {/* TITLE */}
@@ -294,9 +294,9 @@ export const PuzzleEdit = () => {
                   type="text"
                   name="title"
                   id="title"
-                  value={puzzle.title}
+                  value={title}
                   onChange={changeTitle}
-                  required={true}
+                  required={false}
                 />
               </label>
             </div>
@@ -307,15 +307,15 @@ export const PuzzleEdit = () => {
                 <input
                   name="description"
                   id="description"
-                  value={puzzle.description}
+                  value={description}
                   onChange={changeDescription}
-                  required={true}
+                  required={false}
                 />
               </label>
             </div>
             {/* 登録済みのアイコン */}
             <div>
-              <b>登録されているアイコン写真のURI：</b>「{puzzle.icon}」
+              <b>登録されているアイコン写真のURI：</b>「{icon}」
             </div>
             <div>
               <b>登録されているアイコン写真：</b>
@@ -332,6 +332,7 @@ export const PuzzleEdit = () => {
                   type="file"
                   accept="image/*"
                   onChange={iconOnChangeHandler}
+                  required={false}
                 />
                 {icon && (
                   <Image
@@ -350,7 +351,7 @@ export const PuzzleEdit = () => {
               <div>
                 <p>
                   登録されている単語:「
-                  {puzzle.words.map((word) => word.word).join(",")}」
+                  {splitWord.join(",")}」
                 </p>
               </div>
               {puzzle.words.map((word) => (
@@ -382,8 +383,8 @@ export const PuzzleEdit = () => {
                   type="text"
                   placeholder={"I,have,an apple"}
                   value={word}
-                  required={true}
                   onChange={wordOnChangeHandler}
+                  required={false}
                 />
               </label>
 
@@ -395,7 +396,7 @@ export const PuzzleEdit = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      required={true}
+                      required={false}
                       onChange={(e) => onChangeHandler(e, i, setImages)}
                     />
 
@@ -415,7 +416,7 @@ export const PuzzleEdit = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      required={true}
+                      required={false}
                       onChange={(e) => onChangeHandler(e, i, setShadows)}
                     />
 
@@ -435,7 +436,7 @@ export const PuzzleEdit = () => {
                     <input
                       type="file"
                       accept="audio/*"
-                      required={true}
+                      required={false}
                       onChange={(e) => onChangeHandler(e, i, setVoices)}
                     />
 
@@ -466,6 +467,7 @@ export const PuzzleEdit = () => {
                   value={dummyWord}
                   placeholder={"an orange,a banana"}
                   onChange={dummyWordOnChangeHandler}
+                  required={false}
                 />
               </label>
 
@@ -497,7 +499,7 @@ export const PuzzleEdit = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      required={true}
+                      required={false}
                       onChange={(e) => onChangeHandler(e, i, setDummyShadows)}
                     />
 
@@ -517,7 +519,7 @@ export const PuzzleEdit = () => {
                     <input
                       type="file"
                       accept="audio/*"
-                      required={true}
+                      required={false}
                       onChange={(e) => onChangeHandler(e, i, setDummyVoices)}
                     />
 
