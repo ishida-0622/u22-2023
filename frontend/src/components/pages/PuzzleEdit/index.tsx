@@ -43,7 +43,15 @@ export const PuzzleEdit = () => {
           if (!matchingPuzzle.words) {
             return;
           } else {
-            // TODO wordsをセットする処理
+            // TODO wordsDummyをセットする処理
+            matchingPuzzle.words.map(
+              (word) => (
+                setWord(word.word),
+                setImages([word.illustration]),
+                setShadows([word.shadow]),
+                setVoices([word.voice])
+              )
+            );
           }
           console.log(data.result);
         } else {
@@ -346,7 +354,7 @@ export const PuzzleEdit = () => {
               <div>
                 <p>
                   登録されている単語:「
-                  {puzzle.words.map((v) => v.word).join(",")}」
+                  {puzzle.words.map((word) => word.word).join(",")}」
                 </p>
               </div>
               {puzzle.words.map((word) => (
