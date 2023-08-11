@@ -529,7 +529,7 @@ export const PuzzleEdit = () => {
             </div>
           </div>
         )}
-        <input type="submit" value="追加する" />
+        <input type="submit" value="更新する" />
       </form>
       <Link href="/admin/puzzle">パズル問題一覧ページへ戻る</Link>
     </main>
