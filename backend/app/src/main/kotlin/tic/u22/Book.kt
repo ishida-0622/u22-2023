@@ -40,6 +40,13 @@ class GetBooks: RequestHandler<Map<String, Any>, String> {
     }
 }
 
+/**
+ * u_id, b_idを受け取りゲームステータスの変更、ログの追加を行う
+ * 
+ * @param event Map<String, Any>?: "u_id": "u_id", "b_id": "b_id"
+ * 
+ * return String : {"response_status": "success", "result": {}}
+ */
 class FinishBook : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
