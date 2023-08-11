@@ -44,6 +44,10 @@ export const PuzzleEdit = () => {
             return;
           } else {
             // TODO wordsをセットする処理
+            setSplitWord(matchingPuzzle.words.map((word) => word.word));
+            setImages(matchingPuzzle.words.map((word) => word.illustration));
+            setShadows(matchingPuzzle.words.map((word) => word.shadow));
+            setVoices(matchingPuzzle.words.map((word) => word.voice));
           }
           console.log(data.result);
         } else {
