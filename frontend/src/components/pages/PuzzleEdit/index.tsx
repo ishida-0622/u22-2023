@@ -43,15 +43,7 @@ export const PuzzleEdit = () => {
           if (!matchingPuzzle.words) {
             return;
           } else {
-            // TODO wordsDummyをセットする処理
-            matchingPuzzle.words.map(
-              (word) => (
-                setWord(word.word),
-                setImages([word.illustration]),
-                setShadows([word.shadow]),
-                setVoices([word.voice])
-              )
-            );
+            // TODO wordsをセットする処理
           }
           console.log(data.result);
         } else {
