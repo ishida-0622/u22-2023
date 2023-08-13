@@ -151,14 +151,6 @@ class S3Sample : RequestHandler<Map<String, Any>, String> {
     val s3 = S3(Settings().AWS_REGION) // S3のインスタンス化
     val bucketName = Settings().AWS_BUCKET // バケット名の設定
 
-    /**
-     * Lambda関数で実行される関数。
-     *
-     * @param event Map<String, Any>?: Lambda関数に渡される引数
-     * @param context Context?: Context
-     *
-     * return String: フロントに渡すJSON
-     */
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
             try{
@@ -168,11 +160,11 @@ class S3Sample : RequestHandler<Map<String, Any>, String> {
                 val body = utils.formatJsonEnv(event["body"]!!)
                 val img =
                         if (body["img"] == null) { throw Exception("image is null") } else { body["img"]!! as String }
-                val byte = utils.decodeFromUri(img)
-                if (byte == null) { throw Exception("null") }
-                println("$byte")
-
-                val res = s3.putObject(bucketName, "photo1_encoded.png", byte, null)
+                // val img = ""
+                s3.getObject(bucketName, "photo1.png", "photo1.png")
+                val uri = utils.encodeToUri("photo1.png")
+                println(uri)
+                val res = s3.putObject(bucketName, "photo1_encoded.png", img, null)
                 mapOf("response_status" to "success", "result" to "$res")
             } catch (e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
@@ -194,6 +186,6 @@ class S3Sample : RequestHandler<Map<String, Any>, String> {
 // ローカル環境実行用
 fun main() {
     // handlerを起動
-    val app = App()
+    val app = S3Sample()
     app.handleRequest(null, null)
 }
