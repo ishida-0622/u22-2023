@@ -1,6 +1,7 @@
 package tic.u22
 
 import java.io.File
+import java.util.Base64
 import aws.sdk.kotlin.services.s3.*
 import aws.sdk.kotlin.services.s3.model.*
 import aws.sdk.kotlin.services.s3.model.BucketLocationConstraint
@@ -57,7 +58,7 @@ class S3(val REGION: String) {
             val objectBytes = utils.decodeFromUri(objectUri)
             if (objectBytes == null) { throw Exception("could not decode to ByteArray from URI") }
             val request = PutObjectRequest {
-                bucket = Settings().AWS_BUCKET
+                bucket = bucketName
                 key = objectKey
                 metadata = metadataVal
                 body = ByteStream.fromBytes(objectBytes)
@@ -79,25 +80,21 @@ class S3(val REGION: String) {
      * @param keyName String: S3のキー。パスとファイル名のこと。例: images/img.png ※"./"は不要
      * @param path String: ローカルのファイルパス・ファイル名。ルートディレクトリはfiles。
      *
-     * return String: 成功: Done, 失敗: エラー内容
+     * return String: 成功: URI, 失敗: 例外のスロー
      */
-    suspend fun getObject(bucketName: String, keyName: String, path: String): String {
-        try {
-            val request = GetObjectRequest {
-                key = keyName
-                bucket = bucketName
+    suspend fun getObject(bucketName: String, keyName: String): String {
+        val request = GetObjectRequest {
+            bucket = bucketName
+            key = keyName
+        }
+        S3Client { region = REGION }.use { s3 ->
+            val resp = s3.getObject(request) { resp ->
+                // println("${resp.contentEncoding}")
+                val byteResp = resp.body!!.toByteArray()
+                val uriResp = Base64.getUrlEncoder().encodeToString(byteResp)
+                "data:${resp.contentType};base64,${uriResp}"
             }
-            S3Client { region = REGION }.use { s3 ->
-                s3.getObject(request) { resp ->
-                    println(resp.body)
-                    val myFile = File("tmp/${path}")
-                    println(resp)
-                    resp.body?.writeToFile(myFile)
-                }
-            }
-            return "Done"
-        }catch(e: Exception){
-            return "$e"
+            return resp
         }
     }
 

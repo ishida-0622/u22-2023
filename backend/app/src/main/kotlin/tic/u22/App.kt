@@ -160,12 +160,15 @@ class S3Sample : RequestHandler<Map<String, Any>, String> {
                 val body = utils.formatJsonEnv(event["body"]!!)
                 val img =
                         if (body["img"] == null) { throw Exception("image is null") } else { body["img"]!! as String }
-                // val img = ""
-                s3.getObject(bucketName, "photo1.png", "photo1.png")
-                val uri = utils.encodeToUri("photo1.png")
-                println(uri)
-                val res = s3.putObject(bucketName, "photo1_encoded.png", img, null)
-                mapOf("response_status" to "success", "result" to "$res")
+                val photo1 = s3.getObject(bucketName, "photo1.png")
+                println(img)
+                println(photo1)
+                val img_res = s3.putObject(bucketName, "img.png", img, null)
+                val photo1_res = s3.putObject(bucketName, "photo1_encoded.png", photo1, null)
+                mapOf("response_status" to "success", "result" to mapOf(
+                    "img" to "$img_res",
+                    "photo1_res" to "$photo1_res"
+                ))
             } catch (e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
             }
