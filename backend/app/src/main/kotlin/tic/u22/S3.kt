@@ -52,8 +52,10 @@ class S3(val REGION: String) {
      *
      * return String: 成功: eTag, 失敗: エラー内容
      */
-    suspend fun putObject(bucketName: String, objectKey: String, objectBytes: ByteArray, metadataVal: Map<String, String>?): String {
+    suspend fun putObject(bucketName: String, objectKey: String, objectUri: String, metadataVal: Map<String, String>?): String {
         try{
+            val objectBytes = utils.decodeFromUri(objectUri)
+            if (objectBytes == null) { throw Exception("could not decode to ByteArray from URI") }
             val request = PutObjectRequest {
                 bucket = Settings().AWS_BUCKET
                 key = objectKey
@@ -88,7 +90,7 @@ class S3(val REGION: String) {
             S3Client { region = REGION }.use { s3 ->
                 s3.getObject(request) { resp ->
                     println(resp.body)
-                    val myFile = File("files/${path}")
+                    val myFile = File("tmp/${path}")
                     println(resp)
                     resp.body?.writeToFile(myFile)
                 }
