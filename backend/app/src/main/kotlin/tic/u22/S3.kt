@@ -82,11 +82,11 @@ class S3(val REGION: String) {
      * return String: 成功: Done, 失敗: エラー内容
      */
     suspend fun getObject(bucketName: String, keyName: String, path: String): String {
-        val request = GetObjectRequest {
-            key = keyName
-            bucket = bucketName
-        }
         try {
+            val request = GetObjectRequest {
+                key = keyName
+                bucket = bucketName
+            }
             S3Client { region = REGION }.use { s3 ->
                 s3.getObject(request) { resp ->
                     println(resp.body)
