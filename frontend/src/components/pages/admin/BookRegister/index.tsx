@@ -37,68 +37,71 @@ export const BookRegister = () => {
   return (
     <main>
       <form onSubmit={submitHandler}>
-        <label>
-          サムネイル画像
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => fileOnChangeHandler(e, setThumbnail)}
-          />
-          {thumbnail && (
-            <Image
-              src={thumbnail}
-              alt="thumbnail"
-              // width, heightは必要に応じて書き換えてください
-              width={100}
-              height={100}
-              // width, heightを消してfillのコメントアウトを削除すると、画像によって比率が自動的に変わります
-              // fill
+        <div>
+          <label>
+            サムネイル画像
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => fileOnChangeHandler(e, setThumbnail)}
             />
-          )}
-        </label>
-        <label>
-          英タイトル
-          <input
-            type="text"
-            value={titleEn}
-            onChange={(e) => setTitleEn(e.target.value)}
-          />
-        </label>
-        <label>
-          日本語タイトル
-          <input
-            type="text"
-            value={titleJa}
-            onChange={(e) => setTitleJa(e.target.value)}
-          />
-        </label>
-        <label>
-          著者
-          <input
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-        </label>
-        <label>
-          あらすじ
-          <textarea
-            cols={30}
-            rows={10}
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          />
-        </label>
-        <label>
-          <input
-            type="file"
-            accept="image/pdf"
-            onChange={(e) => fileOnChangeHandler(e, setPdf)}
-          />
-        </label>
-        <label>
-          <input type="file" accept="audio/*" onChange={(e) => {}} />
-        </label>
+            {thumbnail && (
+              <Image
+                src={thumbnail}
+                alt="thumbnail"
+                // width, heightは必要に応じて書き換えてください
+                width={100}
+                height={100}
+                // width, heightを消してfillのコメントアウトを削除すると、画像によって比率が自動的に変わります
+                // fill
+              />
+            )}
+          </label>
+        </div>
+        <div>
+          <label>
+            英タイトル
+            <input
+              type="text"
+              value={titleEn}
+              onChange={(e) => setTitleEn(e.target.value)}
+            />
+          </label>
+          <label>
+            日本語タイトル
+            <input
+              type="text"
+              value={titleJa}
+              onChange={(e) => setTitleJa(e.target.value)}
+            />
+          </label>
+          <label>
+            著者
+            <input
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+          </label>
+          <label>
+            あらすじ
+            <textarea
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+            />
+          </label>
+          <label>
+            pdfファイル
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={(e) => fileOnChangeHandler(e, setPdf)}
+            />
+          </label>
+          <label>
+            <input type="file" accept="audio/*" onChange={(e) => {}} />
+          </label>
+        </div>
       </form>
     </main>
   );
