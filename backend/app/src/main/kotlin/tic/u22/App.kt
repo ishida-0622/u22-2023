@@ -9,11 +9,11 @@ package tic.u22
 import aws.sdk.kotlin.services.lambda.*
 import aws.sdk.kotlin.services.s3.S3Client
 import aws.sdk.kotlin.services.s3.model.*
-import aws.sdk.kotlin.services.s3.putObject
-import aws.smithy.kotlin.runtime.content.ByteStream
+import aws.smithy.kotlin.runtime.content.toByteArray
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
 import com.google.gson.Gson
+import java.util.Base64
 import java.util.UUID
 import kotlin.reflect.*
 import kotlin.reflect.full.*
@@ -234,31 +234,44 @@ class S3Sample : RequestHandler<Map<String, Any>, String> {
         // l.log("File = $f")
         // val bs = f.asByteStream()
         // l.log("byte steam = $bs")
+        // val res = runBlocking {
+        //     S3Client { region = Settings().AWS_REGION }.use { s3 ->
+        //         // val a = mapOf("a" to File(URI(img)).asByteStream())
+        //         val request = PutObjectRequest {
+        //             bucket = Settings().AWS_BUCKET
+        //             key = "foo.png"
+        //             metadata = mapOf("foo" to "bar")
+        //             body = ByteStream.fromBytes(ba)
+        //         }
+        //         s3.putObject(request)
+        //     }
+        //     l.log("success!!!")
+        //     "foo"
+        // }
+
         val res = runBlocking {
             S3Client { region = Settings().AWS_REGION }.use { s3 ->
-                // val a = mapOf("a" to File(URI(img)).asByteStream())
-                val request = PutObjectRequest {
+                val req = GetObjectRequest {
                     bucket = Settings().AWS_BUCKET
                     key = "foo.png"
-                    metadata = mapOf("foo" to "bar")
-                    body = ByteStream.fromBytes(ba)
                 }
-                s3.putObject(request)
+                s3.getObject(req) { resp ->
+                    l.log("${resp.contentEncoding}")
+                    val b = resp.body!!.toByteArray()
+                    val u = Base64.getUrlEncoder().encodeToString(b)
+                    l.log("data:${resp.contentType};base64,${u}")
+                }
             }
-            l.log("success!!!")
-            "foo"
+            //     // S3からファイルを取得してfilesディレクトリに保存
+            //     s3.getObject(bucketName, "photo1.png", "photo1.png")
+            //     // 取得したファイルをURI形式に変換
+            //     val uri = utils.encodeToUri("./photo1.png")
+            //     // URIからファイルを生成
+            //     utils.decodeFromUri(uri, "./photo1_encoded")
+            //     // 生成したファイルをS3にアップロード
+            //     s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
+            "bar"
         }
-
-        // val res = runBlocking {
-        //     // S3からファイルを取得してfilesディレクトリに保存
-        //     s3.getObject(bucketName, "photo1.png", "photo1.png")
-        //     // 取得したファイルをURI形式に変換
-        //     val uri = utils.encodeToUri("./photo1.png")
-        //     // URIからファイルを生成
-        //     utils.decodeFromUri(uri, "./photo1_encoded")
-        //     // 生成したファイルをS3にアップロード
-        //     s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
-        // }
         return res
     }
 }
