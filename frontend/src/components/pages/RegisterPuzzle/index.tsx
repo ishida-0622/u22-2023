@@ -32,6 +32,10 @@ export const RegisterPuzzle = () => {
   const [dummyShadows, setDummyShadows] = useState<(string | null)[]>([]);
   const [dummyVoices, setDummyVoices] = useState<(string | null)[]>([]);
 
+  const router = useRouter();
+  const puzzleList = () => {
+    router.push("admin/puzzle");
+  };
   const changeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -213,6 +217,9 @@ export const RegisterPuzzle = () => {
       const json: RegisterPuzzleResponse = await res.json();
       if (json.response_status === "fail") {
         throw new Error(json.error);
+      } else {
+        alert("登録に成功しました");
+        puzzleList();
       }
     } catch (e) {
       console.error(e);
