@@ -16,6 +16,9 @@ export const PuzzleEdit = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const puzzleList = () => {
+    router.push("admin/puzzle");
+  };
   // idに基づいてAPIからデータを取ってくる処理
   const [puzzle, setPuzzle] = useState<Puzzle | undefined>(undefined);
 
@@ -268,6 +271,9 @@ export const PuzzleEdit = () => {
       const json: UpdateBookResponse = await res.json();
       if (json.response_status === "fail") {
         throw new Error(json.error);
+      } else {
+        alert("更新に成功しました");
+        puzzleList();
       }
     } catch (e) {
       console.error(e);
