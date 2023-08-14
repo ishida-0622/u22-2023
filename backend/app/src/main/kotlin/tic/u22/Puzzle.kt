@@ -16,6 +16,8 @@ import com.google.gson.JsonParser
  * パズルを開始する
  */
 class StartPuzzle : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
         val res = runBlocking {
@@ -39,16 +41,36 @@ class StartPuzzle : RequestHandler<Map<String, Any>, String> {
                 if((utils.toKotlinType(status["game_status"]!!) as String).toInt() != 0) {
                     throw Exception("game status is not 0: now is ${(utils.toKotlinType(status["game_status"]!!) as String).toInt()}")
                 }
+                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                if(result.isEmpty()){throw Exception("this p_id is not exist")}
 
                 val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 1))
                 if(updated != "DONE"){
                     throw Exception("failed to update game status: $updated")
                 }
-                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                val formattedResult = utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                val res = mapOf(
+                    "p_id" to formattedResult["p_id"],
+                    "title" to formattedResult["title"],
+                    "description" to formattedResult["description"],
+                    "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+                    "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+                        mapOf(
+                            "word" to word["word"],
+                            "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+                            "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+                            "voice" to s3.getObject(bucketName, word["voice"] as String),
+                            "is_displayed" to word["is_displayed"] as Boolean,
+                            "is_dummy" to word["is_dummy"] as Boolean
+                        )
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
 
                 mapOf(
                     "resposne_status" to "success",
-                    "result" to utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                    "result" to res
                 )
             } catch (e: Exception) {
                 mapOf(
