@@ -158,31 +158,28 @@ class S3Sample : RequestHandler<Map<String, Any>, String> {
                 if (event["body"] == null) { throw Exception("body is null") } // bodyのnullチェック
 
                 val body = utils.formatJsonEnv(event["body"]!!)
-                val img =
-                        if (body["img"] == null) { throw Exception("image is null") } else { body["img"]!! as String }
-                val photo1 = s3.getObject(bucketName, "photo1.png")
-                println(img)
-                println(photo1)
+                val img = if (body["img"] == null) { throw Exception("image is null") } else { body["img"]!! as String }
+                println("img URI = ${img}")
+                // S3へのアップロード
                 val img_res = s3.putObject(bucketName, "img.png", img, null)
-                val photo1_res = s3.putObject(bucketName, "photo1_encoded.png", photo1, null)
+
+                // S3からのダウンロード
+                val img_got = s3.getObject(bucketName, "img.png")
+                println("img_got URI = ${img_got}")
+
+                // S3へのアップロード
+                val img_got_res = s3.putObject(bucketName, "img_reup.png", img_got, null)
+
+                // JSONで結果の変換
                 mapOf("response_status" to "success", "result" to mapOf(
                     "img" to "$img_res",
-                    "photo1_res" to "$photo1_res"
+                    "img_reup" to "$img_got_res"
                 ))
             } catch (e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
             }
         }
         return  gson.toJson(res)
-        // val res = runBlocking {
-        //     s3.getObject(bucketName, "photo1.png", "photo1.png")
-        //     // 取得したファイルをURI形式に変換
-        //     val uri = utils.encodeToUri("./photo1.png")
-        //     // URIからファイルを生成
-        //     utils.decodeFromUri(uri, "./photo1_encoded")
-        //     // 生成したファイルをS3にアップロード
-        //     s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
-        // }
     }
 }
 

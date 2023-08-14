@@ -51,26 +51,30 @@ class S3(val REGION: String) {
      * @param objectPath String: ローカルのファイルパス・ファイル名。ルートディレクトリはfiles。
      * @param metadataVal Map<String, String>?: ユーザー定義メタデータ。null許容。
      *
-     * return String: 成功: eTag, 失敗: エラー内容
+     * return String: eTag, 失敗時は例外のスロー
      */
     suspend fun putObject(bucketName: String, objectKey: String, objectUri: String, metadataVal: Map<String, String>?): String {
-        try{
             val objectBytes = utils.decodeFromUri(objectUri)
             if (objectBytes == null) { throw Exception("could not decode to ByteArray from URI") }
+            val splitedFileName = objectKey.split(".")
             val request = PutObjectRequest {
                 bucket = bucketName
                 key = objectKey
                 metadata = metadataVal
+                contentType = when (splitedFileName[splitedFileName.size - 1]) {
+                    "png", "PNG" -> "img/png"
+                    "jpg", "jpeg", "JPG", "JPEG" -> "img/jpeg"
+                    "gif", "GIF" -> "image/gif"
+                    "pdf" -> "application/pdf"
+                    "mp3", "m4a" -> "audio/mpeg"
+                    else -> "text/plain"
+                }
                 body = ByteStream.fromBytes(objectBytes)
             }
             S3Client { region = REGION }.use { s3 ->
                 val response = s3.putObject(request)
                 return "${response.eTag}"
             }
-        } catch(e: Exception) {
-            println(e)
-            return "$e"
-        }
     }
 
     /**
@@ -89,9 +93,8 @@ class S3(val REGION: String) {
         }
         S3Client { region = REGION }.use { s3 ->
             val resp = s3.getObject(request) { resp ->
-                // println("${resp.contentEncoding}")
                 val byteResp = resp.body!!.toByteArray()
-                val uriResp = Base64.getUrlEncoder().encodeToString(byteResp)
+                val uriResp = Base64.getUrlEncoder().encodeToString(byteResp).replace("-", "+").replace("_", "/")
                 "data:${resp.contentType};base64,${uriResp}"
             }
             return resp
