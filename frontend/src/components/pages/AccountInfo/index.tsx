@@ -3,6 +3,7 @@ import { User } from "@/features/auth/types";
 import Router from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import styles from "@/components/pages/AccountInfo/index.module.scss";
 
 import "react-tabs/style/react-tabs.css";
 import {
@@ -106,8 +107,8 @@ export const AccountInfo = () => {
         {userDataError
           ? userDataError
           : puzzleLogError
-          ? puzzleLogError
-          : bookLogError}
+            ? puzzleLogError
+            : bookLogError}
       </p>
     );
   }
@@ -121,16 +122,18 @@ export const AccountInfo = () => {
   }
 
   return (
-    <div>
+    <div className={`${styles.container}`}>
+      <div className={`${styles.back_ground}`}></div>
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
       <h1>アカウント情報画面</h1>
       <Tabs>
-        <TabList>
+        <TabList className={`${styles.tab_list}`}>
           <Tab>アカウント情報</Tab>
           <Tab>設定</Tab>
           <Tab>パズルログ</Tab>
           <Tab>えほんログ</Tab>
         </TabList>
-        <TabPanel>
+        <TabPanel className={`${styles.info}`}>
           <p>クリア回数：---回</p>
           <p>シール獲得枚数：---枚</p>
           <p>メールアドレス</p>
@@ -162,65 +165,76 @@ export const AccountInfo = () => {
           <button
             type="button"
             name="account_change"
-            // onClick={() => Router.push("/account-info/edit")}
+          // onClick={() => Router.push("/account-info/edit")}
           >
             アカウント情報を変更
           </button>
         </TabPanel>
-        <TabPanel>
-          <p>フォントサイズ</p>
-          <label>
-            小
-            <input type="radio" name="font-size" />
-          </label>
-          <label>
-            中
-            <input type="radio" name="font-size" />
-          </label>
-          <label>
-            大
-            <input type="radio" name="font-size" />
-          </label>
-          <p>音量</p>
-          <div>
-            <input type="button" name="yellow_green" />
-            <input type="button" name="light_blue" />
-            <input type="button" name="blue" />
-            <input type="button" name="yellow" />
-            <input type="button" name="orange" />
-            <input type="button" name="red" />
+        <TabPanel className={`${styles.setting}`}>
+          <div className={`${styles.font_size}`}>
+            <p className={`${styles.navigate_size}`}>フォントサイズ</p>
+            <input type="radio" name="font-size" id="small" className={`${styles.radio_inline_input}`} />
+            <label className={`${styles.radio_inline_label}`} htmlFor="small">
+              <p className={`${styles.small}`}>小</p>
+            </label>
+            <input type="radio" name="font-size" id="normal" className={`${styles.radio_inline_input}`}/>
+            <label className={`${styles.radio_inline_label}`} htmlFor="normal">
+              <p className={`${styles.normal}`}>中</p>
+            </label>
+            <input type="radio" name="font-size" id="big" className={`${styles.radio_inline_input}`} />
+            <label className={`${styles.radio_inline_label}`} htmlFor="big">
+              <p className={`${styles.big}`}>大</p>
+            </label>
           </div>
-          <p>使用時間制限</p>
-          <select value={selectedHour} onChange={handleHourChange}>
-            {Array.from({ length: 24 }, (_, i) =>
-              i.toString().padStart(2, "0")
-            ).map((hour) => (
-              <option key={hour} value={hour}>
-                {hour}
-              </option>
-            ))}
-          </select>
-          時間
-          <select value={selectedMinute} onChange={handleMinuteChange}>
-            {Array.from({ length: 60 }, (_, i) =>
-              i.toString().padStart(2, "0")
-            ).map((minute) => (
-              <option key={minute} value={minute}>
-                {minute}
-              </option>
-            ))}
-          </select>
-          分
-          <div>
-            <button type="button" name="setting_return">
+          <div className={`${styles.volume}`}>
+            <p className={`${styles.navigate_volume}`}>音量</p>
+            <div className={`${styles.volume_bar}`}>
+              <input type="button" name="yellow_green" className={`${styles.yellow_green}`} />
+              <input type="button" name="light_blue" className={`${styles.light_blue}`} />
+              <input type="button" name="blue" className={`${styles.blue}`} />
+              <input type="button" name="yellow" className={`${styles.yellow}`} />
+              <input type="button" name="orange" className={`${styles.orange}`} />
+              <input type="button" name="red" className={`${styles.red}`} />
+            </div>
+          </div>
+          <div className={`${styles.time_limit}`}>
+            <p className={`${styles.navigate_time}`}>使用時間制限</p>
+
+            <select value={selectedHour} onChange={handleHourChange} className={`${styles.limit_hour}`} id="hour">
+              {Array.from({ length: 24 }, (_, i) =>
+                i.toString().padStart(2, "0")
+              ).map((hour) => (
+                <option key={hour} value={hour}>
+                  {hour}
+                </option>
+              ))}
+            </select>
+            <label className={`${styles.hour_navigate}`} htmlFor="hour">
+              時間
+            </label>
+            <select value={selectedMinute} onChange={handleMinuteChange} className={`${styles.limit_minute}`} id="minute">
+              {Array.from({ length: 60 }, (_, i) =>
+                i.toString().padStart(2, "0")
+              ).map((minute) => (
+                <option key={minute} value={minute}>
+                  {minute}
+                </option>
+              ))}
+            </select>
+            <label className={`${styles.minute_navigate}`} htmlFor="minute">
+              分
+            </label>
+          </div>
+          <div className={`${styles.buttons}`}>
+            <button type="button" name="setting_return" className={`${styles.back_button}`}>
               戻る
             </button>
-            <button type="button" name="setting_change">
+            <button type="button" name="setting_change" className={`${styles.change_button}`}>
               変更
             </button>
           </div>
         </TabPanel>
-        <TabPanel>
+        <TabPanel className={`${styles.puzzle_log}`}>
           パズルログ
           {puzzleLogs.map((log) => (
             <div key={log.p_id}>
@@ -230,7 +244,7 @@ export const AccountInfo = () => {
             </div>
           ))}
         </TabPanel>
-        <TabPanel>
+        <TabPanel className={`${styles.book_log}`}>
           えほんログ
           {bookLogs.map((log) => (
             <div key={log.b_id}>
