@@ -174,6 +174,7 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                     p_id = "p${id}",
                     title = title,
                     description = description,
+                    icon = "puzzle/p${id}/icon.${iconExtension}",
                     words = words
                 )
 
