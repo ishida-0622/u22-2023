@@ -399,7 +399,7 @@ data class Puzzle(
     val p_id: String = "p0000",
     val title: String,
     val description: String,
-    val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
+    val icon: String = "puzzle/${p_id}/photo/icon.png",
     val words: List<Word>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
