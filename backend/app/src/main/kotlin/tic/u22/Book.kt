@@ -288,7 +288,8 @@ class RestartBook : RequestHandler<Map<String, Any>, String> {
                 if (book_info.isEmpty()) {throw Exception("this book is not exist")}
 
                 // ステータスの更新
-                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 3))
+                val dummyList: List<String> = listOf()
+                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 3, "status_infos" to dummyList))
                 if (updated != "DONE"){throw Exception("failed to update game status: $updated")}
 
                 mapOf(
