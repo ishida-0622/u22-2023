@@ -123,19 +123,19 @@ export const PuzzlePlay = () => {
   }
 
   const pieces = puzzleData.words.map((word) => (
-    <Piece key={word[0]} id={word[0]}>
+    <Piece className={`${styles.piece}`} key={word[0]} id={word[0]}>
       <Image src={word[2]} alt={word[0]} width={100} height={100} />
       <span>{word[0]}</span>
     </Piece>
   ));
 
   return (
-    <main>
+    <main className={`${styles.container}`}>
       <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
         {puzzleData.words.map((word) => {
           const child = children.get(word[1]);
           return (
-            <Board key={word[1]} id={word[1]}>
+            <Board className={`${styles.board}`} key={word[1]} id={word[1]}>
               {child != null ? (
                 pieces[
                   puzzleData.words.indexOf(
@@ -152,11 +152,12 @@ export const PuzzlePlay = () => {
             </Board>
           );
         })}
+        <br/>
         {puzzleData.words.map((word, i) =>
           parents.get(word[0]) != null ? null : pieces[i]
         )}
       </DndContext>
-      <button onClick={puzzleReset}>Reset</button>
+      <button className={`${styles.reset_button}`} onClick={puzzleReset}>Reset</button>
       <div className={`${styles.preview_image_wrapper}`}>
         {puzzleData.words.map(
           (word) =>
