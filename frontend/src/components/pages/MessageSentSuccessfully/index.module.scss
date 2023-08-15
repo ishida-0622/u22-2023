@@ -1,0 +1,39 @@
+.container {
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #7EC7D8;
+    .message {
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        font-size: 150%;
+        margin: auto;
+        margin-top: 10%;
+        width: 50%;
+        height: 50%;
+        letter-spacing: 0.05em;
+    }
+    button{
+        display: inline-block;
+        margin-bottom: 3rem;
+    }
+}
+.submit_button {
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 5px solid #9f000c;
+    border-radius: 100vh;
+    border-color: #9f000c;
+    top: calc(50% - .5em);
+    right: 1rem;
+}
+.submit_button:hover {
+    margin-top: 1px;
+    border-bottom: 2px solid #9f000c;
+    cursor: pointer;
+}
