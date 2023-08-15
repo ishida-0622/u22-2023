@@ -283,6 +283,7 @@ class RestartBook : RequestHandler<Map<String, Any>, String> {
                 val b_id = if (game_infos[0].isNotEmpty()) {game_infos[0]} else {throw Exception("b_id is null")}
                 val saved_data = if (game_infos[1].isNotEmpty()) {game_infos[1]} else {throw Exception("saved_data is null")}
 
+                // 本を取得
                 val book_info = dynamo.searchByKey(table_book, listOf(b_id))
                 if (book_info.isEmpty()) {throw Exception("this book is not exist")}
 
