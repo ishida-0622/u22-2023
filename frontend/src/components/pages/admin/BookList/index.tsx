@@ -159,6 +159,7 @@ export const BookList = () => {
                 {viewBook.title_en}
                 {viewBook.title_jp}
               </h2>
+              <p>Book ID：{viewBook.b_id}</p>
               <p>著者：{viewBook.author}</p>
               <p>あらすじ：{viewBook.summary}</p>
               <div className={styles.image_wrapper}>
