@@ -17,19 +17,6 @@ export const SendEmail = () => {
     sendEmailVerification(user, redirectUrl ? { url: redirectUrl } : undefined);
   };
 
-  useEffect(() => {
-    isLogin().then((res) => {
-      if (!res) {
-        Router.push("/signup");
-      } else {
-        const user = auth.currentUser;
-        if (user?.emailVerified) {
-          Router.push("/");
-        }
-      }
-    });
-  }, []);
-
   return (
     <div>
       <div>

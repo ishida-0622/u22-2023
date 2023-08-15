@@ -10,6 +10,8 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 /**
@@ -240,6 +242,61 @@ class SetStatus : RequestHandler<Map<String, Any>, String> {
         } else {
           mapOf("response_status" to "fail", "error" to "failed to update game status: $updated")
         }
+      }
+      catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
+
+/**
+ * ユーザーの指定期間のログイン履歴を取得する
+ * 
+ * @param u_id String : u_id
+ * @param start_date String : 日付
+ * @param end_date String : 日付
+ * 
+ * return "result": [{"u_id": u_id,"date": date},{...}]
+ */
+class ScanLoginDates : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+        val start_date: String = if (body["start_date"] != null) {body["start_date"]!! as String} else {throw Exception("start_date is null")}
+        val end_date: String = if (body["end_date"] != null) {body["end_date"]!! as String} else {throw Exception("end_date is null")}
+
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "l_log"
+
+        // 全期間のログイン履歴
+        val userLoginLogs = dynamo.searchByAny(tableName, "u_id", u_id, "=").map {
+          utils.toMap(utils.attributeValueToObject(it, tableName))
+        }
+
+        // yyyy-MM-ddからyyyyMMddにフォーマットする
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        val start = LocalDate.parse(start_date, dateFormatter)
+        val end = LocalDate.parse(end_date, dateFormatter)
+
+        // 指定期間のログイン履歴にフィルターする
+        // 開始日と終了日を含む
+        val filteredLogs = userLoginLogs.filter {
+          // datetimeを取り出す
+          val datetime = it["datetime"] as String
+          // datetimeの先頭から10文字を取り出し、yyyy-MM-ddの形式をLocalDateに変換する
+          val date = LocalDate.parse(datetime.substring(0, 10))
+          // datetimeが期間内だった場合はtrueを返し、そうでない場合はfalseを返す
+          date.isAfter(start.minusDays(1)) && date.isBefore(end.plusDays(1))
+        }
+
+        mapOf("response_status" to "success",
+          "result" to filteredLogs)
       }
       catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
