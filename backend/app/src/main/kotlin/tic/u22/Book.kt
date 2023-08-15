@@ -83,6 +83,76 @@ class DeleteBook: RequestHandler<Map<String, Any>, String> {
 }
 
 /**
+ * ゲームステータスを変更し、本の情報を返す
+ *
+ * @param u_id String: u_ID
+ * @param b_id String: b_ID
+ *
+ * return String:
+ * {
+ *   "response_status": "success",
+ *   "result": {
+ *     "b_id": b_id,
+ *     "create_date": 本作成日時,
+ *     "pdf": PDFのS3キー
+ *     "summary": 本の概要S3キー,
+ *     "thumbnail": 本のサムネイルS3キー,
+ *     "title_en": 英語タイトル,
+ *     "title_jp": 日本語タイトル,
+ *     "update_date": 本更新日時,
+ *     "voice_keys": [
+ *       "voice_key1",
+ *       ...
+ *     ]}
+ * }
+ */
+class StartBook : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+        val res = runBlocking {
+            try{
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+
+                // DynamoDBのインスタンス化、テーブル名の設定
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "book"
+
+                val status = dynamo.searchByKey("status", listOf(u_id))
+                if (!status.containsKey("u_id")) {
+                    throw Exception("this u_id does not exist")
+                } else if (!status.containsKey("game_status")) {
+                    throw Exception("unexpected error: this u_id does not game_status")
+                }
+                if((utils.toKotlinType(status["game_status"]!!) as String).toInt() != 0) {
+                    throw Exception("game status is not 0: now is ${(utils.toKotlinType(status["game_status"]!!) as String).toInt()}")
+                }
+
+                val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 3))
+                if(updated != "DONE"){
+                    throw Exception("failed to update game status: $updated")
+                }
+                val result = dynamo.searchByKey(tableName, listOf(b_id))
+
+                mapOf(
+                    "resposne_status" to "success",
+                    "result" to utils.toMap(utils.attributeValueToObject(result, "book"))
+                )
+            } catch (e: Exception) {
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
+            }
+        }
+        return gson.toJson(res)
+    }
+}
+
+ /**
  * 本を登録する
  */
 class RegisterBook : RequestHandler<Map<String, Any>, String> {
@@ -129,5 +199,47 @@ class RegisterBook : RequestHandler<Map<String, Any>, String> {
             }
         }
         return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}
+
+
+/**
+ * 読み聞かせを一時停止する
+ * 
+ * @param u_id String: u_id
+ * @param b_id String: b_id
+ * @param saved_data String: ページ番号
+ * 
+ * return String: {"response_status": "success", "result": {}}
+ */
+class PauseBook : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+                val saved_data = if (body["saved_data"] != null) {body["saved_data"]!! as String} else {throw Exception("saved_data is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "status"
+
+                if (dynamo.searchByKey("book", listOf(b_id)).isEmpty()) {throw Exception("b_id is not exist")}
+                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 4, "status_infos" to listOf(b_id, saved_data)))
+
+                if (updated == "DONE"){
+                    val dummyMap: Map<String, String> = mapOf()
+                    mapOf("response_status" to "success", "result" to dummyMap)
+                } else {
+                    throw Exception("failed to update status")
+                }
+            }
+            catch (e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
     }
 }

@@ -57,6 +57,39 @@ class ScanL_log : RequestHandler<Map<String, Any>, String> {
 }
 
 /**
+ * 1つのIDを受け取りユーザーの情報を取得する(IDが存在しない場合はfailを返す)
+ *
+ * @param event Map<String, Any>?: u_id:u_id
+ * @param context Context?: Context
+ *
+ * return String: "result": {"u_id": "u_id", "family_name": "family_name", "first_name": "first_name", "child_lock": "child_lock", "account_name": "account_name"}
+ */
+class ScanUser : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "user"
+
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+
+        // 検索
+        val user = dynamo.searchByKey(tableName, listOf(u_id))
+        if(user.isEmpty()) { throw Exception("this u_id does not exist") }
+        mapOf("response_status" to "success",
+          "result" to utils.toMap(utils.attributeValueToObject(user, "user")))
+      } catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
+
+/**
  * 任意の個数のIDを受け取りユーザーの情報を取得する
  *
  * @param event Map<String, Any>?: u_id:[value1, value2, ...]
@@ -90,6 +123,59 @@ class ScanUsers : RequestHandler<Map<String, Any>, String> {
   }
 }
 
+class ScanP_log: RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+      val res = runBlocking {
+          try {
+            if (event == null) {throw Exception("event is null")}
+            if (event["body"] == null) {throw Exception("body is null")}
+            val body = utils.formatJsonEnv(event["body"]!!)
+            val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("body[u_id] is null")}
+
+              // プレイ履歴の取得
+              val dynamo = Dynamo(Settings().AWS_REGION)
+              val tableName = "p_log"
+              
+              val result = dynamo.searchByAny(tableName, "u_id", u_id, "=")
+              mapOf("response_status" to "success", 
+              "result" to result.map{
+                utils.toMap(utils.attributeValueToObject(it, tableName))
+              })
+          } catch(e: Exception) {
+              mapOf("response_status" to "fail", "error" to "$e")
+          }
+      }
+
+      return gson.toJson(res)
+  }
+}
+
+class ScanB_log: RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+      val res = runBlocking {
+          try {
+            if (event == null) {throw Exception("event is null")}
+            if (event["body"] == null) {throw Exception("body is null")}
+            val body = utils.formatJsonEnv(event["body"]!!)
+            val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("body[u_id] is null")}
+
+              // 本の履歴の取得
+              val dynamo = Dynamo(Settings().AWS_REGION)
+              val tableName = "b_log"
+              
+              val result = dynamo.searchByAny(tableName, "u_id", u_id, "=")
+              mapOf("response_status" to "success",
+              "result" to result.map{
+                utils.toMap(utils.attributeValueToObject(it, tableName))
+              })
+          } catch(e: Exception) {
+              mapOf("response_status" to "fail", "error" to "$e")
+          }
+      }
+      return gson.toJson(res)
+  }
+}
+
 /**
  * u_idを受け取り、ユーザーの情報を取得する
  *
@@ -118,6 +204,44 @@ class ScanStatus : RequestHandler<Map<String, Any>, String> {
           mapOf("response_status" to "fail", "error" to "the value for this u_id does not exist")
         }
       } catch(e: Exception){
+        mapOf("response_status" to "fail", "error" to "$e")
+      }
+    }
+    return gson.toJson(res)
+  }
+}
+
+/**
+ * u_id, game_statusを受け取り、ステータスを更新する
+ *
+ * @param u_id String : u_id
+ * @param game_status Int : 0 ~ 4
+ *
+ * return String : {"response_status": "success", "result": {}}
+ */
+class SetStatus : RequestHandler<Map<String, Any>, String> {
+  override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+    val res = runBlocking {
+      try {
+        if (event == null) {throw Exception("event is null")}
+        if (event["body"] == null) {throw Exception("body is null")}
+        val body = utils.formatJsonEnv(event["body"]!!)
+        val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+        val game_status = if (body["game_status"] != null) {body["game_status"]!! as Int} else {throw Exception("game_status is null")}
+        if (game_status < 0 || game_status > 4) {throw Exception("game_status is out of range")}
+
+        val dynamo = Dynamo(Settings().AWS_REGION)
+        val tableName = "status"
+
+        val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to game_status))
+        if (updated == "DONE"){
+          val dummyMap: Map<String, String> = mapOf()
+          mapOf("response_status" to "success", "result" to dummyMap)
+        } else {
+          mapOf("response_status" to "fail", "error" to "failed to update game status: $updated")
+        }
+      }
+      catch(e: Exception){
         mapOf("response_status" to "fail", "error" to "$e")
       }
     }

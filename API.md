@@ -24,6 +24,7 @@ response
     -   [サインアップする](#signup)
     -   [ログインする](#login)
     -   [退会する](#quit)
+    -   [指定のユーザー ID の情報を取得する(存在しない u_id を指定した場合は fail を返す)](#scanuser)
     -   [指定のユーザー ID の情報をすべて取得する](#scanusers)
     -   [ユーザー情報を変更する](#UpdateUser)
 -   [パズル系](#パズル系)
@@ -54,10 +55,11 @@ response
     -   [パズルプレイログを取得する](#scanp_log)
     -   [読み聞かせプレイログを取得する](#scanb_log)
     -   [ゲームステータスを取得する](#scanstatus)
+    -   [ゲームステータスを更新する](#setstatus)
 
 ## 認証(アカウント)系
 
-### [SignUp]()
+### [SignUp](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SignUp)
 
 サインアップする
 
@@ -65,12 +67,11 @@ request
 
 ```json
 {
+    "u_id": "u_id",
     "family_name": "family_name",
     "first_name": "first_name",
     "family_name_roma": "family_name_roma",
     "first_name_roma": "first_name_roma",
-    "email": "email",
-    "password": "password",
     "child_lock": "child_lock",
     "account_name": "account_name"
 }
@@ -86,28 +87,9 @@ response
 }
 ```
 
-### [LogIn]()
+### [Login]
 
-ログインする
-
-request
-
-```json
-{
-    "u_id": "u_id",
-    "password": "password"
-}
-```
-
-response
-
-```json
-{
-    "response_status": "success or fail",
-    "result": {},
-    "error": "エラー内容(failの時のみ)"
-}
-```
+Lambda 関数ではなく、認証 Only になりました
 
 ### [Quit](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Quit)
 
@@ -127,6 +109,38 @@ response
 {
     "response_status": "success or fail",
     "result": {},
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [ScanUser](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUser)
+
+指定のユーザー ID の情報を取得する(存在しない u_id を指定した場合は fail を返す)
+
+request
+
+```json
+{
+    "u_id": "u_id"
+}
+```
+
+response
+
+```json
+{
+    "response_status": "success or fail",
+    "result": {
+        "u_id": "u_id",
+        "family_name": "family_name",
+        "first_name": "first_name",
+        "family_name_roma": "family_name_roma",
+        "first_name_roma": "first_name_roma",
+        "child_lock": "child_lock",
+        "account_name": "account_name",
+        "limit_time": "limit_time",
+        "delete_flg": "delete_flg"
+    },
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -155,13 +169,10 @@ response
             "first_name": "first_name1",
             "family_name_roma": "family_name_roma1",
             "first_name_roma": "first_name_roma1",
-            "email": "email1",
-            "password": "password1",
             "child_lock": "child_lock1",
             "account_name": "account_name1",
             "limit_time": "limit_time1",
-            "delete_flg": "delete_flg1",
-            "authed": "authed1"
+            "delete_flg": "delete_flg1"
         },
         {
             "u_id": "u_id2",
@@ -169,13 +180,10 @@ response
             "first_name": "first_name2",
             "family_name_roma": "family_name_roma2",
             "first_name_roma": "first_name_roma2",
-            "email": "email2",
-            "password": "password2",
             "child_lock": "child_lock2",
             "account_name": "account_name2",
             "limit_time": "limit_time2",
-            "delete_flg": "delete_flg2",
-            "authed": "authed2"
+            "delete_flg": "delete_flg2"
         }
     ],
     "error": "エラー内容(failの時のみ)"
@@ -192,16 +200,14 @@ request
 
 ```jsonc
 {
-    "u_id": "u_id" /* 必須 */,
-    "family_name": "family_name" /* パスワード変更時は含めない */,
-    "first_name": "first_name" /* パスワード変更時は含めない */,
-    "family_name_roma": "family_name_roma" /* パスワード変更時は含めない */,
-    "first_name_roma": "first_name_roma" /* パスワード変更時は含めない */,
-    "email": "email" /* パスワード変更時は含めない */,
-    "password": "password" /* パスワード変更以外は含めない */,
-    "child_lock": "child_lock" /* パスワード変更時は含めない */,
-    "account_name": "account_name" /* パスワード変更時は含めない */,
-    "limit_time": "limit_time" /* パスワード変更時は含めない */
+    "u_id": "u_id",
+    "family_name": "family_name",
+    "first_name": "first_name",
+    "family_name_roma": "family_name_roma",
+    "first_name_roma": "first_name_roma",
+    "child_lock": "child_lock",
+    "account_name": "account_name",
+    "limit_time": "limit_time"
 }
 ```
 
@@ -223,15 +229,44 @@ response
 
 request
 
-```json
+```jsonc
 {
     "title": "title",
     "description": "description",
     "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
     "words": [
-        ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+        {
+            "word": "I",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "have",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "a pen",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "am",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": true /* ダミーピースか否か */
+        }
     ]
 }
 ```
@@ -259,9 +294,38 @@ request
     "description": "description",
     "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
     "words": [
-        ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-        ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+        {
+            "word": "I",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "have",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "a pen",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": false /* ダミーピースか否か */
+        },
+        {
+            "word": "am",
+            "shadow": "シルエットのURI",
+            "illustration": "イラストのURI",
+            "voice": "音声のURI",
+            "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+            "is_dummy": true /* ダミーピースか否か */
+        }
     ]
 }
 ```
@@ -276,7 +340,7 @@ response
 }
 ```
 
-### [DeletePuzzle]()
+### [DeletePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeletePuzzle)
 
 パズルを削除する
 
@@ -315,25 +379,85 @@ response
     "response_status": "success or fail",
     "result": [
         {
+            "p_id": "p_id1",
             "title": "title1",
             "description": "description1",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
             "words": [
-                ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+                {
+                    "word": "I",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "have",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "a pen",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "am",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": true /* ダミーピースか否か */
+                }
             ],
             "create_date": "create_date1",
             "update_date": "update_date1"
         },
         {
+            "p_id": "p_id2",
             "title": "title2",
             "description": "description2",
             "icon": "アイコン(問題一覧に表示されるやつ)写真のURI2",
             "words": [
-                ["He", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["has", "シルエットのURI", "イラストのURI", "音声のURI"],
-                ["a ball", "シルエットのURI", "イラストのURI", "音声のURI"]
+                {
+                    "word": "He",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "has",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "a ball",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "is",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": true /* ダミーピースか否か */
+                }
             ],
             "create_date": "create_date2",
             "update_date": "update_date2"
@@ -362,22 +486,52 @@ response
 {
     "response_status": "success or fail",
     "result": {
-        "title": "title1",
-        "description": "description1",
-        "icon": "アイコン(問題一覧に表示されるやつ)写真のURI1",
+        "p_id": "p_id",
+        "title": "title",
+        "description": "description",
+        "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
         "words": [
-            ["I", "シルエットのURI", "イラストのURI", "音声のURI"],
-            ["have", "シルエットのURI", "イラストのURI", "音声のURI"],
-            ["a pen", "シルエットのURI", "イラストのURI", "音声のURI"]
+            {
+                "word": "I",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "have",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "a pen",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "am",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": true /* ダミーピースか否か */
+            }
         ],
-        "create_date": "create_date1",
-        "update_date": "update_date1"
+        "create_date": "create_date",
+        "update_date": "update_date"
     },
     "error": "エラー内容(ユーザーのゲームステータスが0でない、等)"
 }
 ```
 
-### [FinishPuzzle]()
+### [FinishPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishPuzzle)
 
 パズルを終了する
 
@@ -400,7 +554,7 @@ response
 }
 ```
 
-### [PausePuzzle]()
+### [PausePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/PausePuzzle)
 
 パズルを一時中断する
 
@@ -410,7 +564,7 @@ request
 {
     "u_id": "u_id",
     "p_id": "p_id",
-    "words": [
+    "saved_data": [
         "N",
         "I",
         "a pen"
@@ -446,8 +600,49 @@ response
 {
     "response_status": "success or fail",
     "result": {
-        "p_id": "p_id",
-        "words": [
+        "puzzle_info": {
+            "p_id": "p_id",
+            "title": "title",
+            "description": "description",
+            "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
+            "words": [
+                {
+                    "word": "I",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "have",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "a pen",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": false /* ダミーピースか否か */
+                },
+                {
+                    "word": "am",
+                    "shadow": "シルエットのURI",
+                    "illustration": "イラストのURI",
+                    "voice": "音声のURI",
+                    "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                    "is_dummy": true /* ダミーピースか否か */
+                }
+            ],
+            "create_date": "create_date",
+            "update_date": "update_date"
+        },
+        "saved_data": [
             "N",
             "I",
             "a pen"
@@ -589,7 +784,7 @@ response
 }
 ```
 
-### [StartBook]()
+### [StartBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/StartBook)
 
 読み聞かせを開始する
 
@@ -649,17 +844,17 @@ response
 }
 ```
 
-### [PauseBook]()
+### [PauseBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/PauseBook)
 
 読み聞かせを一時中断する
 
 request
 
-```json
+```jsonc
 {
     "u_id": "u_id",
     "b_id": "b_id",
-    "page": "現在のページ数(int)"
+    "saved_data": 1 /* 現在のページ数 */
 }
 ```
 
@@ -687,12 +882,26 @@ request
 
 response
 
-```json
+```jsonc
 {
     "response_status": "success or fail",
     "result": {
-        "b_id": "b_id",
-        "page": "ページ数"
+        "book_info": {
+            "b_id": "b_id",
+            "title_jp": "title_jp",
+            "title_en": "title_en",
+            "summary": "summary",
+            "author": "auhor",
+            "thumbnail": "サムネイル写真のURI",
+            "pdf": "PDFファイルのURI",
+            "voice": [
+                "1ページ目読み聞かせ音声のURI",
+                "2ページ目読み聞かせ音声のURI"
+            ],
+            "create_date": "create_date",
+            "update_date": "update_date"
+        },
+        "saved_data": 1 /* 現在のページ数 */
     },
     "error": "エラー内容(ゲームステータスが4でない等)"
 }
@@ -747,7 +956,7 @@ response
 }
 ``` -->
 
-### [DeleteNotice]()
+### [DeleteNotice](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeleteNotice)
 
 お知らせを削除する
 
@@ -870,7 +1079,7 @@ response
 }
 ```
 
-### [ScanP_log]()
+### [ScanP_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanP_log)
 
 パズルプレイログを取得する
 
@@ -906,7 +1115,7 @@ response
 }
 ```
 
-### [ScanB_log]()
+### [ScanB_log](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanB_log)
 
 読み聞かせプレイログを取得する
 
@@ -966,6 +1175,29 @@ response
             "status_infos"
         ] /* 内容はテーブル設計書を参照、詳細はBEリーダーまで(nullの可能性あり) */
     },
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [SetStatus](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SetStatus)
+
+ゲームステータスを取得する
+
+request
+
+```jsonc
+{
+    "u_id": "u_id",
+    "game_status": 0 /* 0~4の数値(int) */
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {},
     "error": "エラー内容(failの時のみ)"
 }
 ```
