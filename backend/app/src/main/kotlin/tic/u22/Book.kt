@@ -249,7 +249,7 @@ class PauseBook : RequestHandler<Map<String, Any>, String> {
  * 
  * @param u_id String: u_id
  * 
- * return String: {"response_status": "success", "result": {}}
+ * return String: {"response_status": "success", "result": {"book_info": 本の情報, "saved_data": 保存されたページ}}
  */
 class RestartBook : RequestHandler<Map<String, Any>, String> {
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
