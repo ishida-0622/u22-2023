@@ -29,11 +29,53 @@ class Utils {
           prop.get(obj)?.let { value ->
             if (value::class.isData) {
               toMap(value)
+            } else if(value is List<*>) {
+              toMapInList(value)
+            } else if (value is Map<*, *>) {
+              toMapInMap(value)
             } else {
               value
             }
           }
     }
+  }
+
+  /**
+   * toMap内で見つかったListにデータクラスがないか検証して変換する
+   */
+  private fun toMapInList(lst: List<*>): List<*> {
+    return lst.map{
+      if (it == null) {
+        null
+      } else if(it is List<*>) {
+        toMapInList(it)
+      } else if (it is Map<*, *>) {
+        toMapInMap(it)
+      } else if (it::class.isData) {
+        toMap(it)
+      } else {
+        it
+      }
+    }
+  }
+
+  /**
+   * toMap内で見つかったMapにデータクラスがないか検証して変換する
+   */
+  private fun toMapInMap(mp: Map<*, *>): Map<*, *> {
+    return mp.map{
+      if(it.value == null){
+        it.key to null
+      } else if(it.value is List<*>) {
+        it.key to toMapInList(it.value as List<*>)
+      } else if (it.value is Map<*, *>) {
+        it.key to toMapInMap(it.value as Map<*, *>)
+      } else if ((it.value!!)::class.isData) {
+        it.key to toMap(it.value as Any)
+      } else {
+        it.key to it.value
+      }
+    }.toMap()
   }
 
   /**
@@ -51,6 +93,23 @@ class Utils {
   }
 
   /**
+   * MapをAttributeValue.M型に変換する
+   *
+   * @param mp 変換したいMap
+   *
+   * @return 変換されたMap
+   */
+  fun toAttributeValueM(mp: Map<*, *>): AttributeValue.M {
+    val res = mp.map{
+      if(!(it.key is String)) {
+        throw Exception("key is not String while convert to AttributeValue.M")
+      }
+      it.key as String to toAttributeValue(it.value)
+    }.toMap()
+    return AttributeValue.M(res)
+  }
+
+  /**
    * valueをAttributeValue型に変換する
    *
    * @param value 変換したい値
@@ -65,6 +124,7 @@ class Utils {
       null -> AttributeValue.Null(true)
       is ByteArray -> AttributeValue.B(value)
       is List<Any?> -> toAttributeValueList(value)
+      is Map<*, *> -> toAttributeValueM(value)
       else -> AttributeValue.S(value as String)
     }
   }
@@ -95,6 +155,7 @@ class Utils {
       is AttributeValue.N -> v.asN()
       is AttributeValue.Bool -> v.asBool()
       is AttributeValue.L -> v.asL().map{toKotlinType(it)}
+      is AttributeValue.M -> v.asM().map{it.key to toKotlinType(it.value)}.toMap()
       is AttributeValue.Null -> null
       else -> throw Exception("not supported type")
     }
@@ -122,13 +183,10 @@ class Utils {
           first_name = if(values["first_name"] == null){throw Exception("first_name is null")} else {if(values["first_name"]!! is String){values["first_name"] as String}else{throw Exception("first_name type is ng")}},
           family_name_roma = if(values["family_name_roma"] == null){throw Exception("family_name_roma is null")} else {if(values["family_name_roma"]!! is String){values["family_name_roma"] as String}else{throw Exception("family_name_roma type is ng")}},
           first_name_roma = if(values["first_name_roma"] == null){throw Exception("first_name_roma is null")} else {if(values["first_name_roma"]!! is String){values["first_name_roma"] as String}else{throw Exception("first_name_roma type is ng")}},
-          email = if(values["email"] == null){throw Exception("email is null")} else {if(values["email"]!! is String){values["email"] as String}else{throw Exception("email type is ng")}},
-          password = if(values["password"] == null){throw Exception("password is null")} else {if(values["password"]!! is String){values["password"] as String}else{throw Exception("password type is ng")}},
           child_lock = if(values["child_lock"] == null){throw Exception("child_lock is null")} else {if(values["child_lock"]!! is String){values["child_lock"] as String}else{throw Exception("child_lock type is ng")}},
           account_name = if(values["account_name"] == null){throw Exception("account_name is null")} else {if(values["account_name"]!! is String){values["account_name"] as String}else{throw Exception("account_name type is ng")}},
           limit_time = if(values["limit_time"] == null){throw Exception("limit_time is null")} else {if(values["limit_time"]!! is String){(values["limit_time"] as String).toInt()}else{throw Exception("limit_time type is ng")}},
           delete_flg = if(values["delete_flg"] == null){throw Exception("delete_flg is null")} else {if(values["delete_flg"]!! is Boolean){values["delete_flg"] as Boolean}else{throw Exception("delete_flg type is ng")}},
-          authed = if(values["authed"] == null){throw Exception("authed is null")} else {if(values["authed"]!! is Boolean){values["authed"] as Boolean}else{throw Exception("authed type is ng")}}
         )
         "puzzle" ->  Puzzle(
           p_id = if(values["p_id"] == null){throw Exception("p_id is null")} else {if(values["p_id"]!! is String){values["p_id"] as String}else{throw Exception("p_id type is ng")}},
@@ -136,15 +194,28 @@ class Utils {
           description = if(values["description"] == null){throw Exception("description is null")} else {if(values["description"]!! is String){values["description"] as String}else{throw Exception("description type is ng")}},
           icon = if(values["icon"] == null){throw Exception("icon is null")} else {if(values["icon"]!! is String){values["icon"] as String}else{throw Exception("icon type is ng")}},
           words = if(values["words"] == null){throw Exception("words is null")} else {if(values["words"]!! is List<Any?>){
-            val valuesWords = values["words"] as List<Any?>
-            valuesWords.map{
-              if(it is List<Any?>){
-                it.map{ item -> if(item is String){item}else{throw Exception("words type is ng")} }
-              }else{throw Exception("words type is ng")}
+            val wordVal = values["words"]!! as List<Any?>
+            wordVal.map{
+              if(it is Map<*, *>){
+                attributeValueToObject(it.map{ item ->
+                  if(!(item.key is String && item.value is Any)){throw Exception("type of word (inside) is ng")}
+                  (item.key as String) to toAttributeValue(item.value)
+                }.toMap(), "word") as Word
+              } else {
+                throw Exception("type of word is ng")
+              }
             }
           }else{throw Exception("words type is ng")}},
           create_date  = if(values["create_date"] == null){throw Exception("create_date is null")} else {if(values["create_date"]!! is String){values["create_date"] as String}else{throw Exception("create_date type is ng")}},
           update_date  = if(values["update_date"] == null){throw Exception("update_date is null")} else {if(values["update_date"]!! is String){values["update_date"] as String}else{throw Exception("update_date type is ng")}}
+        )
+        "word" -> Word(
+          word = if(values["word"] == null){throw Exception("word is null")} else {if(values["word"]!! is String){values["word"] as String}else{throw Exception("word type is ng")}},
+          shadow = if(values["shadow"] == null){throw Exception("shadow is null")} else {if(values["shadow"]!! is String){values["shadow"] as String}else{throw Exception("shadow type is ng")}},
+          illustration = if(values["illustration"] == null){throw Exception("illustration is null")} else {if(values["illustration"]!! is String){values["illustration"] as String}else{throw Exception("illustration type is ng")}},
+          voice = if(values["voice"] == null){throw Exception("voice is null")} else {if(values["voice"]!! is String){values["voice"] as String}else{throw Exception("voice type is ng")}},
+          is_displayed = if(values["is_displayed"] == null){throw Exception("is_displayed is null")} else {if(values["is_displayed"]!! is Boolean){values["is_displayed"] as Boolean}else{throw Exception("is_displayed type is ng")}},
+          is_dummy = if(values["is_dummy"] == null){throw Exception("is_dummy is null")} else {if(values["is_dummy"]!! is Boolean){values["is_dummy"] as Boolean}else{throw Exception("is_dummy type is ng")}},
         )
         "book" -> Book(
           b_id = if(values["b_id"] == null){throw Exception("b_id is null")} else {if(values["b_id"]!! is String){values["b_id"] as String}else{throw Exception("b_id type is ng")}},
@@ -194,9 +265,7 @@ class Utils {
     } catch(e: Exception) {
       println("$e")
       println("could not serialized")
-      return LoginLog(
-        u_id = "$e"
-      )
+      throw Exception("$e")
     }
   }
 
@@ -227,21 +296,21 @@ class Utils {
    *
    * return 成功した場合は「Done」、失敗した場合はエラー内容
    */
-  fun decodeFromUri(uri: String, fileName: String): String {
-    try {
-      val formattedUri = mapOf(
-        "type" to uri.split(":")[1].split("/")[0],
-        "extension" to uri.split(";")[0].split("/")[1],
-        "data" to uri.split(",")[1]
-      )
-      val bytes = Base64.getDecoder().decode(formattedUri["data"]);
-      val file = FileOutputStream("files/${fileName}.${formattedUri["extension"]}");
-      file.write(bytes);
-      return "Done"
-    } catch(e: Exception) {
-      return "$e"
-    }
+  fun decodeFromUri(uri: String): ByteArray? {
+      try {
+          val formattedUri =
+            mapOf(
+              "type" to uri.split(":")[1].split("/")[0],
+              "extension" to uri.split(";")[0].split("/")[1],
+              "data" to uri.split(",")[1]
+            )
+          val bytes = Base64.getDecoder().decode(formattedUri["data"])
+          return bytes
+      } catch (e: Exception) {
+          return null
+      }
   }
+
 
   /**
    * 受け取ったJSONを、KotlinのMapオブジェクトに変換する(テスト・本番環境で同じソースを使用するためのメソッド)
@@ -297,13 +366,10 @@ interface TableBase {}
  * @param first_name: String 名前
  * @param family_name_roma: String ローマ字姓名
  * @param first_name_roma: String ローマ字名前
- * @param email: String メールアドレス
- * @param password: String パスワード
  * @param child_lock: String チャイルドロックパスコード
  * @param account_name: String アカウント名
  * @param limit_time: Int 使用制限時間(default:1440-設定不要)
  * @param delete_flg: Boolean 退会フラグ(default:false-設定不要)
- * @param authed: Boolean 認証フラグ(default:false-設定不要)
  */
 data class User(
     val u_id: String,
@@ -311,13 +377,10 @@ data class User(
     val first_name: String,
     val family_name_roma: String,
     val first_name_roma: String,
-    val email: String,
-    val password: String,
     val child_lock: String,
     val account_name: String,
     val limit_time: Int = 1440,
     val delete_flg: Boolean = false,
-    val authed: Boolean = false
 ): TableBase
 
 /**
@@ -337,9 +400,18 @@ data class Puzzle(
     val title: String,
     val description: String,
     val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
-    val words: List<List<String>>,
+    val words: List<Word>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
+): TableBase
+
+data class Word(
+    val word: String,
+    val shadow: String,
+    val illustration: String,
+    val voice: String,
+    val is_displayed: Boolean,
+    val is_dummy: Boolean
 ): TableBase
 
 /**
