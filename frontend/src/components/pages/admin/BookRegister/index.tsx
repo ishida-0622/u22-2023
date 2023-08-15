@@ -1,6 +1,9 @@
-import { RegisterBookRequest } from "@/features/book/types/register";
 import { useState } from "react";
 import Image from "next/image";
+import {
+  RegisterBookRequest,
+  RegisterBookResponse,
+} from "@/features/book/types/register";
 
 export const BookRegister = () => {
   const [titleEn, setTitleEn] = useState("");
@@ -9,7 +12,8 @@ export const BookRegister = () => {
   const [summary, setSummary] = useState("");
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [pdf, setPdf] = useState<string | null>(null);
-  const [voice, setVoice] = useState<string[]>([]);
+  const [voices, setVoices] = useState<(string | null)[]>([]);
+  const [pageNum, setPageNum] = useState(0);
 
   const fileOnChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -30,8 +34,71 @@ export const BookRegister = () => {
     }
   };
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const voicesOnchangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const f = files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result != null) {
+          setVoices((val) =>
+            val.map((v, i) => (i === idx ? (e.target!.result as string) : v))
+          );
+        }
+      };
+      reader.readAsDataURL(f);
+    } else {
+      setVoices((val) => val.map((v, i) => (i === idx ? null : v)));
+    }
+  };
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!thumbnail) {
+      alert("サムネイル画像を追加してください");
+      return;
+    }
+    if (!pdf) {
+      alert("PDFファイルを追加してください");
+      return;
+    }
+    if (voices.some((v) => v === null)) {
+      alert("音声ファイルを追加してください");
+      console.log(voices);
+      return;
+    }
+
+    const req: RegisterBookRequest = {
+      author: author,
+      summary: summary,
+      thumbnail: thumbnail,
+      pdf: pdf,
+      title_jp: titleJa,
+      title_en: titleEn,
+      voice: voices as string[],
+    };
+
+    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    if (baseUrl === undefined) {
+      throw new Error("base url is undefined");
+    }
+    try {
+      const res = await fetch(`${baseUrl}/RegisterBook`, {
+        method: "POST",
+        body: JSON.stringify(req),
+      });
+      const json: RegisterBookResponse = await res.json();
+      if (json.response_status === "fail") {
+        throw new Error(json.error);
+      }
+      alert("登録しました");
+    } catch (error) {
+      console.error(error);
+      alert("登録に失敗しました");
+    }
   };
 
   return (
@@ -99,9 +166,36 @@ export const BookRegister = () => {
             />
           </label>
           <label>
-            <input type="file" accept="audio/*" onChange={(e) => {}} />
+            ページ数
+            <input
+              type="number"
+              value={pageNum}
+              onChange={(e) => {
+                const num = Number(e.target.value);
+                if (num < 0) {
+                  return;
+                }
+                setPageNum(num);
+                setVoices((val) => val.concat([null]).slice(0, num));
+              }}
+            />
           </label>
+          {Array(pageNum)
+            .fill(undefined)
+            .map((_, i) => (
+              <div key={i}>
+                <label>
+                  {i + 1}ページ目の音声ファイル
+                  <input
+                    type="file"
+                    accept="audio/mpeg"
+                    onChange={(e) => voicesOnchangeHandler(e, i)}
+                  />
+                </label>
+              </div>
+            ))}
         </div>
+        <button type="submit">追加</button>
       </form>
     </main>
   );
