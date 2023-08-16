@@ -85,7 +85,10 @@ export const PostAnnouncementList = () => {
   }, []);
 
   return (
-    <main>
+    <main className={`${styles.container}`}>
+      <h1>お知らせ確認</h1>
+      <hr></hr>
+      <h2>お知らせ投稿一覧</h2>
       {posts.map((post) => (
         <div key={post.n_id} className={`${styles.posts}`}>
           <h3>
@@ -103,17 +106,18 @@ export const PostAnnouncementList = () => {
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
           </h3>
+          <hr></hr>
         </div>
       ))}
-      <div>
-        <button onClick={postAnnouncement}>
+      <div className={`${styles.submit_button_field}`}>
+        <button className={`${styles.submit_button}`} onClick={postAnnouncement}>
           新規作成
           <FontAwesomeIcon icon={faPen} />
         </button>
       </div>
 
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        <div className={`${styles.posts}`}>
+        <div className={`${styles.posts_open}`}>
           {news && (
             <div>
               <b>題名:</b>「{news.title}」
@@ -125,7 +129,7 @@ export const PostAnnouncementList = () => {
             </div>
           )}
         </div>
-        <div>
+        <div className={`${styles.submit_button_field_open}`}>
           <button onClick={closeModal}>CLOSE</button>
         </div>
       </Modal>
