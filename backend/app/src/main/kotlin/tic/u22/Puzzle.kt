@@ -237,9 +237,9 @@ class PausePuzzle : RequestHandler<Map<String, Any>, String> {
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "status"
 
-                val puzzle_infos= listOf(p_id, saved_data)
+                val status_infos= listOf(p_id, saved_data)
                 if (dynamo.searchByKey("puzzle", listOf(p_id)).isEmpty()) {throw Exception("p_id is not exist")}
-                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 2, "status_infos" to puzzle_infos))
+                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 2, "status_infos" to status_infos))
 
                 if (updated == "DONE"){
                     val dummyMap: Map<String, String> = mapOf()
@@ -424,5 +424,69 @@ class UpdatePuzzle : RequestHandler<Map<String, Any>, String> {
             }
         }
         return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}
+
+/**
+ * パズルを再開する
+ * 
+ * @param u_id String: u_id
+ * 
+ * return String: {"response_status": "success", "result": {"puzzle_info": パズル情報, "saved_data": 一時保存中のデータ}}
+ */
+class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val table_status = "status"
+                val table_puzzle = "puzzle"
+
+                // ユーザーのステータスを取得
+                val current_status = dynamo.searchByKey(table_status, listOf(u_id))
+                if (!current_status.containsKey("u_id")) {throw Exception("this u_id does not exist")} 
+                if (!current_status.containsKey("game_status")) {throw Exception("unexpected error: this u_id does not game_status")}
+
+                // 現在のステータス判定
+                if((utils.toKotlinType(current_status["game_status"]!!) as String).toInt() != 2) {
+                    throw Exception("game status is not 2: now is ${(utils.toKotlinType(current_status["game_status"]!!) as String).toInt()}")
+                }
+
+                // ステータスの情報を取り出す
+                val status_infos = if (current_status["status_infos"] != null ) {
+                    utils.toKotlinType(current_status["status_infos"]!!) as List<String>
+                } else {
+                    throw Exception("status_infos is null")
+                }
+                val p_id = if (status_infos[0].isNotEmpty()) {status_infos[0]} else {throw Exception("p_id is null")}
+                // TODO パースする
+                // val saved_data = if (status_infos[1].isNotEmpty()) {utils.toAttributeValueMap(status_infos[1])} else {throw Exception("saved_data is null")}
+
+                // 本を取得
+                val puzzle_info = dynamo.searchByKey(table_puzzle, listOf(p_id))
+                if (puzzle_info.isEmpty()) {throw Exception("this puzzle is not exist")}
+
+                // ステータスの更新
+                val dummyList: List<String> = listOf()
+                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 1, "status_infos" to dummyList))
+                if (updated != "DONE"){throw Exception("failed to update game status: $updated")}
+
+                mapOf(
+                    "response_status" to "success",
+                    "result" to mapOf(
+                        "puzzle_info" to utils.toMap(utils.attributeValueToObject(puzzle_info, table_puzzle)),
+                        "saved_data" to saved_data
+                    )
+                )
+            } catch (e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
     }
 }
