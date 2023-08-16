@@ -35,7 +35,6 @@ export const AccountInfo = () => {
       body: JSON.stringify(request),
     });
     const json: ScanUserResponse = await response.json();
-    console.log(json);
     return json.result;
   };
 
@@ -80,7 +79,7 @@ export const AccountInfo = () => {
     bookLogFetcher
   );
 
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState(3);
   const [selectedHour, setSelectedHour] = useState("00");
   const [selectedMinute, setSelectedMinute] = useState("00");
 
