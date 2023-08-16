@@ -44,6 +44,41 @@ class GetNotices : RequestHandler<Map<String, Any>, String> {
 }
 
 /**
+ * お知らせを削除する
+ */
+class DeleteNotice: RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {
+                    throw Exception("event is null")
+                }
+                if (event["body"] == null) {
+                    throw Exception("body is null")
+                }
+                val body = utils.formatJsonEnv(event["body"]!!)
+
+                val n_id = if (body["n_id"] != null) {body["n_id"]!! as String} else {throw Exception("n_id is null")}
+
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "notice"
+
+                val result = dynamo.deleteByKey(tableName, listOf(n_id))
+                if(result != "DONE"){ throw Exception("$result") }
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success",
+                    "result" to dummyMap
+                )
+            } catch(e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+
+        return gson.toJson(res)
+    }
+}
+
+/**
  * お知らせを登録する
  */
 class RegisterNotice : RequestHandler<Map<String, Any>, String> {

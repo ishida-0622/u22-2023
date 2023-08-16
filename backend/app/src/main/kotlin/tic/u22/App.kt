@@ -53,8 +53,6 @@ class App : RequestHandler<Map<String, Any>, String> {
                 val first_name = if (body["first_name"] != null) {body["first_name"]!! as String} else {throw Exception("first_name is null")}
                 val family_name_roma = if (body["family_name_roma"] != null) {body["family_name_roma"]!! as String} else {throw Exception("family_name_roma is null")}
                 val first_name_roma = if (body["first_name_roma"] != null) {body["first_name_roma"]!! as String} else {throw Exception("first_name_roma is null")}
-                val email = if (body["email"] != null) {body["email"]!! as String} else {throw Exception("email is null")}
-                val password = if (body["password"] != null) {body["password"]!! as String} else {throw Exception("password is null")}
                 val child_lock = if (body["child_lock"] != null) {body["child_lock"]!! as String} else {throw Exception("child_lock is null")}
                 val account_name = if (body["account_name"] != null) {body["account_name"]!! as String} else {throw Exception("account_name is null")}
                 
@@ -65,8 +63,6 @@ class App : RequestHandler<Map<String, Any>, String> {
                     first_name = first_name,
                     family_name_roma = family_name_roma,
                     first_name_roma = first_name_roma,
-                    email = email,
-                    password = password,
                     child_lock = child_lock,
                     account_name = account_name
                 )
@@ -77,8 +73,6 @@ class App : RequestHandler<Map<String, Any>, String> {
                     first_name = first_name,
                     family_name_roma = family_name_roma,
                     first_name_roma = first_name_roma,
-                    email = email,
-                    password = password,
                     child_lock = child_lock,
                     account_name = account_name
                 )
@@ -153,36 +147,45 @@ class App : RequestHandler<Map<String, Any>, String> {
  *
  * 第二引数のStringが返り値の型(JSONなのでString)
  */
-class S3Sample : RequestHandler<Map<String, String>, String> {
-    val s3 = S3(Settings().AWS_REGION)          // S3のインスタンス化
-    val bucketName = Settings().AWS_BUCKET      // バケット名の設定
+class S3Sample : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION) // S3のインスタンス化
+    val bucketName = Settings().AWS_BUCKET // バケット名の設定
 
-    /**
-     * Lambda関数で実行される関数。
-     *
-     * @param event Map<String, Any>?: Lambda関数に渡される引数
-     * @param context Context?: Context
-     *
-     * return String: フロントに渡すJSON
-     */
-    override fun handleRequest(event: Map<String, String>?, context: Context?): String{
-        val res = runBlocking{
-            // S3からファイルを取得してfilesディレクトリに保存
-            s3.getObject(bucketName, "photo1.png", "photo1.png")
-            // 取得したファイルをURI形式に変換
-            val uri = utils.encodeToUri("./photo1.png")
-            // URIからファイルを生成
-            utils.decodeFromUri(uri, "./photo1_encoded")
-            // 生成したファイルをS3にアップロード
-            s3.putObject(bucketName, "photo1_encoded.png", "photo1_encoded.png", null)
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try{
+                if (event == null) { throw Exception("event is null") } // event引数のnullチェック
+                if (event["body"] == null) { throw Exception("body is null") } // bodyのnullチェック
+
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val img = if (body["img"] == null) { throw Exception("image is null") } else { body["img"]!! as String }
+                println("img URI = ${img}")
+                // S3へのアップロード
+                val img_res = s3.putObject(bucketName, "img.png", img, null)
+
+                // S3からのダウンロード
+                val img_got = s3.getObject(bucketName, "img.png")
+                println("img_got URI = ${img_got}")
+
+                // S3へのアップロード
+                val img_got_res = s3.putObject(bucketName, "img_reup.png", img_got, null)
+
+                // JSONで結果の変換
+                mapOf("response_status" to "success", "result" to mapOf(
+                    "img" to "$img_res",
+                    "img_reup" to "$img_got_res"
+                ))
+            } catch (e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
         }
-        return res
+        return  gson.toJson(res)
     }
 }
 
 // ローカル環境実行用
 fun main() {
     // handlerを起動
-    val app = App()
+    val app = S3Sample()
     app.handleRequest(null, null)
 }
