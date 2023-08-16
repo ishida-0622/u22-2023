@@ -200,3 +200,64 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)
     }
 }
+
+/**
+ * パズルを編集する
+ */
+class UpdatePuzzle : RequestHandler<Map<String, Any>, String> {
+
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "puzzle"
+
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("id is null")}
+                val updateInfos: MutableMap<String, String> = mutableMapOf()
+                if (body["title"] != null) {updateInfos["title"] = (body["title"]!! as String)}
+                if (body["description"] != null) {updateInfos["description"] = (body["description"]!! as String)}
+                if (body["icon"] != null) {updateInfos["icon"] = (body["icon"]!! as String)}
+                if (body["words"] != null) {updateInfos["words"] = (body["words"]!! as String)}.map{
+                    Word(
+                        word = it["word"] as String,
+                        shadow = it["shadow"] as String,
+                        illustration = it["illustration"] as String,
+                        voice = it["voice"] as String,
+                        is_displayed = it["is_displayed"] as Boolean,
+                        is_dummy = it["is_dummy"] as Boolean
+                    )
+                } else {throw Exception("words is null")}
+
+
+                println(dynamo.searchByKey(tableName, listOf(p_id)))
+                val result = dynamo.updateItem(tableName, listOf(p_id), updateInfos)
+                println(dynamo.searchByKey(tableName, listOf(p_id)))
+                val dummyMap: Map<String, String> = mapOf()
+
+                if (result == "DONE") {
+                    mapOf(
+                        "response_status" to "success",
+                        "result" to dummyMap
+                    )
+                } else {
+                    mapOf(
+                        "response_status" to "fail",
+                        "error" to "$result"
+                    )
+                }
+            } catch(e: Exception) {
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}
+
