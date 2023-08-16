@@ -1,6 +1,8 @@
 import { SetStateAction, useEffect, useState } from "react";
 import useSWR from "swr";
 import Router from "next/router";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 import { User } from "@/features/auth/types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
@@ -22,9 +24,11 @@ import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
 
 export const AccountInfo = () => {
+  const email = useSelector((store: RootState) => store.email);
+
   const userDataFetcher = async (url: string) => {
     const request: ScanUsersRequest = {
-      u_id: ["92be8e7e-00da-448a-9e73-3cd0c60f6a35"],
+      u_id: ["748fb36e-178c-4a7e-8b07-006597becb1e"],
     };
     const response = await fetch(url, {
       method: "POST",
@@ -38,7 +42,7 @@ export const AccountInfo = () => {
   const puzzleLogFetcher = async (url: string) => {
     const request: ScanPuzzleLogRequest = {
       // TODO:uid
-      u_id: "92be8e7e-00da-448a-9e73-3cd0c60f6a35",
+      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
     };
     const response = await fetch(url, {
       method: "POST",
@@ -51,7 +55,7 @@ export const AccountInfo = () => {
   const bookLogFetcher = async (url: string) => {
     const request: ScanBookLogRequest = {
       // TODO:uid
-      u_id: "92be8e7e-00da-448a-9e73-3cd0c60f6a35",
+      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
     };
     const response = await fetch(url, {
       method: "POST",
@@ -138,7 +142,7 @@ export const AccountInfo = () => {
         <TabPanel className={`${styles.info}`}>
           <p>クリア回数：---回</p>
           <p>シール獲得枚数：---枚</p>
-          <p>メールアドレス</p>
+          <p>メールアドレス：{email}</p>
           {/*
           <input
             type="text"
