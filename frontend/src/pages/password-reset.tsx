@@ -1,5 +1,5 @@
-import { PasswordReset } from "@/components/pages/password_reset";
+import { PasswordReset } from "@/components/pages/PasswordReset";
 
-export default function passwordreset() {
-    return <PasswordReset />;
+export default function PasswordResetPage() {
+  return <PasswordReset />;
 }
