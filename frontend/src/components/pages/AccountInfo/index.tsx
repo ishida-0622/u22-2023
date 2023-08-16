@@ -29,6 +29,7 @@ export const AccountInfo = () => {
       body: JSON.stringify(request),
     });
     const json: ScanUsersResponse = await response.json();
+    console.log(json);
     return json.result[0];
   };
 
