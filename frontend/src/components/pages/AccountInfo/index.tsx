@@ -1,11 +1,9 @@
-import useSWR from "swr";
-import { User } from "@/features/auth/types";
-import Router from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
+import useSWR from "swr";
+import Router from "next/router";
+import { User } from "@/features/auth/types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import styles from "@/components/pages/AccountInfo/index.module.scss";
 
-import "react-tabs/style/react-tabs.css";
 import {
   ScanUsersRequest,
   ScanUsersResponse,
@@ -19,6 +17,9 @@ import {
   ScanBookLogRequest,
   ScanBookLogResponse,
 } from "@/features/log/types/scanBookLog";
+
+import "react-tabs/style/react-tabs.css";
+import styles from "@/components/pages/AccountInfo/index.module.scss";
 
 export const AccountInfo = () => {
   const userDataFetcher = async (url: string) => {
@@ -108,8 +109,8 @@ export const AccountInfo = () => {
         {userDataError
           ? userDataError
           : puzzleLogError
-            ? puzzleLogError
-            : bookLogError}
+          ? puzzleLogError
+          : bookLogError}
       </p>
     );
   }
@@ -166,7 +167,7 @@ export const AccountInfo = () => {
           <button
             type="button"
             name="account_change"
-          // onClick={() => Router.push("/account-info/edit")}
+            // onClick={() => Router.push("/account-info/edit")}
           >
             アカウント情報を変更
           </button>
@@ -174,15 +175,30 @@ export const AccountInfo = () => {
         <TabPanel className={`${styles.setting}`}>
           <div className={`${styles.font_size}`}>
             <p className={`${styles.navigate_size}`}>フォントサイズ</p>
-            <input type="radio" name="font-size" id="small" className={`${styles.radio_inline_input}`} />
+            <input
+              type="radio"
+              name="font-size"
+              id="small"
+              className={`${styles.radio_inline_input}`}
+            />
             <label className={`${styles.radio_inline_label}`} htmlFor="small">
               <p className={`${styles.small}`}>小</p>
             </label>
-            <input type="radio" name="font-size" id="normal" className={`${styles.radio_inline_input}`}/>
+            <input
+              type="radio"
+              name="font-size"
+              id="normal"
+              className={`${styles.radio_inline_input}`}
+            />
             <label className={`${styles.radio_inline_label}`} htmlFor="normal">
               <p className={`${styles.normal}`}>中</p>
             </label>
-            <input type="radio" name="font-size" id="big" className={`${styles.radio_inline_input}`} />
+            <input
+              type="radio"
+              name="font-size"
+              id="big"
+              className={`${styles.radio_inline_input}`}
+            />
             <label className={`${styles.radio_inline_label}`} htmlFor="big">
               <p className={`${styles.big}`}>大</p>
             </label>
@@ -190,18 +206,39 @@ export const AccountInfo = () => {
           <div className={`${styles.volume}`}>
             <p className={`${styles.navigate_volume}`}>音量</p>
             <div className={`${styles.volume_bar}`}>
-              <input type="button" name="yellow_green" className={`${styles.yellow_green}`} />
-              <input type="button" name="light_blue" className={`${styles.light_blue}`} />
+              <input
+                type="button"
+                name="yellow_green"
+                className={`${styles.yellow_green}`}
+              />
+              <input
+                type="button"
+                name="light_blue"
+                className={`${styles.light_blue}`}
+              />
               <input type="button" name="blue" className={`${styles.blue}`} />
-              <input type="button" name="yellow" className={`${styles.yellow}`} />
-              <input type="button" name="orange" className={`${styles.orange}`} />
+              <input
+                type="button"
+                name="yellow"
+                className={`${styles.yellow}`}
+              />
+              <input
+                type="button"
+                name="orange"
+                className={`${styles.orange}`}
+              />
               <input type="button" name="red" className={`${styles.red}`} />
             </div>
           </div>
           <div className={`${styles.time_limit}`}>
             <p className={`${styles.navigate_time}`}>使用時間制限</p>
 
-            <select value={selectedHour} onChange={handleHourChange} className={`${styles.limit_hour}`} id="hour">
+            <select
+              value={selectedHour}
+              onChange={handleHourChange}
+              className={`${styles.limit_hour}`}
+              id="hour"
+            >
               {Array.from({ length: 24 }, (_, i) =>
                 i.toString().padStart(2, "0")
               ).map((hour) => (
@@ -213,7 +250,12 @@ export const AccountInfo = () => {
             <label className={`${styles.hour_navigate}`} htmlFor="hour">
               時間
             </label>
-            <select value={selectedMinute} onChange={handleMinuteChange} className={`${styles.limit_minute}`} id="minute">
+            <select
+              value={selectedMinute}
+              onChange={handleMinuteChange}
+              className={`${styles.limit_minute}`}
+              id="minute"
+            >
               {Array.from({ length: 60 }, (_, i) =>
                 i.toString().padStart(2, "0")
               ).map((minute) => (
@@ -227,10 +269,18 @@ export const AccountInfo = () => {
             </label>
           </div>
           <div className={`${styles.buttons}`}>
-            <button type="button" name="setting_return" className={`${styles.back_button}`}>
+            <button
+              type="button"
+              name="setting_return"
+              className={`${styles.back_button}`}
+            >
               戻る
             </button>
-            <button type="button" name="setting_change" className={`${styles.change_button}`}>
+            <button
+              type="button"
+              name="setting_change"
+              className={`${styles.change_button}`}
+            >
               変更
             </button>
           </div>
