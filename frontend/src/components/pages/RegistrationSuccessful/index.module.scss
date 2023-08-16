@@ -1,49 +1,49 @@
 .container {
-    font-family: arial;
-    font-size: 130%;
-    margin: 0%;
-    width: 100%;
-    height: 100%;
-    position:absolute;
-    text-align: center;
-    padding-top: 30%;
-    background-image: url("./images/meadow.jpg");
-    background-size: 100% 100%;
-    .text{
-        margin-left: auto;
-        margin-right: auto;
-    }
+  font-family: arial;
+  font-size: 130%;
+  margin: 0%;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  text-align: center;
+  padding-top: 30%;
+  background-image: url("./images/meadow.jpg");
+  background-size: 100% 100%;
+  .text {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .child {
-    width: 50%;
-    height: 50%;
-    /*margin: 0%;*/
-    /* 水平・垂直方向の中央揃え */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+  /*margin: 0%;*/
+  /* 水平・垂直方向の中央揃え */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .submit_button_field {
-    position: relative; /* position を relative に変更 */
-    bottom: -40%; /* 値を調整 */
+  position: relative; /* position を relative に変更 */
+  bottom: -40%; /* 値を調整 */
 }
 
 .submit_button {
-    display: inline-block;
-    color: azure;
-    font-weight: bold;
-    background-color: #df0013;
-    border-bottom: 5% solid #9f000c;
-    border-radius: 100vh;
-    border-color: #9f000c;
-    top: calc(50% - .5em);
-    right: 1rem;
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #df0013;
+  border-bottom: 5% solid #9f000c;
+  border-radius: 100vh;
+  border-color: #9f000c;
+  top: calc(50% - 0.5em);
+  right: 1rem;
 }
 
 .submit_button:hover {
-    margin-top: 0.18rem;
-    border-bottom: 0.12rem solid #9f000c;
-    cursor: pointer;
+  margin-top: 0.18rem;
+  border-bottom: 0.12rem solid #9f000c;
+  cursor: pointer;
 }
