@@ -274,6 +274,7 @@ class FinishBook : RequestHandler<Map<String, Any>, String> {
                     1
                 }                
                 val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
+                if (updated != "DONE"){throw Exception("failed to update game status: $updated")}
                 val b_log = BookLog(
                     u_id = u_id,
                     b_id = b_id,
