@@ -17,7 +17,7 @@ export const PuzzleEdit = () => {
   const { id } = router.query;
 
   const puzzleList = () => {
-    router.push("admin/puzzle");
+    router.push("/admin/puzzle");
   };
   // idに基づいてAPIからデータを取ってくる処理
   const [puzzle, setPuzzle] = useState<Puzzle | undefined>(undefined);
