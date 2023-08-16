@@ -19,8 +19,6 @@ class Tables : RequestHandler<Map<String, Any>, String> {
                 first_name = "first_name",
                 family_name_roma = "family_name_roma",
                 first_name_roma = "first_name_roma",
-                email = "email",
-                password = "password",
                 child_lock = "child_lock",
                 account_name = "account_name"
             )
