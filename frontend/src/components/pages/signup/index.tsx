@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
-import { updateUid, updateUser } from "@/store/user";
+import { updateUid, updateUser, updateEmail } from "@/store/user";
 import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
 import styles from "./index.module.scss";
@@ -72,9 +72,10 @@ export const Signup = () => {
           u_id: user.uid,
           limit_time: 1440,
           delete_flg: false,
-        }),
+        })
       );
       dispatch(updateUid(user.uid));
+      dispatch(updateEmail(user.email));
       const req: SignUpRequest = {
         ...formValues,
         u_id: user.uid,
@@ -88,6 +89,7 @@ export const Signup = () => {
       if (json.response_status === "fail") {
         dispatch(updateUid(null));
         dispatch(updateUser(null));
+        dispatch(updateEmail(null));
         await deleteUser(user);
         throw new Error(json.error);
       }
@@ -95,7 +97,7 @@ export const Signup = () => {
       const redirectUrl = process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
       sendEmailVerification(
         user,
-        redirectUrl ? { url: redirectUrl } : undefined,
+        redirectUrl ? { url: redirectUrl } : undefined
       );
 
       screenTransition();
