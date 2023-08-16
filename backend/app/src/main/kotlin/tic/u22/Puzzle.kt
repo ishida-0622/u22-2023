@@ -464,8 +464,8 @@ class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
                     throw Exception("status_infos is null")
                 }
                 val p_id = if (status_infos[0].isNotEmpty()) {status_infos[0]} else {throw Exception("p_id is null")}
-                // TODO パースする
-                // val saved_data = if (status_infos[1].isNotEmpty()) {utils.toAttributeValueMap(status_infos[1])} else {throw Exception("saved_data is null")}
+                val status_info = status_infos[1] as Map<String, Any>
+                val saved_data = if (status_info["saved_data"] != null) {status_info["saved_data"] as List<String>} else {throw Exception("saved_data is null")}
 
                 // 本を取得
                 val puzzle_info = dynamo.searchByKey(table_puzzle, listOf(p_id))
