@@ -7,9 +7,9 @@ import { User } from "@/features/auth/types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import {
-  ScanUsersRequest,
-  ScanUsersResponse,
-} from "@/features/auth/types/scanUsers";
+  ScanUserRequest,
+  ScanUserResponse,
+} from "@/features/auth/types/scanUser";
 import { BookLog, PuzzleLog } from "@/features/log/types";
 import {
   ScanPuzzleLogRequest,
@@ -27,16 +27,16 @@ export const AccountInfo = () => {
   const email = useSelector((store: RootState) => store.email);
 
   const userDataFetcher = async (url: string) => {
-    const request: ScanUsersRequest = {
-      u_id: ["748fb36e-178c-4a7e-8b07-006597becb1e"],
+    const request: ScanUserRequest = {
+      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
     };
     const response = await fetch(url, {
       method: "POST",
       body: JSON.stringify(request),
     });
-    const json: ScanUsersResponse = await response.json();
+    const json: ScanUserResponse = await response.json();
     console.log(json);
-    return json.result[0];
+    return json.result;
   };
 
   const puzzleLogFetcher = async (url: string) => {
@@ -66,7 +66,7 @@ export const AccountInfo = () => {
   };
 
   const { data: userData, error: userDataError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanUsers`,
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanUser`,
     userDataFetcher
   );
 
@@ -140,38 +140,18 @@ export const AccountInfo = () => {
           <Tab>えほんログ</Tab>
         </TabList>
         <TabPanel className={`${styles.info}`}>
-          <p>クリア回数：---回</p>
-          <p>シール獲得枚数：---枚</p>
           <p>メールアドレス：{email}</p>
-          {/*
-          <input
-            type="text"
-            name="emailaddress"
-            value={userData.email}
-            readOnly={true}
-          />
-          */}
-          <p>パスワード</p>
-          {/*
-          <input
-            type="password"
-            name="password"
-            value={userData.password}
-            readOnly={true}
-          />
-          */}
-          <p>チャイルドロック</p>
-          <input
-            type="password"
-            name="child_lock"
-            value={userData.child_lock}
-            readOnly={true}
-          />
-          <br />
+          <p>名前：{`${userData.family_name} ${userData.first_name}`}</p>
+          <p>
+            アルファベット名：
+            {`${userData.family_name_roma} ${userData.first_name_roma}`}
+          </p>
+          <p>アカウント名：{userData.account_name}</p>
+          <p>チャイルドロック：{userData.child_lock}</p>
           <button
             type="button"
             name="account_change"
-            // onClick={() => Router.push("/account-info/edit")}
+            onClick={() => Router.push("/account-info/edit")}
           >
             アカウント情報を変更
           </button>
