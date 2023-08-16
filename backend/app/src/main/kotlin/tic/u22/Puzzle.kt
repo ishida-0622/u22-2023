@@ -396,12 +396,12 @@ class UpdatePuzzle : RequestHandler<Map<String, Any>, String> {
                         s3.putObject(bucketName, "puzzle/${p_id}/${word}/illustration.${illustrationExtension}", illustration, null)
                         s3.putObject(bucketName, "puzzle/${p_id}/${word}/voice.mp3", voice, null)
                         mapOf(
-                            word to word,
-                            shadow to "puzzle/${p_id}/${word}/shadow.${shadowExtension}",
-                            illustration to "puzzle/${p_id}/${word}/illustration.${illustrationExtension}",
-                            voice to "puzzle/${p_id}/${word}/voice.mp3",
-                            is_displayed to is_displayed,
-                            is_dummy to is_dummy
+                            "word" to word,
+                            "shadow" to "puzzle/${p_id}/${word}/shadow.${shadowExtension}",
+                            "illustration" to "puzzle/${p_id}/${word}/illustration.${illustrationExtension}",
+                            "voice" to "puzzle/${p_id}/${word}/voice.mp3",
+                            "is_displayed" to is_displayed,
+                            "is_dummy" to is_dummy
                         )
                     }
                 }

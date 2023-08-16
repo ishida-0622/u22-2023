@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import java.time.LocalDateTime
 
 /**
  * 本をすべて取得する
@@ -351,5 +352,75 @@ class RestartBook : RequestHandler<Map<String, Any>, String> {
             }
         }
         return gson.toJson(res)
+    }
+}
+
+/**
+ * 本を編集する
+ */
+class UpdateBook : RequestHandler<Map<String, Any>, String> {
+
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "book"
+                val s3 = S3(Settings().AWS_REGION)
+                val bucketName = Settings().AWS_BUCKET
+
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+                val result = dynamo.searchByKey("book", listOf(b_id))
+                val nowData = if(result.isEmpty()){throw Exception("this b_id does not exist")} else { utils.toMap(utils.attributeValueToObject(result, "book")) }
+                val title_jp = if (body["title_jp"] != null) {body["title_jp"]!! as String} else {nowData["title_jp"] as String}
+                val title_en = if (body["title_en"] != null) {body["title_en"]!! as String} else {nowData["title_en"] as String}
+                val summary = if (body["summary"] != null) {body["summary"]!! as String} else {nowData["summary"] as String}
+                val author = if (body["author"] != null) {body["author"]!! as String} else {nowData["author"] as String}
+                val thumbnail = if (body["thumbnail"] != null) {
+                    val thumbnailUri = body["thumbnail"]!! as String
+                    val thumbnailExtension = thumbnailUri.split(";")[0].split("/")[1]
+                    s3.putObject(bucketName, "book/${b_id}/thumbnail.${thumbnailExtension}", thumbnailUri, null)
+                    "book/${b_id}/thumbnail.${thumbnailExtension}"
+                } else {nowData["thumbnail"] as String}
+                val pdf = if (body["pdf"] != null) {
+                    val pdfUri = body["pdf"]!! as String
+                    val pdfExtension = pdfUri.split(";")[0].split("/")[1]
+                    s3.putObject(bucketName, "book/${b_id}/pdf.${pdfExtension}", pdfUri, null)
+                    "book/${b_id}/pdf.${pdfExtension}"
+                } else {nowData["pdf"] as String}
+                val voice_keys = if (body["voice"] == null) {
+                    nowData["voice_keys"] as List<String>
+                } else if (!(body["voice"]!! is List<Any?>)) {throw Exception("voice is not List")} else {
+                    (body["voice"]!! as List<String>).mapIndexed { index, voice ->
+                        s3.putObject(bucketName, "book/${b_id}/voice/${index + 1}.mp3", voice, null)
+                        "book/${b_id}/voice/${index + 1}.mp3"
+                    }
+                }
+                
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val newPuzzle = mapOf(
+                    "title_jp" to title_jp,
+                    "title_en" to title_en,
+                    "summary" to summary,
+                    "author" to author,
+                    "thumbnail" to thumbnail,
+                    "pdf" to pdf,
+                    "voice_keys" to voice_keys,
+                    "update_date" to "${LocalDateTime.now()}"
+                )
+
+                val res = dynamo.updateItem(tableName, listOf(b_id), newPuzzle)
+                if(res != "DONE"){ throw Exception(res) }
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success", "result" to dummyMap)
+            } catch (e:Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }

@@ -682,7 +682,7 @@ response
 }
 ```
 
-### [UpdateBook]()
+### [UpdateBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdateBook)
 
 本を編集する
 
