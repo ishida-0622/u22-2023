@@ -85,30 +85,6 @@ export const Login = () => {
     }
   };
 
-  useEffect(() => {
-    isLogin().then((res) => {
-      if (res) {
-        if (user && uid) {
-          router.push("/");
-        } else if (uid) {
-          fetchUserData(uid).then(() => {
-            router.push("/");
-          });
-        } else {
-          getLoginUser().then((res) => {
-            if (res) {
-              dispatch(updateUid(res.uid));
-              fetchUserData(res.uid).then(() => {
-                router.push("/");
-              });
-            }
-          });
-        }
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const ScreenTransition = () => {
     router.push("/");
   };
