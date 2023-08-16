@@ -130,6 +130,13 @@ export const BookList = () => {
               </button>
               <button
                 onClick={() => {
+                  Router.push(`/admin/book/edit/${book.b_id}`);
+                }}
+              >
+                <FontAwesomeIcon icon={faPen} />
+              </button>
+              <button
+                onClick={() => {
                   if (confirm("削除しますか？")) {
                     deleteBook(book.b_id);
                   }
