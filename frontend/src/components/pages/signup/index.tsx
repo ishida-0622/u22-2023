@@ -72,7 +72,7 @@ export const Signup = () => {
           u_id: user.uid,
           limit_time: 1440,
           delete_flg: false,
-        })
+        }),
       );
       dispatch(updateUid(user.uid));
       const req: SignUpRequest = {
@@ -95,7 +95,7 @@ export const Signup = () => {
       const redirectUrl = process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
       sendEmailVerification(
         user,
-        redirectUrl ? { url: redirectUrl } : undefined
+        redirectUrl ? { url: redirectUrl } : undefined,
       );
 
       screenTransition();
