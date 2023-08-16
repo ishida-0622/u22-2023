@@ -8,6 +8,7 @@ import java.util.UUID
 import kotlin.reflect.*
 import kotlin.reflect.full.*
 import kotlinx.coroutines.runBlocking
+import java.time.LocalDateTime
 
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -343,5 +344,85 @@ class DeletePuzzle: RequestHandler<Map<String, Any>, String> {
         }
 
         return gson.toJson(res)
+    }
+}
+
+
+/**
+ * パズルを編集する
+ */
+class UpdatePuzzle : RequestHandler<Map<String, Any>, String> {
+
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try {
+                if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
+                if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
+                val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
+                
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "puzzle"
+                val s3 = S3(Settings().AWS_REGION)
+                val bucketName = Settings().AWS_BUCKET
+
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                val nowData = if(result.isEmpty()){throw Exception("this p_id does not exist")} else { utils.toMap(utils.attributeValueToObject(result, "puzzle")) }
+                val title = if (body["title"] != null) {body["title"]!! as String} else {nowData["title"] as String}
+                val description = if (body["description"] != null) {body["description"]!! as String} else {nowData["description"] as String}
+                val icon = if (body["icon"] != null) {
+                    val iconUri = body["icon"]!! as String
+                    val iconExtension = iconUri.split(";")[0].split("/")[1]
+                    s3.putObject(bucketName, "puzzle/${p_id}/icon.${iconExtension}", iconUri, null)
+                    "puzzle/${p_id}/icon.${iconExtension}"
+                } else {nowData["icon"] as String}
+                val words = if (body["words"] == null) {
+                    nowData["words"] as List<Map<String, Any>>
+                } else if (!(body["words"]!! is List<*>)) {throw Exception("words is not List")} else {
+                    (body["words"] as List<Any>).map{
+                        if(!(it is Map<*, *>)) {throw Exception("words is List, but not List<Map>")}
+                        val item = it as Map<String, Any>
+                        val word = if(item["word"] == null) {throw Exception("word in words is null")} else {item["word"] as String}
+                        val shadow = if(item["shadow"] == null) {throw Exception("shadow in words is null")} else {item["shadow"] as String}
+                        val illustration = if(item["illustration"] == null) {throw Exception("illustration in words is null")} else {item["illustration"] as String}
+                        val voice = if(item["voice"] == null) {throw Exception("voice in words is null")} else {item["voice"] as String}
+                        val is_displayed = if(item["is_displayed"] == null) {throw Exception("is_displayed in words is null")} else {item["is_displayed"] as Boolean}
+                        val is_dummy = if(item["is_dummy"] == null) {throw Exception("is_dummy in words is null")} else {item["is_dummy"] as Boolean}
+                        val shadowExtension = shadow.split(";")[0].split("/")[1]
+                        val illustrationExtension = illustration.split(";")[0].split("/")[1]
+                        // val voiceExtension = voice.split(";")[0].split("/")[1]
+                        s3.putObject(bucketName, "puzzle/${p_id}/${word}/shadow.${shadowExtension}", shadow, null)
+                        s3.putObject(bucketName, "puzzle/${p_id}/${word}/illustration.${illustrationExtension}", illustration, null)
+                        s3.putObject(bucketName, "puzzle/${p_id}/${word}/voice.mp3", voice, null)
+                        mapOf(
+                            word to word,
+                            shadow to "puzzle/${p_id}/${word}/shadow.${shadowExtension}",
+                            illustration to "puzzle/${p_id}/${word}/illustration.${illustrationExtension}",
+                            voice to "puzzle/${p_id}/${word}/voice.mp3",
+                            is_displayed to is_displayed,
+                            is_dummy to is_dummy
+                        )
+                    }
+                }
+                
+                // Userデータクラスに以上のデータを渡し、user変数にインスタンス化して渡す
+                val newPuzzle = mapOf(
+                    "title" to title,
+                    "description" to description,
+                    "icon" to icon,
+                    "words" to words,
+                    "update_date" to "${LocalDateTime.now()}"
+                )
+
+                val res = dynamo.updateItem(tableName, listOf(p_id), newPuzzle)
+                if(res != "DONE"){ throw Exception(res) }
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success", "result" to dummyMap)
+            } catch (e:Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
