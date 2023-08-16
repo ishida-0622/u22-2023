@@ -1,5 +1,62 @@
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c');
+
 .container {
     text-align: center;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.yellow_green {
+    background-color: rgb(240, 228, 165);
+    border-radius: 10%;
+}
+
+.yellow_green:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.light_blue {
+    background-color: rgb(240, 228, 165);
+    border-radius: 9.5%;
+}
+
+.light_blue:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.blue {
+    background-color: rgb(240, 228, 165);
+    border-radius: 9%;
+}
+
+.blue:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.yellow {
+    background-color: rgb(240, 228, 165);
+    border-radius: 8.5%;
+}
+
+.yellow:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.orange {
+    background-color: rgb(240, 228, 165);
+    border-radius: 8%;
+}
+
+.orange:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.red {
+    background-color: rgb(240, 228, 165);
+    border-radius: 7%;
+}
+
+.red:hover {
+    background-color: rgb(255, 255, 120);
 }
 
 /* iPhoneランドスケープ */
@@ -85,69 +142,69 @@
         width: 20rem;
 
         .yellow_green {
-            background-color: rgb(165, 255, 127);
+            
             width: 1.8rem;
             height: 2rem;
         }
 
         .yellow_green:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .light_blue {
-            background-color: aqua;
+            
             width: 1.8rem;
             height: 2.8rem;
         }
 
         .light_blue:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .blue {
-            background-color: #4D90FE;
+            
             width: 1.8rem;
             height: 3.6rem;
         }
 
         .blue:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .yellow {
-            background-color: rgb(255, 236, 127);
+            
             width: 1.8rem;
             height: 4.4rem;
         }
 
         .yellow:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .orange {
-            background-color: rgb(254, 203, 132);
+            
             width: 1.8rem;
             height: 5.2rem;
         }
 
         .orange:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .red {
-            background-color: rgb(255, 126, 126);
+            
             width: 1.8rem;
             height: 6rem;
         }
 
         .red:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
     }
 
@@ -160,7 +217,7 @@
             top: 2rem;
             right: 6rem;
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .minute_navigate {
@@ -168,7 +225,7 @@
             top: 2rem;
             left: -1rem;
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .limit_hour {
@@ -199,6 +256,9 @@
         .back_button {
             transform: scale(1.2, 1.2);
             margin: 0 1rem 0 0;
+            border-radius: 10%;
+            background-color: #bed7ff;
+            font-weight: bold;
         }
 
         .back_button:hover {
@@ -208,6 +268,9 @@
         .change_button {
             transform: scale(1.2, 1.2);
             margin: 0 0 0 1rem;
+            border-radius: 10%;
+            background-color: #ffbdbd;
+            font-weight: bold;
         }
 
         .change_button:hover {
@@ -220,10 +283,22 @@
 @media screen and (min-device-height: 381px) and (max-device-height: 720px) {
 
     /*ナビゲーション*/
-    .navigate {
+    .navigate_size {
         text-align: left;
         margin: 0 0 0 18rem;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_volume {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_time {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
     }
 
     /*文字サイズの設定*/
@@ -281,69 +356,69 @@
         height: 11rem;
 
         .yellow_green {
-            background-color: rgb(165, 255, 127);
+            
             width: 3rem;
             height: 3.3rem;
         }
 
         .yellow_green:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .light_blue {
-            background-color: aqua;
+            
             width: 3rem;
             height: 4.6rem;
         }
 
         .light_blue:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .blue {
-            background-color: #4D90FE;
+            
             width: 3rem;
             height: 5.9rem;
         }
 
         .blue:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .yellow {
-            background-color: rgb(255, 236, 127);
+            
             width: 3rem;
             height: 7.2rem;
         }
 
         .yellow:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .orange {
-            background-color: rgb(254, 203, 132);
+            
             width: 3rem;
             height: 8.5rem;
         }
 
         .orange:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .red {
-            background-color: rgb(255, 126, 126);
+            
             width: 3rem;
             height: 9.8rem;
         }
 
         .red:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
     }
 
@@ -357,7 +432,7 @@
             top: 2rem;
             right: 2rem;
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .minute_navigate {
@@ -365,7 +440,7 @@
             top: 2rem;
             left: 8rem;
             font-size: 1.5rem;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .limit_hour {
@@ -396,6 +471,9 @@
         .back_button {
             transform: scale(1.5, 1.5);
             margin: 0 2rem 0 0;
+            border-radius: 10%;
+            background-color: #bed7ff;
+            font-weight: bold;
         }
 
         .back_button:hover {
@@ -405,6 +483,9 @@
         .change_button {
             transform: scale(1.5, 1.5);
             margin: 0 0 0 2rem;
+            border-radius: 10%;
+            background-color: #ffbdbd;
+            font-weight: bold;
         }
 
         .change_button:hover {
@@ -418,7 +499,19 @@
 @media screen and (min-device-height: 768px) and (orientation:landscape) {
 
     /*ナビゲーション*/
-    .navigate {
+    .navigate_size {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_volume {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_time {
         text-align: left;
         margin: 0 0 0 18rem;
         font-size: 1.5rem;
@@ -477,69 +570,69 @@
         top: 8rem;
 
         .yellow_green {
-            background-color: rgb(165, 255, 127);
+            
             width: 4.5rem;
             height: 5rem;
         }
 
         .yellow_green:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .light_blue {
-            background-color: aqua;
+            
             width: 4.5rem;
             height: 7rem;
         }
 
         .light_blue:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .blue {
-            background-color: #4D90FE;
+            
             width: 4.5rem;
             height: 9rem;
         }
 
         .blue:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .yellow {
-            background-color: rgb(255, 236, 127);
+            
             width: 4.5rem;
             height: 11rem;
         }
 
         .yellow:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .orange {
-            background-color: rgb(254, 203, 132);
+            
             width: 4.5rem;
             height: 13rem;
         }
 
         .orange:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
 
         .red {
-            background-color: rgb(255, 126, 126);
+            
             width: 4.5rem;
             height: 15rem;
         }
 
         .red:hover {
-            filter: brightness(70%);
             cursor: pointer;
+            
         }
     }
 
@@ -552,7 +645,7 @@
             top: 2rem;
             right: 2rem;
             font-size: 2rem;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .minute_navigate {
@@ -560,7 +653,7 @@
             top: 2rem;
             left: 8rem;
             font-size: 2rem;
-            font-weight: 500;
+            font-weight: bold;
         }
 
         .limit_hour {
