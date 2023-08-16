@@ -20,7 +20,7 @@ export const PasswordChange = () => {
   };
 
   const changePasswordConfirm = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPasswordConfirm(event.target.value);
   };
