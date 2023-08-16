@@ -13,8 +13,9 @@
     display: inline-block;
     margin: 0 0 0 0;
   }
+
   input {
-    width: 50%;
+    width: max(50%, 480px);
     text-align: left;
     border-top-left-radius: 15em;
     border-top-right-radius: 15em;
@@ -35,6 +36,7 @@
   text-align: center;
   margin: 0 0 0 0;
 }
+
 .submit_button_field {
   text-align: center;
 
