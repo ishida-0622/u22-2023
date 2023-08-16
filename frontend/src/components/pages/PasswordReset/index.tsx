@@ -1,4 +1,11 @@
 import { useState } from "react";
+import {
+  sendPasswordResetEmail,
+  AuthError,
+  AuthErrorCodes,
+} from "firebase/auth";
+import { auth } from "@/features/auth/firebase";
+
 import styles from "./index.module.scss";
 
 export const PasswordReset = () => {
@@ -8,27 +15,31 @@ export const PasswordReset = () => {
     setEmail(event.target.value);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
-    }
-    try {
-      const response = await fetch(`${baseUrl}/auth/password-reset`, {
-        method: "POST",
-        body: JSON.stringify({
-          email: email,
-        }),
+    const redirectUrl = process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
+    sendPasswordResetEmail(
+      auth,
+      email,
+      redirectUrl
+        ? {
+            url: redirectUrl,
+          }
+        : undefined
+    )
+      .then(() => {
+        alert("入力されたメールアドレスに再設定メールを送信しました");
+      })
+      .catch((e: AuthError) => {
+        console.error(e.message);
+        switch (e.code) {
+          case AuthErrorCodes.USER_DELETED:
+            alert("メールアドレスが存在しません");
+            break;
+          default:
+            alert("エラーが発生しました");
+        }
       });
-
-      // responseの処理
-      // responseがtrueの時、画面遷移をする
-      // responseがfalseの時、アラートを出す。
-    } catch (e) {
-      alert("データの送信に失敗しました");
-    }
   };
 
   return (
