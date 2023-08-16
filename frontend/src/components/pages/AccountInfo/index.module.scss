@@ -1,0 +1,706 @@
+@import url('https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c');
+
+.container {
+    text-align: center;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+}
+
+.yellow_green {
+    background-color: rgb(240, 228, 165);
+    border-radius: 10%;
+}
+
+.yellow_green:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.light_blue {
+    background-color: rgb(240, 228, 165);
+    border-radius: 9.5%;
+}
+
+.light_blue:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.blue {
+    background-color: rgb(240, 228, 165);
+    border-radius: 9%;
+}
+
+.blue:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.yellow {
+    background-color: rgb(240, 228, 165);
+    border-radius: 8.5%;
+}
+
+.yellow:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.orange {
+    background-color: rgb(240, 228, 165);
+    border-radius: 8%;
+}
+
+.orange:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+.red {
+    background-color: rgb(240, 228, 165);
+    border-radius: 7%;
+}
+
+.red:hover {
+    background-color: rgb(255, 255, 120);
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 380px) and (orientation:landscape) {
+
+    /*ナビゲーション*/
+    .navigate_size {
+        text-align: left;
+        margin: 0 0 0 10rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .navigate_volume {
+        text-align: left;
+        margin: 0 0 0 4rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .navigate_time {
+        text-align: left;
+        margin: 0 0 0 1rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    /*文字サイズの設定*/
+    .font_size {
+        position: relative;
+        height: 0rem;
+        left: -9rem;
+        z-index: 1;
+
+        .small {
+            font-size: 0.3rem;
+            font-weight: bold;
+        }
+
+        .normal {
+            font-size: 0.89rem;
+            font-weight: bold;
+        }
+
+        .big {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .radio_inline_input {
+            clip: rect(0.0625rem, 0.0625rem, 0.0625rem, 0.0625rem);
+            position: absolute !important;
+        }
+
+        .radio_inline_label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-top: 1.5rem;
+            margin-right: 1.5rem;
+            margin-left: 1.5rem;
+            border-radius: 0.1875rem;
+            transition: all .2s;
+        }
+
+        .radio_inline_input:checked+.radio_inline_label {
+            background: #B54A4A;
+            color: #fff;
+            text-shadow: 0 0 0.0625rem rgba(0, 0, 0, .7);
+        }
+
+        .radio_inline_input:focus+.radio_inline_label {
+            outline-color: #4D90FE;
+            outline-offset: -0.125rem;
+            outline-style: auto;
+            outline-width: 0.3125rem;
+        }
+    }
+
+    /*音量の設定*/
+    .volume {
+        position: relative;
+        left: 20rem;
+        width: 20rem;
+
+        .yellow_green {
+            
+            width: 1.8rem;
+            height: 2rem;
+        }
+
+        .yellow_green:hover {
+            cursor: pointer;
+            
+        }
+
+        .light_blue {
+            
+            width: 1.8rem;
+            height: 2.8rem;
+        }
+
+        .light_blue:hover {
+            cursor: pointer;
+            
+        }
+
+        .blue {
+            
+            width: 1.8rem;
+            height: 3.6rem;
+        }
+
+        .blue:hover {
+            cursor: pointer;
+            
+        }
+
+        .yellow {
+            
+            width: 1.8rem;
+            height: 4.4rem;
+        }
+
+        .yellow:hover {
+            cursor: pointer;
+            
+        }
+
+        .orange {
+            
+            width: 1.8rem;
+            height: 5.2rem;
+        }
+
+        .orange:hover {
+            cursor: pointer;
+            
+        }
+
+        .red {
+            
+            width: 1.8rem;
+            height: 6rem;
+        }
+
+        .red:hover {
+            cursor: pointer;
+            
+        }
+    }
+
+    .time_limit {
+        position: relative;
+        top: 0.5rem;
+
+        .hour_navigate {
+            position: relative;
+            top: 2rem;
+            right: 6rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .minute_navigate {
+            position: relative;
+            top: 2rem;
+            left: -1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .limit_hour {
+            display: inline-block;
+            width: 5rem;
+            position: relative;
+            top: 1rem;
+            right: 8rem;
+            transform: scale(1.5, 1.5);
+        }
+
+        .limit_minute {
+            display: inline-block;
+            width: 5rem;
+            position: relative;
+            top: 1rem;
+            left: -3rem;
+            transform: scale(1.5, 1.5);
+        }
+    }
+
+    .buttons {
+        position: relative;
+        top: 0.5rem;
+        left: 29rem;
+        width: 10rem;
+
+        .back_button {
+            transform: scale(1.2, 1.2);
+            margin: 0 1rem 0 0;
+            border-radius: 10%;
+            background-color: #bed7ff;
+            font-weight: bold;
+        }
+
+        .back_button:hover {
+            filter: brightness(70%);
+        }
+
+        .change_button {
+            transform: scale(1.2, 1.2);
+            margin: 0 0 0 1rem;
+            border-radius: 10%;
+            background-color: #ffbdbd;
+            font-weight: bold;
+        }
+
+        .change_button:hover {
+            filter: brightness(70%);
+        }
+    }
+}
+
+/*PC*/
+@media screen and (min-device-height: 381px) and (max-device-height: 720px) {
+
+    /*ナビゲーション*/
+    .navigate_size {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_volume {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_time {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    /*文字サイズの設定*/
+    .font_size {
+        height: 0.5rem;
+
+        .small {
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .normal {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .big {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .radio_inline_input {
+            clip: rect(0.0625rem, 0.0625rem, 0.0625rem, 0.0625rem);
+            position: absolute !important;
+        }
+
+        .radio_inline_label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-top: 1.5rem;
+            margin-right: 1.5rem;
+            margin-left: 1.5rem;
+            border-radius: 0.1875rem;
+            transition: all .2s;
+        }
+
+        .radio_inline_input:checked+.radio_inline_label {
+            background: #B54A4A;
+            color: #fff;
+            text-shadow: 0 0 0.0625rem rgba(0, 0, 0, .7);
+        }
+
+        .radio_inline_input:focus+.radio_inline_label {
+            outline-color: #4D90FE;
+            outline-offset: -0.125rem;
+            outline-style: auto;
+            outline-width: 0.3125rem;
+        }
+    }
+
+    /*音量の設定*/
+    .volume {
+        position: relative;
+        top: 8rem;
+        height: 11rem;
+
+        .yellow_green {
+            
+            width: 3rem;
+            height: 3.3rem;
+        }
+
+        .yellow_green:hover {
+            cursor: pointer;
+            
+        }
+
+        .light_blue {
+            
+            width: 3rem;
+            height: 4.6rem;
+        }
+
+        .light_blue:hover {
+            cursor: pointer;
+            
+        }
+
+        .blue {
+            
+            width: 3rem;
+            height: 5.9rem;
+        }
+
+        .blue:hover {
+            cursor: pointer;
+            
+        }
+
+        .yellow {
+            
+            width: 3rem;
+            height: 7.2rem;
+        }
+
+        .yellow:hover {
+            cursor: pointer;
+            
+        }
+
+        .orange {
+            
+            width: 3rem;
+            height: 8.5rem;
+        }
+
+        .orange:hover {
+            cursor: pointer;
+            
+        }
+
+        .red {
+            
+            width: 3rem;
+            height: 9.8rem;
+        }
+
+        .red:hover {
+            cursor: pointer;
+            
+        }
+    }
+
+    .time_limit {
+        position: relative;
+        top: 10rem;
+        height: 4rem;
+
+        .hour_navigate {
+            position: relative;
+            top: 2rem;
+            right: 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .minute_navigate {
+            position: relative;
+            top: 2rem;
+            left: 8rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .limit_hour {
+            display: inline-block;
+            width: 5rem;
+            position: relative;
+            top: 1rem;
+            right: 5rem;
+            transform: scale(1.5, 1.5);
+        }
+
+        .limit_minute {
+            display: inline-block;
+            width: 5rem;
+            position: relative;
+            top: 1rem;
+            left: 5rem;
+            transform: scale(1.5, 1.5);
+        }
+    }
+
+    .buttons {
+        position: relative;
+        top: 9rem;
+        left: 60rem;
+        width: 10rem;
+
+        .back_button {
+            transform: scale(1.5, 1.5);
+            margin: 0 2rem 0 0;
+            border-radius: 10%;
+            background-color: #bed7ff;
+            font-weight: bold;
+        }
+
+        .back_button:hover {
+            filter: brightness(70%);
+        }
+
+        .change_button {
+            transform: scale(1.5, 1.5);
+            margin: 0 0 0 2rem;
+            border-radius: 10%;
+            background-color: #ffbdbd;
+            font-weight: bold;
+        }
+
+        .change_button:hover {
+            filter: brightness(70%);
+        }
+    }
+
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation:landscape) {
+
+    /*ナビゲーション*/
+    .navigate_size {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_volume {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    .navigate_time {
+        text-align: left;
+        margin: 0 0 0 18rem;
+        font-size: 1.5rem;
+    }
+
+    /*文字サイズの設定*/
+    .font_size {
+        height: 1rem;
+
+        .small {
+            font-weight: bold;
+        }
+
+        .normal {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .big {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .radio_inline_input {
+            clip: rect(0.0625rem, 0.0625rem, 0.0625rem, 0.0625rem);
+            position: absolute !important;
+        }
+
+        .radio_inline_label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-top: 1.5rem;
+            margin-right: 1.5rem;
+            margin-left: 1.5rem;
+            border-radius: 0.1875rem;
+            transition: all .2s;
+        }
+
+        .radio_inline_input:checked+.radio_inline_label {
+            background: #B54A4A;
+            color: #fff;
+            text-shadow: 0 0 0.0625rem rgba(0, 0, 0, .7);
+        }
+
+        .radio_inline_input:focus+.radio_inline_label {
+            outline-color: #4D90FE;
+            outline-offset: -0.125rem;
+            outline-style: auto;
+            outline-width: 0.3125rem;
+        }
+    }
+
+    /*音量の設定*/
+    .volume {
+        position: relative;
+        top: 8rem;
+
+        .yellow_green {
+            
+            width: 4.5rem;
+            height: 5rem;
+        }
+
+        .yellow_green:hover {
+            cursor: pointer;
+            
+        }
+
+        .light_blue {
+            
+            width: 4.5rem;
+            height: 7rem;
+        }
+
+        .light_blue:hover {
+            cursor: pointer;
+            
+        }
+
+        .blue {
+            
+            width: 4.5rem;
+            height: 9rem;
+        }
+
+        .blue:hover {
+            cursor: pointer;
+            
+        }
+
+        .yellow {
+            
+            width: 4.5rem;
+            height: 11rem;
+        }
+
+        .yellow:hover {
+            cursor: pointer;
+            
+        }
+
+        .orange {
+            
+            width: 4.5rem;
+            height: 13rem;
+        }
+
+        .orange:hover {
+            cursor: pointer;
+            
+        }
+
+        .red {
+            
+            width: 4.5rem;
+            height: 15rem;
+        }
+
+        .red:hover {
+            cursor: pointer;
+            
+        }
+    }
+
+    .time_limit {
+        position: relative;
+        top: 10rem;
+
+        .hour_navigate {
+            position: relative;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .minute_navigate {
+            position: relative;
+            top: 2rem;
+            left: 8rem;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .limit_hour {
+            display: inline-block;
+            width: 5rem;
+            position: relative;
+            top: 1rem;
+            right: 5rem;
+            transform: scale(2, 2);
+        }
+
+        .limit_minute {
+            display: inline-block;
+            width: 5rem;
+            position: relative;
+            top: 1rem;
+            left: 5rem;
+            transform: scale(2, 2);
+        }
+    }
+
+    .buttons {
+        position: relative;
+        top: 16rem;
+
+        .back_button {
+            transform: scale(2, 2);
+            margin: 0 5rem 0 0;
+            border-radius: 10%;
+            background-color: #bed7ff;
+            font-weight: bold;
+        }
+
+        .back_button:hover {
+            filter: brightness(70%);
+        }
+
+        .change_button {
+            transform: scale(2, 2);
+            margin: 0 0 0 5rem;
+            border-radius: 10%;
+            background-color: #ffbdbd;
+            font-weight: bold;
+        }
+
+        .change_button:hover {
+            filter: brightness(70%);
+        }
+    }
+}
