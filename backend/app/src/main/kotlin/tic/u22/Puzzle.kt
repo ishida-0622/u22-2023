@@ -3,6 +3,7 @@ package tic.u22
 import aws.sdk.kotlin.services.lambda.*
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestHandler
+import aws.sdk.kotlin.services.dynamodb.model.*
 import java.util.UUID
 import kotlin.reflect.*
 import kotlin.reflect.full.*
@@ -15,6 +16,8 @@ import com.google.gson.JsonParser
  * パズルを開始する
  */
 class StartPuzzle : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
         val res = runBlocking {
@@ -38,16 +41,36 @@ class StartPuzzle : RequestHandler<Map<String, Any>, String> {
                 if((utils.toKotlinType(status["game_status"]!!) as String).toInt() != 0) {
                     throw Exception("game status is not 0: now is ${(utils.toKotlinType(status["game_status"]!!) as String).toInt()}")
                 }
+                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                if(result.isEmpty()){throw Exception("this p_id is not exist")}
 
                 val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 1))
                 if(updated != "DONE"){
                     throw Exception("failed to update game status: $updated")
                 }
-                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                val formattedResult = utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                val res = mapOf(
+                    "p_id" to formattedResult["p_id"],
+                    "title" to formattedResult["title"],
+                    "description" to formattedResult["description"],
+                    "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+                    "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+                        mapOf(
+                            "word" to word["word"],
+                            "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+                            "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+                            "voice" to s3.getObject(bucketName, word["voice"] as String),
+                            "is_displayed" to word["is_displayed"] as Boolean,
+                            "is_dummy" to word["is_dummy"] as Boolean
+                        )
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
 
                 mapOf(
                     "resposne_status" to "success",
-                    "result" to utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                    "result" to res
                 )
             } catch (e: Exception) {
                 mapOf(
@@ -64,6 +87,8 @@ class StartPuzzle : RequestHandler<Map<String, Any>, String> {
  * パズルをすべて取得する
  */
 class GetPuzzles: RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
             try {
@@ -78,10 +103,30 @@ class GetPuzzles: RequestHandler<Map<String, Any>, String> {
                 val tableName = "puzzle"
 
                 val result = dynamo.scanAll(tableName)
-                mapOf("response_status" to "success",
-                    "result" to result.map{
-                        utils.toMap(utils.attributeValueToObject(it, "puzzle"))
-                    }
+                val formattedResult = result.map{utils.toMap(utils.attributeValueToObject(it, "puzzle"))}
+                val res = formattedResult.map{
+                    mapOf(
+                        "p_id" to it["p_id"],
+                        "title" to it["title"],
+                        "description" to it["description"],
+                        "icon"  to s3.getObject(bucketName, it["icon"] as String),
+                        "words" to (it["words"] as List<Map<String, Any>>).map{ word ->
+                            mapOf(
+                                "word" to word["word"],
+                                "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+                                "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+                                "voice" to s3.getObject(bucketName, word["voice"] as String),
+                                "is_displayed" to word["is_displayed"] as Boolean,
+                                "is_dummy" to word["is_dummy"] as Boolean
+                            )
+                        },
+                        "create_date" to it["create_date"],
+                        "update_date" to it["update_date"],
+                    )
+                }
+                mapOf(
+                    "response_status" to "success",
+                    "result" to res
                 )
             } catch(e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
@@ -107,6 +152,8 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                 
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "puzzle"
+                val s3 = S3(Settings().AWS_REGION)
+                val bucketName = Settings().AWS_BUCKET
 
                 val seq = dynamo.updateSequence(tableName)
                 if (seq == -1) {throw Exception("p_id could not be updated.")}
@@ -114,18 +161,33 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                 val title = if (body["title"] != null) {body["title"]!! as String} else {throw Exception("title is null")}
                 val description = if (body["description"] != null) {body["description"]!! as String} else {throw Exception("description is null")}
                 val icon = if (body["icon"] != null) {body["icon"]!! as String} else {throw Exception("icon is null")}
+                val iconExtension = icon.split(";")[0].split("/")[1]
+                s3.putObject(bucketName, "puzzle/p${id}/icon.${iconExtension}", icon, null)
+
                 if (body["words"] == null) {throw Exception("words is null")}
                 if (!(body["words"]!! is List<*>)) {throw Exception("words is not List")}
                 val words = (body["words"] as List<Any>).map{
                     if(!(it is Map<*, *>)) {throw Exception("words is List, but not List<Map>")}
                     val item = it as Map<String, Any>
+                    val word = if(item["word"] == null) {throw Exception("word in words is null")} else {item["word"] as String}
+                    val shadow = if(item["shadow"] == null) {throw Exception("shadow in words is null")} else {item["shadow"] as String}
+                    val illustration = if(item["illustration"] == null) {throw Exception("illustration in words is null")} else {item["illustration"] as String}
+                    val voice = if(item["voice"] == null) {throw Exception("voice in words is null")} else {item["voice"] as String}
+                    val is_displayed = if(item["is_displayed"] == null) {throw Exception("is_displayed in words is null")} else {item["is_displayed"] as Boolean}
+                    val is_dummy = if(item["is_dummy"] == null) {throw Exception("is_dummy in words is null")} else {item["is_dummy"] as Boolean}
+                    val shadowExtension = shadow.split(";")[0].split("/")[1]
+                    val illustrationExtension = illustration.split(";")[0].split("/")[1]
+                    // val voiceExtension = voice.split(";")[0].split("/")[1]
+                    s3.putObject(bucketName, "puzzle/p${id}/${word}/shadow.${shadowExtension}", shadow, null)
+                    s3.putObject(bucketName, "puzzle/p${id}/${word}/illustration.${illustrationExtension}", illustration, null)
+                    s3.putObject(bucketName, "puzzle/p${id}/${word}/voice.mp3", voice, null)
                     Word(
-                        word = if(item["word"] == null) {throw Exception("word in words is null")} else {item["word"] as String},
-                        shadow = if(item["shadow"] == null) {throw Exception("shadow in words is null")} else {item["shadow"] as String},
-                        illustration = if(item["illustration"] == null) {throw Exception("illustration in words is null")} else {item["illustration"] as String},
-                        voice = if(item["voice"] == null) {throw Exception("voice in words is null")} else {item["voice"] as String},
-                        is_displayed = if(item["is_displayed"] == null) {throw Exception("is_displayed in words is null")} else {item["is_displayed"] as Boolean},
-                        is_dummy = if(item["is_dummy"] == null) {throw Exception("is_dummy in words is null")} else {item["is_dummy"] as Boolean}
+                        word = word,
+                        shadow = "puzzle/p${id}/${word}/shadow.${shadowExtension}",
+                        illustration = "puzzle/p${id}/${word}/illustration.${illustrationExtension}",
+                        voice = "puzzle/p${id}/${word}/voice.mp3",
+                        is_displayed = is_displayed,
+                        is_dummy = is_dummy
                     )
                 }
                 
@@ -134,7 +196,7 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
                     p_id = "p${id}",
                     title = title,
                     description = description,
-                    icon = icon,
+                    icon = "puzzle/p${id}/icon.${iconExtension}",
                     words = words
                 )
 
