@@ -11,6 +11,8 @@ import {
   UpdateUserResponse,
 } from "@/features/auth/types/updateUser";
 
+import styles from "./index.module.scss";
+
 export const AccountInfoEdit = () => {
   const router = useRouter();
   const dispatch = useDispatch();
