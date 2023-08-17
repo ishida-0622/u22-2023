@@ -1,6 +1,7 @@
 package tic.u22
 
 import java.io.File
+import java.util.Base64
 import aws.sdk.kotlin.services.s3.*
 import aws.sdk.kotlin.services.s3.model.*
 import aws.sdk.kotlin.services.s3.model.BucketLocationConstraint
@@ -50,24 +51,30 @@ class S3(val REGION: String) {
      * @param objectPath String: ローカルのファイルパス・ファイル名。ルートディレクトリはfiles。
      * @param metadataVal Map<String, String>?: ユーザー定義メタデータ。null許容。
      *
-     * return String: 成功: eTag, 失敗: エラー内容
+     * return String: eTag, 失敗時は例外のスロー
      */
-    suspend fun putObject(bucketName: String, objectKey: String, objectBytes: ByteArray, metadataVal: Map<String, String>?): String {
-        try{
+    suspend fun putObject(bucketName: String, objectKey: String, objectUri: String, metadataVal: Map<String, String>?): String {
+            val objectBytes = utils.decodeFromUri(objectUri)
+            if (objectBytes == null) { throw Exception("could not decode to ByteArray from URI") }
+            val splitedFileName = objectKey.split(".")
             val request = PutObjectRequest {
-                bucket = Settings().AWS_BUCKET
+                bucket = bucketName
                 key = objectKey
                 metadata = metadataVal
+                contentType = when (splitedFileName[splitedFileName.size - 1]) {
+                    "png", "PNG" -> "img/png"
+                    "jpg", "jpeg", "JPG", "JPEG" -> "img/jpeg"
+                    "gif", "GIF" -> "image/gif"
+                    "pdf" -> "application/pdf"
+                    "mp3", "m4a" -> "audio/mpeg"
+                    else -> "text/plain"
+                }
                 body = ByteStream.fromBytes(objectBytes)
             }
             S3Client { region = REGION }.use { s3 ->
                 val response = s3.putObject(request)
                 return "${response.eTag}"
             }
-        } catch(e: Exception) {
-            println(e)
-            return "$e"
-        }
     }
 
     /**
@@ -77,24 +84,23 @@ class S3(val REGION: String) {
      * @param keyName String: S3のキー。パスとファイル名のこと。例: images/img.png ※"./"は不要
      * @param path String: ローカルのファイルパス・ファイル名。ルートディレクトリはfiles。
      *
-     * return String: 成功: Done, 失敗: エラー内容
+     * return String: 成功: URI, 失敗: 例外のスロー
      */
-    suspend fun getObject(bucketName: String, keyName: String, path: String): String {
+    suspend fun getObject(bucketName: String, keyName: String): String {
         val request = GetObjectRequest {
-            key = keyName
             bucket = bucketName
+            key = keyName
         }
         try {
             S3Client { region = REGION }.use { s3 ->
-                s3.getObject(request) { resp ->
-                    println(resp.body)
-                    val myFile = File("files/${path}")
-                    println(resp)
-                    resp.body?.writeToFile(myFile)
+                val resp = s3.getObject(request) { resp ->
+                    val byteResp = resp.body!!.toByteArray()
+                    val uriResp = Base64.getUrlEncoder().encodeToString(byteResp).replace("-", "+").replace("_", "/")
+                    "data:${resp.contentType};base64,${uriResp}"
                 }
+                return resp
             }
-            return "Done"
-        }catch(e: Exception){
+        } catch(e: Exception) {
             return "$e"
         }
     }
