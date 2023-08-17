@@ -210,32 +210,87 @@ export const AccountInfo = () => {
             <p className={`${styles.navigate_volume}`}>音量</p>
             <div className={`${styles.volume_bar}`}>
               <input
-                type="button"
-                name="yellow_green"
-                className={`${styles.yellow_green}`}
+                type="radio"
+                name="volume"
+                id="vol_0"
+                className={styles.none}
+                value={VOLUMES[0]}
+                checked={volume === VOLUMES[0]}
+                onChange={volumeOnchangeHandler}
+              />
+              <label
+                htmlFor="vol_0"
+                className={`${styles.zero} ${styles.volume_label}`}
               />
               <input
-                type="button"
-                name="light_blue"
-                className={`${styles.light_blue}`}
+                type="radio"
+                name="volume"
+                id="vol_1"
+                className={styles.none}
+                value={VOLUMES[1]}
+                checked={volume === VOLUMES[1]}
+                onChange={volumeOnchangeHandler}
               />
-              <input type="button" name="blue" className={`${styles.blue}`} />
+              <label
+                htmlFor="vol_1"
+                className={`${styles.one} ${styles.volume_label}`}
+              />
               <input
-                type="button"
-                name="yellow"
-                className={`${styles.yellow}`}
+                type="radio"
+                name="volume"
+                id="vol_2"
+                className={styles.none}
+                value={VOLUMES[2]}
+                checked={volume === VOLUMES[2]}
+                onChange={volumeOnchangeHandler}
+              />
+              <label
+                htmlFor="vol_2"
+                className={`${styles.two} ${styles.volume_label}`}
               />
               <input
-                type="button"
-                name="orange"
-                className={`${styles.orange}`}
+                type="radio"
+                name="volume"
+                id="vol_3"
+                className={styles.none}
+                value={VOLUMES[3]}
+                checked={volume === VOLUMES[3]}
+                onChange={volumeOnchangeHandler}
               />
-              <input type="button" name="red" className={`${styles.red}`} />
+              <label
+                htmlFor="vol_3"
+                className={`${styles.three} ${styles.volume_label}`}
+              />
+              <input
+                type="radio"
+                name="volume"
+                id="vol_4"
+                className={styles.none}
+                value={VOLUMES[4]}
+                checked={volume === VOLUMES[4]}
+                onChange={volumeOnchangeHandler}
+              />
+              <label
+                htmlFor="vol_4"
+                className={`${styles.four} ${styles.volume_label}`}
+              />
+              <input
+                type="radio"
+                name="volume"
+                id="vol_5"
+                className={styles.none}
+                value={VOLUMES[5]}
+                checked={volume === VOLUMES[5]}
+                onChange={volumeOnchangeHandler}
+              />
+              <label
+                htmlFor="vol_5"
+                className={`${styles.five} ${styles.volume_label}`}
+              />
             </div>
           </div>
           <div className={`${styles.time_limit}`}>
             <p className={`${styles.navigate_time}`}>使用時間制限</p>
-
             <select
               value={selectedHour}
               onChange={handleHourChange}

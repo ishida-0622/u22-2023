@@ -5,57 +5,18 @@
   font-family: "M PLUS Rounded 1c", sans-serif;
 }
 
-.yellow_green {
+.none {
+  display: none;
+}
+
+.volume_label {
   background-color: rgb(240, 228, 165);
-  border-radius: 10%;
+  border-radius: 0.5rem;
+  border: solid 1px;
+  display: inline-block;
 }
 
-.yellow_green:hover {
-  background-color: rgb(255, 255, 120);
-}
-
-.light_blue {
-  background-color: rgb(240, 228, 165);
-  border-radius: 9.5%;
-}
-
-.light_blue:hover {
-  background-color: rgb(255, 255, 120);
-}
-
-.blue {
-  background-color: rgb(240, 228, 165);
-  border-radius: 9%;
-}
-
-.blue:hover {
-  background-color: rgb(255, 255, 120);
-}
-
-.yellow {
-  background-color: rgb(240, 228, 165);
-  border-radius: 8.5%;
-}
-
-.yellow:hover {
-  background-color: rgb(255, 255, 120);
-}
-
-.orange {
-  background-color: rgb(240, 228, 165);
-  border-radius: 8%;
-}
-
-.orange:hover {
-  background-color: rgb(255, 255, 120);
-}
-
-.red {
-  background-color: rgb(240, 228, 165);
-  border-radius: 7%;
-}
-
-.red:hover {
+input:checked + .volume_label {
   background-color: rgb(255, 255, 120);
 }
 
@@ -140,57 +101,57 @@
     left: 20rem;
     width: 20rem;
 
-    .yellow_green {
+    .zero {
       width: 1.8rem;
       height: 2rem;
     }
 
-    .yellow_green:hover {
+    .zero:hover {
       cursor: pointer;
     }
 
-    .light_blue {
+    .one {
       width: 1.8rem;
       height: 2.8rem;
     }
 
-    .light_blue:hover {
+    .one:hover {
       cursor: pointer;
     }
 
-    .blue {
+    .two {
       width: 1.8rem;
       height: 3.6rem;
     }
 
-    .blue:hover {
+    .two:hover {
       cursor: pointer;
     }
 
-    .yellow {
+    .three {
       width: 1.8rem;
       height: 4.4rem;
     }
 
-    .yellow:hover {
+    .three:hover {
       cursor: pointer;
     }
 
-    .orange {
+    .four {
       width: 1.8rem;
       height: 5.2rem;
     }
 
-    .orange:hover {
+    .four:hover {
       cursor: pointer;
     }
 
-    .red {
+    .five {
       width: 1.8rem;
       height: 6rem;
     }
 
-    .red:hover {
+    .five:hover {
       cursor: pointer;
     }
   }
@@ -341,57 +302,57 @@
     top: 8rem;
     height: 11rem;
 
-    .yellow_green {
+    .zero {
       width: 3rem;
       height: 3.3rem;
     }
 
-    .yellow_green:hover {
+    .zero:hover {
       cursor: pointer;
     }
 
-    .light_blue {
+    .one {
       width: 3rem;
       height: 4.6rem;
     }
 
-    .light_blue:hover {
+    .one:hover {
       cursor: pointer;
     }
 
-    .blue {
+    .two {
       width: 3rem;
       height: 5.9rem;
     }
 
-    .blue:hover {
+    .two:hover {
       cursor: pointer;
     }
 
-    .yellow {
+    .three {
       width: 3rem;
       height: 7.2rem;
     }
 
-    .yellow:hover {
+    .three:hover {
       cursor: pointer;
     }
 
-    .orange {
+    .four {
       width: 3rem;
       height: 8.5rem;
     }
 
-    .orange:hover {
+    .four:hover {
       cursor: pointer;
     }
 
-    .red {
+    .five {
       width: 3rem;
       height: 9.8rem;
     }
 
-    .red:hover {
+    .five:hover {
       cursor: pointer;
     }
   }
@@ -541,57 +502,57 @@
     position: relative;
     top: 8rem;
 
-    .yellow_green {
+    .zero {
       width: 4.5rem;
       height: 5rem;
     }
 
-    .yellow_green:hover {
+    .zero:hover {
       cursor: pointer;
     }
 
-    .light_blue {
+    .one {
       width: 4.5rem;
       height: 7rem;
     }
 
-    .light_blue:hover {
+    .one:hover {
       cursor: pointer;
     }
 
-    .blue {
+    .two {
       width: 4.5rem;
       height: 9rem;
     }
 
-    .blue:hover {
+    .two:hover {
       cursor: pointer;
     }
 
-    .yellow {
+    .three {
       width: 4.5rem;
       height: 11rem;
     }
 
-    .yellow:hover {
+    .three:hover {
       cursor: pointer;
     }
 
-    .orange {
+    .four {
       width: 4.5rem;
       height: 13rem;
     }
 
-    .orange:hover {
+    .four:hover {
       cursor: pointer;
     }
 
-    .red {
+    .five {
       width: 4.5rem;
       height: 15rem;
     }
 
-    .red:hover {
+    .five:hover {
       cursor: pointer;
     }
   }
