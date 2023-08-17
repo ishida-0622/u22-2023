@@ -5,15 +5,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
-import {
-  ScanPuzzleLogRequest,
-  ScanPuzzleLogResponse,
-} from "@/features/log/types/scanPuzzleLog";
-import {
-  ScanBookLogRequest,
-  ScanBookLogResponse,
-} from "@/features/log/types/scanBookLog";
-
+import { endpoint } from "@/features/api";
 import {
   LOCAL_STORAGE_FONTSIZE_KEY,
   LOCAL_STORAGE_VOLUME_KEY,
@@ -22,6 +14,15 @@ import {
   FONTSIZE_BIG,
   VOLUMES,
 } from "@/features/auth/consts/setting";
+
+import {
+  ScanPuzzleLogRequest,
+  ScanPuzzleLogResponse,
+} from "@/features/log/types/scanPuzzleLog";
+import {
+  ScanBookLogRequest,
+  ScanBookLogResponse,
+} from "@/features/log/types/scanBookLog";
 
 import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
@@ -89,12 +90,12 @@ export const AccountInfo = () => {
   };
 
   const { data: puzzleLogs, error: puzzleLogError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanP_log`,
+    `${endpoint}/ScanP_log`,
     puzzleLogFetcher
   );
 
   const { data: bookLogs, error: bookLogError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanB_log`,
+    `${endpoint}/ScanB_log`,
     bookLogFetcher
   );
 
