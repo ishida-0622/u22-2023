@@ -6,10 +6,6 @@ import { RootState } from "@/store";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import {
-  ScanUserRequest,
-  ScanUserResponse,
-} from "@/features/auth/types/scanUser";
-import {
   ScanPuzzleLogRequest,
   ScanPuzzleLogResponse,
 } from "@/features/log/types/scanPuzzleLog";
@@ -33,6 +29,7 @@ import styles from "@/components/pages/AccountInfo/index.module.scss";
 export const AccountInfo = () => {
   const email = useSelector((store: RootState) => store.email);
   const uid = useSelector((store: RootState) => store.uid);
+  const userData = useSelector((store: RootState) => store.user);
 
   const [volume, setVolume] = useState(
     () => localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
@@ -51,6 +48,7 @@ export const AccountInfo = () => {
     setVolume(vol);
     localStorage.setItem(LOCAL_STORAGE_VOLUME_KEY, vol);
   };
+
   const fontsizeOnchangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const size = e.target.value;
     if (
@@ -62,22 +60,10 @@ export const AccountInfo = () => {
     localStorage.setItem(LOCAL_STORAGE_FONTSIZE_KEY, size);
   };
 
-  const userDataFetcher = async (url: string) => {
-    const request: ScanUserRequest = {
-      // TODO:uid
-      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
-    };
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(request),
-    });
-    const json: ScanUserResponse = await response.json();
-    return json.result;
-  };
-
   const puzzleLogFetcher = async (url: string) => {
     const request: ScanPuzzleLogRequest = {
       // TODO:uid
+      // u_id: uid!,
       u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
     };
     const response = await fetch(url, {
@@ -91,6 +77,7 @@ export const AccountInfo = () => {
   const bookLogFetcher = async (url: string) => {
     const request: ScanBookLogRequest = {
       // TODO:uid
+      // u_id: uid!,
       u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
     };
     const response = await fetch(url, {
@@ -100,11 +87,6 @@ export const AccountInfo = () => {
     const json: ScanBookLogResponse = await response.json();
     return json.result;
   };
-
-  const { data: userData, error: userDataError } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanUser`,
-    userDataFetcher
-  );
 
   const { data: puzzleLogs, error: puzzleLogError } = useSWR(
     `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanP_log`,
@@ -139,16 +121,12 @@ export const AccountInfo = () => {
     }
   }, [userData]);
 
-  if (userDataError || puzzleLogError || bookLogError) {
-    return (
-      <p>
-        {userDataError
-          ? userDataError
-          : puzzleLogError
-          ? puzzleLogError
-          : bookLogError}
-      </p>
-    );
+  if (!(uid && userData)) {
+    return null;
+  }
+
+  if (puzzleLogError || bookLogError) {
+    return <p>{puzzleLogError ? puzzleLogError : bookLogError}</p>;
   }
 
   if (
