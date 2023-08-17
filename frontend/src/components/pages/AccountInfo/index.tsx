@@ -3,14 +3,12 @@ import useSWR from "swr";
 import Router from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { User } from "@/features/auth/types";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 import {
   ScanUserRequest,
   ScanUserResponse,
 } from "@/features/auth/types/scanUser";
-import { BookLog, PuzzleLog } from "@/features/log/types";
 import {
   ScanPuzzleLogRequest,
   ScanPuzzleLogResponse,
@@ -25,9 +23,29 @@ import styles from "@/components/pages/AccountInfo/index.module.scss";
 
 export const AccountInfo = () => {
   const email = useSelector((store: RootState) => store.email);
+  const uid = useSelector((store: RootState) => store.uid);
+
+  const [volume, setVolume] = useState(
+    () => localStorage.getItem("volume") ?? "3"
+  );
+  const [fontsize, setFontsize] = useState(
+    () => localStorage.getItem("fontsize") ?? "1"
+  );
+  const [selectedHour, setSelectedHour] = useState("00");
+  const [selectedMinute, setSelectedMinute] = useState("00");
+
+  const volumeOnchangeHandler = (vol: string) => {
+    setVolume(vol);
+    localStorage.setItem("volume", vol);
+  };
+  const fontsizeOnchangeHandler = (size: string) => {
+    setFontsize(size);
+    localStorage.setItem("fontsize", size);
+  };
 
   const userDataFetcher = async (url: string) => {
     const request: ScanUserRequest = {
+      // TODO:uid
       u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
     };
     const response = await fetch(url, {
@@ -78,10 +96,6 @@ export const AccountInfo = () => {
     `${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanB_log`,
     bookLogFetcher
   );
-
-  const [volume, setVolume] = useState(3);
-  const [selectedHour, setSelectedHour] = useState("00");
-  const [selectedMinute, setSelectedMinute] = useState("00");
 
   const handleHourChange = (event: {
     target: { value: SetStateAction<string> };
@@ -163,6 +177,7 @@ export const AccountInfo = () => {
               name="font-size"
               id="small"
               className={`${styles.radio_inline_input}`}
+              onClick={() => fontsizeOnchangeHandler("0.75")}
             />
             <label className={`${styles.radio_inline_label}`} htmlFor="small">
               <p className={`${styles.small}`}>小</p>
@@ -172,6 +187,7 @@ export const AccountInfo = () => {
               name="font-size"
               id="normal"
               className={`${styles.radio_inline_input}`}
+              onClick={() => fontsizeOnchangeHandler("1")}
             />
             <label className={`${styles.radio_inline_label}`} htmlFor="normal">
               <p className={`${styles.normal}`}>中</p>
@@ -181,6 +197,7 @@ export const AccountInfo = () => {
               name="font-size"
               id="big"
               className={`${styles.radio_inline_input}`}
+              onClick={() => fontsizeOnchangeHandler("1.5")}
             />
             <label className={`${styles.radio_inline_label}`} htmlFor="big">
               <p className={`${styles.big}`}>大</p>
@@ -283,7 +300,7 @@ export const AccountInfo = () => {
           {bookLogs.map((log) => (
             <div key={log.b_id}>
               <div>No.{log.b_id}</div>
-              <div>絵本タイトル：{log.play_times}</div>
+              <div>読んだ回数：{log.play_times}</div>
               <div>読んだ時間{log.latest_play_datetime}</div>
             </div>
           ))}
