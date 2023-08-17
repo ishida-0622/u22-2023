@@ -1,4 +1,6 @@
 import { useState } from "react";
+import styles from "./index.module.scss";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Image from "next/image";
 import {
   RegisterPuzzleRequest,
@@ -40,7 +42,7 @@ export const RegisterPuzzle = () => {
     setTitle(event.target.value);
   };
 
-  const changeDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeDescription = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(event.target.value);
   };
 
@@ -229,10 +231,13 @@ export const RegisterPuzzle = () => {
   };
 
   return (
-    <main>
+    <main className={`${styles.container}`}>
       <h2>パズル問題新規作成</h2>
+      <div className={`${styles.adminmenubar}`}>
+        <AdminMenubar />
+      </div>
       <hr />
-      <form onSubmit={onSubmitHandler}>
+      <form onSubmit={onSubmitHandler} className={`${styles.form}`}>
         <div>
           <label>
             <b>TITLE</b>
@@ -250,12 +255,13 @@ export const RegisterPuzzle = () => {
         <div>
           <label>
             <b>概要</b>
-            <input
+            <textarea
               name="description"
               id="description"
               value={description}
               onChange={changeDescription}
               required={true}
+              className={`${styles.overview}`}
             />
           </label>
         </div>
@@ -263,19 +269,21 @@ export const RegisterPuzzle = () => {
         <div>
           <label>
             <b>ICON写真をアップロードして下さい</b>
-            <br />
-            Icon：
-            <input
-              type="file"
-              accept="image/*"
-              onChange={iconOnChangeHandler}
-            />
+            <div className={`${styles.icon}`}>
+              Icon：
+              <input
+                type="file"
+                accept="image/*"
+                onChange={iconOnChangeHandler}
+              />
+            </div>
             {icon && (
               <Image
                 src={icon}
                 alt={"Icon写真をアップロードしてください"}
                 width={100}
                 height={100}
+                className={`${styles.icon_image}`}
               />
             )}
           </label>
@@ -297,45 +305,47 @@ export const RegisterPuzzle = () => {
 
           {splitWord.map((word, i) => (
             <div key={`word${word}${i}`}>
-              <label>
-                {`${word}のイラスト：`}
+                <label>
+                  {`${word}のイラスト：`}
 
-                <input
-                  type="file"
-                  accept="image/*"
-                  required={true}
-                  onChange={(e) => onChangeHandler(e, i, setImages)}
-                />
-
-                {images[i] && (
-                  <Image
-                    src={images[i]!}
-                    alt={"イラスト写真をアップロードしてください"}
-                    width={100}
-                    height={100}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    required={true}
+                    onChange={(e) => onChangeHandler(e, i, setImages)}
                   />
-                )}
-              </label>
 
-              <label>
-                {`${word}のシルエット：`}
+                  {images[i] && (
+                    <Image
+                      src={images[i]!}
+                      alt={"イラスト写真をアップロードしてください"}
+                      width={100}
+                      height={100}
+                      className={`${styles.word_image}`}
+                    />
+                  )}
+                </label>
 
-                <input
-                  type="file"
-                  accept="image/*"
-                  required={true}
-                  onChange={(e) => onChangeHandler(e, i, setShadows)}
-                />
+                <label>
+                  {`${word}のシルエット：`}
 
-                {shadows[i] && (
-                  <Image
-                    src={shadows[i]!}
-                    alt={"シルエットの写真をアップロードしてください"}
-                    width={100}
-                    height={100}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    required={true}
+                    onChange={(e) => onChangeHandler(e, i, setShadows)}
                   />
-                )}
-              </label>
+
+                  {shadows[i] && (
+                    <Image
+                      src={shadows[i]!}
+                      alt={"シルエットの写真をアップロードしてください"}
+                      width={100}
+                      height={100}
+                      className={`${styles.word_image}`}
+                    />
+                  )}
+                </label>
 
               <label>
                 {`${word}のボイス：`}
@@ -347,10 +357,10 @@ export const RegisterPuzzle = () => {
                   onChange={(e) => onChangeHandler(e, i, setVoices)}
                 />
 
-                {voices[i] && <audio src={voices[i]!} controls={true} />}
+                {voices[i] && <audio src={voices[i]!} controls={true} className={`${styles.word_voice}`} />}
               </label>
 
-              <label>
+              <label className={`${styles.checkbox}`}>
                 is displayed：
                 <input
                   type="checkbox"
@@ -395,6 +405,7 @@ export const RegisterPuzzle = () => {
                     alt={"イラスト写真をアップロードしてください"}
                     width={100}
                     height={100}
+                    className={`${styles.word_image}`}
                   />
                 )}
               </label>
@@ -415,6 +426,7 @@ export const RegisterPuzzle = () => {
                     alt={"シルエットの写真をアップロードしてください"}
                     width={100}
                     height={100}
+                    className={`${styles.word_image}`}
                   />
                 )}
               </label>
@@ -430,16 +442,22 @@ export const RegisterPuzzle = () => {
                 />
 
                 {dummyVoices[i] && (
-                  <audio src={dummyVoices[i]!} controls={true} />
+                  <audio src={dummyVoices[i]!} controls={true} className={`${styles.word_voice}`} />
                 )}
               </label>
             </div>
           ))}
         </div>
 
-        <input type="submit" value="追加する" />
+        <div className={`${styles.submit_button_field}`}>
+          <button className={`${styles.submit_button}`} type="submit">
+            追加する
+          </button>
+        </div>
       </form>
-      <Link href="/admin/puzzle">パズル問題一覧ページへ戻る</Link>
+      <div className={`${styles.link}`}>
+        <Link href="/admin/puzzle">パズル問題一覧ページへ戻る</Link>
+      </div>
     </main>
   );
 };
