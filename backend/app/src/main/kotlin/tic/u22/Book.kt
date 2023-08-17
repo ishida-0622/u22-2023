@@ -246,9 +246,9 @@ class PauseBook : RequestHandler<Map<String, Any>, String> {
 
 /**
  * u_id, b_idを受け取りゲームステータスの変更、ログの追加を行う
- * 
+ *
  * @param event Map<String, Any>?: "u_id": "u_id", "b_id": "b_id"
- * 
+ *
  * return String : {"response_status": "success", "result": {}}
  */
 class FinishBook : RequestHandler<Map<String, Any>, String> {
@@ -264,16 +264,14 @@ class FinishBook : RequestHandler<Map<String, Any>, String> {
 
                 // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
-                val table_b_log = "b_log"
-                val table_status = "status"
 
-                val log = dynamo.searchByKey(table_b_log, listOf(u_id, b_id))
-                val playTimes = if (log["play_times"] != null) {
+                val log = dynamo.searchByKey("b_log", listOf(u_id, b_id))
+                val playTimes = if (log.containsKey("play_times")) {
                     (utils.toKotlinType(log["play_times"]!!) as String).toInt() + 1
                 } else {
                     1
-                }                
-                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
+                }
+                val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
                 if (updated != "DONE"){throw Exception("failed to update game status: $updated")}
                 val b_log = BookLog(
                     u_id = u_id,
@@ -281,8 +279,8 @@ class FinishBook : RequestHandler<Map<String, Any>, String> {
                     play_times = playTimes
                 )
                 // 初プレイ時にはログの追加それ以外はプレイ回数の増加
-                if (playTimes == 1) { dynamo.addItem(table_b_log, b_log) }
-                else { dynamo.updateItem(table_b_log, listOf(u_id, b_id), mapOf("play_times" to playTimes)) }
+                if (log.isEmpty()) { dynamo.addItem("b_log", b_log) }
+                else { dynamo.updateItem("b_log", listOf(u_id, b_id), mapOf("play_times" to playTimes)) }
 
                 if(updated == "DONE"){
                     val dummyMap: Map<String, String> = mapOf()
