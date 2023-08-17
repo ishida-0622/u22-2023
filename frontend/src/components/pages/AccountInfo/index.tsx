@@ -152,7 +152,7 @@ export const AccountInfo = () => {
           <p>メールアドレス：{email}</p>
           <p>名前：{`${userData.family_name} ${userData.first_name}`}</p>
           <p>
-            アルファベット名：
+            名前（ローマ字）：
             {`${userData.family_name_roma} ${userData.first_name_roma}`}
           </p>
           <p>アカウント名：{userData.account_name}</p>
