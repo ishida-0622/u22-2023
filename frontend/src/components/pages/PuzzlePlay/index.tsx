@@ -31,8 +31,8 @@ export const PuzzlePlay = () => {
 
   const { data: puzzleData, error } = useSWR(
     `${
-      // process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000/api"
-      "http://localhost:3000/api"
+    // process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000/api"
+    "http://localhost:3000/api"
     }/puzzle`,
     // `${process.env.NEXT_PUBLIC_API_ENDPOINT}/StartPuzzle`,
     fetcher
@@ -124,39 +124,41 @@ export const PuzzlePlay = () => {
 
   const pieces = puzzleData.words.map((word) => (
     <Piece className={`${styles.piece}`} key={word[0]} id={word[0]}>
-      <Image src={word[2]} alt={word[0]} width={100} height={100} />
+      <Image src={word[2]} alt={word[0]} width={150} height={150} />
       <span>{word[0]}</span>
     </Piece>
   ));
 
   return (
     <main className={`${styles.container}`}>
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-        {puzzleData.words.map((word) => {
-          const child = children.get(word[1]);
-          return (
-            <Board className={`${styles.board}`} key={word[1]} id={word[1]}>
-              {child != null ? (
-                pieces[
+      <div className={`${styles.board_piece}`}>
+        <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+          {puzzleData.words.map((word) => {
+            const child = children.get(word[1]);
+            return (
+              <Board className={`${styles.board}`} key={word[1]} id={word[1]}>
+                {child != null ? (
+                  pieces[
                   puzzleData.words.indexOf(
                     puzzleData.words.filter((w) => child === w[0]).length === 1
                       ? puzzleData.words.filter((w) => child === w[0])[0]
                       : puzzleData.words.filter(
-                          (w) => child === w[0] && word[1] !== w[1]
-                        )[0]
+                        (w) => child === w[0] && word[1] !== w[1]
+                      )[0]
                   )
-                ]
-              ) : (
-                <Image src={word[1]} alt={word[0]} width={100} height={100} />
-              )}
-            </Board>
-          );
-        })}
-        <br/>
-        {puzzleData.words.map((word, i) =>
-          parents.get(word[0]) != null ? null : pieces[i]
-        )}
-      </DndContext>
+                  ]
+                ) : (
+                  <Image src={word[1]} alt={word[0]} width={150} height={150} />
+                )}
+              </Board>
+            );
+          })}
+          <br />
+          {puzzleData.words.map((word, i) =>
+            parents.get(word[0]) != null ? null : pieces[i]
+          )}
+        </DndContext>
+      </div>
       <button className={`${styles.reset_button}`} onClick={puzzleReset}>Reset</button>
       <div className={`${styles.preview_image_wrapper}`}>
         {puzzleData.words.map(

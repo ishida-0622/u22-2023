@@ -24,7 +24,7 @@ export const Piece = ({
   return (
 
     <div
-      className={styles.piece}
+      className={className}
       ref={setNodeRef}
       style={style}
       {...listeners}
