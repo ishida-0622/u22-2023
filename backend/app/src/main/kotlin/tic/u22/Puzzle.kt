@@ -459,13 +459,12 @@ class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
 
                 // ステータスの情報を取り出す
                 val status_infos = if (current_status["status_infos"] != null ) {
-                    utils.toKotlinType(current_status["status_infos"]!!) as List<String>
+                    utils.toKotlinType(current_status["status_infos"]!!) as List<Any>
                 } else {
                     throw Exception("status_infos is null")
                 }
-                val p_id = if (status_infos[0].isNotEmpty()) {status_infos[0]} else {throw Exception("p_id is null")}
-                val status_info = status_infos[1] as Map<String, Any>
-                val saved_data = if (status_info["saved_data"] != null) {status_info["saved_data"] as List<String>} else {throw Exception("saved_data is null")}
+                val p_id = if (status_infos[0] != null) {status_infos[0] as String} else {throw Exception("p_id is null")}
+                val saved_data = if (status_infos[1] != null) {status_infos[1] as List<String>} else {throw Exception("saved_data is not found")}
 
                 // 本を取得
                 val puzzle_info = dynamo.searchByKey(table_puzzle, listOf(p_id))
