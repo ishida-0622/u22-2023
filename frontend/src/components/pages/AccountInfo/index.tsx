@@ -18,6 +18,15 @@ import {
   ScanBookLogResponse,
 } from "@/features/log/types/scanBookLog";
 
+import {
+  LOCAL_STORAGE_FONTSIZE_KEY,
+  LOCAL_STORAGE_VOLUME_KEY,
+  FONTSIZE_SMALL,
+  FONTSIZE_NORMAL,
+  FONTSIZE_BIG,
+  VOLUMES,
+} from "@/features/auth/consts/setting";
+
 import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
 
@@ -26,21 +35,31 @@ export const AccountInfo = () => {
   const uid = useSelector((store: RootState) => store.uid);
 
   const [volume, setVolume] = useState(
-    () => localStorage.getItem("volume") ?? "3"
+    () => localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
   );
   const [fontsize, setFontsize] = useState(
-    () => localStorage.getItem("fontsize") ?? "1"
+    () => localStorage.getItem(LOCAL_STORAGE_FONTSIZE_KEY) ?? FONTSIZE_NORMAL
   );
   const [selectedHour, setSelectedHour] = useState("00");
   const [selectedMinute, setSelectedMinute] = useState("00");
 
-  const volumeOnchangeHandler = (vol: string) => {
+  const volumeOnchangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const vol = e.target.value;
+    if (!VOLUMES.some((v) => v === vol)) {
+      throw new Error("volume is invalid");
+    }
     setVolume(vol);
-    localStorage.setItem("volume", vol);
+    localStorage.setItem(LOCAL_STORAGE_VOLUME_KEY, vol);
   };
-  const fontsizeOnchangeHandler = (size: string) => {
+  const fontsizeOnchangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const size = e.target.value;
+    if (
+      ![FONTSIZE_SMALL, FONTSIZE_NORMAL, FONTSIZE_BIG].some((v) => v === size)
+    ) {
+      throw new Error("fontsize is invalid");
+    }
     setFontsize(size);
-    localStorage.setItem("fontsize", size);
+    localStorage.setItem(LOCAL_STORAGE_FONTSIZE_KEY, size);
   };
 
   const userDataFetcher = async (url: string) => {
@@ -143,7 +162,6 @@ export const AccountInfo = () => {
   return (
     <div className={`${styles.container}`}>
       <div className={`${styles.back_ground}`}></div>
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
       <h1>アカウント情報画面</h1>
       <Tabs>
         <TabList className={`${styles.tab_list}`}>
@@ -177,7 +195,9 @@ export const AccountInfo = () => {
               name="font-size"
               id="small"
               className={`${styles.radio_inline_input}`}
-              onClick={() => fontsizeOnchangeHandler("0.75")}
+              value={FONTSIZE_SMALL}
+              checked={fontsize === FONTSIZE_SMALL}
+              onChange={fontsizeOnchangeHandler}
             />
             <label className={`${styles.radio_inline_label}`} htmlFor="small">
               <p className={`${styles.small}`}>小</p>
@@ -187,7 +207,9 @@ export const AccountInfo = () => {
               name="font-size"
               id="normal"
               className={`${styles.radio_inline_input}`}
-              onClick={() => fontsizeOnchangeHandler("1")}
+              value={FONTSIZE_NORMAL}
+              checked={fontsize === FONTSIZE_NORMAL}
+              onChange={fontsizeOnchangeHandler}
             />
             <label className={`${styles.radio_inline_label}`} htmlFor="normal">
               <p className={`${styles.normal}`}>中</p>
@@ -197,7 +219,9 @@ export const AccountInfo = () => {
               name="font-size"
               id="big"
               className={`${styles.radio_inline_input}`}
-              onClick={() => fontsizeOnchangeHandler("1.5")}
+              value={FONTSIZE_BIG}
+              checked={fontsize === FONTSIZE_BIG}
+              onChange={fontsizeOnchangeHandler}
             />
             <label className={`${styles.radio_inline_label}`} htmlFor="big">
               <p className={`${styles.big}`}>大</p>
@@ -237,7 +261,6 @@ export const AccountInfo = () => {
               value={selectedHour}
               onChange={handleHourChange}
               className={`${styles.limit_hour}`}
-              id="hour"
             >
               {Array.from({ length: 24 }, (_, i) =>
                 i.toString().padStart(2, "0")
@@ -254,7 +277,6 @@ export const AccountInfo = () => {
               value={selectedMinute}
               onChange={handleMinuteChange}
               className={`${styles.limit_minute}`}
-              id="minute"
             >
               {Array.from({ length: 60 }, (_, i) =>
                 i.toString().padStart(2, "0")
