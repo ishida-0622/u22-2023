@@ -1,6 +1,6 @@
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 import { ReactNode } from "react";
-import styles from "@/features/puzzle/play/Board/index.module.scss"
+import styles from "@/features/puzzle/play/Board/index.module.scss";
 
 export const Board = ({
   id,
@@ -16,7 +16,7 @@ export const Board = ({
   });
 
   return (
-    <div className={className} ref={setNodeRef}>
+    <div className={`${className} ${styles.board}`} ref={setNodeRef}>
       {children}
     </div>
   );

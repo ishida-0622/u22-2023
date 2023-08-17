@@ -22,9 +22,8 @@ export const Piece = ({
   };
 
   return (
-
     <div
-      className={styles.piece}
+      className={`${styles.piece} ${className}`}
       ref={setNodeRef}
       style={style}
       {...listeners}
@@ -32,6 +31,5 @@ export const Piece = ({
     >
       {children}
     </div>
-
   );
 };
