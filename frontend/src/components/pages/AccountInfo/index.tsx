@@ -1,6 +1,6 @@
 import { SetStateAction, useEffect, useState } from "react";
 import useSWR from "swr";
-import Router from "next/router";
+import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
@@ -28,6 +28,7 @@ import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
 
 export const AccountInfo = () => {
+  const router = useRouter();
   const email = useSelector((store: RootState) => store.email);
   const uid = useSelector((store: RootState) => store.uid);
   const userData = useSelector((store: RootState) => store.user);
@@ -161,7 +162,7 @@ export const AccountInfo = () => {
           <button
             type="button"
             name="account_change"
-            onClick={() => Router.push("/account-info/edit")}
+            onClick={() => router.push("/account-info/edit")}
           >
             アカウント情報を変更
           </button>
@@ -327,16 +328,12 @@ export const AccountInfo = () => {
           <div className={`${styles.buttons}`}>
             <button
               type="button"
-              name="setting_return"
               className={`${styles.back_button}`}
+              onClick={() => router.back()}
             >
               戻る
             </button>
-            <button
-              type="button"
-              name="setting_change"
-              className={`${styles.change_button}`}
-            >
+            <button type="button" className={`${styles.change_button}`}>
               変更
             </button>
           </div>
