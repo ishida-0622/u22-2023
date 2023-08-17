@@ -1,0 +1,85 @@
+.top{
+    width: 100%;
+    height: auto;
+    background-image: url("./images/meadow.jpg");
+    background-size: cover;
+}
+.main{
+    text-align:center;
+    padding:0;
+}
+
+
+.logintext {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.header {
+    margin-top: 5%;
+    width: 100%;
+    height: 81.5vh;
+    text-align: center;
+    font-size: 150%;
+
+    label {
+    margin-bottom: 4rem;
+    display: inline-block;
+    text-align: justify;
+    }
+    input {
+    margin-top: 3%;
+    line-height: 5%;
+    width: 50%;
+    text-align: left;
+    width: 130%;
+            text-align: left;
+            border-top-left-radius: 15em;
+            border-top-right-radius: 15em;
+            border-bottom-left-radius: 15em;
+            border-bottom-right-radius: 15em;
+            border-radius: 40em 40em 40em 40em;
+            border: 0.25em solid palevioletred;
+            margin-bottom: -10rem; /* 変更 */
+    }
+    button {
+    margin-bottom: 3rem;
+    width: 15%;
+    }
+    .link {
+    font-size: 50%;
+    }
+}
+
+.submit_button {
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, 0%);
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 5px solid #9f000c;
+    border-radius: 100vh;
+    border-color: #9f000c;
+    top: calc(50% - 0.5rem);
+    right: 1rem;
+    width: 10rem; 
+    height: 3.5rem; 
+}
+
+.submit_button:hover {
+    margin-top: 0.1875rem;
+    border-bottom: 0.125rem solid #9f000c;
+    cursor: pointer;
+}
+
+.submit_button_field{
+    position:  absolute;
+    bottom: 20%;
+    width: 100%;
+    text-align: center;
+}
