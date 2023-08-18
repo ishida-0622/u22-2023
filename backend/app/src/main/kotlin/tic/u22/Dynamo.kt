@@ -201,30 +201,39 @@ class Dynamo(val REGION: String){
    *
    * @param usedTableName String: テーブル名
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
+   *
+   * return String: 成功時はDONE、失敗時はエラー文を返す
    */
-  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): Boolean {
-    if (!tableNameToKey.containsKey(usedTableName)) {
-      throw Exception("usedTableName does not exist")
-    } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
-      throw Exception("length of keyVal is mismatched")
-    }
-    val keyName = tableNameToKey[usedTableName]!!
-    // keyValとnameをMapにセット
-    val keys = mutableMapOf<String, Any>()
-    for(index in 0 until keyName.size) {
-      keys[keyName[index]] = keyVal[index]
-    }
+  suspend fun deleteByKey(usedTableName: String, keyVal: List<String>): String {
+    try{
+      if (!tableNameToKey.containsKey(usedTableName)) {
+        throw Exception("usedTableName does not exist")
+      } else if (tableNameToKey[usedTableName]!!.size != keyVal.size) {
+        throw Exception("length of keyVal is mismatched")
+      }
 
-    val keyToGet = utils.toAttributeValueMap(keys)
+      if(searchByKey(usedTableName, keyVal).isEmpty()){ throw Exception("the data for this key is not exist") }
 
-    val request = DeleteItemRequest {
-        tableName = usedTableName
-        key = keyToGet
-    }
+      val keyName = tableNameToKey[usedTableName]!!
+      // keyValとnameをMapにセット
+      val keys = mutableMapOf<String, Any>()
+      for(index in 0 until keyName.size) {
+        keys[keyName[index]] = keyVal[index]
+      }
 
-    DynamoDbClient { region = REGION }.use { ddb ->
-        ddb.deleteItem(request)
-        return true
+      val keyToGet = utils.toAttributeValueMap(keys)
+
+      val request = DeleteItemRequest {
+          tableName = usedTableName
+          key = keyToGet
+      }
+
+      DynamoDbClient { region = REGION }.use { ddb ->
+          ddb.deleteItem(request)
+          return "DONE"
+      }
+    } catch(e: Exception){
+      return "$e"
     }
   }
 
@@ -234,7 +243,6 @@ class Dynamo(val REGION: String){
    * @param usedTableName String: テーブル名
    * @param keyVal List<String>: キーの値[パーティションキー, (ソートキー)]
    * @updates Map<String, Any>: {更新対象のカラム名: 更新後のデータ}
-   * @updateVal Any: 更新後のデータ
    *
    * return 成功時はDONE, 失敗時はエラーを返す
    */
@@ -245,6 +253,9 @@ class Dynamo(val REGION: String){
       Exception("length of keyVal is mismatched")
     }
     val keyName = tableNameToKey[usedTableName]!!
+    if (!searchByKey(usedTableName, keyVal).containsKey(keyName[0])) {
+      throw Exception("the value for this key does not exist")
+    }
     // keyValとnameをMapにセット
     val keys = mutableMapOf<String, Any>()
     for(index in 0 until keyName.size) {
@@ -273,6 +284,44 @@ class Dynamo(val REGION: String){
       }
     } catch(e:Exception) {
       return "$e"
+    }
+  }
+
+  /**
+   * シーケンスをインクリメントし、結果を返す
+   *
+   * @param usedTableName String: | puzzle | book | notice |
+   *
+   * return 成功時はシーケンス, 失敗時は-1を返す
+   */
+  suspend fun updateSequence(usedTableName: String): Int {
+    if (!(listOf("puzzle", "book", "notice").contains(usedTableName))) {
+      throw Exception("usedTableName is able to only puzzle, book, or notice")
+    }
+
+    val itemKey = utils.toAttributeValueMap(mapOf("tablename" to usedTableName))
+
+    val now_seq: Int = (utils.toMap(utils.attributeValueToObject(searchByKey("sequence", listOf(usedTableName)), "sequence"))["now_seq"]!!) as Int
+
+    try {
+      val updatedValues = mapOf("now_seq" to AttributeValueUpdate {
+          value = utils.toAttributeValue(now_seq + 1)
+          action = AttributeAction.Put
+        })
+
+      val request = UpdateItemRequest {
+          tableName = "sequence"
+          key = itemKey
+          attributeUpdates = updatedValues
+      }
+
+      DynamoDbClient { region = REGION }.use { ddb ->
+          ddb.updateItem(request)
+          return now_seq + 1
+      }
+    } catch(e:Exception) {
+      println(e)
+      return -1
     }
   }
 }
