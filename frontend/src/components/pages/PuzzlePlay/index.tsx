@@ -179,7 +179,7 @@ export const PuzzlePlay = () => {
             )
         )}
       </div>
-      <Image src={backGroundImage} alt="背景画像"/>
+      <Image className={`${styles.background}`} src={backGroundImage} alt="背景画像"/>
     </main>
   );
 };
