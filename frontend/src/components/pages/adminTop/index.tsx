@@ -29,10 +29,9 @@ export const Top = () => {
       <div className={`${styles.top_line}`}>
         <h1 className={`${styles.title}`}>admin Top</h1>
         <div className={`${styles.logout}`}>
-          <button className={`${styles.submit_button}`} onClick={logout}>ログアウト</button>
+          <button className={`${styles.logout_button}`} onClick={logout}>ログアウト</button>
         </div>
       </div>
-      <hr />
       <div className={`${styles.menu}`}>
         <div className={`${styles.first_line}`}>
           <div className={`${styles.book}`}>

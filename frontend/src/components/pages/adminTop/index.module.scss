@@ -1,11 +1,10 @@
 .container {
     font-size: 2.5rem;
-    background: linear-gradient(50deg, hsl(200, 70%, 90%), hsl(200, 70%, 80%), hsl(200, 70%, 70%), hsl(200, 70%, 60%), hsl(200, 70%, 50%), hsl(200, 40%, 40%));
+    background-color: #E0EFFF;
     min-height: 100vh;
     h1 {
         font-size: 2.5rem;
         display: flex;
-        // flex-direction: column;
         align-items: center;
         justify-content: center;
     }
@@ -15,26 +14,29 @@
 }
 
 .top_line {
+    background-color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid black;
 }
 .title {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 15%;
+    margin-left: 18%;
 }
 .logout {
+    font-size: 2rem;
     display: flex;
     align-items: center;
-    padding: 2rem 2rem 0 0;
+    padding: 1rem 1rem;
 }
 
 .menu {
     max-width: max(50%, 480px);
-    margin: 0 auto 0%;
+    margin: 3rem auto 0%;
     padding: 3rem;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 2rem;
@@ -61,24 +63,40 @@
     justify-content: center;
     align-items: center;
     margin: 2rem;
-    button {
-        width: 12rem;
-        height: 5rem;
-    }
 }
 
-.submit_button {
+.logout_button {
     display: inline-block;
     color: azure;
     font-weight: bold;
     background-color: #df0013;
     border-bottom: 50% solid #9f000c;
-    border-radius: 100vh;
+    border-radius: 2rem;
     border-color: #9f000c;
-    transition: box-shadow 0.3s ease;
+    transition: background-color 0.3s ease;
     top: calc(50% - 0.5rem);
 }
+.logout_button:hover {
+    background-color: #7c000a;
+    cursor: pointer;
+}
+
+.submit_button {
+    width: 12rem;
+    height: 5rem;
+    box-shadow: none;
+    font-size: 1.5rem;
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #00BFFF;
+    border-bottom: 50% solid #00BFFF;
+    border-radius: 0.5rem;
+    border-color: #00BFFF;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+}
 .submit_button:hover {
-    box-shadow: 0 0.2rem #9f000c;
+    background-color: #0083af;
     cursor: pointer;
 }
