@@ -98,18 +98,20 @@ export const PostAnnouncementList = () => {
           <div key={post.n_id}>
             <h3>
               {post.title}
-              <button onClick={(e) => detail(e, post)}>
-                <FontAwesomeIcon icon={faPen} />
-              </button>
-              <button
-              onClick={() => {
-                if (confirm("削除しますか?")) {
-                  deleteNotice(post.n_id);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
+              <div className={`${styles.posts_button}`}>
+                <button onClick={(e) => detail(e, post)}>
+                  <FontAwesomeIcon icon={faPen} />
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm("削除しますか?")) {
+                      deleteNotice(post.n_id);
+                    }
+                  }}
+                >
+                <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              </div>
             </h3>
             <hr />
           </div>
