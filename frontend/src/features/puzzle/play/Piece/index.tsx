@@ -22,9 +22,9 @@ export const Piece = ({
   };
 
   return (
-
     <div
-      className={className}
+      className={`${styles.piece} ${className}`}
+       feat-puzzle-play-page
       ref={setNodeRef}
       style={style}
       {...listeners}
@@ -32,6 +32,5 @@ export const Piece = ({
     >
       {children}
     </div>
-
   );
 };
