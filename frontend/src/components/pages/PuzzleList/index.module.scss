@@ -1,6 +1,7 @@
 .container {
     background-color: #E0EFFF;
     min-height: 100vh;
+    padding-bottom: 2%;
     h1 {
         background-color: white;
         display: flex;
@@ -44,12 +45,17 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        .posts_button {
+            display: flex;
+            align-items: center;
+        }
+        button {
+            margin: 0 0.5rem 0 0;
+            color: rgb(47, 47, 232);
+        }
     }
     hr {
         border-top: 100% solid black;
-    }
-    button {
-        color: rgb(47, 47, 232);
     }
 }
 .posts_button {

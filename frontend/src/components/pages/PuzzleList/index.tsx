@@ -136,18 +136,20 @@ export const PuzzleList = () => {
         >
           <h3>
             {post.title}
-            <button className={`${styles.posts_button}`} onClick={(e) => detail(e, post)}>
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-            <button
-              onClick={() => {
-                if (confirm("削除しますか?")) {
-                  deletePuzzle(post.p_id);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
+            <div className={`${styles.posts_button}`}>
+              <button onClick={(e) => detail(e, post)}>
+                <FontAwesomeIcon icon={faPen} />
+              </button>
+              <button
+                onClick={() => {
+                  if (confirm("削除しますか?")) {
+                    deletePuzzle(post.p_id);
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </button>
+            </div>
           </h3>
           <hr />
         </div>
