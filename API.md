@@ -821,7 +821,7 @@ response
 }
 ```
 
-### [FinishBook]()
+### [FinishBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishBook)
 
 読み聞かせを終了する
 
