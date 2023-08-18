@@ -179,7 +179,7 @@ export const PuzzleList = () => {
               <div>
                 <b>問題：</b>「
                 {puzzle.words.map((word) => (
-                  <div>
+                  <div key={word.word}>
                     <p>単語：{word.word}</p>
                     <p>シルエットのURI：{word.shadow}</p>
                     <Image src={word.shadow} alt="" width={150} height={100} />
