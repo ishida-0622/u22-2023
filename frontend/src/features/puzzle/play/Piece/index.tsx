@@ -24,7 +24,6 @@ export const Piece = ({
   return (
     <div
       className={`${styles.piece} ${className}`}
-       feat-puzzle-play-page
       ref={setNodeRef}
       style={style}
       {...listeners}
