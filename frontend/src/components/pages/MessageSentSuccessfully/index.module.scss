@@ -4,7 +4,9 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #7EC7D8;
+    background-image: url("./images/meadow.jpg");
+    background-size: cover;
+    background-attachment: fixed;
     .message {
         display: inline-block;
         justify-content: center;
