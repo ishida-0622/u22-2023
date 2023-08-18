@@ -136,6 +136,7 @@ export const PuzzlePlay = () => {
           {puzzleData.words.map((word) => {
             const child = children.get(word[1]);
             return (
+
               <Board className={`${styles.board}`} key={word[1]} id={word[1]}>
                 {child != null ? (
                   pieces[
@@ -151,6 +152,7 @@ export const PuzzlePlay = () => {
                   <Image src={word[1]} alt={word[0]} width={150} height={150} />
                 )}
               </Board>
+
             );
           })}
           <br />
