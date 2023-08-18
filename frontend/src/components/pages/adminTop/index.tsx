@@ -27,11 +27,12 @@ export const Top = () => {
   return (
     <div className={`${styles.container}`}>
       <div className={`${styles.top_line}`}>
-        <p className={`${styles.title}`}>admin Top</p>
+        <h1 className={`${styles.title}`}>admin Top</h1>
         <div className={`${styles.logout}`}>
           <button className={`${styles.submit_button}`} onClick={logout}>ログアウト</button>
         </div>
       </div>
+      <hr />
       <div className={`${styles.menu}`}>
         <div className={`${styles.first_line}`}>
           <div className={`${styles.book}`}>
