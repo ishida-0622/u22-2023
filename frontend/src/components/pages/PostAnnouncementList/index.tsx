@@ -102,21 +102,24 @@ export const PostAnnouncementList = () => {
                 <FontAwesomeIcon icon={faPen} />
               </button>
               <button
-              onClick={() => {
-                if (confirm("削除しますか?")) {
-                  deleteNotice(post.n_id);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
+                onClick={() => {
+                  if (confirm("削除しますか?")) {
+                    deleteNotice(post.n_id);
+                  }
+                }}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </button>
             </h3>
             <hr />
           </div>
         ))}
       </div>
       <div className={`${styles.submit_button_field}`}>
-        <button className={`${styles.submit_button}`} onClick={postAnnouncement}>
+        <button
+          className={`${styles.submit_button}`}
+          onClick={postAnnouncement}
+        >
           新規作成
           <FontAwesomeIcon icon={faPen} />
         </button>
