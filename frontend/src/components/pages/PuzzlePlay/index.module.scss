@@ -5,6 +5,10 @@
 
 .container {
   text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .preview_image_wrapper {
@@ -14,7 +18,7 @@
   .image {
     position: absolute;
     right: 1rem;
-    top: -10rem;
+    top: -18rem;
   }
 }
 
@@ -25,11 +29,15 @@
   border-radius: 50%;
   left: 0.5rem;
   top: 0.5rem;
+  background-color: rgb(255, 130, 130);
+  font-size: 1.8rem;
+  font-weight: bold;
 }
 
 .board_piece {
   position: relative;
-  top: 10rem;
+  top: 7rem;
+  right: 10rem;
 
   .board {
     display: inline-block;
@@ -41,6 +49,8 @@
     display: inline-block;
     width: fit-content;
     margin: 0 2.5rem 0 2.5rem;
+    font-size: 2rem;
+    font-weight: bold;
   }
 }
 

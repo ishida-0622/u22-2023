@@ -8,6 +8,7 @@ import { Board } from "@/features/puzzle/play/Board";
 import { Puzzle } from "@/features/puzzle/types";
 import styles from "./index.module.scss";
 import { StartPuzzleRequest } from "@/features/puzzle/types/start";
+import backGroundImage from "@/features/puzzle/play/image/meadow.jpg"
 
 export const PuzzlePlay = () => {
   const router = useRouter();
@@ -124,7 +125,7 @@ export const PuzzlePlay = () => {
 
   const pieces = puzzleData.words.map((word) => (
     <Piece className={`${styles.piece}`} key={word[0]} id={word[0]}>
-      <Image src={word[2]} alt={word[0]} width={150} height={150} />
+      <Image src={word[2]} alt={word[0]} width={200} height={200} />
       <span>{word[0]}</span>
     </Piece>
   ));
@@ -149,7 +150,7 @@ export const PuzzlePlay = () => {
                   )
                   ]
                 ) : (
-                  <Image src={word[1]} alt={word[0]} width={150} height={150} />
+                  <Image src={word[1]} alt={word[0]} width={200} height={200} />
                 )}
               </Board>
 
@@ -162,6 +163,7 @@ export const PuzzlePlay = () => {
         </DndContext>
       </div>
       <button className={`${styles.reset_button}`} onClick={puzzleReset}>Reset</button>
+      <br/>
       <div className={`${styles.preview_image_wrapper}`}>
         {puzzleData.words.map(
           (word) =>
@@ -177,6 +179,7 @@ export const PuzzlePlay = () => {
             )
         )}
       </div>
+      <Image src={backGroundImage} alt="背景画像"/>
     </main>
   );
 };
