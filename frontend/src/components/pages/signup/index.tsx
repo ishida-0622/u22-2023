@@ -1,41 +1,33 @@
-import Router, { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   sendEmailVerification,
 } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
-import { updateUid, updateUser } from "@/store/user";
-import { SignUpRequest } from "@/features/auth/types/signup";
+import { updateUid, updateUser, updateEmail } from "@/store/user";
+import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
 import styles from "./index.module.scss";
-import { isLogin } from "@/features/auth/utils/isLogin";
 
 export const Signup = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    (async () => {
-      const res = await isLogin();
-      if (res) {
-        Router.push("/");
-      }
-    })();
-  }, []);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [formValues, setFormValues] = useState<SignUpRequest>({
+    u_id: "",
     family_name: "",
     first_name: "",
     family_name_roma: "",
     first_name_roma: "",
     account_name: "",
-    email: "",
-    password: "",
     child_lock: "",
   });
 
@@ -51,10 +43,10 @@ export const Signup = () => {
     check: true,
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (formValues.password !== confirm.passwordConfirm) {
+    if (password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
       return;
     }
@@ -72,46 +64,45 @@ export const Signup = () => {
       throw new Error("内部エラー");
     }
     try {
-      Promise.all([
-        (async (): Promise<void> => {
-          return new Promise((resolve, reject) => {
-            createUserWithEmailAndPassword(
-              auth,
-              formValues.email,
-              formValues.password
-            )
-              .then((res) => {
-                dispatch(
-                  updateUser({
-                    ...formValues,
-                    u_id: res.user.uid,
-                    limit_time: 2147483647,
-                    delete_flg: false,
-                    authed: false,
-                  })
-                );
-                dispatch(updateUid(res.user.uid));
-                const redirectUrl =
-                  process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
-                sendEmailVerification(
-                  res.user,
-                  redirectUrl ? { url: redirectUrl } : undefined
-                ).then(() => resolve());
-              })
-              .catch((e) => reject(e));
-          });
-        })(),
-        // TODO:バックエンドのサインアップ処理
-        // fetch(`${baseUrl}/SignUp`, {
-        //   method: "POST",
-        //   body: JSON.stringify({
-        //     formValues,
-        //   }),
-        // }),
-      ]).then(() => {
-        screenTransition();
+      const user = (await createUserWithEmailAndPassword(auth, email, password))
+        .user;
+      dispatch(
+        updateUser({
+          ...formValues,
+          u_id: user.uid,
+          limit_time: 1440,
+          delete_flg: false,
+        })
+      );
+      dispatch(updateUid(user.uid));
+      dispatch(updateEmail(user.email));
+      const req: SignUpRequest = {
+        ...formValues,
+        u_id: user.uid,
+      };
+
+      const res = await fetch(`${baseUrl}/SignUp`, {
+        method: "POST",
+        body: JSON.stringify(req),
       });
+      const json: SignUpResponse = await res.json();
+      if (json.response_status === "fail") {
+        dispatch(updateUid(null));
+        dispatch(updateUser(null));
+        dispatch(updateEmail(null));
+        await deleteUser(user);
+        throw new Error(json.error);
+      }
+
+      const redirectUrl = process.env.NEXT_PUBLIC_SEND_EMAIL_REDIRECT_URL;
+      sendEmailVerification(
+        user,
+        redirectUrl ? { url: redirectUrl } : undefined
+      );
+
+      screenTransition();
     } catch (e) {
+      console.error(e);
       alert("作成に失敗しました");
     }
   };
@@ -225,13 +216,8 @@ export const Signup = () => {
               type="text"
               name="email"
               id="email"
-              value={formValues.email}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  email: e.target.value,
-                }))
-              }
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required={true}
             />
           </label>
@@ -243,13 +229,8 @@ export const Signup = () => {
               type={isHiddenPass.pass ? "password" : "text"}
               name="password"
               id="password"
-              value={formValues.password}
-              onChange={(e) =>
-                setFormValues((val) => ({
-                  ...val,
-                  password: e.target.value,
-                }))
-              }
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required={true}
             />
             <span
