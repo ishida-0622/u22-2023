@@ -1188,7 +1188,7 @@ request
 ```jsonc
 {
     "u_id": "u_id",
-    "game_status": 0 /* 0~4の数値(int) */
+    "game_status": "0" /* 0~4の数値(int) */
 }
 ```
 
