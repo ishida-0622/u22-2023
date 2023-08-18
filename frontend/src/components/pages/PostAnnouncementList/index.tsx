@@ -6,12 +6,19 @@ import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Notice } from "@/features/notice/types";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { GetAllNoticeResponse } from "@/features/notice/types/get";
+import { DeleteBookRequest } from "@/features/book/types/delete";
+import {
+  DeleteNoticeRequest,
+  DeleteNoticeResponse,
+} from "@/features/notice/types/delete";
 
 Modal.setAppElement("#__next");
 
 export const PostAnnouncementList = () => {
   const [posts, setPosts] = useState<Notice[]>([]);
+  const [news, setNews] = useState<Notice>();
 
   //モーダルウィンドウの表示/非表示を表すbool値を宣言
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -20,18 +27,43 @@ export const PostAnnouncementList = () => {
   /** モーダルウィンドウを非表示にする関数 */
   const closeModal = () => setModalIsOpen(false);
 
+  // 詳細画面を表示する関数
   const detail = (event: React.MouseEvent<HTMLButtonElement>, post: Notice) => {
     event.preventDefault();
     setNews(post);
     openModal();
   };
 
+  // 新規作成ページへのrouter
   const router = useRouter();
   const postAnnouncement = () => {
     router.push("/admin/post-announcement");
   };
 
-  const [news, setNews] = useState<Notice>();
+  // 削除メソッド
+  const deleteNotice = async (id: string) => {
+    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
+    if (baseUrl === undefined) {
+      throw new Error("api endpoint is undefined");
+    }
+    const req: DeleteNoticeRequest = {
+      n_id: id,
+    };
+    try {
+      const res = await fetch(`${baseUrl}/DeleteNotice`, {
+        method: "POST",
+        body: JSON.stringify(req),
+      });
+      const json: DeleteNoticeResponse = await res.json();
+      if (json.response_status === "fail") {
+        throw new Error(json.error);
+      }
+      router.reload();
+    } catch (e) {
+      console.error(e);
+      alert("削除に失敗しました");
+    }
+  };
 
   useLayoutEffect(() => {
     const pullAnnouncement = async () => {
@@ -69,6 +101,15 @@ export const PostAnnouncementList = () => {
               <button onClick={(e) => detail(e, post)}>
                 <FontAwesomeIcon icon={faPen} />
               </button>
+              <button
+              onClick={() => {
+                if (confirm("削除しますか?")) {
+                  deleteNotice(post.n_id);
+                }
+              }}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
             </h3>
             <hr />
           </div>
