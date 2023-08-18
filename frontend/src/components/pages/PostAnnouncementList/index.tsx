@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import styles from "./index.module.scss";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -63,6 +64,7 @@ export const PostAnnouncementList = () => {
       alert("削除に失敗しました");
     }
   };
+
   useLayoutEffect(() => {
     const pullAnnouncement = async () => {
       const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
@@ -87,16 +89,19 @@ export const PostAnnouncementList = () => {
   return (
     <main className={`${styles.container}`}>
       <h1>お知らせ確認</h1>
-      <hr></hr>
+      <div className={`${styles.adminmenubar}`}>
+        <AdminMenubar />
+      </div>
       <h2>お知らせ投稿一覧</h2>
-      {posts.map((post) => (
-        <div key={post.n_id} className={`${styles.posts}`}>
-          <h3>
-            {post.title}
-            <button onClick={(e) => detail(e, post)}>
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-            <button
+      <div className={`${styles.posts}`}>
+        {posts.map((post) => (
+          <div key={post.n_id}>
+            <h3>
+              {post.title}
+              <button onClick={(e) => detail(e, post)}>
+                <FontAwesomeIcon icon={faPen} />
+              </button>
+              <button
               onClick={() => {
                 if (confirm("削除しますか?")) {
                   deleteNotice(post.n_id);
@@ -105,10 +110,11 @@ export const PostAnnouncementList = () => {
             >
               <FontAwesomeIcon icon={faTrashAlt} />
             </button>
-          </h3>
-          <hr></hr>
-        </div>
-      ))}
+            </h3>
+            <hr />
+          </div>
+        ))}
+      </div>
       <div className={`${styles.submit_button_field}`}>
         <button className={`${styles.submit_button}`} onClick={postAnnouncement}>
           新規作成
