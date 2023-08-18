@@ -14,8 +14,8 @@ export const MessageSentSuccessfully = () => {
     return (
         <div className={`${styles.container}`}>
             <div className={`${styles.message}`}>
-                <p>メールを送信しました。</p>
-                <p>メールボックスを確認してください。</p>
+                <p>メールを送信しました</p>
+                <p>メールボックスを確認してください</p>
             </div>
             <div className={`${styles.submit_button_field}`}>
                 <button className={`${styles.submit_button}`} type="submit" onClick={handleSubmit}>
