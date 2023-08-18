@@ -429,12 +429,14 @@ class UpdatePuzzle : RequestHandler<Map<String, Any>, String> {
 
 /**
  * パズルを再開する
- * 
+ *
  * @param u_id String: u_id
- * 
+ *
  * return String: {"response_status": "success", "result": {"puzzle_info": パズル情報, "saved_data": 一時保存中のデータ}}
  */
 class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
             try {
@@ -469,6 +471,26 @@ class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
                 // 本を取得
                 val puzzle_info = dynamo.searchByKey(table_puzzle, listOf(p_id))
                 if (puzzle_info.isEmpty()) {throw Exception("this puzzle is not exist")}
+                val formattedResult = utils.toMap(utils.attributeValueToObject(puzzle_info, "puzzle"))
+
+                val res = mapOf(
+                    "p_id" to formattedResult["p_id"],
+                    "title" to formattedResult["title"],
+                    "description" to formattedResult["description"],
+                    "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+                    "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+                        mapOf(
+                            "word" to word["word"],
+                            "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+                            "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+                            "voice" to s3.getObject(bucketName, word["voice"] as String),
+                            "is_displayed" to word["is_displayed"] as Boolean,
+                            "is_dummy" to word["is_dummy"] as Boolean
+                        )
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
 
                 // ステータスの更新
                 val dummyList: List<String> = listOf()
@@ -478,7 +500,7 @@ class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
                 mapOf(
                     "response_status" to "success",
                     "result" to mapOf(
-                        "puzzle_info" to utils.toMap(utils.attributeValueToObject(puzzle_info, table_puzzle)),
+                        "puzzle_info" to res,
                         "saved_data" to saved_data
                     )
                 )

@@ -582,7 +582,7 @@ response
 }
 ```
 
-### [RestartPuzzle]()
+### [RestartPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RestartPuzzle)
 
 パズルを再開する(ステータスは 1 に変更される)
 
@@ -868,7 +868,7 @@ response
 }
 ```
 
-### [RestartBook]()
+### [RestartBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RestartBook)
 
 読み聞かせを再開する(ステータスは 3 に変更される)
 
