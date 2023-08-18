@@ -106,7 +106,6 @@ export const PuzzleList = () => {
         const data: GetAllPuzzleResponse = await response.json();
         setAllPosts(data.result);
         setPosts(data.result);
-        console.log(data.result);
       } catch (e) {
         alert("データの取得に失敗しました");
         console.error(e);
@@ -115,20 +114,13 @@ export const PuzzleList = () => {
     pullPuzzle();
   }, []);
 
-  const edit = () => {
-    router.push({
-      pathname: "/admin/puzzle/edit/[id]",
-      query: { id: puzzle === undefined ? undefined : puzzle.p_id },
-    });
-  };
-
   return (
     <main className={`${styles.container}`}>
       <h2>パズル問題管理</h2>
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
-      <hr/>
+      <hr />
       <div className={`${styles.search}`}>
         <input
           type="text"
@@ -181,32 +173,33 @@ export const PuzzleList = () => {
                 <b>概要：</b>「{puzzle.description}」
               </div>
               <div>
-                <b>アイコン写真のURI：</b>「{puzzle.icon}」
+                <b>アイコン：</b>
+                <Image src={puzzle.icon} alt="icon" width={150} height={100} />
               </div>
               <div>
-                <b>アイコン写真：</b>「
-                <Image src={puzzle.icon} alt="" width={150} height={100} />」
-              </div>
-              <div>
-                <b>問題：</b>「
+                <b>問題：</b>
                 {puzzle.words.map((word) => (
                   <div key={word.word}>
                     <p>単語：{word.word}</p>
-                    <p>シルエットのURI：{word.shadow}</p>
-                    <Image src={word.shadow} alt="" width={150} height={100} />
-                    <p>イラストのURI：{word.illustration}</p>
+                    <p>シルエット：</p>
                     <Image
-                      src={word.illustration}
-                      alt=""
+                      src={word.shadow}
+                      alt={`${word.word} shadow`}
                       width={150}
                       height={100}
                     />
-                    <p>{word.voice}</p>
+                    <p>イラスト：</p>
+                    <Image
+                      src={word.illustration}
+                      alt={`${word.word} illust`}
+                      width={150}
+                      height={100}
+                    />
+                    <p>音声：</p>
                     <audio controls src={word.voice} />
                     <hr />
                   </div>
                 ))}
-                」
               </div>
               <div>
                 <b>作成日：</b>「{puzzle.create_date}」
