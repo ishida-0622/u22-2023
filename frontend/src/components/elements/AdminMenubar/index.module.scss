@@ -10,11 +10,13 @@
 .menu_title {
   background: #090032;
   color: #ffffff;
+  border-radius: 0 1rem 0 0;
 }
 
 .sub_menu {
-  background: #b9b9b9;
+  background: linear-gradient(60deg, hsl(210, 70%, 30%), hsl(210, 70%, 40%), hsl(210, 70%, 50%), hsl(210, 70%, 60%), hsl(210, 70%, 70%), hsl(210, 70%, 80%));
   position: relative;
+  border-radius: 0 0 1rem 0;
 }
 
 .sub_menu > ul {
@@ -24,11 +26,29 @@
   width: 100%;
 }
 
+.sub_menu > ul > li {
+  padding: 10% 0;
+}
+
 .sub_menu > ul > li > a {
-  display: none;
+  display: inline-block;
   color: #ffffff;
 }
 
-.menu:hover a {
-  display: inline-block;
+@media (max-width: 960px) {
+  .menu {
+    width: 15rem;
+  }
+
+  .sub_menu {
+    display: none;
+  }
+
+  .menu:hover .sub_menu {
+    display: block;
+  }
+}
+
+.menu:hover .sub_menu {
+  display: block;
 }
