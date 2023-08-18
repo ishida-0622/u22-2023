@@ -88,7 +88,7 @@ export const PostAnnouncementList = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h1>お知らせ確認</h1>
+      <h1>お知らせ管理</h1>
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
