@@ -203,7 +203,7 @@ class RegisterBook : RequestHandler<Map<String, Any>, String> {
                 if (event == null) {throw Exception("event is null")}           // event引数のnullチェック
                 if (event["body"] == null) {throw Exception("body is null")}    // bodyのnullチェック
                 val body = utils.formatJsonEnv(event["body"]!!)                 // bodyをMapオブジェクトに変換
-                
+
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val tableName = "book"
 
@@ -353,6 +353,8 @@ class FinishBook : RequestHandler<Map<String, Any>, String> {
  * return String: {"response_status": "success", "result": {"book_info": 本の情報, "saved_data": 保存されたページ}}
  */
 class RestartBook : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
         val res = runBlocking {
             try {
@@ -387,6 +389,21 @@ class RestartBook : RequestHandler<Map<String, Any>, String> {
                 // 本を取得
                 val book_info = dynamo.searchByKey(table_book, listOf(b_id))
                 if (book_info.isEmpty()) {throw Exception("this book is not exist")}
+                val formattedResult = utils.toMap(utils.attributeValueToObject(book_info, "book"))
+                val res = mapOf(
+                    "b_id" to formattedResult["b_id"],
+                    "title_jp" to formattedResult["title_jp"],
+                    "title_en" to formattedResult["title_en"],
+                    "summary" to formattedResult["summary"],
+                    "author" to formattedResult["author"],
+                    "thumbnail"  to s3.getObject(bucketName, formattedResult["thumbnail"] as String),
+                    "pdf" to s3.getObject(bucketName, formattedResult["pdf"] as String),
+                    "voice" to (formattedResult["voice_keys"] as List<String>).map{
+                        s3.getObject(bucketName, it)
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
 
                 // ステータスの更新
                 val dummyList: List<String> = listOf()
@@ -396,7 +413,7 @@ class RestartBook : RequestHandler<Map<String, Any>, String> {
                 mapOf(
                     "response_status" to "success",
                     "result" to mapOf(
-                        "book_info" to utils.toMap(utils.attributeValueToObject(book_info, "book")),
+                        "book_info" to res,
                         "saved_data" to saved_data
                     )
                 )
