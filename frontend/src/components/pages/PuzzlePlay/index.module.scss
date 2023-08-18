@@ -2,9 +2,11 @@
 // ピースのCSSは src/features/puzzle/play/Piece/index.module.scss を
 // ボード（はめるとこ）のCSSは src/features/puzzle/play/Board/index.module.scss を編集してください
 // このコメントはプルリクを送る際には削除してください
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
 
 .container {
   text-align: center;
+  font-family: "M PLUS Rounded 1c", sans-serif;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -20,46 +22,142 @@
   z-index: -1;
 }
 
-.preview_image_wrapper {
-  position: relative;
+/*PC*/
+@media screen and (min-device-height: 381px) and (max-device-height: 720px) {
+  .preview_image_wrapper {
+    position: relative;
 
-  /*完成イラスト*/
-  .image {
+    /*完成イラスト*/
+    .image {
+      position: absolute;
+      right: 1rem;
+      top: -19rem;
+    }
+  }
+
+  .reset_button {
     position: absolute;
-    right: 1rem;
-    top: -18rem;
-  }
-}
-
-.reset_button {
-  position: absolute;
-  width: 10rem;
-  height: 5rem;
-  border-radius: 50%;
-  left: 0.5rem;
-  top: 0.5rem;
-  background-color: rgb(255, 130, 130);
-  font-size: 1.8rem;
-  font-weight: bold;
-}
-
-.board_piece {
-  position: relative;
-  top: 6rem;
-  right: 10rem;
-
-  .board {
-    display: inline-block;
-    width: fit-content;
-    margin: 0 2.5rem 0 2.5rem;
-  }
-
-  .piece {
-    display: inline-block;
-    width: fit-content;
-    margin: 0 2.5rem 0 2.5rem;
-    font-size: 2rem;
+    width: 10rem;
+    height: 5rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+    background-color: rgb(255, 130, 130);
+    font-size: 2.5rem;
     font-weight: bold;
+  }
+
+  .board_piece {
+    position: relative;
+    top: 5rem;
+    right: 10rem;
+
+    .board {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+    }
+
+    .piece {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .preview_image_wrapper {
+    position: relative;
+
+    /*完成イラスト*/
+    .image {
+      position: absolute;
+      right: 1rem;
+      top: -19rem;
+    }
+  }
+
+  .reset_button {
+    position: absolute;
+    width: 15rem;
+    height: 7.5rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+    background-color: rgb(255, 130, 130);
+    font-size: 3.75rem;
+    font-weight: bold;
+  }
+
+  .board_piece {
+    position: relative;
+    top: 10rem;
+    right: 10rem;
+
+    .board {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+    }
+
+    .piece {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 3.75rem;
+      font-weight: bold;
+    }
+  }
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 380px) and (orientation: landscape) {
+  .preview_image_wrapper {
+    position: relative;
+
+    /*完成イラスト*/
+    .image {
+      position: absolute;
+      right: 1rem;
+      top: -19rem;
+    }
+  }
+
+  .reset_button {
+    position: absolute;
+    width: 7.5rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+    background-color: rgb(255, 130, 130);
+    font-size: 1.875rem;
+    font-weight: bold;
+  }
+
+  .board_piece {
+    position: relative;
+    top: 5rem;
+    right: 10rem;
+
+    .board {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+    }
+
+    .piece {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+      
+    }
   }
 }
 
