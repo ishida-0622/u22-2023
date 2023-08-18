@@ -60,7 +60,6 @@ export const PostAnnouncementList = () => {
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
-      <hr />
       <h2>お知らせ投稿一覧</h2>
       <div className={`${styles.posts}`}>
         {posts.map((post) => (
