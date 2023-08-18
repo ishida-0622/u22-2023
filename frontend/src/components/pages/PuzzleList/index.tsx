@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import styles from "./index.module.scss";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -114,10 +115,20 @@ export const PuzzleList = () => {
     pullPuzzle();
   }, []);
 
+  const edit = () => {
+    router.push({
+      pathname: "/admin/puzzle/edit/[id]",
+      query: { id: puzzle === undefined ? undefined : puzzle.p_id },
+    });
+  };
+
   return (
     <main className={`${styles.container}`}>
-      <h1>問題管理</h1>
-      <hr />
+      <h2>パズル問題管理</h2>
+      <div className={`${styles.adminmenubar}`}>
+        <AdminMenubar />
+      </div>
+      <hr/>
       <div className={`${styles.search}`}>
         <input
           type="text"
