@@ -125,7 +125,7 @@ export const PuzzlePlay = () => {
 
   const pieces = puzzleData.words.map((word) => (
     <Piece className={`${styles.piece}`} key={word[0]} id={word[0]}>
-      <Image src={word[2]} alt={word[0]} width={200} height={200} />
+      <Image className={`${styles.piece_image}`} src={word[2]} alt={word[0]} width={200} height={200} />
       <span>{word[0]}</span>
     </Piece>
   ));
@@ -150,7 +150,7 @@ export const PuzzlePlay = () => {
                   )
                   ]
                 ) : (
-                  <Image src={word[1]} alt={word[0]} width={200} height={200} />
+                  <Image className={`${styles.board_image}`} src={word[1]} alt={word[0]} width={200} height={200} />
                 )}
               </Board>
 
