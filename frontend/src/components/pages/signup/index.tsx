@@ -113,8 +113,9 @@ export const Signup = () => {
 
   return (
     <div className={`${styles.container}`}>
+      <h2 className={`${styles.header}`}>サインアップ</h2>
+        <hr />
       <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
-        <h2 className={`${styles.header}`}>サインアップ</h2>
         <div className={`${styles.name}`}>
           <div className={`${styles.lastname}`}>
             <label>
