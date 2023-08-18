@@ -44,6 +44,7 @@
 .posts {
     max-width: max(50%, 480px);
     max-height: max(15rem, 290px);
+
     margin: 0 auto 0%;
     padding: 1rem;
     background-color: white;
@@ -63,6 +64,7 @@
         color: rgb(47, 47, 232);
     }
 }
+
 .posts_open {
     button {
         margin: 1rem auto;
