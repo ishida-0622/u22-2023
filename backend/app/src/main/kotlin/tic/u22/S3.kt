@@ -86,15 +86,14 @@ class S3(val REGION: String) {
         }
         try {
             S3Client { region = REGION }.use { s3 ->
-                s3.getObject(request) { resp ->
-                    println(resp.body)
-                    val myFile = File("files/${path}")
-                    println(resp)
-                    resp.body?.writeToFile(myFile)
+                val resp = s3.getObject(request) { resp ->
+                    val byteResp = resp.body!!.toByteArray()
+                    val uriResp = Base64.getUrlEncoder().encodeToString(byteResp).replace("-", "+").replace("_", "/")
+                    "data:${resp.contentType};base64,${uriResp}"
                 }
+                return resp
             }
-            return "Done"
-        }catch(e: Exception){
+        } catch(e: Exception) {
             return "$e"
         }
     }
