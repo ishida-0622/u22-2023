@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import styles from "./index.module.scss";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -84,7 +85,10 @@ export const PuzzleList = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h1>問題管理</h1>
+      <h2>パズル問題管理</h2>
+      <div className={`${styles.adminmenubar}`}>
+        <AdminMenubar />
+      </div>
       <hr/>
       <div className={`${styles.search}`}>
         <input
@@ -95,19 +99,17 @@ export const PuzzleList = () => {
         />
       </div>
 
-      <div className={`${styles.posts_container}`}>
-        {posts.map((post) => (
-          <div key={post.title + post.create_date} className={`${styles.posts}`}>
-            <h3>
-              {post.title}
-              <button onClick={(e) => detail(e, post)}>
-                <FontAwesomeIcon icon={faPen} />
-              </button>
-            </h3>
-            <hr/>
-          </div>
-        ))}
-      </div>
+      {posts.map((post) => (
+        <div key={post.title + post.create_date} className={`${styles.posts}`}>
+          <h3>
+            {post.title}
+            <button onClick={(e) => detail(e, post)}>
+              <FontAwesomeIcon icon={faPen} />
+            </button>
+          </h3>
+          <hr/>
+        </div>
+      ))}
       <div className={`${styles.submit_button_field}`}>
         <button className={`${styles.submit_button}`} onClick={postPuzzle}>
           新規作成
