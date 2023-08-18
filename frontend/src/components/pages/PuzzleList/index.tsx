@@ -116,11 +116,10 @@ export const PuzzleList = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h2>パズル問題管理</h2>
+      <h1>パズル問題管理</h1>
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
-      <hr />
       <div className={`${styles.search}`}>
         <input
           type="text"
@@ -130,31 +129,30 @@ export const PuzzleList = () => {
         />
       </div>
 
-      <div className={`${styles.posts_container}`}>
-        {posts.map((post) => (
-          <div
-            key={post.title + post.create_date}
-            className={`${styles.posts}`}
-          >
-            <h3>
-              {post.title}
-              <button onClick={(e) => detail(e, post)}>
-                <FontAwesomeIcon icon={faPen} />
-              </button>
-              <button
-                onClick={() => {
-                  if (confirm("削除しますか?")) {
-                    deletePuzzle(post.p_id);
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon={faTrashAlt} />
-              </button>
-            </h3>
-            <hr />
-          </div>
-        ))}
-      </div>
+      {posts.map((post) => (
+        <div
+          key={post.title + post.create_date}
+          className={`${styles.posts}`}
+        >
+          <h3>
+            {post.title}
+            <button className={`${styles.posts_button}`} onClick={(e) => detail(e, post)}>
+              <FontAwesomeIcon icon={faPen} />
+            </button>
+            <button
+              onClick={() => {
+                if (confirm("削除しますか?")) {
+                  deletePuzzle(post.p_id);
+                }
+              }}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+          </h3>
+          <hr />
+        </div>
+      ))}
+
       <div className={`${styles.submit_button_field}`}>
         <button className={`${styles.submit_button}`} onClick={postPuzzle}>
           新規作成
@@ -177,7 +175,7 @@ export const PuzzleList = () => {
                 <Image src={puzzle.icon} alt="icon" width={150} height={100} />
               </div>
               <div>
-                <b>問題：</b>
+              <b>問題：</b>
                 {puzzle.words.map((word) => (
                   <div key={word.word}>
                     <p>単語：{word.word}</p>
