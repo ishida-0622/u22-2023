@@ -3,5 +3,5 @@ import { auth } from "@/features/auth/firebase";
 
 export const isLogin = (): Promise<boolean> =>
   new Promise((resolve) =>
-    onAuthStateChanged(auth, (user) => resolve(user != null))
+    onAuthStateChanged(auth, (user) => resolve(user != null)),
   );
