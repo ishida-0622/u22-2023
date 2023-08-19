@@ -1,5 +1,6 @@
 .dropdown {
   display: flex;
+  font-size: 1.5rem;
 }
 
 .menu {
@@ -10,11 +11,10 @@
 .menu_title {
   background: #090032;
   color: #ffffff;
-  border-radius: 0 1rem 0 0;
 }
 
 .sub_menu {
-  background: linear-gradient(60deg, hsl(210, 70%, 30%), hsl(210, 70%, 40%), hsl(210, 70%, 50%), hsl(210, 70%, 60%), hsl(210, 70%, 70%), hsl(210, 70%, 80%));
+  background-color: #DBDBFF;
   position: relative;
   border-radius: 0 0 1rem 0;
 }
@@ -32,12 +32,12 @@
 
 .sub_menu > ul > li > a {
   display: inline-block;
-  color: #ffffff;
+  color: #4169E1;
 }
 
 @media (max-width: 960px) {
   .menu {
-    width: 15rem;
+    width: 8rem;
   }
 
   .sub_menu {
@@ -47,8 +47,4 @@
   .menu:hover .sub_menu {
     display: block;
   }
-}
-
-.menu:hover .sub_menu {
-  display: block;
 }

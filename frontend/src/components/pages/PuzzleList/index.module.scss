@@ -1,0 +1,86 @@
+.container {
+    background-color: #E0EFFF;
+    min-height: 100vh;
+    h1 {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid black;
+    }
+    hr {
+        border-top: 1px solid black;
+    }
+    input {
+        width: max(50%, 480px);
+        padding: 0.5rem;
+    }
+}
+
+.adminmenubar {
+    float: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.search{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3% 0 1% 0;
+}
+
+.posts {
+    max-width: max(50%, 480px);
+    margin: 0 auto 0%;
+    padding: 1rem;
+    background-color: white;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    hr {
+        border-top: 100% solid black;
+    }
+    button {
+        color: rgb(47, 47, 232);
+    }
+}
+.posts_button {
+    margin-left: 70%;
+}
+.posts_open {
+    button {
+        margin: 1rem auto;
+    }
+}
+
+.submit_button_field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2%;
+}
+.submit_button {
+    box-shadow: none;
+    font-size: 1.5rem;
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #00BFFF;
+    border-bottom: 50% solid #00BFFF;
+    border-radius: 0.5rem;
+    border-color: #00BFFF;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+}
+.submit_button:hover {
+    background-color: #0083af;
+    cursor: pointer;
+}
