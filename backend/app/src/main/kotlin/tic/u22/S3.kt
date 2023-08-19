@@ -91,13 +91,17 @@ class S3(val REGION: String) {
             bucket = bucketName
             key = keyName
         }
-        S3Client { region = REGION }.use { s3 ->
-            val resp = s3.getObject(request) { resp ->
-                val byteResp = resp.body!!.toByteArray()
-                val uriResp = Base64.getUrlEncoder().encodeToString(byteResp).replace("-", "+").replace("_", "/")
-                "data:${resp.contentType};base64,${uriResp}"
+        try {
+            S3Client { region = REGION }.use { s3 ->
+                val resp = s3.getObject(request) { resp ->
+                    val byteResp = resp.body!!.toByteArray()
+                    val uriResp = Base64.getUrlEncoder().encodeToString(byteResp).replace("-", "+").replace("_", "/")
+                    "data:${resp.contentType};base64,${uriResp}"
+                }
+                return resp
             }
-            return resp
+        } catch(e: Exception) {
+            return "$e"
         }
     }
 
