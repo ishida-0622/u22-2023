@@ -286,8 +286,8 @@ export const PuzzleEdit = () => {
   };
 
   return (
-    <main>
-      <form onSubmit={onSubmitHandler}>
+    <main className={`${styles.container}`}>
+      <form onSubmit={onSubmitHandler} className={`${styles.form}`}>
         {puzzle && (
           <div>
             {/* パズルID */}
@@ -324,9 +324,6 @@ export const PuzzleEdit = () => {
               </label>
             </div>
             {/* 登録済みのアイコン */}
-            <div>
-              <b>登録されているアイコン写真のURI：</b>「{icon}」
-            </div>
             <div>
               <b>登録されているアイコン写真：</b>
               <Image src={puzzle.icon} alt="" width={150} height={100} />
@@ -367,16 +364,16 @@ export const PuzzleEdit = () => {
               {puzzle.words.map((word) => (
                 <div key={word.word}>
                   <p>単語：{word.word}</p>
-                  <p>シルエットのURI：{word.shadow}</p>
-                  <Image src={word.shadow} alt="" width={150} height={100} />
-                  <p>イラストのURI：{word.illustration}</p>
+                  <p>イラストの画像：</p>
                   <Image
                     src={word.illustration}
                     alt=""
                     width={150}
                     height={100}
                   />
-                  <p>{word.voice}</p>
+                  <p>シルエットの画像：</p>
+                  <Image src={word.shadow} alt="" width={150} height={100} />
+                  <p>ボイス：</p>
                   <audio controls src={word.voice} />
                   <hr />
                 </div>
@@ -384,7 +381,7 @@ export const PuzzleEdit = () => {
             </div>
 
             {/* パズルの問題を編集する際の入力欄 */}
-            <div>
+            <div className={`${styles.word}`}>
               <label>
                 <p>問題に使用する単語を変更する際は下記に入力してください。</p>
                 <br />
@@ -440,19 +437,21 @@ export const PuzzleEdit = () => {
                     )}
                   </label>
 
-                  <label>
-                    {`${word}のボイス：`}
-
-                    <input
-                      type="file"
-                      accept="audio/*"
-                      required={false}
-                      onChange={(e) => onChangeHandler(e, i, setVoices)}
-                    />
-
-                    {voices[i] && <audio src={voices[i]!} controls={true} />}
+                  <label className={`${styles.voice}`}>
+                    <div>
+                      {`${word}のボイス：`}
+                      <input
+                        type="file"
+                        accept="audio/*"
+                        required={false}
+                        onChange={(e) => onChangeHandler(e, i, setVoices)}
+                      />
+                    </div>
+                    <div>
+                      {voices[i] && <audio src={voices[i]!} controls={true} />}
+                    </div>
                   </label>
-
+                  
                   <label>
                     is displayed：
                     <input
@@ -502,7 +501,7 @@ export const PuzzleEdit = () => {
                       />
                     )}
                   </label>
-
+                  <br />
                   <label>
                     {`${dummy}のシルエット：`}
 
@@ -522,7 +521,7 @@ export const PuzzleEdit = () => {
                       />
                     )}
                   </label>
-
+                  <br />
                   <label>
                     {`${dummy}のボイス：`}
 
@@ -549,9 +548,13 @@ export const PuzzleEdit = () => {
             </div>
           </div>
         )}
-        <input type="submit" value="更新する" />
+        <div className={`${styles.submit_button_field}`}>
+          <input className={`${styles.submit_button}`} type="submit" value="更新する" />
+        </div>
       </form>
-      <Link href="/admin/puzzle">パズル問題一覧ページへ戻る</Link>
+      <div className={`${styles.link}`}>
+        <Link href="/admin/puzzle">パズル問題一覧ページへ戻る</Link>
+      </div>
     </main>
   );
 };
