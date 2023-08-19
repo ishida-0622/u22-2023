@@ -8,7 +8,7 @@ import { Board } from "@/features/puzzle/play/Board";
 import { Puzzle } from "@/features/puzzle/types";
 import styles from "./index.module.scss";
 import { StartPuzzleRequest } from "@/features/puzzle/types/start";
-import backGroundImage from "@/features/puzzle/play/image/meadow.jpg"
+import backGroundImage from "@/features/puzzle/play/image/meadow.jpg";
 
 export const PuzzlePlay = () => {
   const router = useRouter();
@@ -32,8 +32,8 @@ export const PuzzlePlay = () => {
 
   const { data: puzzleData, error } = useSWR(
     `${
-    // process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000/api"
-    "http://localhost:3000/api"
+      // process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000/api"
+      "http://localhost:3000/api"
     }/puzzle`,
     // `${process.env.NEXT_PUBLIC_API_ENDPOINT}/StartPuzzle`,
     fetcher
@@ -51,10 +51,10 @@ export const PuzzlePlay = () => {
   const puzzleReset = useCallback(() => {
     if (puzzleData) {
       // データ取得後にnullで初期化
-      setParents(new Map(puzzleData.words.map((val) => [val[0], null])));
-      setChild(new Map(puzzleData.words.map((val) => [val[1], null])));
+      setParents(new Map(puzzleData.words.map((val) => [val.word, null])));
+      setChild(new Map(puzzleData.words.map((val) => [val.shadow, null])));
       setAudios(
-        new Map(puzzleData.words.map((val) => [val[0], new Audio(val[3])]))
+        new Map(puzzleData.words.map((val) => [val.word, new Audio(val.voice)]))
       );
     }
   }, [puzzleData]);
@@ -102,7 +102,10 @@ export const PuzzlePlay = () => {
     // 正解判定
     if (
       puzzleData &&
-      puzzleData.words.every((value) => newChildren.get(value[1]) === value[0])
+      puzzleData.words.every(
+        (value) =>
+          value.is_dummy || newChildren.get(value.shadow) === value.word
+      )
     ) {
       console.log("OK!");
       new Audio(
@@ -124,9 +127,15 @@ export const PuzzlePlay = () => {
   }
 
   const pieces = puzzleData.words.map((word) => (
-    <Piece className={`${styles.piece}`} key={word[0]} id={word[0]}>
-      <Image className={`${styles.piece_image}`} src={word[2]} alt={word[0]} width={200} height={200} />
-      <span>{word[0]}</span>
+    <Piece className={`${styles.piece}`} key={word.word} id={word.word}>
+      <Image
+        className={`${styles.piece_image}`}
+        src={word.illustration}
+        alt={word.word}
+        width={200}
+        height={200}
+      />
+      <span>{word.word}</span>
     </Piece>
   ));
 
@@ -135,43 +144,54 @@ export const PuzzlePlay = () => {
       <div className={`${styles.board_piece}`}>
         <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
           {puzzleData.words.map((word) => {
-            const child = children.get(word[1]);
+            const child = children.get(word.shadow);
             return (
-
-              <Board className={`${styles.board}`} key={word[1]} id={word[1]}>
+              <Board
+                className={`${styles.board}`}
+                key={word.shadow}
+                id={word.shadow}
+              >
                 {child != null ? (
                   pieces[
-                  puzzleData.words.indexOf(
-                    puzzleData.words.filter((w) => child === w[0]).length === 1
-                      ? puzzleData.words.filter((w) => child === w[0])[0]
-                      : puzzleData.words.filter(
-                        (w) => child === w[0] && word[1] !== w[1]
-                      )[0]
-                  )
+                    puzzleData.words.indexOf(
+                      puzzleData.words.filter((w) => child === w.word)
+                        .length === 1
+                        ? puzzleData.words.filter((w) => child === w.word)[0]
+                        : puzzleData.words.filter(
+                            (w) => child === w.word && word.shadow !== w.shadow
+                          )[0]
+                    )
                   ]
                 ) : (
-                  <Image className={`${styles.board_image}`} src={word[1]} alt={word[0]} width={200} height={200} />
+                  <Image
+                    className={`${styles.board_image}`}
+                    src={word.shadow}
+                    alt={word.word}
+                    width={200}
+                    height={200}
+                  />
                 )}
               </Board>
-
             );
           })}
           <br />
           {puzzleData.words.map((word, i) =>
-            parents.get(word[0]) != null ? null : pieces[i]
+            parents.get(word.word) != null ? null : pieces[i]
           )}
         </DndContext>
       </div>
-      <button className={`${styles.reset_button}`} onClick={puzzleReset}>さいしょから</button>
+      <button className={`${styles.reset_button}`} onClick={puzzleReset}>
+        さいしょから
+      </button>
       <button className={`${styles.a_button}`}>やめる</button>
-      <br/>
+      <br />
       <div className={`${styles.preview_image_wrapper}`}>
         {puzzleData.words.map(
           (word) =>
-            children.get(word[1]) === word[0] && (
+            children.get(word.shadow) === word.word && (
               <Image
-                key={word[2]}
-                src={word[2]}
+                key={word.illustration}
+                src={word.illustration}
                 alt="puzzle peace"
                 width={350}
                 height={350}
@@ -180,7 +200,11 @@ export const PuzzlePlay = () => {
             )
         )}
       </div>
-      <Image className={`${styles.background}`} src={backGroundImage} alt="背景画像"/>
+      <Image
+        className={`${styles.background}`}
+        src={backGroundImage}
+        alt="背景画像"
+      />
     </main>
   );
 };
