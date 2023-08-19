@@ -19,10 +19,10 @@
 }
 
 .adminmenubar {
-    float: left;
-    position: fixed;
-    top: 0;
-    left: 0;
+  float: left;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .posts {
@@ -55,27 +55,27 @@
 }
 
 .submit_button_field_open {
-    margin-top: 1%;
+  margin-top: 1%;
 }
 
 .submit_button_field {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
 }
 .submit_button {
-    box-shadow: none;
-    font-size: 1.5rem;
-    display: inline-block;
-    color: azure;
-    font-weight: bold;
-    background-color: #00BFFF;
-    border-bottom: 50% solid #00BFFF;
-    border-radius: 0.5rem;
-    border-color: #00BFFF;
-    top: calc(50% - 0.5rem);
-    transition: background-color 0.3s ease;
+  box-shadow: none;
+  font-size: 1.5rem;
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #00bfff;
+  border-bottom: 50% solid #00bfff;
+  border-radius: 0.5rem;
+  border-color: #00bfff;
+  top: calc(50% - 0.5rem);
+  transition: background-color 0.3s ease;
 }
 .submit_button:hover {
     background-color: #0083af;
