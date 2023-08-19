@@ -172,8 +172,8 @@ export const PuzzlePlay = () => {
                 key={word[2]}
                 src={word[2]}
                 alt="puzzle peace"
-                width={400}
-                height={400}
+                width={350}
+                height={350}
                 className={`${styles.image}`}
               />
             )

@@ -11,15 +11,17 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-
-/*背景画像*/
-.background {
-  position: absolute;
-  top: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+
+  /*背景画像*/
+  .background {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
 }
 
 /*PC*/
@@ -31,7 +33,7 @@
     .image {
       position: absolute;
       right: 1rem;
-      top: -22rem;
+      top: -19rem;
     }
   }
 
@@ -49,7 +51,7 @@
 
   .board_piece {
     position: relative;
-    margin-top: 4rem;
+    
     margin-right: 10rem;
 
     .board {
