@@ -9,7 +9,7 @@ export const AdminMenubar = () => {
         <div className={`${styles.sub_menu}`}>
           <ul>
             <li>
-              <Link href={`/admin/top`}>トップ</Link>
+              <Link href={`/admin`}>トップ</Link>
             </li>
             <li>
               <Link href={`/admin/announcement-page`}>お知らせ</Link>

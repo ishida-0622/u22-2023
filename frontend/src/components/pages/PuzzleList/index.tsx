@@ -1,5 +1,6 @@
 import { useLayoutEffect, useState } from "react";
 import styles from "./index.module.scss";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -105,7 +106,6 @@ export const PuzzleList = () => {
         const data: GetAllPuzzleResponse = await response.json();
         setAllPosts(data.result);
         setPosts(data.result);
-        console.log(data.result);
       } catch (e) {
         alert("データの取得に失敗しました");
         console.error(e);
@@ -116,8 +116,10 @@ export const PuzzleList = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h1>問題管理</h1>
-      <hr />
+      <h1>パズル問題管理</h1>
+      <div className={`${styles.adminmenubar}`}>
+        <AdminMenubar />
+      </div>
       <div className={`${styles.search}`}>
         <input
           type="text"
@@ -127,31 +129,30 @@ export const PuzzleList = () => {
         />
       </div>
 
-      <div className={`${styles.posts_container}`}>
-        {posts.map((post) => (
-          <div
-            key={post.title + post.create_date}
-            className={`${styles.posts}`}
-          >
-            <h3>
-              {post.title}
-              <button onClick={(e) => detail(e, post)}>
-                <FontAwesomeIcon icon={faPen} />
-              </button>
-              <button
-                onClick={() => {
-                  if (confirm("削除しますか?")) {
-                    deletePuzzle(post.p_id);
-                  }
-                }}
-              >
-                <FontAwesomeIcon icon={faTrashAlt} />
-              </button>
-            </h3>
-            <hr />
-          </div>
-        ))}
-      </div>
+      {posts.map((post) => (
+        <div
+          key={post.title + post.create_date}
+          className={`${styles.posts}`}
+        >
+          <h3>
+            {post.title}
+            <button className={`${styles.posts_button}`} onClick={(e) => detail(e, post)}>
+              <FontAwesomeIcon icon={faPen} />
+            </button>
+            <button
+              onClick={() => {
+                if (confirm("削除しますか?")) {
+                  deletePuzzle(post.p_id);
+                }
+              }}
+            >
+              <FontAwesomeIcon icon={faTrashAlt} />
+            </button>
+          </h3>
+          <hr />
+        </div>
+      ))}
+
       <div className={`${styles.submit_button_field}`}>
         <button className={`${styles.submit_button}`} onClick={postPuzzle}>
           新規作成
@@ -170,32 +171,33 @@ export const PuzzleList = () => {
                 <b>概要：</b>「{puzzle.description}」
               </div>
               <div>
-                <b>アイコン写真のURI：</b>「{puzzle.icon}」
+                <b>アイコン：</b>
+                <Image src={puzzle.icon} alt="icon" width={150} height={100} />
               </div>
               <div>
-                <b>アイコン写真：</b>「
-                <Image src={puzzle.icon} alt="" width={150} height={100} />」
-              </div>
-              <div>
-                <b>問題：</b>「
+              <b>問題：</b>
                 {puzzle.words.map((word) => (
-                  <div>
+                  <div key={word.word}>
                     <p>単語：{word.word}</p>
-                    <p>シルエットのURI：{word.shadow}</p>
-                    <Image src={word.shadow} alt="" width={150} height={100} />
-                    <p>イラストのURI：{word.illustration}</p>
+                    <p>シルエット：</p>
                     <Image
-                      src={word.illustration}
-                      alt=""
+                      src={word.shadow}
+                      alt={`${word.word} shadow`}
                       width={150}
                       height={100}
                     />
-                    <p>{word.voice}</p>
+                    <p>イラスト：</p>
+                    <Image
+                      src={word.illustration}
+                      alt={`${word.word} illust`}
+                      width={150}
+                      height={100}
+                    />
+                    <p>音声：</p>
                     <audio controls src={word.voice} />
                     <hr />
                   </div>
                 ))}
-                」
               </div>
               <div>
                 <b>作成日：</b>「{puzzle.create_date}」
