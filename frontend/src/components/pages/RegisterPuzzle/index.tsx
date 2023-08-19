@@ -232,11 +232,10 @@ export const RegisterPuzzle = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h2>パズル問題新規作成</h2>
+      <h1>パズル問題新規作成</h1>
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
-      <hr />
       <form onSubmit={onSubmitHandler} className={`${styles.form}`}>
         <div>
           <label>
