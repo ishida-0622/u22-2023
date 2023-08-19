@@ -1,7 +1,10 @@
 import { Puzzle } from "@/features/puzzle/types";
 import { NextApiRequest, NextApiResponse } from "next";
 
-const handler = (req: NextApiRequest, res: NextApiResponse<Puzzle>) => {
+const handler = (
+  req: NextApiRequest,
+  res: NextApiResponse<{ result: Puzzle }>
+) => {
   const data: Puzzle = {
     p_id: "1234",
     title: "foo",
@@ -45,7 +48,7 @@ const handler = (req: NextApiRequest, res: NextApiResponse<Puzzle>) => {
     create_date: "",
     update_date: "",
   };
-  res.status(200).send(data);
+  res.status(200).send({ result: data });
 };
 
 export default handler;
