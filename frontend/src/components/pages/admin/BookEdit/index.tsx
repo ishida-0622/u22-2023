@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import {
   GetAllBookRequest,
@@ -10,6 +11,8 @@ import {
   UpdateBookRequest,
   UpdateBookResponse,
 } from "@/features/book/types/update";
+
+import styles from "./index.module.scss";
 
 export const BookEdit = () => {
   const router = useRouter();
@@ -153,11 +156,11 @@ export const BookEdit = () => {
   };
 
   return (
-    <main>
-      <form onSubmit={submitHandler}>
+    <main className={`${styles.container}`}>
+      <form onSubmit={submitHandler} className={`${styles.form}`}>
         <div>
           <label>
-            サムネイル画像
+            サムネイル画像：
             <input
               type="file"
               accept="image/*"
@@ -168,8 +171,8 @@ export const BookEdit = () => {
                 src={thumbnail}
                 alt="thumbnail"
                 // width, heightは必要に応じて書き換えてください
-                width={100}
-                height={100}
+                width={150}
+                height={150}
                 // width, heightを消してfillのコメントアウトを削除すると、画像によって比率が自動的に変わります
                 // fill
               />
@@ -177,66 +180,79 @@ export const BookEdit = () => {
           </label>
         </div>
         <div>
-          <label>
-            英タイトル
-            <input
-              type="text"
-              value={titleEn}
-              onChange={(e) => setTitleEn(e.target.value)}
-            />
-          </label>
-          <label>
-            日本語タイトル
-            <input
-              type="text"
-              value={titleJp}
-              onChange={(e) => setTitleJp(e.target.value)}
-            />
-          </label>
-          <label>
-            著者
-            <input
-              type="text"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </label>
-          <label>
-            あらすじ
-            <textarea
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-            />
-          </label>
-          <label>
-            pdfファイル
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => fileOnChangeHandler(e, setPdf)}
-            />
-          </label>
-          <label>
-            ページ数
-            <input
-              type="number"
-              value={pageNum}
-              onChange={(e) => {
-                const num = Number(e.target.value);
-                if (num < 0) {
-                  return;
-                }
-                setPageNum(num);
-                setVoices((val) => val.concat([null]).slice(0, num));
-              }}
-            />
-          </label>
+          <div>
+            <label>
+              英タイトル　　：
+              <input
+                type="text"
+                value={titleEn}
+                onChange={(e) => setTitleEn(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              日本語タイトル：
+              <input
+                type="text"
+                value={titleJp}
+                onChange={(e) => setTitleJp(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              著者　　　　　：
+              <input
+                type="text"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              あらすじ：
+              <br />
+              <textarea
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              pdfファイル 　：
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => fileOnChangeHandler(e, setPdf)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              ページ数　　　：
+              <input
+                type="number"
+                value={pageNum}
+                onChange={(e) => {
+                  const num = Number(e.target.value);
+                  if (num < 0) {
+                    return;
+                  }
+                  setPageNum(num);
+                  setVoices((val) => val.concat([null]).slice(0, num));
+                }}
+              />
+            </label>
+          </div>
           {Array(pageNum)
             .fill(undefined)
             .map((_, i) => (
               <div key={i}>
                 <label>
-                  {i + 1}ページ目の音声ファイル
+                  {i + 1}ページ目の音声ファイル：
                   <input
                     type="file"
                     accept="audio/mpeg"
@@ -246,8 +262,13 @@ export const BookEdit = () => {
               </div>
             ))}
         </div>
-        <button type="submit">更新</button>
+        <div className={`${styles.submit_button_field}`}>
+          <button className={`${styles.submit_button}`} type="submit">更新する</button>
+        </div>
       </form>
+      <div className={`${styles.link}`}>
+        <Link href="/admin/book">パズル問題一覧ページへ戻る</Link>
+      </div>
     </main>
   );
 };
