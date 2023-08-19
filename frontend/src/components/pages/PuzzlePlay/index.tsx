@@ -162,7 +162,7 @@ export const PuzzlePlay = () => {
           )}
         </DndContext>
       </div>
-      <button className={`${styles.reset_button}`} onClick={puzzleReset}>Reset</button>
+      <button className={`${styles.reset_button}`} onClick={puzzleReset}>さいしょから</button>
       <br/>
       <div className={`${styles.preview_image_wrapper}`}>
         {puzzleData.words.map(

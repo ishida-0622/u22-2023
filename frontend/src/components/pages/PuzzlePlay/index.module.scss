@@ -23,7 +23,7 @@
 }
 
 /*PC*/
-@media screen and (min-device-height: 381px) and (max-device-height: 720px) {
+@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
   .preview_image_wrapper {
     position: relative;
 
@@ -31,7 +31,7 @@
     .image {
       position: absolute;
       right: 1rem;
-      top: -19rem;
+      top: -22rem;
     }
   }
 
@@ -43,14 +43,14 @@
     left: 0.5rem;
     top: 0.5rem;
     background-color: rgb(255, 130, 130);
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-weight: bold;
   }
 
   .board_piece {
     position: relative;
-    top: 5rem;
-    right: 10rem;
+    margin-top: 4rem;
+    margin-right: 10rem;
 
     .board {
       display: inline-block;
@@ -89,7 +89,7 @@
     left: 0.5rem;
     top: 0.5rem;
     background-color: rgb(255, 130, 130);
-    font-size: 3.75rem;
+    font-size: 2.3rem;
     font-weight: bold;
   }
 
@@ -115,7 +115,7 @@
 }
 
 /* iPhoneランドスケープ */
-@media screen and (max-device-height: 380px) and (orientation: landscape) {
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
   .preview_image_wrapper {
     position: relative;
 
@@ -137,7 +137,7 @@
     left: 0.5rem;
     top: 0.5rem;
     background-color: rgb(255, 130, 130);
-    font-size: 1.875rem;
+    font-size: 1.05rem;
     font-weight: bold;
   }
 
@@ -159,10 +159,12 @@
       font-size: 1.5rem;
       font-weight: bold;
     }
+
     .board_image {
       width: 7rem;
       height: auto;
     }
+
     .piece_image {
       width: 7rem;
       height: auto;
