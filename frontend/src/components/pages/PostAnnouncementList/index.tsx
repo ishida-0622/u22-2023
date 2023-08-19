@@ -88,7 +88,7 @@ export const PostAnnouncementList = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h1>お知らせ確認</h1>
+      <h1>お知らせ管理</h1>
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
@@ -98,18 +98,20 @@ export const PostAnnouncementList = () => {
           <div key={post.n_id}>
             <h3>
               {post.title}
-              <button onClick={(e) => detail(e, post)}>
-                <FontAwesomeIcon icon={faPen} />
-              </button>
-              <button
-                onClick={() => {
-                  if (confirm("削除しますか?")) {
-                    deleteNotice(post.n_id);
-                  }
-                }}
-              >
+              <div className={`${styles.posts_button}`}>
+                <button onClick={(e) => detail(e, post)}>
+                  <FontAwesomeIcon icon={faPen} />
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm("削除しますか?")) {
+                      deleteNotice(post.n_id);
+                    }
+                  }}
+                >
                 <FontAwesomeIcon icon={faTrashAlt} />
-              </button>
+                </button>
+              </div>
             </h3>
             <hr />
           </div>
