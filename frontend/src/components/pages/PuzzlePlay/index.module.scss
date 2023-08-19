@@ -73,7 +73,6 @@
 
   .board_piece {
     position: relative;
-
     margin-right: 10rem;
 
     .board {
@@ -133,7 +132,6 @@
     position: relative;
     top: 10rem;
     right: 8rem;
-
 
     .board {
       display: inline-block;
@@ -221,6 +219,6 @@
   }
 }
 
-.board>.piece {
-  margin: 0rem;
+.board > .piece {
+  margin: 0;
 }
