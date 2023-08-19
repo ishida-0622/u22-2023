@@ -2,31 +2,225 @@
 // ピースのCSSは src/features/puzzle/play/Piece/index.module.scss を
 // ボード（はめるとこ）のCSSは src/features/puzzle/play/Board/index.module.scss を編集してください
 // このコメントはプルリクを送る際には削除してください
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
 
 .container {
   text-align: center;
-}
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
 
-.preview_image_wrapper {
-  position: relative;
-
-  /*完成イラスト*/
-  .image {
+  /*背景画像*/
+  .background {
     position: absolute;
-    right: 1rem;
-    top: -8rem;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
   }
 }
 
-.reset_button {
-  position: absolute;
-  width: 10rem;
-  height: 5rem;
-  border-radius: 50%;
-  left: 0.5rem;
-  top: 0.5rem;
+.reset_button:hover {
+  cursor: pointer;
+  filter: brightness(70%);
 }
 
-.board > .piece {
-  margin: 0;
+.a_button:hover {
+  cursor: pointer;
+  filter: brightness(70%);
+}
+
+/*PC*/
+@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+  .preview_image_wrapper {
+    position: relative;
+
+    /*完成イラスト*/
+    .image {
+      position: absolute;
+      right: 1rem;
+      top: -19rem;
+    }
+  }
+
+  .reset_button {
+    position: absolute;
+    width: 10rem;
+    height: 5rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+    background-color: yellow;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .a_button {
+    position: absolute;
+    width: 10rem;
+    height: 5rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    bottom: 0.5rem;
+    background-color: rgb(255, 130, 130);
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .board_piece {
+    position: relative;
+
+    margin-right: 10rem;
+
+    .board {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+    }
+
+    .piece {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .preview_image_wrapper {
+    position: relative;
+
+    /*完成イラスト*/
+    .image {
+      position: absolute;
+      right: 1rem;
+      top: -19rem;
+    }
+  }
+
+  .reset_button {
+    position: absolute;
+    width: 12rem;
+    height: 6rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+    background-color: yellow;
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  .a_button {
+    position: absolute;
+    width: 12rem;
+    height: 6rem;
+    border-radius: 50%;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    background-color: rgb(255, 130, 130);
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  .board_piece {
+    position: relative;
+    top: 10rem;
+    right: 8rem;
+
+
+    .board {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+    }
+
+    .piece {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 3.75rem;
+      font-weight: bold;
+    }
+  }
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
+  .preview_image_wrapper {
+    position: relative;
+
+    /*完成イラスト*/
+    .image {
+      position: absolute;
+      right: 1rem;
+      top: -12rem;
+      width: 15rem;
+      height: auto;
+    }
+  }
+
+  .reset_button {
+    position: absolute;
+    width: 7.5rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+    background-color: yellow;
+    font-size: 1.05rem;
+    font-weight: bold;
+  }
+
+  .a_button {
+    position: absolute;
+    width: 7.5rem;
+    height: 3.75rem;
+    border-radius: 50%;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    background-color: rgb(255, 130, 130);
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .board_piece {
+    position: relative;
+    top: 5rem;
+    right: 5rem;
+
+    .board {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 0.5rem 0 0.5rem;
+    }
+
+    .piece {
+      display: inline-block;
+      width: fit-content;
+      margin: 0 0.5rem 0 0.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .board_image {
+      width: 7rem;
+      height: auto;
+    }
+
+    .piece_image {
+      width: 7rem;
+      height: auto;
+    }
+  }
+}
+
+.board>.piece {
+  margin: 0rem;
 }
