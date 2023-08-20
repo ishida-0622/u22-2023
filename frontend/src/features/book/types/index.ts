@@ -1,6 +1,6 @@
 export type Book = {
   b_id: string;
-  title_ja: string;
+  title_jp: string;
   title_en: string;
   summary: string;
   author: string;

@@ -1,0 +1,50 @@
+.dropdown {
+  display: flex;
+  font-size: 1.5rem;
+}
+
+.menu {
+  width: 15rem;
+  text-align: center;
+}
+
+.menu_title {
+  background: #090032;
+  color: #ffffff;
+}
+
+.sub_menu {
+  background-color: #DBDBFF;
+  position: relative;
+  border-radius: 0 0 1rem 0;
+}
+
+.sub_menu > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.sub_menu > ul > li {
+  padding: 10% 0;
+}
+
+.sub_menu > ul > li > a {
+  display: inline-block;
+  color: #4169E1;
+}
+
+@media (max-width: 960px) {
+  .menu {
+    width: 8rem;
+  }
+
+  .sub_menu {
+    display: none;
+  }
+
+  .menu:hover .sub_menu {
+    display: block;
+  }
+}
