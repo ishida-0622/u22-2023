@@ -1,4 +1,4 @@
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import styles from "./index.module.scss";
 import { Menubar } from "@/components/elements/Menubar";
@@ -10,10 +10,11 @@ export const PuzzleResult = () => {
   const { imageUrl } = router.query;
 
   useEffect(() => {
-    if (typeof imageUrl !== "string") {
-      Router.push("/");
+    if (router.isReady && typeof imageUrl !== "string") {
+      router.push("/");
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.query]);
 
   return (
     <div className={`${styles.container}`}>
