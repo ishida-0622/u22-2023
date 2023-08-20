@@ -31,6 +31,7 @@ response
     -   [パズルを登録する](#registerpuzzle)
     -   [パズルを編集する](#updatepuzzle)
     -   [パズルを削除する](#deletepuzzle)
+    -   [パズルを検索・取得する](#scanpuzzle)
     -   [パズルを全件取得する](#getpuzzles)
     -   [パズルを開始する](#startpuzzle)
     -   [パズルを終了する](#finishpuzzle)
@@ -376,7 +377,7 @@ request
 
 response
 
-```json
+```jsonc
 {
     "response_status": "success or fail",
     "result": {
