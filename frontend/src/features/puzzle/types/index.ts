@@ -1,5 +1,3 @@
-export * from "./puzzleSeal";
-
 export type Puzzle = {
   p_id: string;
   title: string;
