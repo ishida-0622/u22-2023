@@ -8,7 +8,6 @@ import { Notice } from "@/features/notice/types";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { GetAllNoticeResponse } from "@/features/notice/types/get";
-import { DeleteBookRequest } from "@/features/book/types/delete";
 import {
   DeleteNoticeRequest,
   DeleteNoticeResponse,
@@ -109,7 +108,7 @@ export const PostAnnouncementList = () => {
                     }
                   }}
                 >
-                <FontAwesomeIcon icon={faTrashAlt} />
+                  <FontAwesomeIcon icon={faTrashAlt} />
                 </button>
               </div>
             </h3>
