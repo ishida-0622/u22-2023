@@ -29,9 +29,6 @@ export const PuzzlePlay = () => {
   const router = useRouter();
   // 問題id
   const { id } = router.query;
-  // if (typeof id !== "string") {
-  //   throw new Error("TODO:");
-  // }
 
   const dispatch = useDispatch();
   const uid = useSelector((store: RootState) => store.uid);
@@ -41,12 +38,17 @@ export const PuzzlePlay = () => {
 
   useEffect(() => {
     const fetcher = async () => {
+      if (typeof id !== "string") {
+        throw new Error("p_id is not string");
+      }
       if (!uid) {
         throw new Error("uid is null");
       }
+
       const req: ScanPuzzleRequest = {
-        p_id: id as string,
+        p_id: id,
       };
+      // TODO:
       // const url = `${endpoint}/StartPuzzle`;
       const url = `http://localhost:3000/api/puzzle`;
       const res = await fetch(url, {
@@ -59,9 +61,11 @@ export const PuzzlePlay = () => {
       }
       setPuzzleData(json.result);
     };
-    fetcher();
+    if (router.isReady) {
+      fetcher();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router.query]);
 
   // 子要素のidがkey, 子要素が所属している親要素のidがvalueのHash Map
   const [parents, setParents] = useState<Map<string, string | null>>(new Map());
