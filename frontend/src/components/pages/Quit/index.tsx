@@ -3,6 +3,7 @@ import Router from "next/router";
 import { auth } from "@/features/auth/firebase";
 import { User, deleteUser, signInWithEmailAndPassword } from "firebase/auth";
 import { QuitRequest, QuitResponse } from "@/features/auth/types/quit";
+import styles from "./index.module.scss";
 
 export const Quit = () => {
   const [email, setEmail] = useState("");
@@ -52,19 +53,22 @@ export const Quit = () => {
 
   return (
     <main>
-      <h1>退会</h1>
+      <div className={`${styles.top}`}>
+      <h1 className={`${styles.main}`}>退会</h1>
       <form onSubmit={handlerSubmit}>
+      <div className={`${styles.header}`}>
+        <div className={`${styles.logintext}`}>
         <label>
-          メールアドレス
+          メールアドレス<br/>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required={true}
           />
-        </label>
+        </label><br/>
         <label>
-          パスワード
+          パスワード<br/>
           <input
             type="password"
             value={password}
@@ -72,8 +76,13 @@ export const Quit = () => {
             required={true}
           />
         </label>
-        <input type="submit" value="退会" />
+        <div className={`${styles.submit_button_field}`}>
+        <button type="submit" value="退会" className={`${styles.submit_button}`} >退会する</button>
+        </div>
+        </div>
+        </div>
       </form>
+      </div>
     </main>
   );
 };
