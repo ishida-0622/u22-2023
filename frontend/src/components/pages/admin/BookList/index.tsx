@@ -95,10 +95,6 @@ export const BookList = () => {
     }
   }, [allBooks]);
 
-  if (allBooks === undefined) {
-    return <h2>Loading...</h2>;
-  }
-
   if (error) {
     return (
       <main>
@@ -169,9 +165,15 @@ export const BookList = () => {
           <FontAwesomeIcon icon={faPen} />
         </button>
       </div>
-      <Modal className={`${styles.modal}`} isOpen={modalIsOpen} onRequestClose={closeModal}>
+      <Modal
+        className={`${styles.modal}`}
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+      >
         <div className={`${styles.close_button_field}`}>
-          <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+          <button className={`${styles.close_button}`} onClick={closeModal}>
+            ×
+          </button>
         </div>
         {viewBook && (
           <div>

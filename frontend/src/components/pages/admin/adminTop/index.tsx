@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import styles from "./index.module.scss";
+import { logout } from "@/features/auth/utils/logout";
 
 export const Top = () => {
   const router = useRouter();
-
-  const logout = () => {
-    router.push("/login");
-  };
 
   const book = () => {
     router.push("/admin/book");
@@ -21,7 +18,7 @@ export const Top = () => {
   };
 
   const news = () => {
-    router.push("/admin/news");
+    router.push("/admin/notice");
   };
 
   return (
@@ -29,24 +26,34 @@ export const Top = () => {
       <div className={`${styles.top_line}`}>
         <h1 className={`${styles.title}`}>admin Top</h1>
         <div className={`${styles.logout}`}>
-          <button className={`${styles.logout_button}`} onClick={logout}>ログアウト</button>
+          <button className={`${styles.logout_button}`} onClick={logout}>
+            ログアウト
+          </button>
         </div>
       </div>
       <div className={`${styles.menu}`}>
         <div className={`${styles.first_line}`}>
           <div className={`${styles.book}`}>
-            <button className={`${styles.submit_button}`} onClick={book}>本棚</button>
+            <button className={`${styles.submit_button}`} onClick={book}>
+              本棚
+            </button>
           </div>
           <div className={`${styles.question}`}>
-            <button className={`${styles.submit_button}`} onClick={puzzle}>問題</button>
+            <button className={`${styles.submit_button}`} onClick={puzzle}>
+              問題
+            </button>
           </div>
         </div>
         <div className={`${styles.second_line}`}>
-          <div className={`${styles.seal}`}>
-            <button className={`${styles.submit_button}`} onClick={sticker}>シール</button>
-          </div>
+          {/* <div className={`${styles.seal}`}>
+            <button className={`${styles.submit_button}`} onClick={sticker}>
+              シール
+            </button>
+          </div> */}
           <div className={`${styles.announcement}`}>
-            <button className={`${styles.submit_button}`} onClick={news}>お知らせ</button>
+            <button className={`${styles.submit_button}`} onClick={news}>
+              お知らせ
+            </button>
           </div>
         </div>
       </div>
