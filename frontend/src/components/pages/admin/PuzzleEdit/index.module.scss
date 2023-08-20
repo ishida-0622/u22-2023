@@ -1,0 +1,53 @@
+.container {
+  margin: 2%;
+  line-height: 2rem;
+}
+
+.form {
+  background-color: #d3d3d3;
+  padding: 1%;
+  border-radius: 0.5rem;
+  input {
+    margin: 1%;
+  }
+  Image {
+    margin-left: 3%;
+  }
+}
+
+.form label input[type="checkbox"] {
+  transform: scale(1.5);
+  margin: 2% 0 0 0.5%;
+  padding: 0;
+  width: auto;
+  height: auto;
+}
+
+.voice {
+  padding: 1%;
+}
+
+.link {
+  margin: 1% 0 0 1%;
+}
+
+.submit_button_field {
+  margin: 1%;
+}
+.submit_button {
+  box-shadow: none;
+  font-size: 1.3rem;
+  display: inline-block;
+  color: #fff;
+  font-weight: bold;
+  background-color: #5eff5e;
+  border-bottom: 50% solid #5eff5e;
+  border-radius: 0.5rem;
+  border-color: #5eff5e;
+  top: calc(50% - 0.5rem);
+  transition: background-color 0.3s ease;
+}
+.submit_button:hover {
+  background-color: #2aa32a;
+  cursor: pointer;
+}
