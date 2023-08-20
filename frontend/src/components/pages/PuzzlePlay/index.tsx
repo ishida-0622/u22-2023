@@ -49,7 +49,7 @@ export const PuzzlePlay = () => {
         p_id: id,
       };
       // TODO:
-      // const url = `${endpoint}/StartPuzzle`;
+      // const url = `${endpoint}/ScanPuzzle`;
       const url = `http://localhost:3000/api/puzzle`;
       const res = await fetch(url, {
         method: "POST",
