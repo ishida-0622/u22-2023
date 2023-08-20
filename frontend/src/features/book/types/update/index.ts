@@ -12,5 +12,4 @@ export type UpdateBookRequest = Pick<
   | "pdf"
   | "voice"
 >;
-
 export type UpdateBookResponse = ApiResponse;
