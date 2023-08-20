@@ -41,6 +41,7 @@ response
     -   [読み聞かせを登録する](#registerbook)
     -   [読み聞かせを編集する](#updatebook)
     -   [読み聞かせを削除する](#deletebook)
+    -   [読み聞かせを検索・取得する](#scanbook)
     -   [読み聞かせを全件取得する](#getbooks)
     -   [読み聞かせを開始する](#startbook)
     -   [読み聞かせを終了する](#finishbook)
@@ -794,6 +795,42 @@ response
     "response_status": "success or fail",
     "result": {},
     "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [ScanBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanBook)
+
+読み聞かせを検索・取得する
+
+request
+
+```json
+{
+    "b_id": "b_id"
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {
+        "b_id": "b_id",
+        "title_jp": "title_jp",
+        "title_en": "title_en",
+        "summary": "summary",
+        "author": "auhor",
+        "thumbnail": "サムネイル写真のURI",
+        "pdf": "PDFファイルのURI",
+        "voice": [
+            "1ページ目読み聞かせ音声のURI",
+            "2ページ目読み聞かせ音声のURI"
+        ],
+        "create_date": "create_date",
+        "update_date": "update_date"
+    },
+    "error": "エラー内容(idが存在しない等)"
 }
 ```
 
