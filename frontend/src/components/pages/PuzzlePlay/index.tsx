@@ -45,6 +45,20 @@ export const PuzzlePlay = () => {
         throw new Error("uid is null");
       }
 
+      // TODO:status取得処理
+      // const statusReq = {
+      //   u_id: uid,
+      // };
+      // const statusRes = await fetch(`${endpoint}/ScanStatus`, {
+      //   method: "POST",
+      //   body: JSON.stringify(statusReq),
+      // });
+      // const status = (await statusRes.json()).result;
+      // if (status.game_status !== "1") {
+      //   router.push("/");
+      //   return;
+      // }
+
       const req: ScanPuzzleRequest = {
         p_id: id,
       };
@@ -61,6 +75,7 @@ export const PuzzlePlay = () => {
       }
       setPuzzleData(json.result);
     };
+
     if (router.isReady) {
       fetcher();
     }
