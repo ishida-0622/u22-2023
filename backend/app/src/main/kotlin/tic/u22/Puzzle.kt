@@ -511,3 +511,60 @@ class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)
     }
 }
+
+/**
+ * パズルを検索・取得する
+ */
+class ScanPuzzle : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
+        val res = runBlocking {
+            try{
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+
+                // DynamoDBのインスタンス化、テーブル名の設定
+                val dynamo = Dynamo(Settings().AWS_REGION)
+
+                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                if(result.isEmpty()){throw Exception("this p_id is not exist")}
+
+                val formattedResult = utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                val res = mapOf(
+                    "p_id" to formattedResult["p_id"],
+                    "title" to formattedResult["title"],
+                    "description" to formattedResult["description"],
+                    "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+                    "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+                        mapOf(
+                            "word" to word["word"],
+                            "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+                            "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+                            "voice" to s3.getObject(bucketName, word["voice"] as String),
+                            "is_displayed" to word["is_displayed"] as Boolean,
+                            "is_dummy" to word["is_dummy"] as Boolean
+                        )
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
+
+                mapOf(
+                    "resposne_status" to "success",
+                    "result" to res
+                )
+            } catch (e: Exception) {
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
+            }
+        }
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}

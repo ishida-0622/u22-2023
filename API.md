@@ -31,6 +31,7 @@ response
     -   [パズルを登録する](#registerpuzzle)
     -   [パズルを編集する](#updatepuzzle)
     -   [パズルを削除する](#deletepuzzle)
+    -   [パズルを検索・取得する](#scanpuzzle)
     -   [パズルを全件取得する](#getpuzzles)
     -   [パズルを開始する](#startpuzzle)
     -   [パズルを終了する](#finishpuzzle)
@@ -359,6 +360,69 @@ response
     "response_status": "success or fail",
     "result": {},
     "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [ScanPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanPuzzle)
+
+パズルを検索・取得する
+
+request
+
+```json
+{
+    "p_id": "p_id"
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {
+        "p_id": "p_id",
+        "title": "title",
+        "description": "description",
+        "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
+        "words": [
+            {
+                "word": "I",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "have",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "a pen",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "am",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": true /* ダミーピースか否か */
+            }
+        ],
+        "create_date": "create_date",
+        "update_date": "update_date"
+    },
+    "error": "エラー内容(存在しないid等)"
 }
 ```
 
