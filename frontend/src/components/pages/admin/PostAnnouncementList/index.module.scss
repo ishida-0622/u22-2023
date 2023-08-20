@@ -54,10 +54,6 @@
     }
 }
 
-.submit_button_field_open {
-  margin-top: 1%;
-}
-
 .submit_button_field {
   display: flex;
   justify-content: center;
@@ -79,5 +75,46 @@
 }
 .submit_button:hover {
     background-color: #0083af;
+    cursor: pointer;
+}
+
+.modal {
+    max-width: max(50%, 480px);
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 30%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    background-color: #D3D3D3;
+    margin: 2%;
+    padding: 1%;
+    border: black;
+    border-radius: 0.5rem;
+}
+
+.modal_news {
+    padding: 5% 0;
+}
+
+.close_button_field {
+    float: right;
+    left: 100%;
+    top: 0;
+}
+.close_button {
+    box-shadow: none;
+    display: inline-block;
+    color: #fff;
+    font-weight: bold;
+    background-color: #c00000;
+    border-bottom: 10% solid #c00000;
+    border-radius: 0.5rem;
+    border-color: #c00000;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+}
+.close_button:hover {
+    background-color: #900000;
     cursor: pointer;
 }
