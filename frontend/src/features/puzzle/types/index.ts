@@ -10,5 +10,15 @@ export type Puzzle = {
   update_date: string;
 };
 
-/** 単語, シルエット, イラスト, 音声 */
-export type PuzzleWord = [string, string, string, string];
+export type PuzzleWord = {
+  word: string;
+  /** 影のURI */
+  shadow: string;
+  /** イラストのURI */
+  illustration: string;
+  voice: string;
+  /** be動詞などのイラストとして表示されないものかどうか */
+  is_displayed: boolean;
+  /* ダミーピースか否か */
+  is_dummy: boolean;
+};

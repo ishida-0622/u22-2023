@@ -4,7 +4,7 @@ import { Book } from "@/features/book/types";
 export type UpdateBookRequest = Pick<
   Book,
   | "b_id"
-  | "title_ja"
+  | "title_jp"
   | "title_en"
   | "summary"
   | "author"
