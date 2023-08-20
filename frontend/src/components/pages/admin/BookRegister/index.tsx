@@ -5,6 +5,9 @@ import {
   RegisterBookResponse,
 } from "@/features/book/types/register";
 
+import styles from "./index.module.scss";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
+
 export const BookRegister = () => {
   const [titleEn, setTitleEn] = useState("");
   const [titleJa, setTitleJa] = useState("");
@@ -102,11 +105,15 @@ export const BookRegister = () => {
   };
 
   return (
-    <main>
-      <form onSubmit={submitHandler}>
+    <main className={`${styles.container}`}>
+      <h1>本追加</h1>
+      <div className={`${styles.adminmenubar}`}>
+        <AdminMenubar />
+      </div>
+      <form onSubmit={submitHandler} className={`${styles.form}`}>
         <div>
           <label>
-            サムネイル画像
+            サムネイル画像：
             <input
               type="file"
               accept="image/*"
@@ -126,60 +133,72 @@ export const BookRegister = () => {
           </label>
         </div>
         <div>
-          <label>
-            英タイトル
-            <input
-              type="text"
-              value={titleEn}
-              onChange={(e) => setTitleEn(e.target.value)}
-            />
-          </label>
-          <label>
-            日本語タイトル
-            <input
-              type="text"
-              value={titleJa}
-              onChange={(e) => setTitleJa(e.target.value)}
-            />
-          </label>
-          <label>
-            著者
-            <input
-              type="text"
-              value={author}
-              onChange={(e) => setAuthor(e.target.value)}
-            />
-          </label>
-          <label>
-            あらすじ
-            <textarea
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-            />
-          </label>
-          <label>
-            pdfファイル
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => fileOnChangeHandler(e, setPdf)}
-            />
-          </label>
-          <label>
-            ページ数
-            <input
-              type="number"
-              value={pageNum}
-              onChange={(e) => {
-                const num = Number(e.target.value);
-                if (num < 0) {
-                  return;
-                }
-                setPageNum(num);
-                setVoices((val) => val.concat([null]).slice(0, num));
-              }}
-            />
-          </label>
+          <div>
+            <label>
+              英タイトル　　：
+              <input
+                type="text"
+                value={titleEn}
+                onChange={(e) => setTitleEn(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              日本語タイトル：
+              <input
+                type="text"
+                value={titleJa}
+                onChange={(e) => setTitleJa(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              著者　　　　　：
+              <input
+                type="text"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              あらすじ：
+              <textarea
+                value={summary}
+                onChange={(e) => setSummary(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              pdfファイル 　：
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(e) => fileOnChangeHandler(e, setPdf)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              ページ数　　　：
+              <input
+                type="number"
+                value={pageNum}
+                onChange={(e) => {
+                  const num = Number(e.target.value);
+                  if (num < 0) {
+                    return;
+                  }
+                  setPageNum(num);
+                  setVoices((val) => val.concat([null]).slice(0, num));
+                }}
+              />
+            </label>
+          </div>
           {Array(pageNum)
             .fill(undefined)
             .map((_, i) => (
@@ -195,7 +214,9 @@ export const BookRegister = () => {
               </div>
             ))}
         </div>
-        <button type="submit">追加</button>
+        <div className={`${styles.submit_button_field}`}>
+          <button className={`${styles.submit_button}`} type="submit">追加する</button>
+        </div>
       </form>
     </main>
   );

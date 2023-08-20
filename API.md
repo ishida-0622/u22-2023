@@ -281,7 +281,7 @@ response
 }
 ```
 
-### [UpdatePuzzle]()
+### [UpdatePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdatePuzzle)
 
 パズルを編集する
 
@@ -582,7 +582,7 @@ response
 }
 ```
 
-### [RestartPuzzle]()
+### [RestartPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RestartPuzzle)
 
 パズルを再開する(ステータスは 1 に変更される)
 
@@ -682,7 +682,7 @@ response
 }
 ```
 
-### [UpdateBook]()
+### [UpdateBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdateBook)
 
 本を編集する
 
@@ -821,7 +821,7 @@ response
 }
 ```
 
-### [FinishBook]()
+### [FinishBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishBook)
 
 読み聞かせを終了する
 
@@ -868,7 +868,7 @@ response
 }
 ```
 
-### [RestartBook]()
+### [RestartBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RestartBook)
 
 読み聞かせを再開する(ステータスは 3 に変更される)
 
@@ -1188,7 +1188,7 @@ request
 ```jsonc
 {
     "u_id": "u_id",
-    "game_status": 0 /* 0~4の数値(int) */
+    "game_status": "0" /* 0~4の数値(int) */
 }
 ```
 
