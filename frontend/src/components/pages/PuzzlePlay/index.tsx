@@ -8,9 +8,9 @@ import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { RootState } from "@/store";
 import { updateGameStatus } from "@/store/user";
 import {
-  StartPuzzleRequest,
-  StartPuzzleResponse,
-} from "@/features/puzzle/types/start";
+  ScanPuzzleRequest,
+  ScanPuzzleResponse,
+} from "@/features/puzzle/types/scan";
 import {
   PausePuzzleRequest,
   PausePuzzleResponse,
@@ -44,8 +44,7 @@ export const PuzzlePlay = () => {
       if (!uid) {
         throw new Error("uid is null");
       }
-      const req: StartPuzzleRequest = {
-        u_id: uid,
+      const req: ScanPuzzleRequest = {
         p_id: id as string,
       };
       // const url = `${endpoint}/StartPuzzle`;
@@ -54,7 +53,7 @@ export const PuzzlePlay = () => {
         method: "POST",
         body: JSON.stringify(req),
       });
-      const json = await (res.json() as Promise<StartPuzzleResponse>);
+      const json = await (res.json() as Promise<ScanPuzzleResponse>);
       if (json.response_status === "fail") {
         setError(json.error);
       }
