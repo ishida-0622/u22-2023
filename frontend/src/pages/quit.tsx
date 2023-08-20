@@ -1,4 +1,4 @@
-import { Quit } from "@/components/pages/Quit";
+import { Quit } from "@/components/pages/auth/Quit";
 
 const QuitPage = () => {
   return <Quit />;
