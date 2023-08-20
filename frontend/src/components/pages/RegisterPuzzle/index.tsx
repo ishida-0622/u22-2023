@@ -31,7 +31,7 @@ export const RegisterPuzzle = () => {
   const [dummyWord, setDummyWord] = useState("");
   const [splitDummyWord, setSplitDummyWord] = useState<string[]>([]);
   const [dummyImages, setDummyImages] = useState<(string | null)[]>([]);
-  const [dummyShadows, setDummyShadows] = useState<(string | null)[]>([]);
+  const [dummyShadows, setDummyShadows] = useState<string[]>([]);
   const [dummyVoices, setDummyVoices] = useState<(string | null)[]>([]);
 
   const router = useRouter();
@@ -88,7 +88,7 @@ export const RegisterPuzzle = () => {
     const arr = text.split(",");
     setSplitDummyWord(arr);
     setDummyImages((val) => val.concat([null]).slice(0, arr.length));
-    setDummyShadows((val) => val.concat([null]).slice(0, arr.length));
+    setDummyShadows((val) => val.concat(["null"]).slice(0, arr.length));
     setDummyVoices((val) => val.concat([null]).slice(0, arr.length));
   };
 
@@ -168,7 +168,6 @@ export const RegisterPuzzle = () => {
       shadows.some((v) => v === null) ||
       voices.some((v) => v === null) ||
       dummyImages.some((v) => v === null) ||
-      dummyShadows.some((v) => v === null) ||
       dummyVoices.some((v) => v === null)
     ) {
       alert("画像と音声をアップロードしてください");
@@ -232,11 +231,10 @@ export const RegisterPuzzle = () => {
 
   return (
     <main className={`${styles.container}`}>
-      <h2>パズル問題新規作成</h2>
+      <h1>パズル問題新規作成</h1>
       <div className={`${styles.adminmenubar}`}>
         <AdminMenubar />
       </div>
-      <hr />
       <form onSubmit={onSubmitHandler} className={`${styles.form}`}>
         <div>
           <label>
@@ -305,47 +303,47 @@ export const RegisterPuzzle = () => {
 
           {splitWord.map((word, i) => (
             <div key={`word${word}${i}`}>
-                <label>
-                  {`${word}のイラスト：`}
+              <label>
+                {`${word}のイラスト：`}
 
-                  <input
-                    type="file"
-                    accept="image/*"
-                    required={true}
-                    onChange={(e) => onChangeHandler(e, i, setImages)}
+                <input
+                  type="file"
+                  accept="image/*"
+                  required={true}
+                  onChange={(e) => onChangeHandler(e, i, setImages)}
+                />
+
+                {images[i] && (
+                  <Image
+                    src={images[i]!}
+                    alt={"イラスト写真をアップロードしてください"}
+                    width={100}
+                    height={100}
+                    className={`${styles.word_image}`}
                   />
+                )}
+              </label>
 
-                  {images[i] && (
-                    <Image
-                      src={images[i]!}
-                      alt={"イラスト写真をアップロードしてください"}
-                      width={100}
-                      height={100}
-                      className={`${styles.word_image}`}
-                    />
-                  )}
-                </label>
+              <label>
+                {`${word}のシルエット：`}
 
-                <label>
-                  {`${word}のシルエット：`}
+                <input
+                  type="file"
+                  accept="image/*"
+                  required={true}
+                  onChange={(e) => onChangeHandler(e, i, setShadows)}
+                />
 
-                  <input
-                    type="file"
-                    accept="image/*"
-                    required={true}
-                    onChange={(e) => onChangeHandler(e, i, setShadows)}
+                {shadows[i] && (
+                  <Image
+                    src={shadows[i]!}
+                    alt={"シルエットの写真をアップロードしてください"}
+                    width={100}
+                    height={100}
+                    className={`${styles.word_image}`}
                   />
-
-                  {shadows[i] && (
-                    <Image
-                      src={shadows[i]!}
-                      alt={"シルエットの写真をアップロードしてください"}
-                      width={100}
-                      height={100}
-                      className={`${styles.word_image}`}
-                    />
-                  )}
-                </label>
+                )}
+              </label>
 
               <label>
                 {`${word}のボイス：`}
@@ -357,7 +355,13 @@ export const RegisterPuzzle = () => {
                   onChange={(e) => onChangeHandler(e, i, setVoices)}
                 />
 
-                {voices[i] && <audio src={voices[i]!} controls={true} className={`${styles.word_voice}`} />}
+                {voices[i] && (
+                  <audio
+                    src={voices[i]!}
+                    controls={true}
+                    className={`${styles.word_voice}`}
+                  />
+                )}
               </label>
 
               <label className={`${styles.checkbox}`}>
@@ -411,27 +415,6 @@ export const RegisterPuzzle = () => {
               </label>
 
               <label>
-                {`${dummy}のシルエット：`}
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  required={true}
-                  onChange={(e) => onChangeHandler(e, i, setDummyShadows)}
-                />
-
-                {dummyShadows[i] && (
-                  <Image
-                    src={dummyShadows[i]!}
-                    alt={"シルエットの写真をアップロードしてください"}
-                    width={100}
-                    height={100}
-                    className={`${styles.word_image}`}
-                  />
-                )}
-              </label>
-
-              <label>
                 {`${dummy}のボイス：`}
 
                 <input
@@ -442,7 +425,11 @@ export const RegisterPuzzle = () => {
                 />
 
                 {dummyVoices[i] && (
-                  <audio src={dummyVoices[i]!} controls={true} className={`${styles.word_voice}`} />
+                  <audio
+                    src={dummyVoices[i]!}
+                    controls={true}
+                    className={`${styles.word_voice}`}
+                  />
                 )}
               </label>
             </div>

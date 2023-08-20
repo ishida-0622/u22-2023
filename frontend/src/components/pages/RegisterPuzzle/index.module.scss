@@ -1,26 +1,19 @@
 .container {
-    font-size: 1.5rem;
-    background: linear-gradient(50deg, hsl(200, 70%, 90%), hsl(200, 70%, 80%), hsl(200, 70%, 70%), hsl(200, 70%, 60%), hsl(200, 70%, 50%), hsl(200, 40%, 40%));
-    min-height: 100vh;
-    h2 {
-        font-size: 2.5rem;
+    background-color: #E0EFFF;
+    h1 {
+        background-color: white;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        border-bottom: 1px solid black;
     }
-    hr {
-        border-top: 1px solid black;
+    b {
+        font-size: 1.3rem;
     }
     input[type="text"] {
         width: 100%;
         text-align: left;
-        border-top-left-radius: 15rem;
-        border-top-right-radius: 15rem;
-        border-bottom-left-radius: 15rem;
-        border-bottom-right-radius: 15rem;
-        border-radius: 40rem;
-        border: 0.25rem solid palevioletred;
     }
     input[type="file"] {
         display: flex;
@@ -29,31 +22,21 @@
         width: 100%;
         height: 10rem;
         text-align: left;
-        border-top-left-radius: 15rem;
-        border-top-right-radius: 15rem;
-        border-bottom-left-radius: 15rem;
-        border-bottom-right-radius: 15rem;
-        border-radius: 0.5rem;
-        border: 0.25rem solid palevioletred;
     }
 }
 
 .adminmenubar {
     float: left;
-    margin-top: 0.8rem;
-    position: absolute;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .form {
     max-width: max(50%, 480px);
-    max-height: max(25rem, 370px);
     margin: 0 auto 0%;
     padding: 2rem;
-    border-radius: 0.5rem;
     justify-content: space-between;
-    overflow-y: auto;
-    // background-color: #26a8c5;
-    background: linear-gradient(50deg, hsl(200, 70%, 40%), hsl(200, 70%, 50%), hsl(200, 70%, 60%), hsl(200, 70%, 70%), hsl(200, 70%, 80%), hsl(200, 70%, 90%));
 }
 
 .overview {
@@ -89,10 +72,12 @@
 }
 
 .link {
+    font-size: 1.3rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    padding-top: 3%;
+    justify-content: center;
+    padding-bottom: 1rem;
 }
 
 .submit_button_field {
@@ -102,19 +87,19 @@
     margin-top: 5%;
 }
 .submit_button {
+    box-shadow: none;
+    font-size: 1.5rem;
     display: inline-block;
-    padding: 0;
     color: azure;
-    font-size: 2rem;
     font-weight: bold;
-    background-color: #df0013;
-    border-bottom: 50% solid #9f000c;
-    border-radius: 100vh;
-    border-color: #9f000c;
+    background-color: #00BFFF;
+    border-bottom: 50% solid #00BFFF;
+    border-radius: 0.5rem;
+    border-color: #00BFFF;
     top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
 }
 .submit_button:hover {
-    margin-top: 0.2rem;
-    border-bottom: 0.1rem solid #9f000c;
+    background-color: #0083af;
     cursor: pointer;
 }
