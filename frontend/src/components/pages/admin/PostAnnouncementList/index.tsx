@@ -126,8 +126,11 @@ export const PostAnnouncementList = () => {
         </button>
       </div>
 
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        <div className={`${styles.posts_open}`}>
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className={`${styles.modal}`}>
+        <div className={`${styles.close_button_field}`}>
+          <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+        </div>
+        <div className={`${styles.modal_news}`}>
           {news && (
             <div>
               <b>題名:</b>「{news.title}」
@@ -139,10 +142,8 @@ export const PostAnnouncementList = () => {
             </div>
           )}
         </div>
-        <div className={`${styles.submit_button_field_open}`}>
-          <button onClick={closeModal}>CLOSE</button>
-        </div>
       </Modal>
+
     </main>
   );
 };
