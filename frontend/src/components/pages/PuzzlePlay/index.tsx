@@ -201,7 +201,7 @@ export const PuzzlePlay = () => {
         <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
           {puzzleData.words.map((word) => {
             const child = children.get(word.shadow);
-            return (
+            return word.is_dummy ? null : (
               <Board
                 className={`${styles.board}`}
                 key={word.shadow}
