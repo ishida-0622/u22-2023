@@ -129,29 +129,32 @@ export const PuzzleList = () => {
         />
       </div>
 
-      {posts.map((post) => (
-        <div
-          key={post.title + post.create_date}
-          className={`${styles.posts}`}
-        >
-          <h3>
-            {post.title}
-            <button className={`${styles.posts_button}`} onClick={(e) => detail(e, post)}>
-              <FontAwesomeIcon icon={faPen} />
-            </button>
-            <button
-              onClick={() => {
-                if (confirm("削除しますか?")) {
-                  deletePuzzle(post.p_id);
-                }
-              }}
-            >
-              <FontAwesomeIcon icon={faTrashAlt} />
-            </button>
-          </h3>
-          <hr />
-        </div>
-      ))}
+      <div className={`${styles.posts}`}>
+        {posts.map((post) => (
+          <div
+            key={post.title + post.create_date}
+          >
+            <h3>
+              {post.title}
+              <div className={`${styles.puzzle_button}`}>
+                <button onClick={(e) => detail(e, post)}>
+                  <FontAwesomeIcon icon={faPen} />
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm("削除しますか?")) {
+                      deletePuzzle(post.p_id);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+              </div>
+            </h3>
+            <hr />
+          </div>
+        ))}
+      </div>
 
       <div className={`${styles.submit_button_field}`}>
         <button className={`${styles.submit_button}`} onClick={postPuzzle}>
@@ -161,56 +164,60 @@ export const PuzzleList = () => {
       </div>
 
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        <div className={`${styles.posts_open}`}>
-          {puzzle && (
-            <main>
-              <div>
-                <b>題名:</b>「{puzzle.title}」
-              </div>
-              <div>
-                <b>概要：</b>「{puzzle.description}」
-              </div>
-              <div>
-                <b>アイコン：</b>
-                <Image src={puzzle.icon} alt="icon" width={150} height={100} />
-              </div>
-              <div>
-              <b>問題：</b>
-                {puzzle.words.map((word) => (
-                  <div key={word.word}>
-                    <p>単語：{word.word}</p>
-                    <p>シルエット：</p>
-                    <Image
-                      src={word.shadow}
-                      alt={`${word.word} shadow`}
-                      width={150}
-                      height={100}
-                    />
-                    <p>イラスト：</p>
-                    <Image
-                      src={word.illustration}
-                      alt={`${word.word} illust`}
-                      width={150}
-                      height={100}
-                    />
-                    <p>音声：</p>
-                    <audio controls src={word.voice} />
-                    <hr />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <b>作成日：</b>「{puzzle.create_date}」
-              </div>
-              <div>
-                <b>更新日：</b>「{puzzle.update_date}」
-              </div>
-              <button onClick={edit}>編集</button>
-            </main>
-          )}
-        </div>
-        <div>
-          <button onClick={closeModal}>CLOSE</button>
+        <div className={`${styles.modal}`}>
+          <div className={`${styles.close_button_field}`}>
+            <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+          </div>
+          <div>
+            {puzzle && (
+              <main>
+                <div>
+                  <b>題名:</b>「{puzzle.title}」
+                </div>
+                <div>
+                  <b>概要：</b>「{puzzle.description}」
+                </div>
+                <div>
+                  <b>アイコン：</b>
+                  <Image src={puzzle.icon} alt="icon" width={150} height={100} />
+                </div>
+                <div>
+                <b>問題：</b>
+                  {puzzle.words.map((word) => (
+                    <div key={word.word}>
+                      <p>単語：{word.word}</p>
+                      <p>シルエット：</p>
+                      <Image
+                        src={word.shadow}
+                        alt={`${word.word} shadow`}
+                        width={150}
+                        height={100}
+                      />
+                      <p>イラスト：</p>
+                      <Image
+                        src={word.illustration}
+                        alt={`${word.word} illust`}
+                        width={150}
+                        height={100}
+                      />
+                      <p>音声：</p>
+                      <audio controls src={word.voice} />
+                      <hr />
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <b>作成日：</b>「{puzzle.create_date}」
+                </div>
+                <div>
+                  <b>更新日：</b>「{puzzle.update_date}」
+                </div>
+                <div className={`${styles.edit_button_field}`}>
+                  <button className={`${styles.edit_button}`} onClick={edit}>編集する</button>
+                </div>
+              </main>
+            )}
+          </div>
         </div>
       </Modal>
     </main>

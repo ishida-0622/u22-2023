@@ -12,7 +12,7 @@ export const AdminMenubar = () => {
               <Link href={`/admin`}>トップ</Link>
             </li>
             <li>
-              <Link href={`/admin/announcement-page`}>お知らせ</Link>
+              <Link href={`/admin/notice`}>お知らせ</Link>
             </li>
             <li>
               <Link href={`/admin/puzzle`}>問題</Link>
