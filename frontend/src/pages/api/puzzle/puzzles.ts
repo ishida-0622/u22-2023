@@ -18,7 +18,22 @@ const handler = (
 ) => {
   const result: GetAllPuzzleResponse = {
     response_status: "success",
-    result: [f(), f(), f(), f(), f()],
+    result: [
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+      f(),
+    ],
   };
   res.status(200).send(result);
 };

@@ -13,26 +13,54 @@ import {
 
 import styles from "@/components/pages/PuzzleSelect/index.module.scss";
 import BackgroundImage from "@/features/puzzle/select/images/puzzle-select-background.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const PuzzleSelect = () => {
   const [puzzles, setPuzzles] = useState<Puzzle[]>([]);
+  const [showPuzzles, setShowPuzzles] = useState<Puzzle[]>([]);
+  const [pageNum, setPageNum] = useState(1);
+
+  const pageIncrement = () => {
+    if (pageNum >= puzzles.length / 5) {
+      return;
+    }
+    const newPageNum = pageNum + 1;
+    const startIdx = (newPageNum - 1) * 5;
+    const endIdx = newPageNum * 5;
+    setPageNum(newPageNum);
+    setShowPuzzles(puzzles.slice(startIdx, endIdx));
+  };
+
+  const pageDecrement = () => {
+    if (pageNum <= 1) {
+      return;
+    }
+    const newPageNum = pageNum - 1;
+    const startIdx = (newPageNum - 1) * 5;
+    const endIdx = newPageNum * 5;
+    setPageNum(newPageNum);
+    setShowPuzzles(puzzles.slice(startIdx, endIdx));
+  };
 
   useLayoutEffect(() => {
     const fetchPuzzles = async () => {
       try {
         const req: GetAllPuzzleRequest = {};
-        const response = await fetch(`${endpoint}/GetPuzzles`, {
-          method: "POST",
-          body: JSON.stringify(req),
-        });
-        // const response = await fetch(
-        //   "http://localhost:3000/api/puzzle/puzzles"
-        // );
+        // TODO:
+        // const response = await fetch(`${endpoint}/GetPuzzles`, {
+        //   method: "POST",
+        //   body: JSON.stringify(req),
+        // });
+        const response = await fetch(
+          "http://localhost:3000/api/puzzle/puzzles"
+        );
         const json: GetAllPuzzleResponse = await response.json();
         if (json.response_status === "fail") {
           throw new Error(json.error);
         }
         setPuzzles(json.result);
+        setShowPuzzles(json.result.slice(0, 5));
       } catch (error) {
         if (error instanceof Error) {
           alert("パズル取得中にエラーが発生しました");
@@ -48,8 +76,14 @@ export const PuzzleSelect = () => {
 
   return (
     <div className={`${styles.container}`}>
+      <button
+        onClick={pageDecrement}
+        className={pageNum <= 1 ? "decrement_invalid" : "decrement"}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </button>
       <div>
-        {puzzles.map((puzzle, i) => (
+        {showPuzzles.map((puzzle, i) => (
           <div
             key={`${puzzle.title}${puzzle.create_date}`}
             className={`item_${i}`}
@@ -76,6 +110,14 @@ export const PuzzleSelect = () => {
           </div>
         ))}
       </div>
+      <button
+        onClick={pageIncrement}
+        className={
+          pageNum >= puzzles.length / 5 ? "increment_invalid" : "increment"
+        }
+      >
+        <FontAwesomeIcon icon={faArrowRight} />
+      </button>
       <Menubar />
       <Image
         className={`${styles.background}`}
