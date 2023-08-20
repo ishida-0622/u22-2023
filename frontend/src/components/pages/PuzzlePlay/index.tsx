@@ -140,12 +140,15 @@ export const PuzzlePlay = () => {
       ).play();
 
       setTimeout(() => {
-        router.push({
-          pathname: "/puzzle/result",
-          query: {
-            imageUrl: puzzleData.icon,
+        router.push(
+          {
+            pathname: "/puzzle/result",
+            query: {
+              imageUrl: puzzleData.icon,
+            },
           },
-        });
+          "/puzzle/result"
+        );
       }, 1500);
     }
   };
