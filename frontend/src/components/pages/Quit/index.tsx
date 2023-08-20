@@ -54,34 +54,43 @@ export const Quit = () => {
   return (
     <main>
       <div className={`${styles.top}`}>
-      <h1 className={`${styles.main}`}>退会</h1>
-      <form onSubmit={handlerSubmit}>
-      <div className={`${styles.header}`}>
-        <div className={`${styles.logintext}`}>
-        <label>
-          メールアドレス<br/>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required={true}
-          />
-        </label><br/>
-        <label>
-          パスワード<br/>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required={true}
-          />
-        </label>
-        <div className={`${styles.submit_button_field}`}>
-        <button type="submit" value="退会" className={`${styles.submit_button}`} >退会する</button>
-        </div>
-        </div>
-        </div>
-      </form>
+        <h1 className={`${styles.main}`}>退会</h1>
+        <form onSubmit={handlerSubmit}>
+          <div className={`${styles.header}`}>
+            <div className={`${styles.logintext}`}>
+              <label>
+                メールアドレス
+                <br />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required={true}
+                />
+              </label>
+              <br />
+              <label>
+                パスワード
+                <br />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required={true}
+                />
+              </label>
+              <div className={`${styles.submit_button_field}`}>
+                <button
+                  type="submit"
+                  value="退会"
+                  className={`${styles.submit_button}`}
+                >
+                  退会する
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </main>
   );
