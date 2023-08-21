@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./index.module.scss";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import Link from "next/link";
@@ -6,6 +7,8 @@ import {
   RegisterNoticeRequest,
   RegisterNoticeResponse,
 } from "@/features/notice/types/register";
+
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 
 // Modalを表示するHTML要素のidを指定
 Modal.setAppElement("#__next");
@@ -56,14 +59,16 @@ export const PostAnnouncement = () => {
   };
 
   return (
-    <main>
+    <main className={`${styles.container}`}>
       <div>
-        <h2>お知らせ投稿</h2>
-        <hr />
-        <form method="post" onSubmit={handleSubmit}>
+        <h1>お知らせ投稿</h1>
+        <div className={`${styles.adminmenubar}`}>
+          <AdminMenubar />
+        </div>
+        <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
           <div>
             <label>
-              題名
+              題名：
               <input
                 type="text"
                 name="title"
@@ -79,7 +84,7 @@ export const PostAnnouncement = () => {
               />
             </label>
             <label>
-              内容
+              内容：
               <textarea
                 name="content"
                 id="content"
@@ -93,21 +98,32 @@ export const PostAnnouncement = () => {
                 required={true}
               ></textarea>
             </label>
-            <button type="submit">投稿内容を確認</button>
-            <Link href="/admin/announcement-page">投稿一覧ページへ戻る</Link>
+            <div className={`${styles.submit_button_field}`}>
+              <button className={`${styles.submit_button}`} type="submit">投稿内容を確認</button>
+            </div>
+            <div className={`${styles.link}`}>
+              <Link href="/admin/announcement-page">投稿一覧ページへ戻る</Link>
+            </div>
           </div>
         </form>
       </div>
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-        <div>
-          <h2>投稿内容を確認してください。</h2>
-          <div>題名:「{formValues.title}」</div>
-          <div>投稿内容：「{formValues.content}」</div>
-          <button type="button" onClick={sendNews}>
-            投稿する
-          </button>
-        </div>
-      </Modal>
+      <div className={`${styles.modal_container}`}>
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+          <div className={`${styles.close_button_field}`}>
+            <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+          </div>
+          <div className={`${styles.modal}`}>
+            <h2>投稿内容を確認してください。</h2>
+            <div>題名:「{formValues.title}」</div>
+            <div>投稿内容：「{formValues.content}」</div>
+            <div className={`${styles.post_button_field}`}>
+              <button className={`${styles.post_button}`} type="button" onClick={sendNews}>
+                投稿する
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
     </main>
   );
 };
