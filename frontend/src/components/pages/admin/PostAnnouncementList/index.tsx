@@ -132,18 +132,16 @@ export const PostAnnouncementList = () => {
             <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
           </div>
           <div className={`${styles.modal}`}>
-            <div className={`${styles.modal_news}`}>
-              {news && (
-                <div>
-                  <b>題名:</b>「{news.title}」
-                </div>
-              )}
-              {news && (
-                <div>
-                  <b>投稿内容：</b>「{news.content}」
-                </div>
-              )}
-            </div>
+            {news && (
+              <div>
+                <b>題名:</b>「{news.title}」
+              </div>
+            )}
+            {news && (
+              <div>
+                <b>投稿内容：</b>「{news.content}」
+              </div>
+            )}
           </div>
         </Modal>
       </div>
