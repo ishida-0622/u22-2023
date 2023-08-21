@@ -494,3 +494,54 @@ class UpdateBook : RequestHandler<Map<String, Any>, String> {
         return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }
+
+/**
+ * 本を検索・取得する
+ */
+class ScanBook : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+        val res = runBlocking {
+            try{
+                if (event == null) {throw Exception("event is null")}
+                if (event["body"] == null) {throw Exception("body is null")}
+                val body = utils.formatJsonEnv(event["body"]!!)
+
+                val b_id = if (body["b_id"] != null) {body["b_id"]!! as String} else {throw Exception("b_id is null")}
+
+                // DynamoDBのインスタンス化、テーブル名の設定
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                val tableName = "book"
+
+                val result = dynamo.searchByKey(tableName, listOf(b_id))
+                val formattedResult = utils.toMap(utils.attributeValueToObject(result, "book"))
+                val res = mapOf(
+                    "b_id" to formattedResult["b_id"],
+                    "title_jp" to formattedResult["title_jp"],
+                    "title_en" to formattedResult["title_en"],
+                    "summary" to formattedResult["summary"],
+                    "author" to formattedResult["author"],
+                    "thumbnail"  to s3.getObject(bucketName, formattedResult["thumbnail"] as String),
+                    "pdf" to s3.getObject(bucketName, formattedResult["pdf"] as String),
+                    "voice" to (formattedResult["voice_keys"] as List<String>).map{
+                        s3.getObject(bucketName, it)
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
+
+                mapOf(
+                    "resposne_status" to "success",
+                    "result" to res
+                )
+            } catch (e: Exception) {
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
+            }
+        }
+        return gson.toJson(res)
+    }
+}
