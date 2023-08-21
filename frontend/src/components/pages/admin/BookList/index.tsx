@@ -166,7 +166,6 @@ export const BookList = () => {
         </button>
       </div>
       <Modal
-        className={`${styles.modal}`}
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
       >
@@ -176,24 +175,22 @@ export const BookList = () => {
           </button>
         </div>
         {viewBook && (
-          <div>
-            <div>
-              <h2>
-                {viewBook.title_en}
-                <br />
-                {viewBook.title_jp}
-              </h2>
-              <p>Book ID：{viewBook.b_id}</p>
-              <p>著者：{viewBook.author}</p>
-              <p>あらすじ：{viewBook.summary}</p>
-              <div className={styles.image_wrapper}>
-                <Image
-                  src={viewBook.thumbnail}
-                  alt="サムネイル"
-                  fill
-                  className={styles.image}
-                />
-              </div>
+          <div className={`${styles.modal}`}>
+            <h2>
+              {viewBook.title_en}
+              <br />
+              {viewBook.title_jp}
+            </h2>
+            <p>Book ID：{viewBook.b_id}</p>
+            <p>著者：{viewBook.author}</p>
+            <p>あらすじ：{viewBook.summary}</p>
+            <div className={styles.image_wrapper}>
+              <Image
+                src={viewBook.thumbnail}
+                alt="サムネイル"
+                fill
+                className={styles.image}
+              />
             </div>
           </div>
         )}

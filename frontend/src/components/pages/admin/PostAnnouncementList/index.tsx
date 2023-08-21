@@ -126,23 +126,25 @@ export const PostAnnouncementList = () => {
         </button>
       </div>
 
-      <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className={`${styles.modal}`}>
-        <div className={`${styles.close_button_field}`}>
-          <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
-        </div>
-        <div className={`${styles.modal_news}`}>
-          {news && (
-            <div>
-              <b>題名:</b>「{news.title}」
-            </div>
-          )}
-          {news && (
-            <div>
-              <b>投稿内容：</b>「{news.content}」
-            </div>
-          )}
-        </div>
-      </Modal>
+      <div className={`${styles.modal_container}`}>
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+          <div className={`${styles.close_button_field}`}>
+            <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+          </div>
+          <div className={`${styles.modal}`}>
+            {news && (
+              <div>
+                <b>題名:</b>「{news.title}」
+              </div>
+            )}
+            {news && (
+              <div>
+                <b>投稿内容：</b>「{news.content}」
+              </div>
+            )}
+          </div>
+        </Modal>
+      </div>
 
     </main>
   );

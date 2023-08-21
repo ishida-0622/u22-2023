@@ -78,29 +78,20 @@
     cursor: pointer;
 }
 
-.modal {
-    max-width: max(50%, 480px);
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 30%;
-    left: 48%;
-    transform: translate(-50%, -50%);
-    background-color: #D3D3D3;
-    margin: 2%;
-    padding: 1%;
-    border: black;
-    border-radius: 0.5rem;
+.modal-container {
+    position: relative;
 }
-
-.modal_news {
-    padding: 5% 0;
+.modal {
+    background-color: #D3D3D3;
+    padding: 5% 2% 2% 2%;
+    line-height: 2rem;
 }
 
 .close_button_field {
+    position: fixed;
     float: right;
-    left: 100%;
-    top: 0;
+    left: 90%;
+    top: 12%;
 }
 .close_button {
     box-shadow: none;
