@@ -411,7 +411,7 @@ select {
     position: absolute;
     transform: scale(0.5, 0.5);
     top: 0;
-    right: 1.5rem;
+    left: 33rem;
   }
 
   /*星の配置*/

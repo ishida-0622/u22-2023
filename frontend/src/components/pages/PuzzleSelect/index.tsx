@@ -82,7 +82,7 @@ export const PuzzleSelect = () => {
       >
         <FontAwesomeIcon icon={faArrowLeft} />
       </button>
-      <div>
+      <div className={`${styles.seal_star}`}>
         {showPuzzles.map((puzzle, i) => (
           <div
             key={`${puzzle.title}${puzzle.create_date}`}
