@@ -9,7 +9,7 @@
 
   .seal:hover {
     transition: .5s;
-    transform:scale(1.08,1.08);
+    transform: scale(1.08, 1.08);
   }
 }
 
@@ -46,12 +46,29 @@
     filter: brightness(0.8);
     cursor: pointer;
   }
-  
+
   .back_button {
     background-color: rgb(216, 216, 216);
   }
 
   .play_button {
-    background-color:rgb(150, 255, 255);
+    background-color: rgb(150, 255, 255);
+  }
+}
+
+.number {
+  color: aliceblue;
+  font-size: 2rem;
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
+  .modal_contents {
+    button {
+      width: 8rem;
+      height: 4rem;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 2rem;
+    }
   }
 }

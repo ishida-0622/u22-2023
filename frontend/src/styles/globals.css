@@ -75,107 +75,428 @@ select {
   }
 }
 
-/*シールと影の配置*/
-.item_0 {
+/*ページングボタンの設定*/
+.decrement {
   position: absolute;
-  top: 15rem;
-  left: 5rem;
+  top: 0;
+  left: 0;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 10%;
+  font-size: 3rem;
 }
 
-.item_1 {
-  position: absolute;
-  top: 5rem;
-  left: 20rem;
+.decrement:hover {
+  background-color: rgb(217, 255, 255);
+  color: rgb(0, 0, 50);
+  cursor: pointer;
 }
 
-.item_2 {
+.decrement_invalid {
   position: absolute;
-  top: 16rem;
-  left: 30rem;
+  top: 0;
+  left: 0;
+  background-color: darkgray;
+  pointer-events: none;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 10%;
+  font-size: 3rem;
 }
 
-.item_3 {
+.increment {
   position: absolute;
-  top: 12rem;
-  left: 50rem;
+  top: 0;
+  right: 0;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 10%;
+  font-size: 3rem;
 }
 
-.item_4 {
-  position: absolute;
-  top: 3rem;
-  left: 63rem;
+.increment:hover {
+  background-color: rgb(217, 255, 255);
+  color: rgb(0, 0, 50);
+  cursor: pointer;
 }
 
-/*星の配置*/
-.star_0 {
+.increment_invalid {
   position: absolute;
-  top: 21.5rem;
-  left: 12.5rem;
+  top: 0;
+  right: 0;
+  background-color: darkgray;
+  pointer-events: none;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 10%;
+  font-size: 3rem;
 }
 
-.star_1 {
-  position: absolute;
-  top: 18.5rem;
-  left: 15.5rem;
+/*PC*/
+@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+
+  /*シールと影の配置*/
+  .item_0 {
+    position: absolute;
+    top: 15rem;
+    left: 5rem;
+  }
+
+  .item_1 {
+    position: absolute;
+    top: 5rem;
+    left: 20rem;
+  }
+
+  .item_2 {
+    position: absolute;
+    top: 16rem;
+    left: 30rem;
+  }
+
+  .item_3 {
+    position: absolute;
+    top: 12rem;
+    left: 50rem;
+  }
+
+  .item_4 {
+    position: absolute;
+    top: 3rem;
+    left: 63rem;
+  }
+
+  /*星の配置*/
+  .star_0 {
+    position: absolute;
+    top: 21.5rem;
+    left: 12.5rem;
+  }
+
+  .star_1 {
+    position: absolute;
+    top: 18.5rem;
+    left: 15.5rem;
+  }
+
+  .star_2 {
+    position: absolute;
+    top: 15.5rem;
+    left: 18.5rem;
+  }
+
+  .star_3 {
+    position: absolute;
+    top: 16rem;
+    left: 25rem;
+  }
+
+  .star_4 {
+    position: absolute;
+    top: 19rem;
+    left: 27rem;
+  }
+
+  .star_5 {
+    position: absolute;
+    top: 22rem;
+    left: 29rem;
+    z-index: -1;
+  }
+
+  .star_6 {
+    position: absolute;
+    top: 24.5rem;
+    left: 38rem;
+  }
+
+  .star_7 {
+    position: absolute;
+    top: 23rem;
+    left: 42.5rem;
+  }
+
+  .star_8 {
+    position: absolute;
+    top: 22rem;
+    left: 47rem;
+  }
+
+  .star_9 {
+    position: absolute;
+    top: 19rem;
+    left: 57.5rem;
+  }
+
+  .star_10 {
+    position: absolute;
+    top: 16.5rem;
+    left: 60rem;
+  }
+
+  .star_11 {
+    position: absolute;
+    top: 14rem;
+    left: 62.5rem;
+  }
+
 }
 
-.star_2 {
-  position: absolute;
-  top: 15.5rem;
-  left: 18.5rem;
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  /*シールと影の配置*/
+  .item_0 {
+    position: absolute;
+    top: 20rem;
+    left: 5rem;
+  }
+
+  .item_1 {
+    position: absolute;
+    top: 5rem;
+    left: 20rem;
+  }
+
+  .item_2 {
+    position: absolute;
+    top: 25rem;
+    left: 30rem;
+  }
+
+  .item_3 {
+    position: absolute;
+    top: 12rem;
+    left: 45rem;
+  }
+
+  .item_4 {
+    position: absolute;
+    top: 3rem;
+    left: 63rem;
+  }
+
+  /*星の配置*/
+  .star_0 {
+    position: absolute;
+    top: 21.5rem;
+    left: 12.5rem;
+  }
+
+  .star_1 {
+    position: absolute;
+    top: 18.5rem;
+    left: 15.5rem;
+  }
+
+  .star_2 {
+    position: absolute;
+    top: 15.5rem;
+    left: 18.5rem;
+  }
+
+  .star_3 {
+    position: absolute;
+    top: 16rem;
+    left: 25rem;
+  }
+
+  .star_4 {
+    position: absolute;
+    top: 20rem;
+    left: 27rem;
+  }
+
+  .star_5 {
+    position: absolute;
+    top: 24rem;
+    left: 29rem;
+    z-index: -1;
+  }
+
+  .star_6 {
+    position: absolute;
+    top: 34.5rem;
+    left: 38rem;
+  }
+
+  .star_7 {
+    position: absolute;
+    top: 30rem;
+    left: 40.5rem;
+  }
+
+  .star_8 {
+    position: absolute;
+    top: 25.5rem;
+    left: 43rem;
+  }
+
+  .star_9 {
+    position: absolute;
+    top: 22rem;
+    left: 53rem;
+  }
+
+  .star_10 {
+    position: absolute;
+    top: 19rem;
+    left: 57rem;
+  }
+
+  .star_11 {
+    position: absolute;
+    top: 16rem;
+    left: 61rem;
+  }
 }
 
-.star_3 {
-  position: absolute;
-  top: 16rem;
-  left: 25rem;
-}
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
 
-.star_4 {
-  position: absolute;
-  top: 19rem;
-  left: 27rem;
-}
+  /*iPhon用のページングボタンの設定*/
+  .decrement {
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
+  }
 
-.star_5 {
-  position: absolute;
-  top: 22rem;
-  left: 29rem;
-  z-index: -1;
-}
+  .decrement_invalid {
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
+  }
 
-.star_6 {
-  position: absolute;
-  top: 24.5rem;
-  left: 38rem;
-}
+  .increment {
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
+  }
 
-.star_7 {
-  position: absolute;
-  top: 23rem;
-  left: 42.5rem;
-}
+  .increment_invalid {
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
+  }
 
-.star_8 {
-  position: absolute;
-  top: 22rem;
-  left: 47rem;
-}
+  /*シールと影の位置*/
+  .item_0 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 8rem;
+    left: 3rem;
+  }
 
-.star_9 {
-  position: absolute;
-  top: 19rem;
-  left: 57.5rem;
-}
+  .item_1 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 1rem;
+    left: 9rem;
+  }
 
-.star_10 {
-  position: absolute;
-  top: 16.5rem;
-  left: 60rem;
-}
+  .item_2 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 7rem;
+    left: 16rem;
+  }
 
-.star_11 {
-  position: absolute;
-  top: 14rem;
-  left: 62.5rem;
+  .item_3 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 5rem;
+    left: 25rem;
+  }
+
+  .item_4 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 0;
+    right: 1.5rem;
+  }
+
+  /*星の配置*/
+  .star_0 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 15rem;
+    left: 8rem;
+  }
+
+  .star_1 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 13rem;
+    left: 9rem;
+  }
+
+  .star_2 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 11rem;
+    left: 10rem;
+  }
+
+  .star_3 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 11rem;
+    left: 12.5rem;
+  }
+
+  .star_4 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 13rem;
+    left: 14rem;
+  }
+
+  .star_5 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 15rem;
+    left: 15.5rem;
+  }
+
+  .star_6 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 15rem;
+    left: 21rem;
+  }
+
+  .star_7 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 14.5rem;
+    left: 23rem;
+  }
+
+  .star_8 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 14rem;
+    left: 25rem;
+  }
+
+  .star_9 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 13rem;
+    left: 29.5rem;
+  }
+
+  .star_10 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 11rem;
+    left: 31.5rem;
+  }
+
+  .star_11 {
+    position: absolute;
+    transform: scale(0.5, 0.5);
+    top: 9rem;
+    left: 33.5rem;
+  }
+
 }

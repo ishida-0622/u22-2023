@@ -6,9 +6,10 @@
 
   .background {
     position: absolute;
+    top: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -5;
   }
 
   .items {
@@ -78,7 +79,7 @@
       border-right: 1.5rem solid transparent;
       border-left: 1.5rem solid transparent;
       transform: rotate(-37deg);
-      z-index: -2;
+      z-index: -5;
     }
 
     .stars::before {
