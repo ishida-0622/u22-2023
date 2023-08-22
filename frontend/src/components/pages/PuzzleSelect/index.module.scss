@@ -111,3 +111,29 @@
     transform: rotateZ(360deg);
   }
 }
+
+/*スマートフォン用の調整*/
+@media screen and (min-device-width: 668px) and (max-device-width: 896px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    left: 10%;
+    width: 90%;
+  }
+}
+
+/*iPad(小型)用の調整*/ 
+@media screen and (min-device-width: 1024px) and (max-device-width: 1179px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    right: 10%;
+    transform: scale(0.9, 0.9);
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    right: 3%;
+  }
+}
