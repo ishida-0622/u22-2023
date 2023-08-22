@@ -1,30 +1,44 @@
-.previousButtonInvalid {
-  background-color: gray;
-}
-.previousButton {
-  background-color: lightgray;
-}
-.nextButton {
-  background-color: lightgray;
-}
-.nextButtonInvalid {
-  background-color: gray;
-}
 
 .turn_calender {
   position: absolute;
   left: 0;
+  top: 3rem;
+
+  .previousButtonInvalid {
+    background-color: gray;
+    height: 3.2rem;
+    width: 5rem;
+    border-radius: 5%;
+  }
+  .previousButton {
+    background-color: lightgray;
+    height: 3.2rem;
+    width: 5rem;
+    border-radius: 5%;
+  }
+  .nextButton {
+    background-color: lightgray;
+    height: 3.2rem;
+    width: 5rem;
+    border-radius: 5%;
+  }
+  .nextButtonInvalid {
+    background-color: gray;
+    height: 3.2rem;
+    width: 5rem;
+    border-radius: 5%;
+  }
 }
 
 .information {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 2rem;
+  left: 2rem;
   width: 30%;
-  height: 30rem;
+  height: 40%;
   border: 1px solid black;
-  height: 100px;
   overflow: auto;
+  background-color:rgb(255, 255, 255);
 }
 
 .container {
@@ -42,4 +56,25 @@
   width: 8rem;
   height: auto;
   border-radius: 50%;
+}
+
+.button_container {
+  position: absolute;
+  bottom: 3rem;
+  right: 8rem;
+
+  .puzzle_button {
+    height: 12rem;
+    width: 18rem;
+    border-radius: 50%;
+    font-size: 5rem;
+  }
+  
+  .reading_button {
+    height: 12rem;
+    width: 18rem;
+    border-radius: 50%;
+    margin: 0 0 0 2rem;
+    font-size: 5rem;
+  }
 }

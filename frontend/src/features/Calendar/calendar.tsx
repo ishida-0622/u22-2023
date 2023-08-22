@@ -35,6 +35,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
     const [dateSet, setDateSet] = useState(new Set());
     useEffect(() => {
         if (LoginLogs) {
+            console.log(LoginLogs)
             setDateSet(new Set(LoginLogs.result.map(x => `${x.datetime.slice(0, 4)}${x.datetime.slice(5, 7)}${x.datetime.slice(8, 10)}`)));
         }
     }, [LoginLogs])
@@ -76,7 +77,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
         <div className={`${styles.calendar_container}`}>
             <table className={`${styles.calendar_table}`}>
                 <thead>
-                    <tr><th colSpan={7} className={`${styles.calendar_month}`}>{month + 1}</th></tr>
+                    <tr><th colSpan={7} className={`${styles.calendar_month}`}>{month + 1 + "月"}</th></tr>
                 </thead>
                 <tbody className={`${styles.calendar_days}`}>
                     {table.map((line, index) => (

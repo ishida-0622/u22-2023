@@ -41,24 +41,27 @@ export const Top = () => {
             <div id="information" className={styles.information}>
                 <Information />
             </div>
-            {/* パズルを始めるボタン */}
-            <button
-                className="#"
-                onClick={() => {
-                    Router.push("#");
-                }}
-            >
-                パズル
-            </button>
-            {/* 読み聞かせを始めるボタン */}
-            <button
-                className="#"
-                onClick={() => {
-                    Router.push("#");
-                }}
-            >
-                えほん
-            </button>
+            <div className={`${styles.button_container}`}>
+                {/* パズルを始めるボタン */}
+                <button
+                    className={`${styles.puzzle_button}`}
+                    onClick={() => {
+                        Router.push("#");
+                    }}
+                >
+                    パズル
+                </button>
+                {/* 読み聞かせを始めるボタン */}
+                <button
+                    className={`${styles.reading_button}`}
+                    onClick={() => {
+                        Router.push("#");
+                    }}
+                >
+                    えほん
+                </button>
+            </div>
+            <div className={`${styles.back_ground}`}></div>
         </div>
     );
 };
