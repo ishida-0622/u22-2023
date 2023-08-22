@@ -1,27 +1,21 @@
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "@/features/auth/firebase";
-import { RootState } from "@/store";
-import { updateUid, updateUser } from "@/store/user";
+import { updateEmail, updateUid, updateUser } from "@/store/user";
 import {
-  ScanUsersRequest,
-  ScanUsersResponse,
-} from "@/features/auth/types/scanUsers";
-import { isLogin } from "@/features/auth/utils/isLogin";
+  ScanUserRequest,
+  ScanUserResponse,
+} from "@/features/auth/types/scanUser";
 
 import styles from "./index.module.scss";
-import { getLoginUser } from "@/features/auth/utils/getLoginUser";
 
 export const Login = () => {
   const router = useRouter();
-
   const dispatch = useDispatch();
-  const user = useSelector((store: RootState) => store.user);
-  const uid = useSelector((store: RootState) => store.uid);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,13 +26,13 @@ export const Login = () => {
       throw new Error("内部エラー");
     }
 
-    const req: ScanUsersRequest = {
-      u_id: [uid],
+    const req: ScanUserRequest = {
+      u_id: uid,
     };
 
     // ユーザー情報を取得
-    const res: ScanUsersResponse = await (
-      await fetch(`${baseUrl}/ScanUsers`, {
+    const res: ScanUserResponse = await (
+      await fetch(`${baseUrl}/ScanUser`, {
         method: "POST",
         body: JSON.stringify(req),
       })
@@ -48,11 +42,7 @@ export const Login = () => {
     if (res.response_status === "fail") {
       throw new Error(res.error);
     }
-    // ユーザー情報が空の場合はエラーを投げる
-    if (res.result.length === 0) {
-      throw new Error("user data is not found");
-    }
-    const userData = res.result[0];
+    const userData = res.result;
     // グローバルステートを更新
     dispatch(updateUser(userData));
   };
@@ -67,15 +57,12 @@ export const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
-    }
     try {
       // ログイン処理
       const response = await signInWithEmailAndPassword(auth, email, password);
       // グローバルステートを更新
       dispatch(updateUid(response.user.uid));
+      dispatch(updateEmail(response.user.email));
       // ユーザー情報を取得
       await fetchUserData(response.user.uid);
       ScreenTransition();
