@@ -124,6 +124,7 @@ export const PostAnnouncement = () => {
           </div>
         </Modal>
       </div>
+
     </main>
   );
 };
