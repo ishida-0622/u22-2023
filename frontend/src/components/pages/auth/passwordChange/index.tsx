@@ -52,53 +52,53 @@ export const PasswordChange = () => {
   };
 
   return (
-    <div>
-      <h2 className={`${styles.title}`}>パスワード再設定</h2>
-      <hr />
-      <form method="post" onSubmit={handleSubmit}>
-        <div className={`${styles.password_field}`}>
-          <label>
-            <p className={`${styles.password_text}`}>新しいパスワード</p>
-            <input
-              className={`${styles.password_form}`}
-              type={isHidden.pass ? "password" : "text"}
-              name="password"
-              id="password"
-              value={password}
-              onChange={changePassword}
-              required={true}
-            />
-            <FontAwesomeIcon
-              icon={isHidden.pass ? faEye : faEyeSlash}
-              onClick={() => setIsHidden((v) => ({ ...v, pass: !v.pass }))}
-            />
-          </label>
-          <br></br>
-          <label>
-            <p className={`${styles.password_retype_field}`}>再入力</p>
-            <input
-              className={`${styles.password_retype_form}`}
-              type={isHidden.passConfirm ? "password" : "text"}
-              name="passwordConfirm"
-              id="passwordConfirm"
-              value={passwordConfirm}
-              onChange={changePasswordConfirm}
-              required={true}
-            />
-            <FontAwesomeIcon
-              icon={isHidden.passConfirm ? faEye : faEyeSlash}
-              onClick={() =>
-                setIsHidden((v) => ({ ...v, passConfirm: !v.passConfirm }))
-              }
-            />
-          </label>
-        </div>
-        <div className={`${styles.submit_button_field}`}>
-          <button className={`${styles.submit_button}`} type="submit">
-            変更する
-          </button>
-        </div>
-      </form>
-    </div>
+  <div className={`${styles.container}`}>
+    <h2 className={`${styles.title}`}>パスワード再設定</h2>
+    <hr />
+    <form method="post" onSubmit={handleSubmit}>
+      <div className={`${styles.password_field}`}>
+        <label>
+          <p className={`${styles.password_text}`}>新しいパスワード</p>
+          <input
+            className={`${styles.password_form}`}
+            type={isHidden.pass ? "password" : "text"}
+            name="password"
+            id="password"
+            value={password}
+            onChange={changePassword}
+            required={true}
+          />
+          <FontAwesomeIcon
+            icon={isHidden.pass ? faEye : faEyeSlash}
+            onClick={() => setIsHidden((v) => ({ ...v, pass: !v.pass }))}
+          />
+        </label>
+        <br></br>
+        <label>
+          <p className={`${styles.password_retype_field}`}>再入力</p>
+          <input
+            className={`${styles.password_retype_form}`}
+            type={isHidden.passConfirm ? "password" : "text"}
+            name="passwordConfirm"
+            id="passwordConfirm"
+            value={passwordConfirm}
+            onChange={changePasswordConfirm}
+            required={true}
+          />
+          <FontAwesomeIcon
+            icon={isHidden.passConfirm ? faEye : faEyeSlash}
+            onClick={() =>
+              setIsHidden((v) => ({ ...v, passConfirm: !v.passConfirm }))
+            }
+          />
+        </label>
+      </div>
+      <div className={`${styles.submit_button_field}`}>
+        <button className={`${styles.submit_button}`} type="submit">
+          変更する
+        </button>
+      </div>
+    </form>
+  </div>
   );
 };
