@@ -24,12 +24,14 @@ response
     -   [サインアップする](#signup)
     -   [ログインする](#login)
     -   [退会する](#quit)
+    -   [指定のユーザー ID の情報を取得する(存在しない u_id を指定した場合は fail を返す)](#scanuser)
     -   [指定のユーザー ID の情報をすべて取得する](#scanusers)
     -   [ユーザー情報を変更する](#UpdateUser)
 -   [パズル系](#パズル系)
     -   [パズルを登録する](#registerpuzzle)
     -   [パズルを編集する](#updatepuzzle)
     -   [パズルを削除する](#deletepuzzle)
+    -   [パズルを検索・取得する](#scanpuzzle)
     -   [パズルを全件取得する](#getpuzzles)
     -   [パズルを開始する](#startpuzzle)
     -   [パズルを終了する](#finishpuzzle)
@@ -39,6 +41,7 @@ response
     -   [読み聞かせを登録する](#registerbook)
     -   [読み聞かせを編集する](#updatebook)
     -   [読み聞かせを削除する](#deletebook)
+    -   [読み聞かせを検索・取得する](#scanbook)
     -   [読み聞かせを全件取得する](#getbooks)
     -   [読み聞かせを開始する](#startbook)
     -   [読み聞かせを終了する](#finishbook)
@@ -58,7 +61,7 @@ response
 
 ## 認証(アカウント)系
 
-### [SignUp]()
+### [SignUp](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/SignUp)
 
 サインアップする
 
@@ -66,12 +69,11 @@ request
 
 ```json
 {
+    "u_id": "u_id",
     "family_name": "family_name",
     "first_name": "first_name",
     "family_name_roma": "family_name_roma",
     "first_name_roma": "first_name_roma",
-    "email": "email",
-    "password": "password",
     "child_lock": "child_lock",
     "account_name": "account_name"
 }
@@ -87,7 +89,7 @@ response
 }
 ```
 
-### [Login]()
+### [Login]
 
 Lambda 関数ではなく、認証 Only になりました
 
@@ -109,6 +111,38 @@ response
 {
     "response_status": "success or fail",
     "result": {},
+    "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [ScanUser](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanUser)
+
+指定のユーザー ID の情報を取得する(存在しない u_id を指定した場合は fail を返す)
+
+request
+
+```json
+{
+    "u_id": "u_id"
+}
+```
+
+response
+
+```json
+{
+    "response_status": "success or fail",
+    "result": {
+        "u_id": "u_id",
+        "family_name": "family_name",
+        "first_name": "first_name",
+        "family_name_roma": "family_name_roma",
+        "first_name_roma": "first_name_roma",
+        "child_lock": "child_lock",
+        "account_name": "account_name",
+        "limit_time": "limit_time",
+        "delete_flg": "delete_flg"
+    },
     "error": "エラー内容(failの時のみ)"
 }
 ```
@@ -137,13 +171,10 @@ response
             "first_name": "first_name1",
             "family_name_roma": "family_name_roma1",
             "first_name_roma": "first_name_roma1",
-            "email": "email1",
-            "password": "password1",
             "child_lock": "child_lock1",
             "account_name": "account_name1",
             "limit_time": "limit_time1",
-            "delete_flg": "delete_flg1",
-            "authed": "authed1"
+            "delete_flg": "delete_flg1"
         },
         {
             "u_id": "u_id2",
@@ -151,13 +182,10 @@ response
             "first_name": "first_name2",
             "family_name_roma": "family_name_roma2",
             "first_name_roma": "first_name_roma2",
-            "email": "email2",
-            "password": "password2",
             "child_lock": "child_lock2",
             "account_name": "account_name2",
             "limit_time": "limit_time2",
-            "delete_flg": "delete_flg2",
-            "authed": "authed2"
+            "delete_flg": "delete_flg2"
         }
     ],
     "error": "エラー内容(failの時のみ)"
@@ -174,16 +202,14 @@ request
 
 ```jsonc
 {
-    "u_id": "u_id" /* 必須 */,
-    "family_name": "family_name" /* パスワード変更時は含めない */,
-    "first_name": "first_name" /* パスワード変更時は含めない */,
-    "family_name_roma": "family_name_roma" /* パスワード変更時は含めない */,
-    "first_name_roma": "first_name_roma" /* パスワード変更時は含めない */,
-    "email": "email" /* パスワード変更時は含めない */,
-    "password": "password" /* パスワード変更以外は含めない */,
-    "child_lock": "child_lock" /* パスワード変更時は含めない */,
-    "account_name": "account_name" /* パスワード変更時は含めない */,
-    "limit_time": "limit_time" /* パスワード変更時は含めない */
+    "u_id": "u_id",
+    "family_name": "family_name",
+    "first_name": "first_name",
+    "family_name_roma": "family_name_roma",
+    "first_name_roma": "first_name_roma",
+    "child_lock": "child_lock",
+    "account_name": "account_name",
+    "limit_time": "limit_time"
 }
 ```
 
@@ -257,7 +283,7 @@ response
 }
 ```
 
-### [UpdatePuzzle]()
+### [UpdatePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdatePuzzle)
 
 パズルを編集する
 
@@ -316,7 +342,7 @@ response
 }
 ```
 
-### [DeletePuzzle]()
+### [DeletePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeletePuzzle)
 
 パズルを削除する
 
@@ -335,6 +361,69 @@ response
     "response_status": "success or fail",
     "result": {},
     "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [ScanPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanPuzzle)
+
+パズルを検索・取得する
+
+request
+
+```json
+{
+    "p_id": "p_id"
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {
+        "p_id": "p_id",
+        "title": "title",
+        "description": "description",
+        "icon": "アイコン(問題一覧に表示されるやつ)写真のURI",
+        "words": [
+            {
+                "word": "I",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないものかどうか */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "have",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "a pen",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": true /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": false /* ダミーピースか否か */
+            },
+            {
+                "word": "am",
+                "shadow": "シルエットのURI",
+                "illustration": "イラストのURI",
+                "voice": "音声のURI",
+                "is_displayed": false /* be動詞などのイラストとして表示されないもの */,
+                "is_dummy": true /* ダミーピースか否か */
+            }
+        ],
+        "create_date": "create_date",
+        "update_date": "update_date"
+    },
+    "error": "エラー内容(存在しないid等)"
 }
 ```
 
@@ -530,7 +619,7 @@ response
 }
 ```
 
-### [PausePuzzle]()
+### [PausePuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/PausePuzzle)
 
 パズルを一時中断する
 
@@ -558,7 +647,7 @@ response
 }
 ```
 
-### [RestartPuzzle]()
+### [RestartPuzzle](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RestartPuzzle)
 
 パズルを再開する(ステータスは 1 に変更される)
 
@@ -658,7 +747,7 @@ response
 }
 ```
 
-### [UpdateBook]()
+### [UpdateBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/UpdateBook)
 
 本を編集する
 
@@ -706,6 +795,42 @@ response
     "response_status": "success or fail",
     "result": {},
     "error": "エラー内容(failの時のみ)"
+}
+```
+
+### [ScanBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/ScanBook)
+
+読み聞かせを検索・取得する
+
+request
+
+```json
+{
+    "b_id": "b_id"
+}
+```
+
+response
+
+```jsonc
+{
+    "response_status": "success or fail",
+    "result": {
+        "b_id": "b_id",
+        "title_jp": "title_jp",
+        "title_en": "title_en",
+        "summary": "summary",
+        "author": "auhor",
+        "thumbnail": "サムネイル写真のURI",
+        "pdf": "PDFファイルのURI",
+        "voice": [
+            "1ページ目読み聞かせ音声のURI",
+            "2ページ目読み聞かせ音声のURI"
+        ],
+        "create_date": "create_date",
+        "update_date": "update_date"
+    },
+    "error": "エラー内容(idが存在しない等)"
 }
 ```
 
@@ -797,7 +922,7 @@ response
 }
 ```
 
-### [FinishBook]()
+### [FinishBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/FinishBook)
 
 読み聞かせを終了する
 
@@ -820,7 +945,7 @@ response
 }
 ```
 
-### [PauseBook]()
+### [PauseBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/PauseBook)
 
 読み聞かせを一時中断する
 
@@ -844,7 +969,7 @@ response
 }
 ```
 
-### [RestartBook]()
+### [RestartBook](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/RestartBook)
 
 読み聞かせを再開する(ステータスは 3 に変更される)
 
@@ -932,7 +1057,7 @@ response
 }
 ``` -->
 
-### [DeleteNotice]()
+### [DeleteNotice](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/DeleteNotice)
 
 お知らせを削除する
 
@@ -1164,7 +1289,7 @@ request
 ```jsonc
 {
     "u_id": "u_id",
-    "game_status": 0 /* 0~4の数値(int) */
+    "game_status": "0" /* 0~4の数値(int) */
 }
 ```
 

@@ -1,0 +1,105 @@
+.container {
+    background-color: #E0EFFF;
+    h1 {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid black;
+    }
+    b {
+        font-size: 1.3rem;
+    }
+    input[type="text"] {
+        width: 100%;
+        text-align: left;
+    }
+    input[type="file"] {
+        display: flex;
+    }
+    textarea {
+        width: 100%;
+        height: 10rem;
+        text-align: left;
+    }
+}
+
+.adminmenubar {
+    float: left;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.form {
+    max-width: max(50%, 480px);
+    margin: 0 auto 0%;
+    padding: 2rem;
+    justify-content: space-between;
+}
+
+.overview {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.icon {
+    display: flex;
+}
+.icon_image,
+.word_image,
+.word_voice {
+    margin: 1%;
+}
+.image {
+    display: flex;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+    input[type="checkbox"] {
+    width: 1.5rem;
+    height: 1.5rem;
+    }
+}
+
+.link {
+    font-size: 1.3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1rem;
+}
+
+.submit_button_field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+.submit_button {
+    box-shadow: none;
+    font-size: 1.5rem;
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #00BFFF;
+    border-bottom: 50% solid #00BFFF;
+    border-radius: 0.5rem;
+    border-color: #00BFFF;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+}
+.submit_button:hover {
+    background-color: #0083af;
+    cursor: pointer;
+}
