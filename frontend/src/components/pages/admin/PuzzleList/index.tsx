@@ -89,7 +89,7 @@ export const PuzzleList = () => {
 
   // 新規作成画面へのrouter
   const postPuzzle = () => {
-    router.push("/admin/register");
+    router.push("/admin/puzzle/register");
   };
 
   useLayoutEffect(() => {
