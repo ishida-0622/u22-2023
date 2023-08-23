@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { ScanLoginDatesRequest, ScanLoginDatesResponse } from "@/features/log/types/scanLoginDates";
+import styles from "@/features/Calendar/calendar.module.scss";
 
 
 export const Calendar = ({ mm }: { mm: number }) => {
@@ -25,19 +26,19 @@ export const Calendar = ({ mm }: { mm: number }) => {
         })
         return await res.json() as Promise<ScanLoginDatesResponse>;
     }
-    const { data: LoginLogs , error } = useSWR(
-        `${
-            process.env.NEXT_PUBLIC_API_ENDPOINT
+    const { data: LoginLogs, error } = useSWR(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT
         }/ScanL_log`,
         featcher
     )
 
     const [dateSet, setDateSet] = useState(new Set());
-    useEffect(()=>{
+    useEffect(() => {
         if (LoginLogs) {
+            console.log(LoginLogs)
             setDateSet(new Set(LoginLogs.result.map(x => `${x.datetime.slice(0, 4)}${x.datetime.slice(5, 7)}${x.datetime.slice(8, 10)}`)));
         }
-    },[LoginLogs])
+    }, [LoginLogs])
 
     if (!LoginLogs) {
         return <p>loading</p>;
@@ -56,10 +57,10 @@ export const Calendar = ({ mm }: { mm: number }) => {
         table.push(tempLine);
     }
 
-    function numPadding(num : number) {
+    function numPadding(num: number) {
         return num.toString().padStart(2, "0");
     }
-    function strPadding(num : string) {
+    function strPadding(num: string) {
         return num.padStart(2, "0");
     }
 
@@ -73,16 +74,16 @@ export const Calendar = ({ mm }: { mm: number }) => {
     }
 
     return (
-        <div>
-            <table>
+        <div className={`${styles.calendar_container}`}>
+            <table className={`${styles.calendar_table}`}>
                 <thead>
-                    <tr><th colSpan={7}>{month + 1}</th></tr>
+                    <tr><th colSpan={7} className={`${styles.calendar_month}`}>{month + 1 + "がつ"}</th></tr>
                 </thead>
-                <tbody>
+                <tbody className={`${styles.calendar_days}`}>
                     {table.map((line, index) => (
-                        <tr key={index}>
+                        <tr key={index} className={`${styles.calendar_week}`}>
                             {line.map((item) => (
-                                <td key={item}>{isLogined(String(item))}</td>
+                                <td key={item} className={`${styles.calendar_day}`}>{isLogined(String(item))}</td>
                             ))}
                         </tr>
                     ))}

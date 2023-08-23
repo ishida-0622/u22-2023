@@ -2,6 +2,7 @@ import { GetAllNoticeResponse } from "../notice/types/get";
 import useSWR from "swr";
 import { useEffect, useState } from "react";
 import { Notice } from "../notice/types";
+import styles from "@/features/Information/information.module.scss"
 
 export const Information = () => {
     const featcher = async (key: string) => {
@@ -38,7 +39,7 @@ export const Information = () => {
         }
     }
     return (
-        <div>
+        <div className={`${styles.information_container}`}>
             {informationData.map((item, index) => (
                 <div key={index}>
                     {isSecond(index)}
