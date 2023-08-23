@@ -77,7 +77,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
         <div className={`${styles.calendar_container}`}>
             <table className={`${styles.calendar_table}`}>
                 <thead>
-                    <tr><th colSpan={7} className={`${styles.calendar_month}`}>{month + 1 + "月"}</th></tr>
+                    <tr><th colSpan={7} className={`${styles.calendar_month}`}>{month + 1 + "がつ"}</th></tr>
                 </thead>
                 <tbody className={`${styles.calendar_days}`}>
                     {table.map((line, index) => (
