@@ -1,8 +1,16 @@
+import { useState } from "react";
 import Router from "next/router";
 import Image from "next/image";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 import Modal from "react-modal";
+import { RootState } from "@/store";
+import { endpoint } from "@/features/api";
 import { Puzzle } from "@/features/puzzle/types";
+import {
+  StartPuzzleRequest,
+  StartPuzzleResponse,
+} from "@/features/puzzle/types/start";
+
 import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
@@ -14,10 +22,30 @@ export const Seal = ({
   icon,
   className,
 }: Puzzle & { className?: string }) => {
+  const uid = useSelector((store: RootState) => store.uid);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
-  const startPuzzle = () => Router.push(`/puzzle/play/${p_id}`);
+  const startPuzzle = async () => {
+    if (!uid) return;
+    const req: StartPuzzleRequest = {
+      p_id: p_id,
+      u_id: uid,
+    };
+    try {
+      const res = await fetch(`${endpoint}/StartPuzzle`, {
+        method: "POST",
+        body: JSON.stringify(req),
+      });
+      const json: StartPuzzleResponse = await res.json();
+      if (json.response_status === "fail") {
+        throw new Error(json.error);
+      }
+      Router.push(`/puzzle/play/${p_id}`);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div className={`${styles.seal_modal}`}>
