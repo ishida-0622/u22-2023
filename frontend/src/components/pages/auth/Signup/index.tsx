@@ -5,6 +5,7 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   sendEmailVerification,
+  signOut,
 } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
@@ -70,16 +71,6 @@ export const Signup = () => {
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))
         .user;
-      dispatch(
-        updateUser({
-          ...formValues,
-          u_id: user.uid,
-          limit_time: 1440,
-          delete_flg: false,
-        })
-      );
-      dispatch(updateUid(user.uid));
-      dispatch(updateEmail(user.email));
       const req: SignUpRequest = {
         ...formValues,
         u_id: user.uid,
@@ -91,9 +82,6 @@ export const Signup = () => {
       });
       const json: SignUpResponse = await res.json();
       if (json.response_status === "fail") {
-        dispatch(updateUid(null));
-        dispatch(updateUser(null));
-        dispatch(updateEmail(null));
         await deleteUser(user);
         throw new Error(json.error);
       }
@@ -104,6 +92,7 @@ export const Signup = () => {
         redirectUrl ? { url: redirectUrl } : undefined
       );
 
+      await signOut(auth);
       screenTransition();
     } catch (e) {
       console.error(e);
