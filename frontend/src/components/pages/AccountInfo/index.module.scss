@@ -51,8 +51,9 @@ input:checked + .volume_label {
   }
 
   .navigate_time {
+    position: relative;
+    right: 14rem;
     text-align: left;
-    margin: 0 0 0 1rem;
     font-size: 1rem;
     font-weight: bold;
   }
@@ -110,8 +111,8 @@ input:checked + .volume_label {
 
   /*音量の設定*/
   .volume {
-    position: relative;
-    left: 20rem;
+    position: absolute;
+    right: 5%;
     width: 20rem;
 
     .zero {
@@ -170,8 +171,9 @@ input:checked + .volume_label {
   }
 
   .time_limit {
-    position: relative;
-    top: 0.5rem;
+    position: absolute;
+    top: 16rem;
+    left: 15rem;
 
     .hour_navigate {
       position: relative;
@@ -209,9 +211,9 @@ input:checked + .volume_label {
   }
 
   .buttons {
-    position: relative;
-    top: 0.5rem;
-    left: 29rem;
+    position: absolute;
+    top: 20rem;
+    right: 5%;
     width: 10rem;
 
     .back_button {
