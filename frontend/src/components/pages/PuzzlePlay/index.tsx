@@ -19,7 +19,7 @@ import { endpoint } from "@/features/api";
 
 import { Piece } from "@/features/puzzle/play/Piece";
 import { Board } from "@/features/puzzle/play/Board";
-import { Puzzle } from "@/features/puzzle/types";
+import { Puzzle, PuzzleWord } from "@/features/puzzle/types";
 
 import styles from "./index.module.scss";
 import styles2 from "@/features/puzzle/play/Piece/index.module.scss";
@@ -34,6 +34,7 @@ export const PuzzlePlay = () => {
   const uid = useSelector((store: RootState) => store.uid);
 
   const [puzzleData, setPuzzleData] = useState<Puzzle>();
+  const [shufflePiece, setShufflePiece] = useState<PuzzleWord[]>([]);
   const [error, setError] = useState<string>();
 
   useEffect(() => {
@@ -71,6 +72,9 @@ export const PuzzlePlay = () => {
         setError(json.error);
       }
       setPuzzleData(json.result);
+      setShufflePiece(
+        json.result.words.slice().sort(() => Math.random() - Math.random())
+      );
     };
 
     if (router.isReady) {
@@ -202,7 +206,7 @@ export const PuzzlePlay = () => {
     return <p>loading</p>;
   }
 
-  const pieces = puzzleData.words.map((word) => (
+  const pieces = shufflePiece.map((word) => (
     <Piece className={`${styles.piece}`} key={word.word} id={word.word}>
       <Image
         className={`${styles.piece_image}`}
