@@ -36,7 +36,7 @@ export const RegisterPuzzle = () => {
 
   const router = useRouter();
   const puzzleList = () => {
-    router.push("admin/puzzle");
+    router.push("/admin/puzzle");
   };
   const changeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
