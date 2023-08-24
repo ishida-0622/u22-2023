@@ -4,7 +4,12 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { updateEmail, updateStatus, updateUid, updateUser } from "@/store/user";
+import {
+  updateEmail,
+  updateGameStatus,
+  updateUid,
+  updateUser,
+} from "@/store/user";
 
 import { isLogin } from "@/features/auth/utils/isLogin";
 import { getLoginUser } from "@/features/auth/utils/getLoginUser";
@@ -27,7 +32,7 @@ export const LoginStatusWatch = () => {
   const uid = useSelector((store: RootState) => store.uid);
   const email = useSelector((store: RootState) => store.email);
   const user = useSelector((store: RootState) => store.user);
-  const status = useSelector((store: RootState) => store.status);
+  const status = useSelector((store: RootState) => store.gameStatus);
 
   const NO_LOGIN_REQUIRED = [
     "/login",
@@ -74,7 +79,7 @@ export const LoginStatusWatch = () => {
             if (json.response_status === "fail") {
               reject(json.error);
             }
-            dispatch(updateStatus(json.result));
+            dispatch(updateGameStatus(json.result.game_status));
             resolve();
           });
         });

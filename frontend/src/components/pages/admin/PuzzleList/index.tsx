@@ -89,7 +89,7 @@ export const PuzzleList = () => {
 
   // 新規作成画面へのrouter
   const postPuzzle = () => {
-    router.push("/admin/register-puzzle");
+    router.push("/admin/puzzle/register");
   };
 
   useLayoutEffect(() => {
@@ -131,9 +131,7 @@ export const PuzzleList = () => {
 
       <div className={`${styles.posts}`}>
         {posts.map((post) => (
-          <div
-            key={post.title + post.create_date}
-          >
+          <div key={post.title + post.create_date}>
             <h3>
               {post.title}
               <div className={`${styles.puzzle_button}`}>
@@ -166,7 +164,9 @@ export const PuzzleList = () => {
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <div className={`${styles.modal}`}>
           <div className={`${styles.close_button_field}`}>
-            <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+            <button className={`${styles.close_button}`} onClick={closeModal}>
+              ×
+            </button>
           </div>
           <div>
             {puzzle && (
@@ -179,10 +179,15 @@ export const PuzzleList = () => {
                 </div>
                 <div>
                   <b>アイコン：</b>
-                  <Image src={puzzle.icon} alt="icon" width={150} height={100} />
+                  <Image
+                    src={puzzle.icon}
+                    alt="icon"
+                    width={150}
+                    height={100}
+                  />
                 </div>
                 <div>
-                <b>問題：</b>
+                  <b>問題：</b>
                   {puzzle.words.map((word) => (
                     <div key={word.word}>
                       <p>単語：{word.word}</p>
@@ -213,7 +218,9 @@ export const PuzzleList = () => {
                   <b>更新日：</b>「{puzzle.update_date}」
                 </div>
                 <div className={`${styles.edit_button_field}`}>
-                  <button className={`${styles.edit_button}`} onClick={edit}>編集する</button>
+                  <button className={`${styles.edit_button}`} onClick={edit}>
+                    編集する
+                  </button>
                 </div>
               </main>
             )}
