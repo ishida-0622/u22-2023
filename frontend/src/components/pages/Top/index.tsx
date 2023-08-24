@@ -1,11 +1,14 @@
+import { useState } from "react";
 import Router from "next/router";
 import Image from "next/image";
+import { useLogin } from "@/features/auth/hooks/useLogin";
 import { Calendar } from "@/features/Calendar/calendar";
 import { Information } from "@/features/Information/information";
-import { useState } from "react";
 import styles from "./index.module.scss";
 
 export const Top = () => {
+  useLogin();
+
   function nextMonth() {
     if (addMonth < 0) setAddMonth(addMonth + 1);
   }
@@ -13,6 +16,7 @@ export const Top = () => {
     if (addMonth > -3) setAddMonth(addMonth - 1);
   }
   const [addMonth, setAddMonth] = useState(0);
+
   return (
     <div className={`${styles.container}`}>
       {/* カレンダー置く場所 */}
