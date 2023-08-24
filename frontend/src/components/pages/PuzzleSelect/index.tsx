@@ -1,5 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { endpoint } from "@/features/api";
 import { Seal } from "@/features/puzzle/select/Seal";
@@ -13,8 +15,6 @@ import {
 
 import styles from "@/components/pages/PuzzleSelect/index.module.scss";
 import BackgroundImage from "@/features/puzzle/select/images/puzzle-select-background.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const PuzzleSelect = () => {
   const [puzzles, setPuzzles] = useState<Puzzle[]>([]);
@@ -47,14 +47,10 @@ export const PuzzleSelect = () => {
     const fetchPuzzles = async () => {
       try {
         const req: GetAllPuzzleRequest = {};
-        // TODO:
-        // const response = await fetch(`${endpoint}/GetPuzzles`, {
-        //   method: "POST",
-        //   body: JSON.stringify(req),
-        // });
-        const response = await fetch(
-          "http://localhost:3000/api/puzzle/puzzles"
-        );
+        const response = await fetch(`${endpoint}/GetPuzzles`, {
+          method: "POST",
+          body: JSON.stringify(req),
+        });
         const json: GetAllPuzzleResponse = await response.json();
         if (json.response_status === "fail") {
           throw new Error(json.error);
