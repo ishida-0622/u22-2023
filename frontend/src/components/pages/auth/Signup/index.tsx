@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   createUserWithEmailAndPassword,
@@ -12,6 +12,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { auth } from "@/features/auth/firebase";
 import { updateUid, updateUser, updateEmail } from "@/store/user";
 import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
+import { endpoint } from "@/features/api";
 
 import styles from "./index.module.scss";
 
@@ -30,6 +31,8 @@ export const Signup = () => {
     account_name: "",
     child_lock: "",
   });
+
+  const active = useRef(false);
 
   const [confirm, setConfirm] = useState({
     passwordConfirm: "",
@@ -59,10 +62,11 @@ export const Signup = () => {
       return;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
+    if (active.current) {
+      return;
     }
+    active.current = true;
+
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))
         .user;
@@ -81,7 +85,7 @@ export const Signup = () => {
         u_id: user.uid,
       };
 
-      const res = await fetch(`${baseUrl}/SignUp`, {
+      const res = await fetch(`${endpoint}/SignUp`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -103,6 +107,7 @@ export const Signup = () => {
       screenTransition();
     } catch (e) {
       console.error(e);
+      active.current = false;
       alert("作成に失敗しました");
     }
   };
