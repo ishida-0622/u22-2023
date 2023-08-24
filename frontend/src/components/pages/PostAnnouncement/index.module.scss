@@ -1,0 +1,123 @@
+.container {
+  background-color: #e0efff;
+  min-height: 100vh;
+  h1 {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid black;
+  }
+}
+
+.adminmenubar {
+  float: left;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.form {
+  max-width: max(50%, 480px);
+  margin: 0 auto 0%;
+  padding: 2rem 0 0;
+  justify-content: space-between;
+  line-height: 2rem;
+  input[type="text"] {
+    width: 100%;
+    text-align: left;
+  }
+  textarea {
+    width: 100%;
+    height: 15rem;
+    text-align: left;
+  }
+}
+
+.link {
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 1rem;
+}
+
+.submit_button_field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5%;
+}
+.submit_button {
+  box-shadow: none;
+  font-size: 1.5rem;
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #00bfff;
+  border-bottom: 50% solid #00bfff;
+  border-radius: 0.5rem;
+  border-color: #00bfff;
+  top: calc(50% - 0.5rem);
+  transition: background-color 0.3s ease;
+}
+.submit_button:hover {
+  background-color: #0083af;
+  cursor: pointer;
+}
+
+.modal-container {
+  position: relative;
+}
+.modal {
+  background-color: #d3d3d3;
+  padding: 2%;
+  line-height: 2rem;
+}
+
+.close_button_field {
+  position: fixed;
+  float: right;
+  left: 90%;
+  top: 12%;
+}
+.close_button {
+  box-shadow: none;
+  font-size: 1.3rem;
+  display: inline-block;
+  color: #fff;
+  font-weight: bold;
+  background-color: #c00000;
+  border-bottom: 10% solid #c00000;
+  border-radius: 0.5rem;
+  border-color: #c00000;
+  top: calc(50% - 0.5rem);
+  transition: background-color 0.3s ease;
+}
+.close_button:hover {
+  background-color: #900000;
+  cursor: pointer;
+}
+
+.post_button_field {
+  margin: 2% 1% 1%;
+}
+.post_button {
+  box-shadow: none;
+  font-size: 1.3rem;
+  display: inline-block;
+  color: #fff;
+  font-weight: bold;
+  background-color: #5eff5e;
+  border-bottom: 50% solid #5eff5e;
+  border-radius: 0.5rem;
+  border-color: #5eff5e;
+  top: calc(50% - 0.5rem);
+  transition: background-color 0.3s ease;
+}
+.post_button:hover {
+  background-color: #2aa32a;
+  cursor: pointer;
+}
