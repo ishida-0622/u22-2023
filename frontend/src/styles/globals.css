@@ -34,7 +34,7 @@ html:focus-within {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   text-rendering: optimizeSpeed;
   line-height: 1.5;
 }
@@ -134,7 +134,6 @@ select {
 
 /*PC*/
 @media screen and (min-device-height: 442px) and (max-device-height: 720px) {
-
   /*シールと影の配置*/
   .item_0 {
     position: absolute;
@@ -239,7 +238,6 @@ select {
     top: 14rem;
     left: 62.5rem;
   }
-
 }
 
 /* iPadランドスケープ */
@@ -352,7 +350,6 @@ select {
 
 /* iPhoneランドスケープ */
 @media screen and (max-device-height: 441px) and (orientation: landscape) {
-
   /*iPhon用のページングボタンの設定*/
   .decrement {
     width: 3rem;
@@ -498,5 +495,4 @@ select {
     top: 9rem;
     left: 33.5rem;
   }
-
 }

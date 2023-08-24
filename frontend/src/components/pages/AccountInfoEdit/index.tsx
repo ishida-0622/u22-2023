@@ -45,11 +45,12 @@ export const AccountInfoEdit = () => {
   }
 
   return (
-    <main>
+    <main className={styles.container}>
+      <div className={`${styles.back_ground}`}></div>
       <form onSubmit={onSubmitHandler}>
         <div>
           <label>
-            姓名
+            <span>姓名</span>
             <input
               type="text"
               value={formValues.family_name}
@@ -61,7 +62,7 @@ export const AccountInfoEdit = () => {
         </div>
         <div>
           <label>
-            名前
+            <span>名前</span>
             <input
               type="text"
               value={formValues.first_name}
@@ -73,7 +74,7 @@ export const AccountInfoEdit = () => {
         </div>
         <div>
           <label>
-            姓名（ローマ字）
+            <span>姓名（ローマ字）</span>
             <input
               type="text"
               value={formValues.family_name_roma}
@@ -88,7 +89,7 @@ export const AccountInfoEdit = () => {
         </div>
         <div>
           <label>
-            名前（ローマ字）
+            <span>名前（ローマ字）</span>
             <input
               type="text"
               value={formValues.first_name_roma}
@@ -103,7 +104,7 @@ export const AccountInfoEdit = () => {
         </div>
         <div>
           <label>
-            アカウント名
+            <span>アカウント名</span>
             <input
               type="text"
               value={formValues.account_name}
@@ -115,7 +116,7 @@ export const AccountInfoEdit = () => {
         </div>
         <div>
           <label>
-            チャイルドロック
+            <span>チャイルドロック</span>
             <input
               type="text"
               value={formValues.child_lock}
@@ -125,10 +126,17 @@ export const AccountInfoEdit = () => {
             />
           </label>
         </div>
-        <button type="button" onClick={() => router.back()}>
+        <button
+          type="button"
+          className={styles.not_change}
+          onClick={() => router.back()}
+        >
           戻る
         </button>
-        <button type="submit">変更</button>
+        <button type="submit" className={styles.change}>
+          変更
+        </button>
+        <br />
         <Link href={"/password-change"} target={"_blank"}>
           パスワードの変更はこちら
         </Link>
