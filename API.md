@@ -89,9 +89,29 @@ response
 }
 ```
 
-### [Login]
+### [Login](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Login)
 
-Lambda 関数ではなく、認証 Only になりました
+~~Lambda 関数ではなく、認証 Only になりました~~
+
+ログインログ追加のために再度作りました
+
+request
+
+```json
+{
+    "u_id": "u_id"
+}
+```
+
+response
+
+```json
+{
+    "response_status": "success or fail",
+    "result": {},
+    "error": "エラー内容(failの時のみ)"
+}
+```
 
 ### [Quit](https://8j8e5qzbwa.execute-api.us-east-1.amazonaws.com/default/Quit)
 
