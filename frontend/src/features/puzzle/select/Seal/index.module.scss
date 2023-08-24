@@ -8,8 +8,8 @@
   user-select: none;
 
   .seal:hover {
-    transition: .5s;
-    transform:scale(1.08,1.08);
+    transition: 0.5s;
+    transform: scale(1.08, 1.08);
   }
 }
 
@@ -18,7 +18,7 @@
   text-align: center;
 
   h3 {
-    font-size: 5.0rem;
+    font-size: 5rem;
   }
 
   p {
@@ -46,16 +46,29 @@
     filter: brightness(0.8);
     cursor: pointer;
   }
-  
+
   .back_button {
     background-color: rgb(216, 216, 216);
   }
 
   .play_button {
-    background-color:rgb(150, 255, 255);
+    background-color: rgb(150, 255, 255);
   }
 }
 
 .number {
-  mix-blend-mode:difference;
+  color: aliceblue;
+  font-size: 2rem;
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
+  .modal_contents {
+    button {
+      width: 8rem;
+      height: 4rem;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 2rem;
+    }
+  }
 }

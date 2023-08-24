@@ -6,9 +6,10 @@
 
   .background {
     position: absolute;
+    top: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -5;
   }
 
   .items {
@@ -78,7 +79,7 @@
       border-right: 1.5rem solid transparent;
       border-left: 1.5rem solid transparent;
       transform: rotate(-37deg);
-      z-index: -2;
+      z-index: -5;
     }
 
     .stars::before {
@@ -108,5 +109,31 @@
 
   .star_field:hover {
     transform: rotateZ(360deg);
+  }
+}
+
+/*スマートフォン用の調整*/
+@media screen and (min-device-width: 668px) and (max-device-width: 896px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    left: 10%;
+    width: 90%;
+  }
+}
+
+/*iPad(小型)用の調整*/ 
+@media screen and (min-device-width: 1024px) and (max-device-width: 1179px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    right: 10%;
+    transform: scale(0.9, 0.9);
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    right: 3%;
   }
 }
