@@ -20,6 +20,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
   const line = Math.ceil(lastDate / 7);
 
   const fetcher = async (key: string) => {
+    console.log("fetch");
     if (!uid) {
       console.warn("uid is null");
       return;
@@ -33,7 +34,13 @@ export const Calendar = ({ mm }: { mm: number }) => {
       method: "POST",
       body: JSON.stringify(req),
     });
-    return (await res.json()) as Promise<ScanLoginDatesResponse>;
+    const json: ScanLoginDatesResponse = await res.json();
+    console.log(json);
+    return [];
+    if (json.response_status === "fail") {
+      throw new Error(json.error);
+    }
+    return json.result;
   };
 
   const { data: LoginLogs, error } = useSWR(
@@ -43,11 +50,10 @@ export const Calendar = ({ mm }: { mm: number }) => {
 
   const [dateSet, setDateSet] = useState(new Set());
   useEffect(() => {
-    if (LoginLogs) {
-      console.log(LoginLogs);
+    if (LoginLogs !== undefined) {
       setDateSet(
         new Set(
-          LoginLogs.result.map(
+          LoginLogs.map(
             (x) =>
               `${x.datetime.slice(0, 4)}${x.datetime.slice(
                 5,
@@ -59,7 +65,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
     }
   }, [LoginLogs]);
 
-  if (!LoginLogs) {
+  if (LoginLogs === undefined) {
     return <p>loading</p>;
   }
   if (error) {
