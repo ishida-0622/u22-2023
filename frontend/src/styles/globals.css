@@ -4,7 +4,7 @@
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Remove default margin */
@@ -18,37 +18,37 @@ figure,
 blockquote,
 dl,
 dd {
-    margin: 0;
+  margin: 0;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
 ul[role="list"],
 ol[role="list"] {
-    list-style: none;
+  list-style: none;
 }
 
 /* Set core root defaults */
 html:focus-within {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 /* Set core body defaults */
 body {
-    min-height: 100vh;
-    text-rendering: optimizeSpeed;
-    line-height: 1.5;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
 }
 
 /* A elements that don't have a class get default styles */
 a:not([class]) {
-    text-decoration-skip-ink: auto;
+  text-decoration-skip-ink: auto;
 }
 
 /* Make images easier to work with */
 img,
 picture {
-    max-width: 100%;
-    display: block;
+  max-width: 100%;
+  display: block;
 }
 
 /* Inherit fonts for inputs and buttons */
@@ -56,20 +56,126 @@ input,
 button,
 textarea,
 select {
-    font: inherit;
+  font: inherit;
 }
 
 /* Remove all animations and transitions for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
-    html:focus-within {
-        scroll-behavior: auto;
-    }
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*シールと影の配置*/
+.item_0 {
+  position: absolute;
+  top: 15rem;
+  left: 5rem;
+}
+
+.item_1 {
+  position: absolute;
+  top: 5rem;
+  left: 20rem;
+}
+
+.item_2 {
+  position: absolute;
+  top: 16rem;
+  left: 30rem;
+}
+
+.item_3 {
+  position: absolute;
+  top: 12rem;
+  left: 50rem;
+}
+
+.item_4 {
+  position: absolute;
+  top: 3rem;
+  left: 63rem;
+}
+
+/*星の配置*/
+.star_0 {
+  position: absolute;
+  top: 21.5rem;
+  left: 12.5rem;
+}
+
+.star_1 {
+  position: absolute;
+  top: 18.5rem;
+  left: 15.5rem;
+}
+
+.star_2 {
+  position: absolute;
+  top: 15.5rem;
+  left: 18.5rem;
+}
+
+.star_3 {
+  position: absolute;
+  top: 16rem;
+  left: 25rem;
+}
+
+.star_4 {
+  position: absolute;
+  top: 19rem;
+  left: 27rem;
+}
+
+.star_5 {
+  position: absolute;
+  top: 22rem;
+  left: 29rem;
+  z-index: -1;
+}
+
+.star_6 {
+  position: absolute;
+  top: 24.5rem;
+  left: 38rem;
+}
+
+.star_7 {
+  position: absolute;
+  top: 23rem;
+  left: 42.5rem;
+}
+
+.star_8 {
+  position: absolute;
+  top: 22rem;
+  left: 47rem;
+}
+
+.star_9 {
+  position: absolute;
+  top: 19rem;
+  left: 57.5rem;
+}
+
+.star_10 {
+  position: absolute;
+  top: 16.5rem;
+  left: 60rem;
+}
+
+.star_11 {
+  position: absolute;
+  top: 14rem;
+  left: 62.5rem;
 }
