@@ -88,10 +88,6 @@ export const LoginStatusWatch = () => {
     await Promise.all([userDataFetcher, userStatusFetcher]);
   };
 
-  const toTop = () => {
-    router.push("/");
-  };
-
   const toLogin = () => {
     router.push("/login");
   };
@@ -100,10 +96,8 @@ export const LoginStatusWatch = () => {
     isLogin().then((res) => {
       if (res) {
         if (isNoLoginRequired) {
-          if (uid && email && user && status) {
-            toTop();
-          } else {
-            dataFetch().then(() => toTop());
+          if (!(uid && email && user && status)) {
+            dataFetch();
           }
         } else {
           if (!(uid && email && user && status)) {
