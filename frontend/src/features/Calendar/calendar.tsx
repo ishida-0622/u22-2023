@@ -35,8 +35,6 @@ export const Calendar = ({ mm }: { mm: number }) => {
       body: JSON.stringify(req),
     });
     const json: ScanLoginDatesResponse = await res.json();
-    console.log(json);
-    return [];
     if (json.response_status === "fail") {
       throw new Error(json.error);
     }
