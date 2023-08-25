@@ -11,11 +11,12 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
 import { updateUid, updateUser, updateEmail } from "@/store/user";
+import { endpoint } from "@/features/api";
+import { childLockCheck } from "@/features/auth/validation/childLockCheck";
+import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
 import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
 import styles from "./index.module.scss";
-import { childLockCheck } from "@/features/auth/validation/childLockCheck";
-import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
 
 export const Signup = () => {
   const router = useRouter();
@@ -39,10 +40,6 @@ export const Signup = () => {
   });
 
   const [isHiddenPass, setIsHiddenPass] = useState({ pass: true, check: true });
-  const [isHiddenChildLock, setIsHiddenChildLock] = useState({
-    pass: true,
-    check: true,
-  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,10 +68,6 @@ export const Signup = () => {
       return;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
-    }
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))
         .user;
@@ -93,7 +86,7 @@ export const Signup = () => {
         u_id: user.uid,
       };
 
-      const res = await fetch(`${baseUrl}/SignUp`, {
+      const res = await fetch(`${endpoint}/SignUp`, {
         method: "POST",
         body: JSON.stringify(req),
       });
