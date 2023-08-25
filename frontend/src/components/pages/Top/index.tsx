@@ -57,7 +57,7 @@ export const Top = () => {
         width={400}
         height={400}
         onClick={() => {
-          Router.push("#");
+          Router.push("/account-info");
         }}
         className={`${styles.icon}`}
       />
