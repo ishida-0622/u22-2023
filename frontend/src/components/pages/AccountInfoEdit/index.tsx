@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { updateUser } from "@/store/user";
 import { endpoint } from "@/features/api";
+import { childLockCheck } from "@/features/auth/validation/childLockCheck";
+import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
 import {
   UpdateUserRequest,
   UpdateUserResponse,
@@ -21,6 +23,21 @@ export const AccountInfoEdit = () => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      !(
+        romaNameCheck(formValues.family_name_roma) &&
+        romaNameCheck(formValues.first_name_roma)
+      )
+    ) {
+      alert("ローマ字の入力欄が不正です");
+      return;
+    }
+
+    if (!childLockCheck(formValues.child_lock)) {
+      alert("チャイルドロックは数字4桁にしてください");
+      return;
+    }
 
     const req: UpdateUserRequest = formValues;
     try {
