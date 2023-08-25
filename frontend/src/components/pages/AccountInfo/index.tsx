@@ -64,9 +64,7 @@ export const AccountInfo = () => {
 
   const puzzleLogFetcher = async (url: string) => {
     const request: ScanPuzzleLogRequest = {
-      // TODO:uid
-      // u_id: uid!,
-      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
+      u_id: uid!,
     };
     const response = await fetch(url, {
       method: "POST",
@@ -78,9 +76,7 @@ export const AccountInfo = () => {
 
   const bookLogFetcher = async (url: string) => {
     const request: ScanBookLogRequest = {
-      // TODO:uid
-      // u_id: uid!,
-      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
+      u_id: uid!,
     };
     const response = await fetch(url, {
       method: "POST",
@@ -151,14 +147,36 @@ export const AccountInfo = () => {
           <Tab>えほんログ</Tab>
         </TabList>
         <TabPanel className={`${styles.info}`}>
-          <p>メールアドレス：{email}</p>
-          <p>名前：{`${userData.family_name} ${userData.first_name}`}</p>
-          <p>
-            名前（ローマ字）：
-            {`${userData.family_name_roma} ${userData.first_name_roma}`}
-          </p>
-          <p>アカウント名：{userData.account_name}</p>
-          <p>チャイルドロック：{userData.child_lock}</p>
+          <table className={`${styles.info_text}`}>
+            <tbody>
+              <tr className={`${styles.email}`}>
+                <td>メールアドレス</td>
+                <td>：</td>
+                <td>{email}</td>
+              </tr>
+              <tr className={`${styles.name}`}>
+                <td>名前</td>
+                <td>：</td>
+                <td>{`${userData.family_name} ${userData.first_name}`}</td>
+              </tr>
+              <tr className={`${styles.name_roma}`}>
+                <td>名前（ローマ字）</td>
+                <td>：</td>
+                <td>{`${userData.family_name_roma} ${userData.first_name_roma}`}</td>
+              </tr>
+              <tr className={`${styles.account_name}`}>
+                <td>アカウント名</td>
+                <td>：</td>
+                <td>{userData.account_name}</td>
+              </tr>
+              <tr className={`${styles.child_lock}`}>
+                <td>チャイルドロック</td>
+                <td>：</td>
+                <td>{userData.child_lock}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
           <button
             type="button"
             name="account_change"

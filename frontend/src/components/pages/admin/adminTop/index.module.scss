@@ -1,5 +1,4 @@
 .container {
-    font-size: 2.5rem;
     background-color: #E0EFFF;
     min-height: 100vh;
     h1 {
@@ -8,30 +7,16 @@
         align-items: center;
         justify-content: center;
     }
-    hr {
-        border-top: 1px solid black;
-    }
 }
 
-.top_line {
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid black;
-}
 .title {
+    background-color: white;
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 18%;
-}
-.logout {
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    padding: 1rem 1rem;
+    padding: 1% 0;
+    border-bottom: 1px solid rgb(154, 154, 154);
 }
 
 .menu {
@@ -42,7 +27,6 @@
     grid-gap: 2rem;
     border-radius: 10vh;
     background-color: white;
-    font-size: 2.5rem;
 }
 
 .first_line {
@@ -57,22 +41,26 @@
 
 .book,
 .question,
-.seal,
-.announcement {
+// .seal,
+.announcement,
+.logout {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2rem;
+    font-size: 1.5rem;
 }
 
 .logout_button {
+    width: 12rem;
+    height: 5rem;
     display: inline-block;
     color: azure;
     font-weight: bold;
     background-color: #df0013;
-    border-bottom: 50% solid #9f000c;
-    border-radius: 2rem;
-    border-color: #9f000c;
+    border-bottom: 50% solid #df0013;
+    border-radius: 0.5rem;
+    border-color: #df0013;
     transition: background-color 0.3s ease;
     top: calc(50% - 0.5rem);
 }
@@ -85,7 +73,6 @@
     width: 12rem;
     height: 5rem;
     box-shadow: none;
-    font-size: 1.5rem;
     display: inline-block;
     color: azure;
     font-weight: bold;
