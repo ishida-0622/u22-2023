@@ -1,19 +1,20 @@
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   createUserWithEmailAndPassword,
   deleteUser,
   sendEmailVerification,
-  signOut,
 } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
 import { updateUid, updateUser, updateEmail } from "@/store/user";
-import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 import { endpoint } from "@/features/api";
+import { childLockCheck } from "@/features/auth/validation/childLockCheck";
+import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
+import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
 import styles from "./index.module.scss";
 
@@ -33,19 +34,12 @@ export const Signup = () => {
     child_lock: "",
   });
 
-  const active = useRef(false);
-
   const [confirm, setConfirm] = useState({
     passwordConfirm: "",
-    childLockConfirm: "",
     consent: false,
   });
 
   const [isHiddenPass, setIsHiddenPass] = useState({ pass: true, check: true });
-  const [isHiddenChildLock, setIsHiddenChildLock] = useState({
-    pass: true,
-    check: true,
-  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,23 +48,39 @@ export const Signup = () => {
       alert("パスワードが一致しません。");
       return;
     }
-    if (formValues.child_lock !== confirm.childLockConfirm) {
-      alert("チャイルドロックが一致しません。");
-      return;
-    }
     if (!confirm.consent) {
       alert("規約に同意してください。");
       return;
     }
 
-    if (active.current) {
+    if (
+      !(
+        romaNameCheck(formValues.family_name_roma) &&
+        romaNameCheck(formValues.first_name_roma)
+      )
+    ) {
+      alert("ローマ字の入力欄が不正です");
       return;
     }
-    active.current = true;
+
+    if (!childLockCheck(formValues.child_lock)) {
+      alert("チャイルドロックは数字4桁にしてください");
+      return;
+    }
 
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))
         .user;
+      dispatch(
+        updateUser({
+          ...formValues,
+          u_id: user.uid,
+          limit_time: 1440,
+          delete_flg: false,
+        })
+      );
+      dispatch(updateUid(user.uid));
+      dispatch(updateEmail(user.email));
       const req: SignUpRequest = {
         ...formValues,
         u_id: user.uid,
@@ -82,6 +92,9 @@ export const Signup = () => {
       });
       const json: SignUpResponse = await res.json();
       if (json.response_status === "fail") {
+        dispatch(updateUid(null));
+        dispatch(updateUser(null));
+        dispatch(updateEmail(null));
         await deleteUser(user);
         throw new Error(json.error);
       }
@@ -92,11 +105,9 @@ export const Signup = () => {
         redirectUrl ? { url: redirectUrl } : undefined
       );
 
-      await signOut(auth);
       screenTransition();
     } catch (e) {
       console.error(e);
-      active.current = false;
       alert("作成に失敗しました");
     }
   };
@@ -266,8 +277,9 @@ export const Signup = () => {
           <label>
             チャイルドロック
             <input
-              type={isHiddenChildLock.pass ? "password" : "text"}
+              type="text"
               name="child_lock"
+              inputMode="numeric"
               id="child_lock"
               value={formValues.child_lock}
               onChange={(e) =>
@@ -278,47 +290,9 @@ export const Signup = () => {
               }
               required={true}
             />
-            <span
-              onClick={() =>
-                setIsHiddenChildLock((v) => ({ ...v, pass: !v.pass }))
-              }
-              role="presentation"
-            >
-              <FontAwesomeIcon
-                icon={isHiddenChildLock.pass ? faEyeSlash : faEye}
-              />
-            </span>
           </label>
           <p>設定画面を開く際に必要になります。</p>
           <p>設定画面よりプレイ時間等が確認できます。</p>
-        </div>
-        <div className={`${styles.password}`}>
-          <label>
-            チャイルドロック確認用
-            <input
-              type={isHiddenChildLock.check ? "password" : "text"}
-              name="child_lockConfirmation"
-              id="child_lockConfirmation"
-              value={confirm.childLockConfirm}
-              onChange={(e) =>
-                setConfirm((val) => ({
-                  ...val,
-                  childLockConfirm: e.target.value,
-                }))
-              }
-              required={true}
-            />
-            <span
-              onClick={() =>
-                setIsHiddenChildLock((v) => ({ ...v, check: !v.check }))
-              }
-              role="presentation"
-            >
-              <FontAwesomeIcon
-                icon={isHiddenChildLock.check ? faEyeSlash : faEye}
-              />
-            </span>
-          </label>
         </div>
         <div className={`${styles.checkbox}`}>
           <label>
