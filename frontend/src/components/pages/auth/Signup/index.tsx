@@ -1,16 +1,15 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRef, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   deleteUser,
   sendEmailVerification,
+  signOut,
 } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
-import { updateUid, updateUser, updateEmail } from "@/store/user";
 import { endpoint } from "@/features/api";
 import { childLockCheck } from "@/features/auth/validation/childLockCheck";
 import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
@@ -20,7 +19,6 @@ import styles from "./index.module.scss";
 
 export const Signup = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,8 +39,14 @@ export const Signup = () => {
 
   const [isHiddenPass, setIsHiddenPass] = useState({ pass: true, check: true });
 
+  const isSubmitActive = useRef(true);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isSubmitActive.current) {
+      return;
+    }
+    isSubmitActive.current = false;
 
     if (password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
@@ -71,16 +75,6 @@ export const Signup = () => {
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))
         .user;
-      dispatch(
-        updateUser({
-          ...formValues,
-          u_id: user.uid,
-          limit_time: 1440,
-          delete_flg: false,
-        })
-      );
-      dispatch(updateUid(user.uid));
-      dispatch(updateEmail(user.email));
       const req: SignUpRequest = {
         ...formValues,
         u_id: user.uid,
@@ -92,9 +86,6 @@ export const Signup = () => {
       });
       const json: SignUpResponse = await res.json();
       if (json.response_status === "fail") {
-        dispatch(updateUid(null));
-        dispatch(updateUser(null));
-        dispatch(updateEmail(null));
         await deleteUser(user);
         throw new Error(json.error);
       }
@@ -105,8 +96,11 @@ export const Signup = () => {
         redirectUrl ? { url: redirectUrl } : undefined
       );
 
+      await signOut(auth);
+
       screenTransition();
     } catch (e) {
+      isSubmitActive.current = true;
       console.error(e);
       alert("作成に失敗しました");
     }
@@ -301,7 +295,7 @@ export const Signup = () => {
               id="consent"
               name="consent"
               checked={confirm.consent}
-              onChange={(e) =>
+              onChange={() =>
                 setConfirm((val) => ({
                   ...val,
                   consent: !val.consent,
