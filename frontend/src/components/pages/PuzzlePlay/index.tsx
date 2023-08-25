@@ -24,6 +24,14 @@ import { Puzzle, PuzzleWord } from "@/features/puzzle/types";
 import styles from "./index.module.scss";
 import styles2 from "@/features/puzzle/play/Piece/index.module.scss";
 import backGroundImage from "@/features/puzzle/play/image/meadow.jpg";
+import {
+  FinishPuzzleRequest,
+  FinishPuzzleResponse,
+} from "@/features/puzzle/types/finish";
+import {
+  GetStatusRequest,
+  GetStatusResponse,
+} from "@/features/auth/types/getStatus";
 
 export const PuzzlePlay = () => {
   const router = useRouter();
@@ -46,15 +54,16 @@ export const PuzzlePlay = () => {
         throw new Error("uid is null");
       }
 
-      const statusReq = {
+      const statusReq: GetStatusRequest = {
         u_id: uid,
       };
       const statusRes = await fetch(`${endpoint}/ScanStatus`, {
         method: "POST",
         body: JSON.stringify(statusReq),
       });
-      const status = (await statusRes.json()).result;
-      if (status.game_status !== "1") {
+      const status = ((await statusRes.json()) as GetStatusResponse).result;
+      if (status.game_status != 1) {
+        console.warn(`game status is not 1. now ${status.game_status}`);
         router.push("/");
         return;
       }
@@ -155,7 +164,31 @@ export const PuzzlePlay = () => {
         "https://k-ishida-u22-2023-mock.s3.ap-northeast-1.amazonaws.com/success.mp3"
       ).play();
 
-      setTimeout(() => {
+      const finish = async (): Promise<void> =>
+        new Promise((resolve, reject) => {
+          const req: FinishPuzzleRequest = {
+            u_id: uid!,
+            p_id: id as string,
+          };
+          fetch(`${endpoint}/FinishPuzzle`, {
+            method: "POST",
+            body: JSON.stringify(req),
+          }).then((res) =>
+            res.json().then((json: FinishPuzzleResponse) => {
+              if (json.response_status === "fail") {
+                reject(json.error);
+              }
+              dispatch(updateGameStatus(0));
+              resolve();
+            })
+          );
+        });
+
+      const timer = async () =>
+        new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // 最低でも1.5秒待つ
+      Promise.all([finish(), timer()]).then(() => {
         router.push(
           {
             pathname: "/puzzle/result",
@@ -165,7 +198,7 @@ export const PuzzlePlay = () => {
           },
           "/puzzle/result"
         );
-      }, 1500);
+      });
     }
   };
 
@@ -202,10 +235,6 @@ export const PuzzlePlay = () => {
     return <p>{error}</p>;
   }
 
-  if (!puzzleData) {
-    return <p>loading</p>;
-  }
-
   const pieces = shufflePiece.map((word) => (
     <Piece className={`${styles.piece}`} key={word.word} id={word.word}>
       <Image
@@ -223,7 +252,7 @@ export const PuzzlePlay = () => {
     <main className={`${styles.container}`}>
       <div className={`${styles.board_piece}`}>
         <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-          {puzzleData.words.map((word) => {
+          {puzzleData?.words.map((word) => {
             const child = children.get(word.shadow);
             return word.is_dummy ? null : (
               <Board
@@ -233,7 +262,7 @@ export const PuzzlePlay = () => {
               >
                 {child != null ? (
                   pieces[
-                    puzzleData.words.indexOf(
+                    shufflePiece.indexOf(
                       puzzleData.words.filter((w) => child === w.word)
                         .length === 1
                         ? puzzleData.words.filter((w) => child === w.word)[0]
@@ -258,7 +287,7 @@ export const PuzzlePlay = () => {
             );
           })}
           <br />
-          {puzzleData.words.map((word, i) =>
+          {shufflePiece.map((word, i) =>
             parents.get(word.word) != null ? (
               <div
                 key={word.voice}
@@ -288,7 +317,7 @@ export const PuzzlePlay = () => {
       </button>
       <br />
       <div className={`${styles.preview_image_wrapper}`}>
-        {puzzleData.words.map(
+        {puzzleData?.words.map(
           (word) =>
             children.get(word.shadow) === word.word &&
             word.is_displayed && (
