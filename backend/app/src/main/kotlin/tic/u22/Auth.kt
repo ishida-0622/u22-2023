@@ -121,8 +121,13 @@ class SignUp : RequestHandler<Map<String, Any>, String> {
                     child_lock = body["child_lock"] as String,
                     account_name = body["account_name"] as String
                 )
+                val status = Status(
+                    u_id = u_id,
+                    game_status = 0
+                )
 
                 if (!dynamo.addItem(tableName, user)){ throw Exception("Failed to add user") }
+                if (!dynamo.addItem("status", status)){ throw Exception("Failed to add status") }
                 val dummyMap: Map<String, String> = mapOf()
 
                 mapOf(
