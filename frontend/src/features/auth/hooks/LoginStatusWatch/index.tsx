@@ -85,7 +85,7 @@ export const LoginStatusWatch = () => {
         });
       });
 
-    await Promise.all([userDataFetcher, userStatusFetcher]);
+    await Promise.all([userDataFetcher(), userStatusFetcher()]);
   };
 
   const toLogin = () => {
