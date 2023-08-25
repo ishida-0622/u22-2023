@@ -98,7 +98,7 @@ export const PuzzleSelect = () => {
             </div>
           </div>
         ))}
-        {Array.from({ length: 12 }, (_, i) => (
+        {Array.from({ length: 3 * (showPuzzles.length - 1) }, (_, i) => (
           <div key={`star_key_${i}`} className={`star_${i}`}>
             <div className={`${styles.star_field}`}>
               <div className={`${styles.stars}`}></div>
