@@ -20,7 +20,6 @@ export const Calendar = ({ mm }: { mm: number }) => {
   const line = Math.ceil(lastDate / 7);
 
   const fetcher = async (key: string) => {
-    console.log("fetch");
     if (!uid) {
       console.warn("uid is null");
       return;

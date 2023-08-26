@@ -59,9 +59,8 @@ export const PuzzleEdit = () => {
               matchingPuzzle.words.map((word) => word.is_displayed)
             );
           }
-          console.log(data.result);
         } else {
-          console.log("Puzzle not found");
+          console.warn("Puzzle not found");
         }
       } catch (e) {
         alert("データの取得に失敗しました");

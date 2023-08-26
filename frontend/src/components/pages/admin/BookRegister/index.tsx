@@ -70,7 +70,6 @@ export const BookRegister = () => {
     }
     if (voices.some((v) => v === null)) {
       alert("音声ファイルを追加してください");
-      console.log(voices);
       return;
     }
 
@@ -215,7 +214,9 @@ export const BookRegister = () => {
             ))}
         </div>
         <div className={`${styles.submit_button_field}`}>
-          <button className={`${styles.submit_button}`} type="submit">追加する</button>
+          <button className={`${styles.submit_button}`} type="submit">
+            追加する
+          </button>
         </div>
       </form>
     </main>

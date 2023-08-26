@@ -116,7 +116,6 @@ export const BookEdit = () => {
     }
     if (voices.some((v) => v === null)) {
       alert("音声ファイルを追加してください");
-      console.log(voices);
       return;
     }
 
@@ -263,7 +262,9 @@ export const BookEdit = () => {
             ))}
         </div>
         <div className={`${styles.submit_button_field}`}>
-          <button className={`${styles.submit_button}`} type="submit">更新する</button>
+          <button className={`${styles.submit_button}`} type="submit">
+            更新する
+          </button>
         </div>
       </form>
       <div className={`${styles.link}`}>
