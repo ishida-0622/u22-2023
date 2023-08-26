@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
@@ -43,7 +43,7 @@ export const PuzzleSelect = () => {
     setShowPuzzles(puzzles.slice(startIdx, endIdx));
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const fetchPuzzles = async () => {
       try {
         const req: GetAllPuzzleRequest = {};
@@ -55,8 +55,9 @@ export const PuzzleSelect = () => {
         if (json.response_status === "fail") {
           throw new Error(json.error);
         }
-        setPuzzles(json.result);
-        setShowPuzzles(json.result.slice(0, 5));
+        const p = json.result.sort((a, b) => (a.p_id > b.p_id ? 1 : -1));
+        setPuzzles(p);
+        setShowPuzzles(p.slice(0, 5));
       } catch (error) {
         if (error instanceof Error) {
           alert("パズル取得中にエラーが発生しました");
