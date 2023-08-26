@@ -144,7 +144,13 @@ export const PuzzleEdit = () => {
     const arr = text.split(",");
     setSplitDummyWord(arr);
     setDummyImages((val) => val.concat([null]).slice(0, arr.length));
-    setDummyShadows((val) => val.concat([""]).slice(0, arr.length));
+    setDummyShadows((val) =>
+      val
+        .concat([
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQQAAAJMAQMAAACW/DlXAAAAA1BMVEX///+nxBvIAAAAf0lEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD24JAAAAAAQND/134wAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEt0JwABmDfT1AAAAABJRU5ErkJggg==",
+        ])
+        .slice(0, arr.length)
+    );
     setDummyVoices((val) => val.concat([null]).slice(0, arr.length));
   };
 
