@@ -33,6 +33,8 @@ export const AccountInfo = () => {
   const uid = useSelector((store: RootState) => store.uid);
   const userData = useSelector((store: RootState) => store.user);
 
+  const [password, setPassword] = useState("");
+
   const [volume, setVolume] = useState(
     () => localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
   );
@@ -121,6 +123,21 @@ export const AccountInfo = () => {
 
   if (!(uid && userData)) {
     return null;
+  }
+
+  if (password !== userData.child_lock) {
+    return (
+      <div className={styles.child_lock_init}>
+        <label>
+          チャイルドロックを入力
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+      </div>
+    );
   }
 
   if (puzzleLogError || bookLogError) {

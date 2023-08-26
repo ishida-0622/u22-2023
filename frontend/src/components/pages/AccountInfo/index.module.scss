@@ -27,9 +27,19 @@ input:checked + .volume_label {
   }
 }
 
+.child_lock_init {
+  text-align: center;
+  font-size: 2rem;
+  input {
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+}
+
 /* iPhoneランドスケープ */
 @media screen and (max-device-height: 441px) and (orientation: landscape) {
-
   /*アカウント情報*/
   .info {
     font-size: 1rem;
@@ -242,7 +252,6 @@ input:checked + .volume_label {
 
 /*PC*/
 @media screen and (min-device-height: 442px) and (max-device-height: 720px) {
-
   /*アカウント情報*/
   .info {
     font-size: 2rem;
@@ -450,7 +459,6 @@ input:checked + .volume_label {
 
 /* iPadランドスケープ */
 @media screen and (min-device-height: 768px) and (orientation: landscape) {
-
   /*アカウント情報*/
   .info {
     font-size: 3rem;
