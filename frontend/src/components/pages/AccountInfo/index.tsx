@@ -88,15 +88,12 @@ export const AccountInfo = () => {
     return json.result;
   };
 
-  const { data: puzzleLogs, error: puzzleLogError } = useSWR(
+  const { data: puzzleLogs } = useSWR(
     `${endpoint}/ScanP_log`,
     puzzleLogFetcher
   );
 
-  const { data: bookLogs, error: bookLogError } = useSWR(
-    `${endpoint}/ScanB_log`,
-    bookLogFetcher
-  );
+  const { data: bookLogs } = useSWR(`${endpoint}/ScanB_log`, bookLogFetcher);
 
   const handleHourChange = (event: {
     target: { value: SetStateAction<string> };
@@ -138,18 +135,6 @@ export const AccountInfo = () => {
         </label>
       </div>
     );
-  }
-
-  if (puzzleLogError || bookLogError) {
-    return <p>{puzzleLogError ? puzzleLogError : bookLogError}</p>;
-  }
-
-  if (
-    userData === undefined ||
-    puzzleLogs === undefined ||
-    bookLogs === undefined
-  ) {
-    return <p>Now Loading</p>;
   }
 
   return (
@@ -375,7 +360,7 @@ export const AccountInfo = () => {
         </TabPanel>
         <TabPanel className={`${styles.puzzle_log}`}>
           パズルログ
-          {puzzleLogs.map((log) => (
+          {puzzleLogs?.map((log) => (
             <div key={log.p_id}>
               <div>No.{log.p_id}</div>
               <div>クリア回数：{log.play_times}</div>
@@ -385,7 +370,7 @@ export const AccountInfo = () => {
         </TabPanel>
         <TabPanel className={`${styles.book_log}`}>
           えほんログ
-          {bookLogs.map((log) => (
+          {bookLogs?.map((log) => (
             <div key={log.b_id}>
               <div>No.{log.b_id}</div>
               <div>読んだ回数：{log.play_times}</div>
