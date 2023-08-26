@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Router from "next/router";
-import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { Calendar } from "@/features/Calendar/calendar";
 import { Information } from "@/features/Information/information";
@@ -23,9 +24,9 @@ export const Top = () => {
       <div id="calendar">
         <Calendar mm={addMonth} />
         {/* previousButtonは前の月を表示するためのボタン　
-                    これ以上さかのぼれない場合previousButtonInvalidにクラス名が変わります
-                    nextButtonは次の月を表示するためのボタン
-                    previousと同様にこれ以上進めない場合Invalidが付きます */}
+            これ以上さかのぼれない場合previousButtonInvalidにクラス名が変わります
+            nextButtonは次の月を表示するためのボタン
+            previousと同様にこれ以上進めない場合Invalidが付きます */}
         <div className={`${styles.turn_calender}`}>
           <button
             id="previousMonth"
@@ -50,16 +51,15 @@ export const Top = () => {
         </div>
       </div>
       {/* タップでアカウント情報画面へ飛ぶアイコン(右上) */}
-      <Image
-        src="https://k-ishida-u22-2023-mock.s3.ap-northeast-1.amazonaws.com/IMG_3yvjyu.jpg"
-        alt="icon"
+      <FontAwesomeIcon
+        icon={faGear}
         id="user-icon"
         width={400}
         height={400}
         onClick={() => {
           Router.push("/account-info");
         }}
-        className={`${styles.icon}`}
+        className={styles.icon}
       />
       {/* お知らせ置く場所 */}
       <div id="information" className={styles.information}>
