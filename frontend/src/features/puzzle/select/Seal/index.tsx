@@ -4,12 +4,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import Modal from "react-modal";
 import { RootState } from "@/store";
-import { endpoint } from "@/features/api";
 import { Puzzle } from "@/features/puzzle/types";
-import {
-  StartPuzzleRequest,
-  StartPuzzleResponse,
-} from "@/features/puzzle/types/start";
 
 import styles from "./index.module.scss";
 
@@ -27,24 +22,7 @@ export const Seal = ({
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const startPuzzle = async () => {
-    if (!uid) return;
-    const req: StartPuzzleRequest = {
-      p_id: p_id,
-      u_id: uid,
-    };
-    try {
-      const res = await fetch(`${endpoint}/StartPuzzle`, {
-        method: "POST",
-        body: JSON.stringify(req),
-      });
-      const json: StartPuzzleResponse = await res.json();
-      if (json.response_status === "fail") {
-        throw new Error(json.error);
-      }
-      Router.push(`/puzzle/play/${p_id}`);
-    } catch (e) {
-      console.error(e);
-    }
+    Router.push(`/puzzle/play/${p_id}`);
   };
 
   return (
