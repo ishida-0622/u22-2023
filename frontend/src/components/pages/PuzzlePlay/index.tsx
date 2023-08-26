@@ -5,14 +5,6 @@ import { useSelector } from "react-redux";
 import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 
 import { RootState } from "@/store";
-import {
-  ScanPuzzleRequest,
-  ScanPuzzleResponse,
-} from "@/features/puzzle/types/scan";
-import {
-  PausePuzzleRequest,
-  PausePuzzleResponse,
-} from "@/features/puzzle/types/pause";
 import { endpoint } from "@/features/api";
 
 import { Piece } from "@/features/puzzle/play/Piece";
@@ -27,49 +19,17 @@ import {
   FinishPuzzleResponse,
 } from "@/features/puzzle/types/finish";
 
-export const PuzzlePlay = () => {
+export const PuzzlePlay = (props: Puzzle) => {
   const router = useRouter();
   // 問題id
   const { id } = router.query;
 
   const uid = useSelector((store: RootState) => store.uid);
 
-  const [puzzleData, setPuzzleData] = useState<Puzzle>();
-  const [shufflePiece, setShufflePiece] = useState<PuzzleWord[]>([]);
+  const [shufflePiece, setShufflePiece] = useState<PuzzleWord[]>(
+    props.words.slice().sort(() => Math.random() - Math.random())
+  );
   const [error, setError] = useState<string>();
-
-  useEffect(() => {
-    const fetcher = async () => {
-      if (typeof id !== "string") {
-        throw new Error("p_id is not string");
-      }
-      if (!uid) {
-        throw new Error("uid is null");
-      }
-
-      const req: ScanPuzzleRequest = {
-        p_id: id,
-      };
-      const url = `${endpoint}/ScanPuzzle`;
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(req),
-      });
-      const json = await (res.json() as Promise<ScanPuzzleResponse>);
-      if (json.response_status === "fail") {
-        setError(json.error);
-      }
-      setPuzzleData(json.result);
-      setShufflePiece(
-        json.result.words.slice().sort(() => Math.random() - Math.random())
-      );
-    };
-
-    if (router.isReady) {
-      fetcher();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.query]);
 
   // 子要素のidがkey, 子要素が所属している親要素のidがvalueのHash Map
   const [parents, setParents] = useState<Map<string, string | null>>(new Map());
@@ -81,15 +41,15 @@ export const PuzzlePlay = () => {
   );
 
   const puzzleReset = useCallback(() => {
-    if (puzzleData) {
+    if (props) {
       // データ取得後にnullで初期化
-      setParents(new Map(puzzleData.words.map((val) => [val.word, null])));
-      setChild(new Map(puzzleData.words.map((val) => [val.shadow, null])));
+      setParents(new Map(props.words.map((val) => [val.word, null])));
+      setChild(new Map(props.words.map((val) => [val.shadow, null])));
       setAudios(
-        new Map(puzzleData.words.map((val) => [val.word, new Audio(val.voice)]))
+        new Map(props.words.map((val) => [val.word, new Audio(val.voice)]))
       );
     }
-  }, [puzzleData]);
+  }, [props]);
 
   useEffect(() => {
     puzzleReset();
@@ -133,8 +93,8 @@ export const PuzzlePlay = () => {
 
     // 正解判定
     if (
-      puzzleData &&
-      puzzleData.words.every(
+      props &&
+      props.words.every(
         (value) =>
           value.is_dummy || newChildren.get(value.shadow) === value.word
       )
@@ -171,40 +131,12 @@ export const PuzzlePlay = () => {
           {
             pathname: "/puzzle/result",
             query: {
-              imageUrl: puzzleData.icon,
+              imageUrl: props.icon,
             },
           },
           "/puzzle/result"
         );
       });
-    }
-  };
-
-  const pause = async () => {
-    if (!uid) {
-      throw new Error("uid is null");
-    }
-    const req: PausePuzzleRequest = {
-      u_id: uid,
-      p_id: id as string,
-      saved_data: Array.from(children.keys()).map(
-        (key) => children.get(key) ?? "N"
-      ),
-    };
-    const url = `${endpoint}/PausePuzzle`;
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        body: JSON.stringify(req),
-      });
-      const json: PausePuzzleResponse = await res.json();
-      if (json.response_status === "fail") {
-        throw new Error(json.error);
-      }
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-      alert("ちゅうだんできませんでした");
     }
   };
 
@@ -229,7 +161,7 @@ export const PuzzlePlay = () => {
     <main className={`${styles.container}`}>
       <div className={`${styles.board_piece}`}>
         <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
-          {puzzleData?.words.map((word) => {
+          {props?.words.map((word) => {
             const child = children.get(word.shadow);
             return word.is_dummy ? null : (
               <Board
@@ -240,10 +172,9 @@ export const PuzzlePlay = () => {
                 {child != null ? (
                   pieces[
                     shufflePiece.indexOf(
-                      puzzleData.words.filter((w) => child === w.word)
-                        .length === 1
-                        ? puzzleData.words.filter((w) => child === w.word)[0]
-                        : puzzleData.words.filter(
+                      props.words.filter((w) => child === w.word).length === 1
+                        ? props.words.filter((w) => child === w.word)[0]
+                        : props.words.filter(
                             (w) => child === w.word && word.shadow !== w.shadow
                           )[0]
                     )
@@ -289,12 +220,9 @@ export const PuzzlePlay = () => {
       <button className={`${styles.reset_button}`} onClick={puzzleReset}>
         さいしょから
       </button>
-      <button className={`${styles.a_button}`} onClick={pause}>
-        やめる
-      </button>
       <br />
       <div className={`${styles.preview_image_wrapper}`}>
-        {puzzleData?.words.map(
+        {props?.words.map(
           (word) =>
             children.get(word.shadow) === word.word &&
             word.is_displayed && (
