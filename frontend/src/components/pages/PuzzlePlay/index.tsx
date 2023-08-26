@@ -2,11 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 
 import { RootState } from "@/store";
-import { updateGameStatus } from "@/store/user";
 import {
   ScanPuzzleRequest,
   ScanPuzzleResponse,
@@ -28,17 +26,12 @@ import {
   FinishPuzzleRequest,
   FinishPuzzleResponse,
 } from "@/features/puzzle/types/finish";
-import {
-  GetStatusRequest,
-  GetStatusResponse,
-} from "@/features/auth/types/getStatus";
 
 export const PuzzlePlay = () => {
   const router = useRouter();
   // 問題id
   const { id } = router.query;
 
-  const dispatch = useDispatch();
   const uid = useSelector((store: RootState) => store.uid);
 
   const [puzzleData, setPuzzleData] = useState<Puzzle>();
@@ -52,20 +45,6 @@ export const PuzzlePlay = () => {
       }
       if (!uid) {
         throw new Error("uid is null");
-      }
-
-      const statusReq: GetStatusRequest = {
-        u_id: uid,
-      };
-      const statusRes = await fetch(`${endpoint}/ScanStatus`, {
-        method: "POST",
-        body: JSON.stringify(statusReq),
-      });
-      const status = ((await statusRes.json()) as GetStatusResponse).result;
-      if (status.game_status != 1) {
-        console.warn(`game status is not 1. now ${status.game_status}`);
-        router.push("/");
-        return;
       }
 
       const req: ScanPuzzleRequest = {
@@ -178,7 +157,6 @@ export const PuzzlePlay = () => {
               if (json.response_status === "fail") {
                 reject(json.error);
               }
-              dispatch(updateGameStatus(0));
               resolve();
             })
           );
@@ -223,7 +201,6 @@ export const PuzzlePlay = () => {
       if (json.response_status === "fail") {
         throw new Error(json.error);
       }
-      dispatch(updateGameStatus(2));
       router.push("/");
     } catch (error) {
       console.error(error);
