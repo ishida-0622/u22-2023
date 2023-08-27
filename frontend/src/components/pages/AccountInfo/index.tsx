@@ -138,7 +138,7 @@ export const AccountInfo = () => {
   }
 
   return (
-    <div className={`${styles.container}`}>
+    <main className={`${styles.container}`}>
       <div className={`${styles.back_ground}`}></div>
       <h1>アカウント情報画面</h1>
       <Tabs>
@@ -379,6 +379,6 @@ export const AccountInfo = () => {
           ))}
         </TabPanel>
       </Tabs>
-    </div>
+    </main>
   );
 };
