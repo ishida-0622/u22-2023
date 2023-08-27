@@ -1,8 +1,11 @@
+@use "src/styles/variables";
 @import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
 
 .container {
   text-align: center;
   font-family: "M PLUS Rounded 1c", sans-serif;
+  background-color: variables.$base_color;
+  min-height: 100vh;
 }
 
 .none {
@@ -28,6 +31,8 @@ input:checked + .volume_label {
 }
 
 .child_lock_init {
+  background-color: variables.$base_color;
+  min-height: 100vh;
   text-align: center;
   font-size: 2rem;
   input {
