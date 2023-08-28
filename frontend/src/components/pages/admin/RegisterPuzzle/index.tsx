@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./index.module.scss";
 import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Image from "next/image";
@@ -35,6 +35,8 @@ export const RegisterPuzzle = () => {
   const [dummyVoices, setDummyVoices] = useState<(string | null)[]>([]);
 
   const router = useRouter();
+  const isActive = useRef(true);
+
   const puzzleList = () => {
     router.push("/admin/puzzle");
   };
@@ -148,6 +150,11 @@ export const RegisterPuzzle = () => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     const reg = new RegExp(
       /^([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+(?:,([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+)*$/
     );
@@ -179,6 +186,8 @@ export const RegisterPuzzle = () => {
       alert("画像と音声をアップロードしてください");
       return;
     }
+
+    isActive.current = false;
 
     const words: PuzzleWord[] = splitWord.map((v, i) => {
       return {
@@ -230,7 +239,7 @@ export const RegisterPuzzle = () => {
       }
     } catch (e) {
       console.error(e);
-
+      isActive.current = true;
       alert("登録に失敗しました");
     }
   };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
@@ -20,9 +20,14 @@ export const AccountInfoEdit = () => {
   const dispatch = useDispatch();
   const userData = useSelector((store: RootState) => store.user);
   const [formValues, setFormValues] = useState({ ...userData! });
+  const isActive = useRef(true);
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
 
     if (
       !(
@@ -39,6 +44,8 @@ export const AccountInfoEdit = () => {
       return;
     }
 
+    isActive.current = false;
+
     const req: UpdateUserRequest = formValues;
     try {
       const res = await fetch(`${endpoint}/UpdateUser`, {
@@ -53,6 +60,7 @@ export const AccountInfoEdit = () => {
       alert("更新しました");
     } catch (error) {
       console.error(error);
+      isActive.current = true;
       alert("更新に失敗しました");
     }
   };

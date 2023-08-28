@@ -46,7 +46,6 @@ export const Signup = () => {
     if (!isSubmitActive.current) {
       return;
     }
-    isSubmitActive.current = false;
 
     if (password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
@@ -71,6 +70,8 @@ export const Signup = () => {
       alert("チャイルドロックは数字4桁にしてください");
       return;
     }
+
+    isSubmitActive.current = false;
 
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))

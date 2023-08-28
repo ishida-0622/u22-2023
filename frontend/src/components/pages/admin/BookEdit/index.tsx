@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -18,6 +18,8 @@ export const BookEdit = () => {
   const router = useRouter();
   // 本id
   const { id } = router.query;
+
+  const isActive = useRef(true);
 
   const [titleEn, setTitleEn] = useState("");
   const [titleJp, setTitleJp] = useState("");
@@ -106,6 +108,11 @@ export const BookEdit = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     if (!thumbnail) {
       alert("サムネイル画像を追加してください");
       return;
@@ -122,6 +129,8 @@ export const BookEdit = () => {
     if (typeof id !== "string") {
       throw new Error("b_id type is not string");
     }
+
+    isActive.current = false;
 
     const req: UpdateBookRequest = {
       b_id: id,
@@ -149,6 +158,7 @@ export const BookEdit = () => {
       }
       alert("登録しました");
     } catch (error) {
+      isActive.current = true;
       console.error(error);
       alert("登録に失敗しました");
     }

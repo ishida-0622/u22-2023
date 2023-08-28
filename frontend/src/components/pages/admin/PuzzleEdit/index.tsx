@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -18,6 +18,8 @@ Modal.setAppElement("#__next");
 export const PuzzleEdit = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const isActive = useRef(true);
 
   const puzzleList = () => {
     router.push("/admin/puzzle");
@@ -176,7 +178,6 @@ export const PuzzleEdit = () => {
    * @param index
    * @param updateFun 値の更新用のset関数
    */
-
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -203,15 +204,15 @@ export const PuzzleEdit = () => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     const reg = new RegExp(
       /^([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+(?:,([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+)*$/
     );
     // 問題文がカンマ区切りの英文かを判定
-
-    // if (!reg.test(word)) {
-    //   alert("問題文の形式が不正です");
-    //   return;
-    // }
 
     if (!(dummyWord === "" || reg.test(dummyWord))) {
       alert("ダミー文の形式が不正です");
@@ -236,6 +237,8 @@ export const PuzzleEdit = () => {
       alert("画像と音声をアップロードしてください");
       return;
     }
+
+    isActive.current = false;
 
     const words: PuzzleWord[] = splitWord.map((v, i) => {
       return {
@@ -288,6 +291,7 @@ export const PuzzleEdit = () => {
         puzzleList();
       }
     } catch (e) {
+      isActive.current = true;
       console.error(e);
       alert("更新に失敗しました");
     }

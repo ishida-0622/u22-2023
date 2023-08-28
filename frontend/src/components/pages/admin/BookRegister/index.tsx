@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import {
   RegisterBookRequest,
@@ -9,6 +9,8 @@ import styles from "./index.module.scss";
 import { AdminMenubar } from "@/components/elements/AdminMenubar";
 
 export const BookRegister = () => {
+  const isActive = useRef(true);
+
   const [titleEn, setTitleEn] = useState("");
   const [titleJa, setTitleJa] = useState("");
   const [author, setAuthor] = useState("");
@@ -60,6 +62,11 @@ export const BookRegister = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     if (!thumbnail) {
       alert("サムネイル画像を追加してください");
       return;
@@ -72,6 +79,8 @@ export const BookRegister = () => {
       alert("音声ファイルを追加してください");
       return;
     }
+
+    isActive.current = false;
 
     const req: RegisterBookRequest = {
       author: author,
@@ -98,6 +107,7 @@ export const BookRegister = () => {
       }
       alert("登録しました");
     } catch (error) {
+      isActive.current = true;
       console.error(error);
       alert("登録に失敗しました");
     }
