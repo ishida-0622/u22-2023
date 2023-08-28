@@ -15,6 +15,7 @@ import { childLockCheck } from "@/features/auth/validation/childLockCheck";
 import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
 import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
+import Link from "next/link";
 import styles from "./index.module.scss";
 
 export const Signup = () => {
@@ -124,6 +125,7 @@ export const Signup = () => {
                 type="text"
                 name="familyname"
                 id="familyname"
+                placeholder="佐藤"
                 value={formValues.family_name}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -142,6 +144,7 @@ export const Signup = () => {
                 type="text"
                 name="firstname"
                 id="firstname"
+                placeholder="太郎"
                 value={formValues.first_name}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -162,6 +165,7 @@ export const Signup = () => {
                 type="text"
                 name="familynameEng"
                 id="familynameEng"
+                placeholder="Sato"
                 value={formValues.family_name_roma}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -180,6 +184,7 @@ export const Signup = () => {
                 type="text"
                 name="firstnameEng"
                 id="firstnameEng"
+                placeholder="Taro"
                 value={formValues.first_name_roma}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -199,6 +204,7 @@ export const Signup = () => {
               type="text"
               name="username"
               id="username"
+              placeholder="英数字混合10文字以内"
               value={formValues.account_name}
               onChange={(e) =>
                 setFormValues((val) => ({
@@ -217,6 +223,7 @@ export const Signup = () => {
               type="text"
               name="email"
               id="email"
+              placeholder="example@mail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required={true}
@@ -230,6 +237,7 @@ export const Signup = () => {
               type={isHiddenPass.pass ? "password" : "text"}
               name="password"
               id="password"
+              placeholder="大文字小文字含む英数字混合8～20文字"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required={true}
@@ -249,6 +257,7 @@ export const Signup = () => {
               type={isHiddenPass.check ? "password" : "text"}
               name="passwordConfirmation"
               id="passwordConfirmation"
+              placeholder="パスワードを再度入力してください。"
               value={confirm.passwordConfirm}
               onChange={(e) =>
                 setConfirm((val) => ({
@@ -276,6 +285,7 @@ export const Signup = () => {
               name="child_lock"
               inputMode="numeric"
               id="child_lock"
+              placeholder="数字4桁"
               value={formValues.child_lock}
               onChange={(e) =>
                 setFormValues((val) => ({
@@ -303,8 +313,8 @@ export const Signup = () => {
                 }))
               }
             />
+          規約に同意する
           </label>
-          <p>規約に同意する</p>
         </div>
         <div className={`${styles.submit_button_field}`}>
           <button className={`${styles.submit_button}`} type="submit">
@@ -312,6 +322,9 @@ export const Signup = () => {
           </button>
         </div>
       </form>
+      <div className={`${styles.link}`}>
+        <Link href="/login">ログイン画面に戻る</Link>
+      </div>
     </div>
   );
 };

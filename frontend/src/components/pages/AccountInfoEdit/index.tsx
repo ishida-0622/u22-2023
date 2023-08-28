@@ -162,9 +162,11 @@ export const AccountInfoEdit = () => {
           変更
         </button>
         <br />
-        <Link href={"/password-change"} target={"_blank"}>
-          パスワードの変更はこちら
-        </Link>
+        <div className={styles.link}>
+          <Link href={"/password-change"} target={"_blank"}>
+            パスワードの変更はこちら
+          </Link>
+        </div>
       </form>
     </main>
   );

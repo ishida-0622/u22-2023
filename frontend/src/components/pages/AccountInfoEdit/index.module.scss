@@ -5,6 +5,8 @@
   text-align: center;
   font-family: "M PLUS Rounded 1c", sans-serif;
   font-size: 1.7rem;
+  background-color: #E0EFFF;
+  min-height: 100vh;
   span {
     margin-right: 1rem;
   }
@@ -45,6 +47,10 @@
   .change {
     background-color: rgb(255, 202, 202);
     font-weight: bold;
+  }
+
+  .link {
+    padding: 2% 0;
   }
 
   /*PC*/
