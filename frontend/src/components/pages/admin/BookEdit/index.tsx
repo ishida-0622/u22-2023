@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { endpoint } from "@/features/api";
 
 import {
   GetAllBookRequest,
@@ -143,12 +144,8 @@ export const BookEdit = () => {
       voice: voices as string[],
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
     try {
-      const res = await fetch(`${baseUrl}/UpdateBook`, {
+      const res = await fetch(`${endpoint}/UpdateBook`, {
         method: "POST",
         body: JSON.stringify(req),
       });

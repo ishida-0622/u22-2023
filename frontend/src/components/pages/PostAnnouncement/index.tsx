@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import Link from "next/link";
+import { endpoint } from "@/features/api";
 import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import {
   RegisterNoticeRequest,
@@ -32,12 +33,8 @@ export const PostAnnouncement = () => {
   };
 
   const sendNews = async () => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
-    }
     try {
-      const response = await fetch(`${baseUrl}/RegisterNotice`, {
+      const response = await fetch(`${endpoint}/RegisterNotice`, {
         method: "POST",
         body: JSON.stringify(formValues),
       });

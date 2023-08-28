@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
+import { endpoint } from "@/features/api";
 
 import { Puzzle, PuzzleWord } from "@/features/puzzle/types";
 import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
@@ -29,12 +30,8 @@ export const PuzzleEdit = () => {
 
   useLayoutEffect(() => {
     const pullPuzzle = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-      if (baseUrl === undefined) {
-        throw new Error("内部エラー");
-      }
       try {
-        const response = await fetch(`${baseUrl}/GetPuzzles`, {
+        const response = await fetch(`${endpoint}/GetPuzzles`, {
           method: "POST",
           body: JSON.stringify({}),
         });
@@ -271,15 +268,9 @@ export const PuzzleEdit = () => {
       words: words.concat(dummyWords),
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
-
     try {
       // 登録処理
-      const res = await fetch(`${baseUrl}/UpdatePuzzle`, {
+      const res = await fetch(`${endpoint}/UpdatePuzzle`, {
         method: "POST",
         body: JSON.stringify(req),
       });

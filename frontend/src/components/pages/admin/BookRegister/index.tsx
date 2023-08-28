@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { endpoint } from "@/features/api";
 import {
   RegisterBookRequest,
   RegisterBookResponse,
@@ -92,12 +93,8 @@ export const BookRegister = () => {
       voice: voices as string[],
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
     try {
-      const res = await fetch(`${baseUrl}/RegisterBook`, {
+      const res = await fetch(`${endpoint}/RegisterBook`, {
         method: "POST",
         body: JSON.stringify(req),
       });

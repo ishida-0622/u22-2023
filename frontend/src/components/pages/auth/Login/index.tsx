@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "@/features/auth/firebase";
 import { updateEmail, updateUid, updateUser } from "@/store/user";
+import { endpoint } from "@/features/api";
 import {
   ScanUserRequest,
   ScanUserResponse,
@@ -22,18 +23,13 @@ export const Login = () => {
   const [password, setPassword] = useState("");
 
   const fetchUserData = async (uid: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
-    }
-
     const req: ScanUserRequest = {
       u_id: uid,
     };
 
     // ユーザー情報を取得
     const res: ScanUserResponse = await (
-      await fetch(`${baseUrl}/ScanUser`, {
+      await fetch(`${endpoint}/ScanUser`, {
         method: "POST",
         body: JSON.stringify(req),
       })

@@ -1,15 +1,18 @@
 import { useRef, useState } from "react";
-import styles from "./index.module.scss";
-import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import Modal from "react-modal";
+
+import { endpoint } from "@/features/api";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import {
   RegisterPuzzleRequest,
   RegisterPuzzleResponse,
 } from "@/features/puzzle/types/register";
 import { PuzzleWord } from "@/features/puzzle/types";
-import { useRouter } from "next/router";
-import Modal from "react-modal";
-import Link from "next/link";
+
+import styles from "./index.module.scss";
 
 // Modalを表示するHTML要素のidを指定
 Modal.setAppElement("#__next");
@@ -218,15 +221,9 @@ export const RegisterPuzzle = () => {
       words: words.concat(dummyWords),
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
-
     try {
       // 登録処理
-      const res = await fetch(`${baseUrl}/RegisterPuzzle`, {
+      const res = await fetch(`${endpoint}/RegisterPuzzle`, {
         method: "POST",
         body: JSON.stringify(req),
       });
