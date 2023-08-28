@@ -121,8 +121,13 @@ class SignUp : RequestHandler<Map<String, Any>, String> {
                     child_lock = body["child_lock"] as String,
                     account_name = body["account_name"] as String
                 )
+                val status = Status(
+                    u_id = u_id,
+                    game_status = 0
+                )
 
                 if (!dynamo.addItem(tableName, user)){ throw Exception("Failed to add user") }
+                if (!dynamo.addItem("status", status)){ throw Exception("Failed to add status") }
                 val dummyMap: Map<String, String> = mapOf()
 
                 mapOf(
@@ -137,5 +142,37 @@ class SignUp : RequestHandler<Map<String, Any>, String> {
             }
         }
         return gson.toJson(res)       // JSONに変換してフロントに渡す
+    }
+}
+
+/**
+ * ログインする(ログインログの追加)
+ */
+class Login: RequestHandler<Map<String, Any>, String> {
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+        val res = runBlocking {
+            try {
+                if (event == null) {
+                    throw Exception("event is null")
+                }
+                if (event["body"] == null) {
+                    throw Exception("body is null")
+                }
+                val body = utils.formatJsonEnv(event["body"]!!)
+                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+                val log = LoginLog(
+                    u_id = u_id
+                )
+
+                // ユーザーの退会処理
+                val dynamo = Dynamo(Settings().AWS_REGION)
+                dynamo.addItem("l_log", log)
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success", "result" to dummyMap)
+            } catch(e: Exception) {
+                mapOf("response_status" to "fail", "error" to "$e")
+            }
+        }
+        return gson.toJson(res)
     }
 }

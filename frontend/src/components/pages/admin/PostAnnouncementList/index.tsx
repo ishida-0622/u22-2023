@@ -1,17 +1,20 @@
 import { useLayoutEffect, useState } from "react";
-import styles from "./index.module.scss";
-import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Notice } from "@/features/notice/types";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
+import { endpoint } from "@/features/api";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
+import { Notice } from "@/features/notice/types";
 import { GetAllNoticeResponse } from "@/features/notice/types/get";
 import {
   DeleteNoticeRequest,
   DeleteNoticeResponse,
 } from "@/features/notice/types/delete";
+
+import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
 
@@ -41,15 +44,11 @@ export const PostAnnouncementList = () => {
 
   // 削除メソッド
   const deleteNotice = async (id: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("api endpoint is undefined");
-    }
     const req: DeleteNoticeRequest = {
       n_id: id,
     };
     try {
-      const res = await fetch(`${baseUrl}/DeleteNotice`, {
+      const res = await fetch(`${endpoint}/DeleteNotice`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -66,12 +65,8 @@ export const PostAnnouncementList = () => {
 
   useLayoutEffect(() => {
     const pullAnnouncement = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-      if (baseUrl === undefined) {
-        throw new Error("内部エラー");
-      }
       try {
-        const response = await fetch(`${baseUrl}/GetNotices`, {
+        const response = await fetch(`${endpoint}/GetNotices`, {
           method: "POST",
           body: JSON.stringify({}),
         });
@@ -129,7 +124,9 @@ export const PostAnnouncementList = () => {
       <div className={`${styles.modal_container}`}>
         <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
           <div className={`${styles.close_button_field}`}>
-            <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+            <button className={`${styles.close_button}`} onClick={closeModal}>
+              ×
+            </button>
           </div>
           <div className={`${styles.modal}`}>
             {news && (
@@ -145,7 +142,6 @@ export const PostAnnouncementList = () => {
           </div>
         </Modal>
       </div>
-
     </main>
   );
 };

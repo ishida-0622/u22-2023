@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import { endpoint } from "@/features/api";
 import {
   RegisterBookRequest,
   RegisterBookResponse,
@@ -9,6 +10,8 @@ import styles from "./index.module.scss";
 import { AdminMenubar } from "@/components/elements/AdminMenubar";
 
 export const BookRegister = () => {
+  const isActive = useRef(true);
+
   const [titleEn, setTitleEn] = useState("");
   const [titleJa, setTitleJa] = useState("");
   const [author, setAuthor] = useState("");
@@ -60,6 +63,11 @@ export const BookRegister = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     if (!thumbnail) {
       alert("サムネイル画像を追加してください");
       return;
@@ -70,9 +78,10 @@ export const BookRegister = () => {
     }
     if (voices.some((v) => v === null)) {
       alert("音声ファイルを追加してください");
-      console.log(voices);
       return;
     }
+
+    isActive.current = false;
 
     const req: RegisterBookRequest = {
       author: author,
@@ -84,12 +93,8 @@ export const BookRegister = () => {
       voice: voices as string[],
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
     try {
-      const res = await fetch(`${baseUrl}/RegisterBook`, {
+      const res = await fetch(`${endpoint}/RegisterBook`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -99,6 +104,7 @@ export const BookRegister = () => {
       }
       alert("登録しました");
     } catch (error) {
+      isActive.current = true;
       console.error(error);
       alert("登録に失敗しました");
     }
@@ -215,7 +221,9 @@ export const BookRegister = () => {
             ))}
         </div>
         <div className={`${styles.submit_button_field}`}>
-          <button className={`${styles.submit_button}`} type="submit">追加する</button>
+          <button className={`${styles.submit_button}`} type="submit">
+            追加する
+          </button>
         </div>
       </form>
     </main>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Router from "next/router";
 import useSWR from "swr";
 import Modal from "react-modal";
@@ -8,9 +9,9 @@ import {
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { endpoint } from "@/features/api";
 
 import { Book } from "@/features/book/types";
-import Image from "next/image";
 import {
   GetAllBookRequest,
   GetAllBookResponse,
@@ -66,15 +67,11 @@ export const BookList = () => {
   );
 
   const deleteBook = async (id: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("api endpoint is undefined");
-    }
     const req: DeleteBookRequest = {
       b_id: id,
     };
     try {
-      const res = await fetch(`${baseUrl}/DeleteBook`, {
+      const res = await fetch(`${endpoint}/DeleteBook`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -165,10 +162,7 @@ export const BookList = () => {
           <FontAwesomeIcon icon={faPen} />
         </button>
       </div>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-      >
+      <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <div className={`${styles.close_button_field}`}>
           <button className={`${styles.close_button}`} onClick={closeModal}>
             ×

@@ -4,12 +4,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import {
-  updateEmail,
-  updateGameStatus,
-  updateUid,
-  updateUser,
-} from "@/store/user";
+import { updateEmail, updateUid, updateUser } from "@/store/user";
 
 import { isLogin } from "@/features/auth/utils/isLogin";
 import { getLoginUser } from "@/features/auth/utils/getLoginUser";
@@ -19,10 +14,6 @@ import {
   ScanUserRequest,
   ScanUserResponse,
 } from "@/features/auth/types/scanUser";
-import {
-  GetStatusRequest,
-  GetStatusResponse,
-} from "@/features/auth/types/getStatus";
 
 export const LoginStatusWatch = () => {
   const router = useRouter();
@@ -32,7 +23,6 @@ export const LoginStatusWatch = () => {
   const uid = useSelector((store: RootState) => store.uid);
   const email = useSelector((store: RootState) => store.email);
   const user = useSelector((store: RootState) => store.user);
-  const status = useSelector((store: RootState) => store.gameStatus);
 
   const NO_LOGIN_REQUIRED = [
     "/login",
@@ -68,28 +58,7 @@ export const LoginStatusWatch = () => {
         });
       });
 
-    const userStatusFetcher = async (): Promise<void> =>
-      new Promise((resolve, reject) => {
-        const req: GetStatusRequest = { u_id: firebaseUser.uid };
-        fetch(`${endpoint}/ScanStatus`, {
-          method: "POST",
-          body: JSON.stringify(req),
-        }).then((res) => {
-          res.json().then((json: GetStatusResponse) => {
-            if (json.response_status === "fail") {
-              reject(json.error);
-            }
-            dispatch(updateGameStatus(json.result.game_status));
-            resolve();
-          });
-        });
-      });
-
-    await Promise.all([userDataFetcher, userStatusFetcher]);
-  };
-
-  const toTop = () => {
-    router.push("/");
+    await userDataFetcher();
   };
 
   const toLogin = () => {
@@ -99,16 +68,8 @@ export const LoginStatusWatch = () => {
   useEffect(() => {
     isLogin().then((res) => {
       if (res) {
-        if (isNoLoginRequired) {
-          if (uid && email && user && status) {
-            toTop();
-          } else {
-            dataFetch().then(() => toTop());
-          }
-        } else {
-          if (!(uid && email && user && status)) {
-            dataFetch();
-          }
+        if (!(uid && email && user)) {
+          dataFetch();
         }
       } else {
         if (!isNoLoginRequired) {

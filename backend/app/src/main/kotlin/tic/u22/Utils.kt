@@ -468,7 +468,7 @@ data class Notice(
 data class Status(
     val u_id: String,
     val game_status: Int,
-    val status_infos: List<String>?,
+    val status_infos: List<String>? = null,
 ): TableBase
 
 /**

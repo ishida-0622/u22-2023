@@ -1,23 +1,24 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRef, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   deleteUser,
   sendEmailVerification,
+  signOut,
 } from "firebase/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
-import { updateUid, updateUser, updateEmail } from "@/store/user";
+import { endpoint } from "@/features/api";
+import { childLockCheck } from "@/features/auth/validation/childLockCheck";
+import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
 import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
 import styles from "./index.module.scss";
 
 export const Signup = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,25 +34,21 @@ export const Signup = () => {
 
   const [confirm, setConfirm] = useState({
     passwordConfirm: "",
-    childLockConfirm: "",
     consent: false,
   });
 
   const [isHiddenPass, setIsHiddenPass] = useState({ pass: true, check: true });
-  const [isHiddenChildLock, setIsHiddenChildLock] = useState({
-    pass: true,
-    check: true,
-  });
+
+  const isSubmitActive = useRef(true);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isSubmitActive.current) {
+      return;
+    }
 
     if (password !== confirm.passwordConfirm) {
       alert("パスワードが一致しません。");
-      return;
-    }
-    if (formValues.child_lock !== confirm.childLockConfirm) {
-      alert("チャイルドロックが一致しません。");
       return;
     }
     if (!confirm.consent) {
@@ -59,37 +56,37 @@ export const Signup = () => {
       return;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
+    if (
+      !(
+        romaNameCheck(formValues.family_name_roma) &&
+        romaNameCheck(formValues.first_name_roma)
+      )
+    ) {
+      alert("ローマ字の入力欄が不正です");
+      return;
     }
+
+    if (!childLockCheck(formValues.child_lock)) {
+      alert("チャイルドロックは数字4桁にしてください");
+      return;
+    }
+
+    isSubmitActive.current = false;
+
     try {
       const user = (await createUserWithEmailAndPassword(auth, email, password))
         .user;
-      dispatch(
-        updateUser({
-          ...formValues,
-          u_id: user.uid,
-          limit_time: 1440,
-          delete_flg: false,
-        })
-      );
-      dispatch(updateUid(user.uid));
-      dispatch(updateEmail(user.email));
       const req: SignUpRequest = {
         ...formValues,
         u_id: user.uid,
       };
 
-      const res = await fetch(`${baseUrl}/SignUp`, {
+      const res = await fetch(`${endpoint}/SignUp`, {
         method: "POST",
         body: JSON.stringify(req),
       });
       const json: SignUpResponse = await res.json();
       if (json.response_status === "fail") {
-        dispatch(updateUid(null));
-        dispatch(updateUser(null));
-        dispatch(updateEmail(null));
         await deleteUser(user);
         throw new Error(json.error);
       }
@@ -100,8 +97,11 @@ export const Signup = () => {
         redirectUrl ? { url: redirectUrl } : undefined
       );
 
+      await signOut(auth);
+
       screenTransition();
     } catch (e) {
+      isSubmitActive.current = true;
       console.error(e);
       alert("作成に失敗しました");
     }
@@ -113,8 +113,9 @@ export const Signup = () => {
 
   return (
     <div className={`${styles.container}`}>
+      <h2 className={`${styles.header}`}>サインアップ</h2>
+      <hr />
       <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
-        <h2 className={`${styles.header}`}>サインアップ</h2>
         <div className={`${styles.name}`}>
           <div className={`${styles.lastname}`}>
             <label>
@@ -271,8 +272,9 @@ export const Signup = () => {
           <label>
             チャイルドロック
             <input
-              type={isHiddenChildLock.pass ? "password" : "text"}
+              type="text"
               name="child_lock"
+              inputMode="numeric"
               id="child_lock"
               value={formValues.child_lock}
               onChange={(e) =>
@@ -283,47 +285,9 @@ export const Signup = () => {
               }
               required={true}
             />
-            <span
-              onClick={() =>
-                setIsHiddenChildLock((v) => ({ ...v, pass: !v.pass }))
-              }
-              role="presentation"
-            >
-              <FontAwesomeIcon
-                icon={isHiddenChildLock.pass ? faEyeSlash : faEye}
-              />
-            </span>
           </label>
           <p>設定画面を開く際に必要になります。</p>
           <p>設定画面よりプレイ時間等が確認できます。</p>
-        </div>
-        <div className={`${styles.password}`}>
-          <label>
-            チャイルドロック確認用
-            <input
-              type={isHiddenChildLock.check ? "password" : "text"}
-              name="child_lockConfirmation"
-              id="child_lockConfirmation"
-              value={confirm.childLockConfirm}
-              onChange={(e) =>
-                setConfirm((val) => ({
-                  ...val,
-                  childLockConfirm: e.target.value,
-                }))
-              }
-              required={true}
-            />
-            <span
-              onClick={() =>
-                setIsHiddenChildLock((v) => ({ ...v, check: !v.check }))
-              }
-              role="presentation"
-            >
-              <FontAwesomeIcon
-                icon={isHiddenChildLock.check ? faEyeSlash : faEye}
-              />
-            </span>
-          </label>
         </div>
         <div className={`${styles.checkbox}`}>
           <label>
@@ -332,7 +296,7 @@ export const Signup = () => {
               id="consent"
               name="consent"
               checked={confirm.consent}
-              onChange={(e) =>
+              onChange={() =>
                 setConfirm((val) => ({
                   ...val,
                   consent: !val.consent,

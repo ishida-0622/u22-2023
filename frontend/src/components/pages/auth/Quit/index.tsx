@@ -2,7 +2,9 @@ import { useState } from "react";
 import Router from "next/router";
 import { auth } from "@/features/auth/firebase";
 import { User, deleteUser, signInWithEmailAndPassword } from "firebase/auth";
+import { endpoint } from "@/features/api";
 import { QuitRequest, QuitResponse } from "@/features/auth/types/quit";
+
 import styles from "./index.module.scss";
 
 export const Quit = () => {
@@ -26,16 +28,12 @@ export const Quit = () => {
       console.warn("uid is null");
       return;
     }
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
 
     try {
       const req: QuitRequest = {
         u_id: uid,
       };
-      const res = await fetch(`${baseUrl}/Quit`, {
+      const res = await fetch(`${endpoint}/Quit`, {
         method: "POST",
         body: JSON.stringify(req),
       });
