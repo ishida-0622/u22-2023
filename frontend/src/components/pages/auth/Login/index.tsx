@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { auth } from "@/features/auth/firebase";
 import { updateEmail, updateUid, updateUser } from "@/store/user";
+import { endpoint } from "@/features/api";
 import {
   ScanUserRequest,
   ScanUserResponse,
@@ -16,23 +17,19 @@ import styles from "./index.module.scss";
 export const Login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const isActive = useRef(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const fetchUserData = async (uid: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("内部エラー");
-    }
-
     const req: ScanUserRequest = {
       u_id: uid,
     };
 
     // ユーザー情報を取得
     const res: ScanUserResponse = await (
-      await fetch(`${baseUrl}/ScanUser`, {
+      await fetch(`${endpoint}/ScanUser`, {
         method: "POST",
         body: JSON.stringify(req),
       })
@@ -57,6 +54,11 @@ export const Login = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+    isActive.current = false;
     try {
       // ログイン処理
       const response = await signInWithEmailAndPassword(auth, email, password);
@@ -67,6 +69,7 @@ export const Login = () => {
       await fetchUserData(response.user.uid);
       ScreenTransition();
     } catch (e) {
+      isActive.current = true;
       console.error(e);
       alert("ログインに失敗しました");
     }

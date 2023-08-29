@@ -1,0 +1,181 @@
+@use "src/styles/variables";
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
+.container {
+  text-align: center;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  font-size: 1.7rem;
+  span {
+    margin-right: 1rem;
+  }
+
+  .back_ground {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: variables.$base_color;
+    z-index: -1;
+  }
+
+  .navigation_mail {
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .navigation {
+    text-align: left;
+    font-weight: bold;
+  }
+
+  table {
+    display: inline-block;
+  }
+
+  button:hover {
+    cursor: pointer;
+    filter: brightness(70%);
+  }
+
+  .not_change {
+    background-color: rgb(197, 241, 253);
+    font-weight: bold;
+  }
+
+  .change {
+    background-color: rgb(255, 202, 202);
+    font-weight: bold;
+  }
+
+  /*PC*/
+  @media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+    form {
+      margin-top: 3rem;
+    }
+
+    .navigation_mail {
+      margin: 0 0 0 36%;
+      font-size: 1.7rem;
+    }
+
+    .navigation {
+      font-size: 1.7rem;
+    }
+
+    input {
+      width: 22rem;
+      height: 3rem;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 2rem;
+      border-radius: 1rem;
+    }
+
+    button {
+      width: 12rem;
+      height: 4rem;
+      margin: 0 2rem 0 2rem;
+      border-radius: 5rem;
+    }
+
+    button:hover {
+      cursor: pointer;
+      filter: brightness(70%);
+    }
+
+    .not_change {
+      font-size: 1.5rem;
+    }
+
+    .change {
+      font-size: 1.4rem;
+    }
+  }
+
+  /* iPadランドスケープ */
+  @media screen and (min-device-height: 768px) and (orientation: landscape) {
+    form {
+      margin-top: 5rem;
+    }
+
+    .navigation_mail {
+      margin: 0 0 0 36%;
+      font-size: 2.5rem;
+    }
+
+    .navigation {
+      font-size: 2.5rem;
+    }
+
+    input {
+      width: 30rem;
+      height: 4.5rem;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 3rem;
+      border-radius: 1rem;
+    }
+
+    button {
+      width: 18rem;
+      height: 4.5rem;
+      margin: 0 2.5rem 0 2.5rem;
+      border-radius: 5rem;
+    }
+
+    button:hover {
+      cursor: pointer;
+      filter: brightness(70%);
+    }
+
+    .not_change {
+      font-size: 2rem;
+    }
+
+    .change {
+      font-size: 1.8rem;
+    }
+  }
+
+  /* iPhoneランドスケープ */
+  @media screen and (max-device-height: 441px) and (orientation: landscape) {
+    form {
+      margin-top: 1rem;
+    }
+
+    .navigation_mail {
+      margin: 0 0 0 36%;
+      font-size: 1.3rem;
+    }
+
+    .navigation {
+      font-size: 1.3rem;
+    }
+
+    input {
+      width: 15rem;
+      height: 2.5rem;
+      margin: 0.5rem 0 0.5rem 0;
+      font-size: 2rem;
+      border-radius: 1rem;
+    }
+
+    button {
+      width: 10rem;
+      height: 3.5rem;
+      margin: 0 2rem 0 2rem;
+      border-radius: 5rem;
+    }
+
+    button:hover {
+      cursor: pointer;
+      filter: brightness(70%);
+    }
+
+    .not_change {
+      font-size: 1.4rem;
+    }
+
+    .change {
+      font-size: 1.2rem;
+    }
+  }
+}

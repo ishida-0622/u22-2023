@@ -335,8 +335,9 @@ class Utils {
  * 実行環境で使用する設定変数
  */
 class Settings {
-    val AWS_REGION = "us-east-1"
-    val AWS_BUCKET = "club-katogi"
+    val env: MutableMap<String, String> = System.getenv()
+    val AWS_REGION = "${env["REGION"]}"
+    val AWS_BUCKET = "${env["BUCKET"]}"
 }
 
 
@@ -468,7 +469,7 @@ data class Notice(
 data class Status(
     val u_id: String,
     val game_status: Int,
-    val status_infos: List<String>?,
+    val status_infos: List<String>? = null,
 ): TableBase
 
 /**

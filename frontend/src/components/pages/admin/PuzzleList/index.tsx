@@ -1,16 +1,19 @@
 import { useLayoutEffect, useState } from "react";
-import styles from "./index.module.scss";
-import { AdminMenubar } from "@/components/elements/AdminMenubar";
+import Image from "next/image";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Puzzle } from "@/features/puzzle/types";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+
+import { endpoint } from "@/features/api";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
 import { DeletePuzzleRequest } from "@/features/puzzle/types/delete";
 import { DeletePuzzleResponse } from "@/features/puzzle/types/delete";
-import Image from "next/image";
+
+import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
 
@@ -56,15 +59,11 @@ export const PuzzleList = () => {
 
   // 削除メソッド
   const deletePuzzle = async (id: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("api endpoint is undefined");
-    }
     const req: DeletePuzzleRequest = {
       p_id: id,
     };
     try {
-      const res = await fetch(`${baseUrl}/DeletePuzzle`, {
+      const res = await fetch(`${endpoint}/DeletePuzzle`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -89,17 +88,13 @@ export const PuzzleList = () => {
 
   // 新規作成画面へのrouter
   const postPuzzle = () => {
-    router.push("/admin/register-puzzle");
+    router.push("/admin/puzzle/register");
   };
 
   useLayoutEffect(() => {
     const pullPuzzle = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-      if (baseUrl === undefined) {
-        throw new Error("内部エラー");
-      }
       try {
-        const response = await fetch(`${baseUrl}/GetPuzzles`, {
+        const response = await fetch(`${endpoint}/GetPuzzles`, {
           method: "POST",
           body: JSON.stringify({}),
         });
@@ -131,9 +126,7 @@ export const PuzzleList = () => {
 
       <div className={`${styles.posts}`}>
         {posts.map((post) => (
-          <div
-            key={post.title + post.create_date}
-          >
+          <div key={post.title + post.create_date}>
             <h3>
               {post.title}
               <div className={`${styles.puzzle_button}`}>
@@ -166,7 +159,9 @@ export const PuzzleList = () => {
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
         <div className={`${styles.modal}`}>
           <div className={`${styles.close_button_field}`}>
-            <button className={`${styles.close_button}`} onClick={closeModal}>×</button>
+            <button className={`${styles.close_button}`} onClick={closeModal}>
+              ×
+            </button>
           </div>
           <div>
             {puzzle && (
@@ -179,10 +174,15 @@ export const PuzzleList = () => {
                 </div>
                 <div>
                   <b>アイコン：</b>
-                  <Image src={puzzle.icon} alt="icon" width={150} height={100} />
+                  <Image
+                    src={puzzle.icon}
+                    alt="icon"
+                    width={150}
+                    height={100}
+                  />
                 </div>
                 <div>
-                <b>問題：</b>
+                  <b>問題：</b>
                   {puzzle.words.map((word) => (
                     <div key={word.word}>
                       <p>単語：{word.word}</p>
@@ -213,7 +213,9 @@ export const PuzzleList = () => {
                   <b>更新日：</b>「{puzzle.update_date}」
                 </div>
                 <div className={`${styles.edit_button_field}`}>
-                  <button className={`${styles.edit_button}`} onClick={edit}>編集する</button>
+                  <button className={`${styles.edit_button}`} onClick={edit}>
+                    編集する
+                  </button>
                 </div>
               </main>
             )}

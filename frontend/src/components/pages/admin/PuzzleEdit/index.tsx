@@ -1,8 +1,9 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Modal from "react-modal";
+import { endpoint } from "@/features/api";
 
 import { Puzzle, PuzzleWord } from "@/features/puzzle/types";
 import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
@@ -19,6 +20,8 @@ export const PuzzleEdit = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const isActive = useRef(true);
+
   const puzzleList = () => {
     router.push("/admin/puzzle");
   };
@@ -27,12 +30,8 @@ export const PuzzleEdit = () => {
 
   useLayoutEffect(() => {
     const pullPuzzle = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-      if (baseUrl === undefined) {
-        throw new Error("内部エラー");
-      }
       try {
-        const response = await fetch(`${baseUrl}/GetPuzzles`, {
+        const response = await fetch(`${endpoint}/GetPuzzles`, {
           method: "POST",
           body: JSON.stringify({}),
         });
@@ -59,9 +58,8 @@ export const PuzzleEdit = () => {
               matchingPuzzle.words.map((word) => word.is_displayed)
             );
           }
-          console.log(data.result);
         } else {
-          console.log("Puzzle not found");
+          console.warn("Puzzle not found");
         }
       } catch (e) {
         alert("データの取得に失敗しました");
@@ -144,7 +142,13 @@ export const PuzzleEdit = () => {
     const arr = text.split(",");
     setSplitDummyWord(arr);
     setDummyImages((val) => val.concat([null]).slice(0, arr.length));
-    setDummyShadows((val) => val.concat([""]).slice(0, arr.length));
+    setDummyShadows((val) =>
+      val
+        .concat([
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQQAAAJMAQMAAACW/DlXAAAAA1BMVEX///+nxBvIAAAAf0lEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD24JAAAAAAQND/134wAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEt0JwABmDfT1AAAAABJRU5ErkJggg==",
+        ])
+        .slice(0, arr.length)
+    );
     setDummyVoices((val) => val.concat([null]).slice(0, arr.length));
   };
 
@@ -171,7 +175,6 @@ export const PuzzleEdit = () => {
    * @param index
    * @param updateFun 値の更新用のset関数
    */
-
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number,
@@ -198,15 +201,15 @@ export const PuzzleEdit = () => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     const reg = new RegExp(
       /^([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+(?:,([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+)*$/
     );
     // 問題文がカンマ区切りの英文かを判定
-
-    // if (!reg.test(word)) {
-    //   alert("問題文の形式が不正です");
-    //   return;
-    // }
 
     if (!(dummyWord === "" || reg.test(dummyWord))) {
       alert("ダミー文の形式が不正です");
@@ -231,6 +234,8 @@ export const PuzzleEdit = () => {
       alert("画像と音声をアップロードしてください");
       return;
     }
+
+    isActive.current = false;
 
     const words: PuzzleWord[] = splitWord.map((v, i) => {
       return {
@@ -263,15 +268,9 @@ export const PuzzleEdit = () => {
       words: words.concat(dummyWords),
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
-
     try {
       // 登録処理
-      const res = await fetch(`${baseUrl}/UpdatePuzzle`, {
+      const res = await fetch(`${endpoint}/UpdatePuzzle`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -283,6 +282,7 @@ export const PuzzleEdit = () => {
         puzzleList();
       }
     } catch (e) {
+      isActive.current = true;
       console.error(e);
       alert("更新に失敗しました");
     }

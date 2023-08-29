@@ -40,7 +40,7 @@
   height: 40%;
   border: 1px solid black;
   overflow: auto;
-  background-color:rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
 }
 
 .container {
@@ -58,6 +58,7 @@
   width: 8rem;
   height: auto;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .button_container {
@@ -87,7 +88,7 @@
     border-radius: 0.5rem;
     border-color: rgb(125, 250, 250);
   }
-  
+
   .reading_button {
     background-color: rgb(255, 128, 153);
     border-bottom: 50% solid rgb(255, 128, 153);

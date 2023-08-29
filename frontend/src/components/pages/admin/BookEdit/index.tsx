@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { endpoint } from "@/features/api";
 
 import {
   GetAllBookRequest,
@@ -18,6 +19,8 @@ export const BookEdit = () => {
   const router = useRouter();
   // 本id
   const { id } = router.query;
+
+  const isActive = useRef(true);
 
   const [titleEn, setTitleEn] = useState("");
   const [titleJp, setTitleJp] = useState("");
@@ -106,6 +109,11 @@ export const BookEdit = () => {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     if (!thumbnail) {
       alert("サムネイル画像を追加してください");
       return;
@@ -116,13 +124,14 @@ export const BookEdit = () => {
     }
     if (voices.some((v) => v === null)) {
       alert("音声ファイルを追加してください");
-      console.log(voices);
       return;
     }
 
     if (typeof id !== "string") {
       throw new Error("b_id type is not string");
     }
+
+    isActive.current = false;
 
     const req: UpdateBookRequest = {
       b_id: id,
@@ -135,12 +144,8 @@ export const BookEdit = () => {
       voice: voices as string[],
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
     try {
-      const res = await fetch(`${baseUrl}/UpdateBook`, {
+      const res = await fetch(`${endpoint}/UpdateBook`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -150,6 +155,7 @@ export const BookEdit = () => {
       }
       alert("登録しました");
     } catch (error) {
+      isActive.current = true;
       console.error(error);
       alert("登録に失敗しました");
     }
@@ -263,7 +269,9 @@ export const BookEdit = () => {
             ))}
         </div>
         <div className={`${styles.submit_button_field}`}>
-          <button className={`${styles.submit_button}`} type="submit">更新する</button>
+          <button className={`${styles.submit_button}`} type="submit">
+            更新する
+          </button>
         </div>
       </form>
       <div className={`${styles.link}`}>

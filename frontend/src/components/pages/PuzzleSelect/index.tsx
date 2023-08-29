@@ -1,5 +1,7 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 import { endpoint } from "@/features/api";
 import { Seal } from "@/features/puzzle/select/Seal";
@@ -13,8 +15,6 @@ import {
 
 import styles from "@/components/pages/PuzzleSelect/index.module.scss";
 import BackgroundImage from "@/features/puzzle/select/images/puzzle-select-background.jpg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const PuzzleSelect = () => {
   const [puzzles, setPuzzles] = useState<Puzzle[]>([]);
@@ -43,24 +43,21 @@ export const PuzzleSelect = () => {
     setShowPuzzles(puzzles.slice(startIdx, endIdx));
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const fetchPuzzles = async () => {
       try {
         const req: GetAllPuzzleRequest = {};
-        // TODO:
-        // const response = await fetch(`${endpoint}/GetPuzzles`, {
-        //   method: "POST",
-        //   body: JSON.stringify(req),
-        // });
-        const response = await fetch(
-          "http://localhost:3000/api/puzzle/puzzles"
-        );
+        const response = await fetch(`${endpoint}/GetPuzzles`, {
+          method: "POST",
+          body: JSON.stringify(req),
+        });
         const json: GetAllPuzzleResponse = await response.json();
         if (json.response_status === "fail") {
           throw new Error(json.error);
         }
-        setPuzzles(json.result);
-        setShowPuzzles(json.result.slice(0, 5));
+        const p = json.result.sort((a, b) => (a.p_id > b.p_id ? 1 : -1));
+        setPuzzles(p);
+        setShowPuzzles(p.slice(0, 5));
       } catch (error) {
         if (error instanceof Error) {
           alert("パズル取得中にエラーが発生しました");
@@ -82,7 +79,7 @@ export const PuzzleSelect = () => {
       >
         <FontAwesomeIcon icon={faArrowLeft} />
       </button>
-      <div>
+      <div className={`${styles.seal_star}`}>
         {showPuzzles.map((puzzle, i) => (
           <div
             key={`${puzzle.title}${puzzle.create_date}`}
@@ -102,7 +99,7 @@ export const PuzzleSelect = () => {
             </div>
           </div>
         ))}
-        {Array.from({ length: 12 }, (_, i) => (
+        {Array.from({ length: 3 * (showPuzzles.length - 1) }, (_, i) => (
           <div key={`star_key_${i}`} className={`star_${i}`}>
             <div className={`${styles.star_field}`}>
               <div className={`${styles.stars}`}></div>
