@@ -39,7 +39,7 @@ export const PostAnnouncementList = () => {
   // 新規作成ページへのrouter
   const router = useRouter();
   const postAnnouncement = () => {
-    router.push("/admin/post-announcement");
+    router.push("/admin/notice/register");
   };
 
   // 削除メソッド
