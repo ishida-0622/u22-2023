@@ -204,7 +204,7 @@ export const Signup = () => {
               type="text"
               name="username"
               id="username"
-              placeholder="英数字混合10文字以内"
+              placeholder="半角英数字のみ"
               value={formValues.account_name}
               onChange={(e) =>
                 setFormValues((val) => ({
@@ -237,7 +237,7 @@ export const Signup = () => {
               type={isHiddenPass.pass ? "password" : "text"}
               name="password"
               id="password"
-              placeholder="大文字小文字含む英数字混合8～20文字"
+              placeholder="6文字以上"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required={true}

@@ -24,6 +24,8 @@ import {
   ScanBookLogResponse,
 } from "@/features/log/types/scanBookLog";
 import { logout } from "@/features/auth/utils/logout";
+import { LogoutButton } from "@/components/elements/LogoutButton";
+import { BackButton } from "@/components/elements/BackButton";
 
 import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
@@ -128,20 +130,14 @@ export const AccountInfo = () => {
       <div className={styles.child_lock_init}>
         <h1>アカウント設定</h1>
         <label>
-          チャイルドロックを入力
+          <h2>チャイルドロックを入力</h2>
           <input
             type="text"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <div className={`${styles.back_button_field}`}>
-            <button
-              type="button"
-              className={`${styles.back_button}`}
-              onClick={() => router.back()}
-            >
-              戻る
-            </button>
+            <BackButton />
           </div>
         </label>
       </div>
@@ -153,21 +149,10 @@ export const AccountInfo = () => {
       <div className={`${styles.back_ground}`}></div>
       <h1>アカウント設定</h1>
       <div className={`${styles.back_button_field}`}>
-        <button
-          type="button"
-          className={`${styles.back_button}`}
-          onClick={() => router.back()}
-        >
-          戻る
-        </button>
+        <BackButton />
       </div>
       <div className={`${styles.logout_button_field}`}>
-        <button
-          className={`${styles.logout_button}`}
-          onClick={logout}
-        >
-          ログアウト
-        </button>
+        <LogoutButton />
       </div>
       <Tabs>
         <TabList className={`${styles.tab_list}`}>

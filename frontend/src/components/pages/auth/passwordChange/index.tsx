@@ -65,7 +65,7 @@ export const PasswordChange = () => {
             type={isHidden.pass ? "password" : "text"}
             name="password"
             id="password"
-            placeholder="大文字小文字含む英数字混合8～20文字"
+            placeholder="6文字以上"
             value={password}
             onChange={changePassword}
             required={true}

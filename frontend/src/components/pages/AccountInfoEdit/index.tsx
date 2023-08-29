@@ -12,6 +12,7 @@ import {
   UpdateUserRequest,
   UpdateUserResponse,
 } from "@/features/auth/types/updateUser";
+import { BackButton } from "@/components/elements/BackButton";
 
 import styles from "./index.module.scss";
 
@@ -151,16 +152,16 @@ export const AccountInfoEdit = () => {
             />
           </label>
         </div>
-        <button
-          type="button"
-          className={styles.not_change}
-          onClick={() => router.back()}
-        >
-          戻る
-        </button>
-        <button type="submit" className={styles.change}>
-          変更
-        </button>
+        <div className={styles.button_field}>
+          <div className={styles.back_button_field}>
+            <BackButton />
+          </div>
+          <div className={styles.edit_button_field}>
+            <button type="submit" className={styles.edit_button}>
+              変更
+            </button>
+          </div>
+        </div>
         <br />
         <div className={styles.link}>
           <Link href={"/password-change"} target={"_blank"}>
