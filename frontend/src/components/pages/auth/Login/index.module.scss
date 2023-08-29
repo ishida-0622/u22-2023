@@ -8,6 +8,8 @@
   background-color: #7ec7d8;
 }
 
+
+
 .logintext {
   display: flex;
   justify-content: center;
@@ -37,6 +39,12 @@
   input {
     width: 100%;
     text-align: left;
+    border-top-left-radius: 15em;
+    border-top-right-radius: 15em;
+    border-bottom-left-radius: 15em;
+    border-bottom-right-radius: 15em;
+    border-radius: 40em 40em 40em 40em;
+    border: 0.25em solid palevioletred;
   }
   button {
     margin-bottom: 3rem;
