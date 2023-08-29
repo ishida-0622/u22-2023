@@ -68,7 +68,14 @@ export const LoginStatusWatch = () => {
   useEffect(() => {
     isLogin().then((res) => {
       if (res) {
-        if (!(uid && email && user)) {
+        if (isAdminPage) {
+          const reg = new RegExp(process.env.NEXT_PUBLIC_ADMIN_REGEXP ?? "^$");
+          getLoginUser().then((u) => {
+            if (!(u?.email && reg.test(u.email))) {
+              router.push("/");
+            }
+          });
+        } else if (!(uid && email && user)) {
           dataFetch();
         }
       } else {

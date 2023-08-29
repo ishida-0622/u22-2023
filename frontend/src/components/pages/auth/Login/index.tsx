@@ -62,6 +62,11 @@ export const Login = () => {
     try {
       // ログイン処理
       const response = await signInWithEmailAndPassword(auth, email, password);
+      const reg = new RegExp(process.env.NEXT_PUBLIC_ADMIN_REGEXP ?? "^$");
+      if (reg.test(email)) {
+        router.push("/admin");
+        return;
+      }
       // グローバルステートを更新
       dispatch(updateUid(response.user.uid));
       dispatch(updateEmail(response.user.email));
