@@ -2,7 +2,11 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendEmailVerification,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 
 import { auth } from "@/features/auth/firebase";
 import { updateEmail, updateUid, updateUser } from "@/store/user";
@@ -62,6 +66,14 @@ export const Login = () => {
     try {
       // ログイン処理
       const response = await signInWithEmailAndPassword(auth, email, password);
+      if (!response.user.emailVerified) {
+        await sendEmailVerification(response.user);
+        alert(
+          "メールアドレス認証がされていません\n送信されたメールのURLをクリックしてください"
+        );
+        await signOut(auth);
+        return;
+      }
       // グローバルステートを更新
       dispatch(updateUid(response.user.uid));
       dispatch(updateEmail(response.user.email));
