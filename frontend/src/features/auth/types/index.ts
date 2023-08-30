@@ -9,9 +9,3 @@ export type User = {
   limit_time: number;
   delete_flg: boolean;
 };
-
-export type Status = {
-  u_id: string;
-  game_status: number;
-  status_infos?: string[] | { b_id: string; page: number };
-};

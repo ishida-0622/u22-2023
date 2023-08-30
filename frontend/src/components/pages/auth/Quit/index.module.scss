@@ -1,0 +1,203 @@
+.container {
+  font-size: 1.2rem;
+  background-image: url("./images/meadow.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  input {
+    width: 100%;
+    text-align: left;
+    padding-left: 1rem;
+    border-top-left-radius: 15rem;
+    border-top-right-radius: 15rem;
+    border-bottom-left-radius: 15rem;
+    border-bottom-right-radius: 15rem;
+    border-radius: 40rem;
+    border: 0.25rem solid palevioletred;
+  }
+  p {
+    line-height: 3rem;
+    color: rgb(160, 72, 160);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  span {
+    position: absolute;
+    margin-top: 0.5%;
+    margin-left: 0.5%;
+    font-size: 1.5rem;
+  }
+}
+
+.header {
+  text-align: center;
+}
+
+.form {
+  max-width: max(50%, 480px);
+  margin: 0 auto 0%;
+  padding: 2rem 2rem 2rem;
+  line-height: 3rem;
+  justify-content: space-between;
+}
+
+.link {
+  margin-top: 2rem;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.submit_button {
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #df0013;
+  border-bottom: 50% solid #9f000c;
+  border-radius: 2rem;
+  border-color: #9f000c;
+  transition: background-color 0.3s ease;
+  top: calc(50% - 0.5rem);
+}
+
+.submit_button:hover {
+  background-color: #7c000a;
+  cursor: pointer;
+}
+
+.submit_button_field {
+  width: 100%;
+  margin-top: 2rem;
+  text-align: center;
+  justify-content: space-between;
+}
+
+// /* スマートフォン用のスタイル */
+// @media screen and (max-width: 480px) {
+//     .header {
+//         height: 50vh;
+//         font-size: 120%;
+
+//         input {
+//             width: 100%;
+//             margin-bottom: -5rem;
+//         }
+
+//         button {
+//             width: 30%;
+//         }
+//     }
+// }
+
+// /* タブレット用のスタイル */
+// @media screen and (min-width: 481px) and (max-width: 768px) {
+
+//     .header {
+
+//         height: 60vh;
+//         font-size: 130%;
+//         margin-bottom: 0;
+//         input {
+//             width: 80%;
+//             margin-bottom: -10rem;
+//         }
+
+//         button {
+//             width: 20%;
+//         }
+//     }
+// }
+
+// /* デスクトップ用のスタイル */
+// @media screen and (min-width: 769px) {
+//     .header {
+//         height: 81.5vh;
+//         font-size: 150%;
+
+//         input {
+//             width: 50%;
+//             margin-bottom: -10rem;
+//         }
+
+//         button {
+//             width: 15%;
+//         }
+//     }
+// }
+
+// /* 共通のスタイル */
+// .top {
+//     background-image: url("./images/meadow.jpg");
+//     background-size: cover;
+//     height: auto;
+// }
+
+// .main {
+//     text-align: center;
+//     padding: 0;
+// }
+
+// .logintext {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+// }
+
+// .header {
+//     margin-top: 5%;
+//     width: 100%;
+//     text-align: center;
+
+//     label {
+//         margin-bottom: 4rem;
+//         display: inline-block;
+//         text-align: justify;
+//     }
+
+//     input {
+//         line-height: 5%;
+//         text-align: left;
+//         width: 130%;
+//         border-radius: 40em;
+//         border: 0.25em solid palevioletred;
+//     }
+
+//     button {
+//         margin-bottom: 3rem;
+//     }
+
+//     .link {
+//         font-size: 50%;
+//     }
+// }
+
+// .submit_button {
+//     left: 50%;
+//     transform: translateX(-50%);
+//     position: absolute;
+//     top: calc(50% - 0.5rem);
+//     right: 1rem;
+//     display: inline-block;
+//     color: azure;
+//     font-weight: bold;
+//     background-color: #df0013;
+//     border-bottom: 5px solid #9f000c;
+//     border-radius: 100vh;
+//     border-color: #9f000c;
+//     width: 10rem;
+//     height: 3.5rem;
+
+//     &:hover {
+//         margin-top: calc(0.1875rem - 0.125rem);
+//         border-bottom: calc(0.125rem) solid #9f000c;
+//         cursor: pointer;
+//     }
+// }
+
+// .submit_button_field {
+//     position: absolute;
+//     bottom: 20%;
+//     width: 100%;
+//     text-align: center;
+// }

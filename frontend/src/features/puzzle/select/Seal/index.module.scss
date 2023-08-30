@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
+.sealWrapper {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .seal:hover {
+    transition: 0.5s;
+    transform: scale(1.08, 1.08);
+  }
+}
+
+.modal_contents {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  text-align: center;
+
+  h3 {
+    font-size: 5rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  button {
+    display: inline-block;
+    background-color: rgb(180, 180, 180);
+    width: 16rem;
+    height: 6rem;
+    border-radius: 1rem;
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin: 7.5rem 7.5rem 0 7.5rem;
+    transition: filter 0.3s ease;
+    z-index: 1;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  button:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+  }
+
+  .back_button {
+    background-color: rgb(216, 216, 216);
+  }
+
+  .play_button {
+    background-color: rgb(150, 255, 255);
+  }
+}
+
+.number {
+  color: aliceblue;
+  font-size: 2rem;
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
+  .modal_contents {
+    button {
+      width: 8rem;
+      height: 4rem;
+      margin: 0 2.5rem 0 2.5rem;
+      font-size: 2rem;
+    }
+  }
+}
