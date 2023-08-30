@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import {
+  AuthErrorCodes,
   createUserWithEmailAndPassword,
   deleteUser,
   sendEmailVerification,
@@ -15,7 +16,9 @@ import { childLockCheck } from "@/features/auth/validation/childLockCheck";
 import { romaNameCheck } from "@/features/auth/validation/romaNameCheck";
 import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
+import Link from "next/link";
 import styles from "./index.module.scss";
+import { FirebaseError } from "firebase/app";
 
 export const Signup = () => {
   const router = useRouter();
@@ -103,7 +106,23 @@ export const Signup = () => {
     } catch (e) {
       isSubmitActive.current = true;
       console.error(e);
-      alert("作成に失敗しました");
+      if (e instanceof FirebaseError) {
+        switch (e.code) {
+          case AuthErrorCodes.EMAIL_EXISTS:
+            alert("そのメールアドレスは既に登録されています");
+            break;
+          case AuthErrorCodes.INVALID_EMAIL:
+            alert("メールアドレスの形式が不正です");
+            break;
+          case AuthErrorCodes.WEAK_PASSWORD:
+            alert("パスワードの強度が足りません");
+            break;
+          default:
+            alert("作成に失敗しました");
+        }
+      } else {
+        alert("作成に失敗しました");
+      }
     }
   };
 
@@ -124,6 +143,7 @@ export const Signup = () => {
                 type="text"
                 name="familyname"
                 id="familyname"
+                placeholder="佐藤"
                 value={formValues.family_name}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -142,6 +162,7 @@ export const Signup = () => {
                 type="text"
                 name="firstname"
                 id="firstname"
+                placeholder="太郎"
                 value={formValues.first_name}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -162,6 +183,7 @@ export const Signup = () => {
                 type="text"
                 name="familynameEng"
                 id="familynameEng"
+                placeholder="Sato"
                 value={formValues.family_name_roma}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -180,6 +202,7 @@ export const Signup = () => {
                 type="text"
                 name="firstnameEng"
                 id="firstnameEng"
+                placeholder="Taro"
                 value={formValues.first_name_roma}
                 onChange={(e) =>
                   setFormValues((val) => ({
@@ -199,6 +222,7 @@ export const Signup = () => {
               type="text"
               name="username"
               id="username"
+              placeholder="半角英数字のみ"
               value={formValues.account_name}
               onChange={(e) =>
                 setFormValues((val) => ({
@@ -217,6 +241,7 @@ export const Signup = () => {
               type="text"
               name="email"
               id="email"
+              placeholder="example@mail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required={true}
@@ -230,6 +255,7 @@ export const Signup = () => {
               type={isHiddenPass.pass ? "password" : "text"}
               name="password"
               id="password"
+              placeholder="6文字以上"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required={true}
@@ -249,6 +275,7 @@ export const Signup = () => {
               type={isHiddenPass.check ? "password" : "text"}
               name="passwordConfirmation"
               id="passwordConfirmation"
+              placeholder="パスワードを再度入力してください。"
               value={confirm.passwordConfirm}
               onChange={(e) =>
                 setConfirm((val) => ({
@@ -276,6 +303,7 @@ export const Signup = () => {
               name="child_lock"
               inputMode="numeric"
               id="child_lock"
+              placeholder="数字4桁"
               value={formValues.child_lock}
               onChange={(e) =>
                 setFormValues((val) => ({
@@ -303,8 +331,8 @@ export const Signup = () => {
                 }))
               }
             />
+            規約に同意する
           </label>
-          <p>規約に同意する</p>
         </div>
         <div className={`${styles.submit_button_field}`}>
           <button className={`${styles.submit_button}`} type="submit">
@@ -312,6 +340,9 @@ export const Signup = () => {
           </button>
         </div>
       </form>
+      <div className={`${styles.link}`}>
+        <Link href="/login">ログイン画面に戻る</Link>
+      </div>
     </div>
   );
 };

@@ -105,7 +105,7 @@ export const PostAnnouncement = () => {
               </button>
             </div>
             <div className={`${styles.link}`}>
-              <Link href="/admin/announcement-page">投稿一覧ページへ戻る</Link>
+              <Link href="/admin/notice">投稿一覧ページへ戻る</Link>
             </div>
           </div>
         </form>

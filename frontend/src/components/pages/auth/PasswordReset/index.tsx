@@ -5,6 +5,7 @@ import {
   AuthErrorCodes,
 } from "firebase/auth";
 import { auth } from "@/features/auth/firebase";
+import Link from "next/link";
 
 import styles from "./index.module.scss";
 
@@ -45,7 +46,7 @@ export const PasswordReset = () => {
   return (
     <div className={`${styles.main}`}>
       <div className={`${styles.title_field}`}>
-        <h2 className={`${styles.title}`}>パスワード再発行</h2>
+        <h1 className={`${styles.title}`}>パスワード再発行</h1>
       </div>
       <hr />
       <form method="post" onSubmit={handleSubmit}>
@@ -57,6 +58,7 @@ export const PasswordReset = () => {
               type="text"
               name="email"
               id="email"
+              placeholder="example@mail.com"
               value={email}
               onChange={changeEmail}
               required={true}
@@ -67,6 +69,9 @@ export const PasswordReset = () => {
           <button className={`${styles.submit_button}`} type="submit">
             送信する
           </button>
+        </div>
+        <div className={`${styles.link}`}>
+          <Link href="/login">ログイン画面に戻る</Link>
         </div>
       </form>
     </div>

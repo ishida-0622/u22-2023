@@ -182,31 +182,6 @@ export const PuzzleList = () => {
                   />
                 </div>
                 <div>
-                  <b>問題：</b>
-                  {puzzle.words.map((word) => (
-                    <div key={word.word}>
-                      <p>単語：{word.word}</p>
-                      <p>シルエット：</p>
-                      <Image
-                        src={word.shadow}
-                        alt={`${word.word} shadow`}
-                        width={150}
-                        height={100}
-                      />
-                      <p>イラスト：</p>
-                      <Image
-                        src={word.illustration}
-                        alt={`${word.word} illust`}
-                        width={150}
-                        height={100}
-                      />
-                      <p>音声：</p>
-                      <audio controls src={word.voice} />
-                      <hr />
-                    </div>
-                  ))}
-                </div>
-                <div>
                   <b>作成日：</b>「{puzzle.create_date}」
                 </div>
                 <div>
