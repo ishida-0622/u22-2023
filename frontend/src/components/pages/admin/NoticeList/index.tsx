@@ -71,6 +71,9 @@ export const PostAnnouncementList = () => {
           body: JSON.stringify({}),
         });
         const data: GetAllNoticeResponse = await response.json();
+        if (data.response_status === "fail") {
+          throw new Error(data.error);
+        }
         setPosts(data.result);
       } catch (e) {
         alert("データの取得に失敗しました");
