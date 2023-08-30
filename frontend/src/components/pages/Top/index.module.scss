@@ -79,6 +79,12 @@
 
 /* iPhoneランドスケープ */
 @media screen and (max-device-height: 600px) and (orientation: landscape) {
+
+  .container {
+    width: 150%;
+    height: 150%;
+  }
+
   .turn_calender {
     left: 0;
     top: 1rem;
