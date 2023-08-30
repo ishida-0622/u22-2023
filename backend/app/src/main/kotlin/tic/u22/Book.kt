@@ -33,6 +33,7 @@ class GetBooks: RequestHandler<Map<String, Any>, String> {
 
                 val result = dynamo.scanAll(tableName)
                 val formattedResult = result.map{utils.toMap(utils.attributeValueToObject(it, "book"))}
+                val dummyList: List<String> = listOf()
                 val res = formattedResult.map{ b ->
                     mapOf(
                         "b_id" to b["b_id"],
@@ -40,11 +41,9 @@ class GetBooks: RequestHandler<Map<String, Any>, String> {
                         "title_en" to b["title_en"],
                         "summary" to b["summary"],
                         "author" to b["author"],
-                        "pdf" to s3.getObject(bucketName, b["pdf"] as String),
+                        "pdf" to "",
                         "thumbnail"  to s3.getObject(bucketName, b["thumbnail"] as String),
-                        "voice" to (b["voice_keys"] as List<String>).map{
-                            s3.getObject(bucketName, it)
-                        },
+                        "voice" to dummyList,
                         "create_date" to b["create_date"],
                         "update_date" to b["update_date"],
                     )
