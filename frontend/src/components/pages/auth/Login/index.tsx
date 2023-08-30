@@ -81,6 +81,8 @@ export const Login = () => {
           "メールアドレス認証がされていません\n送信されたメールのURLをクリックしてください"
         );
         await signOut(auth);
+        return;
+      }
       // グローバルステートを更新
       dispatch(updateUid(response.user.uid));
       dispatch(updateEmail(response.user.email));
@@ -101,63 +103,65 @@ export const Login = () => {
   return (
     <div className={styles.container}>
       <div className={`${styles.header}`}>
-          <h2>ログイン</h2>
+        <h2>ログイン</h2>
         <p>パパ、ママにそうさしてもらってね！</p>
         <hr />
       </div>
-        <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
-          <div className="top">
+      <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
+        <div className="top">
+          <br />
+          <label>
+            メールアドレス
             <br />
-            <label>
-              メールアドレス<br />
-              <input
-                type="text"
-                name="email"
-                id="email"
-                placeholder="example@mail.com"
-                value={email}
-                onChange={changeEmail}
-                required={true}
-              />
-            </label>
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="example@mail.com"
+              value={email}
+              onChange={changeEmail}
+              required={true}
+            />
+          </label>
+          <br />
+          <label>
+            パスワード
             <br />
-            <label>
-              パスワード<br />
-              <input
-                type={isHiddenPass.pass ? "password" : "text"}
-                name="password"
-                id="password"
-                placeholder="パスワードを入力"
-                value={password}
-                onChange={changePassword}
-                required={true}
-              />
-            </label>
-            <span
-              onClick={() => setIsHiddenPass((v) => ({ ...v, pass: !v.pass }))}
-              role="presentation"
-            >
-              <FontAwesomeIcon icon={isHiddenPass.pass ? faEyeSlash : faEye} />
-            </span>
+            <input
+              type={isHiddenPass.pass ? "password" : "text"}
+              name="password"
+              id="password"
+              placeholder="パスワードを入力"
+              value={password}
+              onChange={changePassword}
+              required={true}
+            />
+          </label>
+          <span
+            onClick={() => setIsHiddenPass((v) => ({ ...v, pass: !v.pass }))}
+            role="presentation"
+          >
+            <FontAwesomeIcon icon={isHiddenPass.pass ? faEyeSlash : faEye} />
+          </span>
+        </div>
+        <div>
+          <div className={`${styles.submit_button_field}`}>
+            <button className={`${styles.submit_button}`} type="submit">
+              ログイン
+            </button>
+          </div>
+        </div>
+        <div className={`${styles.link}`}>
+          <div>
+            <Link href="/password-reset">
+              IDやパスワードを忘れてしまった方はこちら
+            </Link>
           </div>
           <div>
-            <div className={`${styles.submit_button_field}`}>
-              <button className={`${styles.submit_button}`} type="submit">
-                ログイン
-              </button>
-            </div>
+            <Link href="/signup">アカウント作成がまだの方はこちら</Link>
           </div>
-          <div className={`${styles.link}`}>
-            <div>
-              <Link href="/password-reset">
-                IDやパスワードを忘れてしまった方はこちら
-              </Link>
-            </div>
-            <div>
-              <Link href="/signup">アカウント作成がまだの方はこちら</Link>
-            </div>
-          </div>
-        </form>
+        </div>
+      </form>
     </div>
   );
 };
