@@ -505,7 +505,6 @@ body {
 
 .react-pdf__Page__canvas {
   margin: 0 auto;
-  /* width: 80% !important; */
   height: 100vh !important;
   width: auto !important;
 }
@@ -513,7 +512,6 @@ body {
 .react-pdf__Page__textContent {
   height: 100vh !important;
   width: auto !important;
-  z-index: 0;
 }
 
 .react-pdf__Page__annotations {

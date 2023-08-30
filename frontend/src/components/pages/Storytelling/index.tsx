@@ -9,8 +9,8 @@ import {
 } from "@/features/auth/consts/setting";
 import { Book } from "@/features/book/types";
 
-import "react-pdf/dist/Page/TextLayer.css";
-import "react-pdf/dist/Page/AnnotationLayer.css";
+// import "react-pdf/dist/Page/TextLayer.css";
+// import "react-pdf/dist/Page/AnnotationLayer.css";
 import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
@@ -114,9 +114,15 @@ export const Storytelling = (props: Book) => {
       {/* 終了確認画面 */}
       <dialog>
         <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
-          <h2>よみきかせをやめますか？</h2>
-          <button onClick={closeModal}> キャンセル </button>
-          <button onClick={quit}> やめる </button>
+          <div className={styles.modal_content}>
+            <h2>よみきかせをやめますか？</h2>
+            <button className={styles.back} onClick={closeModal}>
+              やめない
+            </button>
+            <button className={styles.exit} onClick={quit}>
+              やめる
+            </button>
+          </div>
         </Modal>
       </dialog>
     </main>

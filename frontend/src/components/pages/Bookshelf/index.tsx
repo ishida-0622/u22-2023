@@ -5,8 +5,8 @@ import useSWR from "swr";
 import Modal from "react-modal";
 import { GetAllBookResponse } from "@/features/book/types/get";
 import { Menubar } from "@/components/elements/Menubar";
-import styles from "./index.module.scss";
 import { endpoint } from "@/features/api";
+import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
 
@@ -55,7 +55,7 @@ export const Bookshelf = () => {
         setBookTable(table);
       }
     }
-  }, [AllBooks]);
+  }, [AllBooks, bookMap]);
 
   if (error) {
     return <p>{error}</p>;
@@ -73,13 +73,19 @@ export const Bookshelf = () => {
   const modalContents = () => {
     if (bookMap.has(selectedId)) {
       return (
-        <div>
+        <div className={styles.modal_content}>
           <h3>{bookMap.get(selectedId)![0]}</h3>
           <p>{bookMap.get(selectedId)![1]}</p>
+          <button className={styles.back_button} onClick={closeModal}>
+            キャンセル
+          </button>
+          <button className={styles.play_button} onClick={startBook}>
+            ひらく
+          </button>
         </div>
       );
     } else {
-      <h3>絵本が見つかりませんでした。</h3>;
+      return <h3>絵本が見つかりませんでした。</h3>;
     }
   };
 
@@ -113,8 +119,6 @@ export const Bookshelf = () => {
       <Menubar />
       <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
         {modalContents()}
-        <button onClick={closeModal}> キャンセル </button>
-        <button onClick={startBook}> ひらく </button>
       </Modal>
     </div>
   );

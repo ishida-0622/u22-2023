@@ -4,33 +4,31 @@
   left: 0;
   top: 50%;
 }
+
 .previousButton {
   background-color: lightgray;
   position: absolute;
   left: 0;
   top: 50%;
 }
+
 .nextButton {
   background-color: lightgray;
   position: absolute;
   right: 0;
   top: 50%;
 }
+
 .nextButtonInvalid {
   background-color: gray;
   position: absolute;
   right: 0;
   top: 50%;
 }
+
 .book {
   width: 50%;
   margin: 0 auto;
-  z-index: -1;
-  canvas {
-    // margin: 0 auto;
-    z-index: -1;
-    // height: 100%;
-  }
 }
 
 .main {
@@ -45,4 +43,36 @@
   font-weight: bold;
   background-color: #ee827c;
   border-radius: 10px;
+}
+
+.modal_content {
+  text-align: center;
+
+  h2 {
+    font-size: 3rem;
+  }
+
+  button {
+    display: inline-block;
+    background-color: rgb(180, 180, 180);
+    width: 12rem;
+    height: 4rem;
+    border-radius: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 2rem;
+  }
+
+  button:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+  }
+
+  .back {
+    background-color: rgb(216, 216, 216);
+  }
+
+  .exit {
+    background-color: #ee827c;
+  }
 }
