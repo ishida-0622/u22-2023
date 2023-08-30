@@ -6,9 +6,7 @@ import { GetAllBookResponse } from "@/features/book/types/get";
 import { Menubar } from "@/components/elements/Menubar";
 import Modal from 'react-modal';
 
-
 Modal.setAppElement('#__next');
-
 
 export const Bookshelf = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -106,7 +104,7 @@ export const Bookshelf = () => {
     
 
     return (
-        <div>
+        <div className={`${styles.header}`}>
             <h2>ほんだな</h2>
             <hr></hr>
             <table className={styles.bookshelf}>
