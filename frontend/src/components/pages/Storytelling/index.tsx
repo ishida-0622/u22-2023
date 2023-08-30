@@ -1,20 +1,18 @@
-import Router from "next/router";
-import { useEffect, useState } from "react";
-import styles from "./index.module.scss";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/router";
-import { StartBookResponse } from "@/features/book/types/start";
-import { Book } from "@/features/book/types";
 import { Document, Page, pdfjs } from "react-pdf";
-import "react-pdf/dist/Page/TextLayer.css";
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import { AudioPlayer } from "@/features/Audio/audio";
 import Modal from "react-modal";
+import { endpoint } from "@/features/api";
+import { StartBookResponse } from "@/features/book/types/start";
 // import { PDFDocumentProxy } from "react-pdf/node_modules/pdfjs-dist/types/src/display/api";
 import {
   LOCAL_STORAGE_VOLUME_KEY,
   VOLUMES,
 } from "@/features/auth/consts/setting";
-import { endpoint } from "@/features/api";
+
+import "react-pdf/dist/Page/TextLayer.css";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
 
@@ -24,50 +22,46 @@ export const Storytelling = () => {
   const router = useRouter();
   const bidQuery = router.query["id"];
   const [currentPage, setCurrentPage] = useState(1);
-  const [bookInfo, setbookinfo] = useState<Book>();
   const [currentPageUrl, setCurrentPageUrl] = useState("");
-  const [audioUrl, setAudioUrl] = useState("");
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement>(
-    new Audio()
-  );
   const [audios, setAudios] = useState<HTMLAudioElement[]>([]);
   const [bookResponse, setBookResponse] = useState<StartBookResponse>();
   const [maxPages, setMaxPages] = useState(1);
-  const [usersVolume, setusersVolume] = useState(
-    () => localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
+  const volume = Number(
+    localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
   );
-  const [volume, setVolume] = useState(Number(usersVolume));
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const bookFeatcher = async (key: string) => {
-    if (bidQuery === null) {
-      alert("絵本の取得に失敗しました。");
-      Router.push("/book/select");
-    } else {
-      const req = {
-        b_id: bidQuery,
-      };
-      const res = await fetch(key, {
-        method: "POST",
-        body: JSON.stringify(req),
-      });
-      setBookResponse(await res.json());
-    }
-  };
+  const bookFeatcher = useCallback(
+    async (key: string) => {
+      if (bidQuery === null) {
+        alert("絵本の取得に失敗しました。");
+        router.push("/book/select");
+      } else {
+        const req = {
+          b_id: bidQuery,
+        };
+        const res = await fetch(key, {
+          method: "POST",
+          body: JSON.stringify(req),
+        });
+        setBookResponse(await res.json());
+      }
+    },
+    [bidQuery, router]
+  );
 
   useEffect(() => {
     if (router.isReady) {
       bookFeatcher(`${endpoint}/ScanBook`);
     }
-  }, [bidQuery, router]);
+  }, [bookFeatcher, router.isReady]);
 
   useEffect(() => {
     if (bookResponse) {
       if (bookResponse.response_status === "fail") {
-        Router.push("/book/select");
+        router.push("/book/select");
       } else {
         const res = bookResponse.result;
-        setbookinfo(res);
         setAudios(
           res.voice.map((v) => {
             const audio = new Audio(v);
@@ -75,18 +69,11 @@ export const Storytelling = () => {
             return audio;
           })
         );
+        setCurrentPageUrl(res.pdf);
         new Audio(res.voice[0]).play();
       }
     }
-  }, [bookResponse]);
-
-  useEffect(() => {
-    if (bookInfo) {
-      setCurrentPageUrl(bookInfo.pdf);
-      setAudioUrl(bookInfo.voice[0]);
-      setCurrentAudio(new Audio(audioUrl));
-    }
-  }, [bookInfo]);
+  }, [bookResponse, router, volume]);
 
   useEffect(() => {
     if (currentPageUrl !== "") {
@@ -98,18 +85,6 @@ export const Storytelling = () => {
         });
     }
   }, [currentPageUrl]);
-
-  useEffect(() => {
-    if (bookInfo) {
-      setAudioUrl(bookInfo.voice[currentPage - 1]);
-    }
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (audioUrl) {
-      setCurrentAudio(new Audio(audioUrl));
-    }
-  }, [audioUrl]);
 
   /** モーダルウィンドウを表示にする関数 */
   const openModal = () => setModalIsOpen(true);
@@ -135,7 +110,7 @@ export const Storytelling = () => {
     }
   };
   const quit = () => {
-    Router.push("/book/select");
+    router.push("/book/select");
   };
 
   if (!bookResponse) {
