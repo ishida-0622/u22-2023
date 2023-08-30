@@ -7,6 +7,7 @@ import {
   ScanLoginDatesResponse,
 } from "@/features/log/types/scanLoginDates";
 import styles from "@/features/Calendar/calendar.module.scss";
+import Image from "next/image";
 
 export const Calendar = ({ mm }: { mm: number }) => {
   const uid = useSelector((store: RootState) => store.uid);
@@ -86,15 +87,19 @@ export const Calendar = ({ mm }: { mm: number }) => {
     return num.padStart(2, "0");
   }
 
-  function isLogined(date: string) {
-    if (dateSet.has(year + numPadding(month + 1) + strPadding(date))) {
-      // TODO:
+  function isLogined(date: number) {
+    if (
+      dateSet.has(year + numPadding(month + 1) + strPadding(date.toString()))
+    ) {
       return (
-        <img
-          src="https://k-ishida-u22-2023-mock.s3.ap-northeast-1.amazonaws.com/IMG_3yvjyu.jpg"
-          width="30px"
-          height="30px"
-        ></img>
+        <Image
+          src={`https://k-ishida-u22-2023-mock.s3.ap-northeast-1.amazonaws.com/${
+            date % 5
+          }.png`}
+          alt=""
+          width={30}
+          height={30}
+        />
       );
     } else {
       return date;
@@ -116,7 +121,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
             <tr key={index} className={`${styles.calendar_week}`}>
               {line.map((item) => (
                 <td key={item} className={`${styles.calendar_day}`}>
-                  {isLogined(String(item))}
+                  {isLogined(item)}
                 </td>
               ))}
             </tr>
