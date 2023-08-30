@@ -113,7 +113,7 @@ input:checked + .volume_label {
 }
 
 /* iPhoneランドスケープ */
-@media screen and (max-device-height: 441px) and (orientation: landscape) {
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
   /*アカウント情報*/
   .info {
     font-size: 1rem;
@@ -316,7 +316,7 @@ input:checked + .volume_label {
 }
 
 /*PC*/
-@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+@media screen and (min-device-height: 601px) and (max-device-height: 720px) {
   /*アカウント情報*/
   .info {
     font-size: 2rem;
