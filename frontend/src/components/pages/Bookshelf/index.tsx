@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import { GetAllBookResponse } from "@/features/book/types/get";
 import { Menubar } from "@/components/elements/Menubar";
 import styles from "./index.module.scss";
+import { endpoint } from "@/features/api";
 
 Modal.setAppElement("#__next");
 
@@ -29,10 +30,7 @@ export const Bookshelf = () => {
     }).then((res) => res.json() as Promise<GetAllBookResponse>);
   };
 
-  const { data: AllBooks, error } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_ENDPOINT}/GetBooks`,
-    fetcher
-  );
+  const { data: AllBooks, error } = useSWR(`${endpoint}/GetBooks`, fetcher);
 
   useEffect(() => {
     if (AllBooks) {
@@ -59,22 +57,19 @@ export const Bookshelf = () => {
     }
   }, [AllBooks]);
 
-  if (!AllBooks) {
-    return <p>loading</p>;
-  }
   if (error) {
     return <p>{error}</p>;
   }
+
   const viewInfo = (b_id: string) => {
     setSelectedId(b_id);
     openModal();
   };
+
   const startBook = () => {
-    Router.push({
-      pathname: "/storytelling",
-      query: { b_id: selectedId },
-    });
+    Router.push(`/book/play/${selectedId}`);
   };
+
   const modalContents = () => {
     if (bookMap.has(selectedId)) {
       return (
@@ -95,23 +90,24 @@ export const Bookshelf = () => {
       <table className={styles.bookshelf}>
         <thead></thead>
         <tbody>
-          {bookTable.map((line, index) => (
-            <tr key={`index${index}`}>
-              {line.map((item) => (
-                <td key={`key${item[0]}`}>
-                  <Image
-                    src={item[2]}
-                    width={100}
-                    height={100}
-                    alt=""
-                    onClick={() => viewInfo(item[0])}
-                  ></Image>
-                  <br></br>
-                  <p>{item[1]}</p>
-                </td>
-              ))}
-            </tr>
-          ))}
+          {AllBooks &&
+            bookTable.map((line, index) => (
+              <tr key={`index${index}`}>
+                {line.map((item) => (
+                  <td key={`key${item[0]}`}>
+                    <Image
+                      src={item[2]}
+                      width={100}
+                      height={100}
+                      alt=""
+                      onClick={() => viewInfo(item[0])}
+                    ></Image>
+                    <br></br>
+                    <p>{item[1]}</p>
+                  </td>
+                ))}
+              </tr>
+            ))}
         </tbody>
       </table>
       <Menubar />
