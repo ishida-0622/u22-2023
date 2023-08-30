@@ -135,7 +135,7 @@ select {
 }
 
 /*PC*/
-@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+@media screen and (min-device-height: 601px) and (max-device-height: 720px) {
 
   /*シールと影の配置*/
   .item_0 {
@@ -384,121 +384,121 @@ select {
   .item_0 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 8rem;
-    left: 3rem;
+    top: 30%;
+    left: 7%;
   }
 
   .item_1 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 1rem;
-    left: 9rem;
+    top: 5%;
+    left: 21.5%;
   }
 
   .item_2 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 7rem;
-    left: 16rem;
+    top: 25%;
+    left: 38%;
   }
 
   .item_3 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 5rem;
-    left: 25rem;
+    top: 20%;
+    left: 60%;
   }
 
   .item_4 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 0;
-    left: 33rem;
+    top: -5%;
+    left: 80%;
   }
 
   /*星の配置*/
   .star_0 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 15rem;
-    left: 8rem;
+    top: 65%;
+    left: 19%;
   }
 
   .star_1 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 13rem;
-    left: 9rem;
+    top: 56%;
+    left: 20.5%;
   }
 
   .star_2 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 11rem;
-    left: 10rem;
+    top: 47%;
+    left: 22%;
   }
 
   .star_3 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 11rem;
-    left: 12.5rem;
+    top: 47%;
+    left: 32%;
   }
 
   .star_4 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 13rem;
-    left: 14rem;
+    top: 54%;
+    left: 34.5%;
   }
 
   .star_5 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 15rem;
-    left: 15.5rem;
+    top: 61%;
+    left: 37%;
   }
 
   .star_6 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 15rem;
-    left: 21rem;
+    top: 61%;
+    left: 50%;
   }
 
   .star_7 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 14.5rem;
-    left: 23rem;
+    top: 59.5%;
+    left: 54.5%;
   }
 
   .star_8 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 14rem;
-    left: 25rem;
+    top: 58%;
+    left: 59%;
   }
 
   .star_9 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 13rem;
-    left: 29.5rem;
+    top: 56%;
+    left: 72%;
   }
 
   .star_10 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 11rem;
-    left: 31.5rem;
+    top: 45.5%;
+    left: 76%;
   }
 
   .star_11 {
     position: absolute;
     transform: scale(0.5, 0.5);
-    top: 9rem;
-    left: 33.5rem;
+    top: 35%;
+    left: 80%;
   }
 
 }
