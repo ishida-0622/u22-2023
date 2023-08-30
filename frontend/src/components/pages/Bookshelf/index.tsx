@@ -6,10 +6,7 @@ import { GetAllBookResponse } from "@/features/book/types/get";
 import { Menubar } from "@/components/elements/Menubar";
 import Modal from 'react-modal';
 
-
-
 Modal.setAppElement('#__next');
-
 
 export const Bookshelf = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
