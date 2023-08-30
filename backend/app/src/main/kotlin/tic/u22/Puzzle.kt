@@ -13,76 +13,76 @@ import java.time.LocalDateTime
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 
-/**
- * パズルを開始する
- */
-class StartPuzzle : RequestHandler<Map<String, Any>, String> {
-    val s3 = S3(Settings().AWS_REGION)
-    val bucketName = Settings().AWS_BUCKET
-    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+// /**
+//  * パズルを開始する
+//  */
+// class StartPuzzle : RequestHandler<Map<String, Any>, String> {
+//     val s3 = S3(Settings().AWS_REGION)
+//     val bucketName = Settings().AWS_BUCKET
+//     override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
 
-        val res = runBlocking {
-            try{
-                if (event == null) {throw Exception("event is null")}
-                if (event["body"] == null) {throw Exception("body is null")}
-                val body = utils.formatJsonEnv(event["body"]!!)
+//         val res = runBlocking {
+//             try{
+//                 if (event == null) {throw Exception("event is null")}
+//                 if (event["body"] == null) {throw Exception("body is null")}
+//                 val body = utils.formatJsonEnv(event["body"]!!)
 
-                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
-                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+//                 val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+//                 val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
 
-                // DynamoDBのインスタンス化、テーブル名の設定
-                val dynamo = Dynamo(Settings().AWS_REGION)
+//                 // DynamoDBのインスタンス化、テーブル名の設定
+//                 val dynamo = Dynamo(Settings().AWS_REGION)
 
-                val status = dynamo.searchByKey("status", listOf(u_id))
-                if (!status.containsKey("u_id")) {
-                    throw Exception("this u_id does not exist")
-                } else if (!status.containsKey("game_status")) {
-                    throw Exception("unexpected error: this u_id does not game_status")
-                }
-                if((utils.toKotlinType(status["game_status"]!!) as String).toInt() != 0) {
-                    throw Exception("game status is not 0: now is ${(utils.toKotlinType(status["game_status"]!!) as String).toInt()}")
-                }
-                val result = dynamo.searchByKey("puzzle", listOf(p_id))
-                if(result.isEmpty()){throw Exception("this p_id is not exist")}
+//                 val status = dynamo.searchByKey("status", listOf(u_id))
+//                 if (!status.containsKey("u_id")) {
+//                     throw Exception("this u_id does not exist")
+//                 } else if (!status.containsKey("game_status")) {
+//                     throw Exception("unexpected error: this u_id does not game_status")
+//                 }
+//                 if((utils.toKotlinType(status["game_status"]!!) as String).toInt() != 0) {
+//                     throw Exception("game status is not 0: now is ${(utils.toKotlinType(status["game_status"]!!) as String).toInt()}")
+//                 }
+//                 val result = dynamo.searchByKey("puzzle", listOf(p_id))
+//                 if(result.isEmpty()){throw Exception("this p_id is not exist")}
 
-                val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 1))
-                if(updated != "DONE"){
-                    throw Exception("failed to update game status: $updated")
-                }
-                val formattedResult = utils.toMap(utils.attributeValueToObject(result, "puzzle"))
-                val res = mapOf(
-                    "p_id" to formattedResult["p_id"],
-                    "title" to formattedResult["title"],
-                    "description" to formattedResult["description"],
-                    "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
-                    "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
-                        mapOf(
-                            "word" to word["word"],
-                            "shadow" to s3.getObject(bucketName, word["shadow"] as String),
-                            "illustration" to s3.getObject(bucketName, word["illustration"] as String),
-                            "voice" to s3.getObject(bucketName, word["voice"] as String),
-                            "is_displayed" to word["is_displayed"] as Boolean,
-                            "is_dummy" to word["is_dummy"] as Boolean
-                        )
-                    },
-                    "create_date" to formattedResult["create_date"],
-                    "update_date" to formattedResult["update_date"],
-                )
+//                 val updated = dynamo.updateItem("status", listOf(u_id), mapOf("game_status" to 1))
+//                 if(updated != "DONE"){
+//                     throw Exception("failed to update game status: $updated")
+//                 }
+//                 val formattedResult = utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+//                 val res = mapOf(
+//                     "p_id" to formattedResult["p_id"],
+//                     "title" to formattedResult["title"],
+//                     "description" to formattedResult["description"],
+//                     "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+//                     "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+//                         mapOf(
+//                             "word" to word["word"],
+//                             "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+//                             "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+//                             "voice" to s3.getObject(bucketName, word["voice"] as String),
+//                             "is_displayed" to word["is_displayed"] as Boolean,
+//                             "is_dummy" to word["is_dummy"] as Boolean
+//                         )
+//                     },
+//                     "create_date" to formattedResult["create_date"],
+//                     "update_date" to formattedResult["update_date"],
+//                 )
 
-                mapOf(
-                    "resposne_status" to "success",
-                    "result" to res
-                )
-            } catch (e: Exception) {
-                mapOf(
-                    "response_status" to "fail",
-                    "error" to "$e"
-                )
-            }
-        }
-        return gson.toJson(res)       // JSONに変換してフロントに渡す
-    }
-}
+//                 mapOf(
+//                     "resposne_status" to "success",
+//                     "result" to res
+//                 )
+//             } catch (e: Exception) {
+//                 mapOf(
+//                     "response_status" to "fail",
+//                     "error" to "$e"
+//                 )
+//             }
+//         }
+//         return gson.toJson(res)       // JSONに変換してフロントに渡す
+//     }
+// }
 
 /**
  * パズルをすべて取得する
@@ -212,49 +212,49 @@ class RegisterPuzzle : RequestHandler<Map<String, Any>, String> {
     }
 }
 
-/**
- * パズルを一時停止する
- * 
- * @param u_id String: u_id
- * @param p_id String: p_id
- * @param saved_data List<String>: パズル情報
- * 
- * return String: {"response_status": "success", "result": {}}
- */
-class PausePuzzle : RequestHandler<Map<String, Any>, String> {
-    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
-        val res = runBlocking {
-            try {
-                if (event == null) {throw Exception("event is null")}
-                if (event["body"] == null) {throw Exception("body is null")}
-                val body = utils.formatJsonEnv(event["body"]!!)
-                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
-                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
-                if (body["saved_data"] == null) {throw Exception("saved_data is null")}
-                val saved_data = if (body["saved_data"]!! is List<*>) {body["saved_data"]!! as List<Any>} else {throw Exception("saved_data is not List")}
+// /**
+//  * パズルを一時停止する
+//  * 
+//  * @param u_id String: u_id
+//  * @param p_id String: p_id
+//  * @param saved_data List<String>: パズル情報
+//  * 
+//  * return String: {"response_status": "success", "result": {}}
+//  */
+// class PausePuzzle : RequestHandler<Map<String, Any>, String> {
+//     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+//         val res = runBlocking {
+//             try {
+//                 if (event == null) {throw Exception("event is null")}
+//                 if (event["body"] == null) {throw Exception("body is null")}
+//                 val body = utils.formatJsonEnv(event["body"]!!)
+//                 val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+//                 val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+//                 if (body["saved_data"] == null) {throw Exception("saved_data is null")}
+//                 val saved_data = if (body["saved_data"]!! is List<*>) {body["saved_data"]!! as List<Any>} else {throw Exception("saved_data is not List")}
                 
 
-                val dynamo = Dynamo(Settings().AWS_REGION)
-                val tableName = "status"
+//                 val dynamo = Dynamo(Settings().AWS_REGION)
+//                 val tableName = "status"
 
-                val status_infos= listOf(p_id, saved_data)
-                if (dynamo.searchByKey("puzzle", listOf(p_id)).isEmpty()) {throw Exception("p_id is not exist")}
-                val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 2, "status_infos" to status_infos))
+//                 val status_infos= listOf(p_id, saved_data)
+//                 if (dynamo.searchByKey("puzzle", listOf(p_id)).isEmpty()) {throw Exception("p_id is not exist")}
+//                 val updated = dynamo.updateItem(tableName, listOf(u_id), mapOf("game_status" to 2, "status_infos" to status_infos))
 
-                if (updated == "DONE"){
-                    val dummyMap: Map<String, String> = mapOf()
-                    mapOf("response_status" to "success", "result" to dummyMap)
-                } else {
-                    throw Exception("failed to update status")
-                }
-            }
-            catch (e: Exception) {
-                mapOf("response_status" to "fail", "error" to "$e")
-            }
-        }
-        return gson.toJson(res)
-    }
-}
+//                 if (updated == "DONE"){
+//                     val dummyMap: Map<String, String> = mapOf()
+//                     mapOf("response_status" to "success", "result" to dummyMap)
+//                 } else {
+//                     throw Exception("failed to update status")
+//                 }
+//             }
+//             catch (e: Exception) {
+//                 mapOf("response_status" to "fail", "error" to "$e")
+//             }
+//         }
+//         return gson.toJson(res)
+//     }
+// }
 
 /**
  * u_id, p_idを受け取りゲームステータスの変更、ログの追加を行う
@@ -278,7 +278,6 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
                 // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
                 val table_p_log = "p_log"
-                val table_status = "status"
 
                 val playTimes: Int
                 val log = dynamo.searchByKey(table_p_log, listOf(u_id, p_id))
@@ -287,22 +286,23 @@ class FinishPuzzle : RequestHandler<Map<String, Any>, String> {
                 } else {
                     playTimes = 1
                 }
-                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 0)) // game_statusを0に変更
                 val p_log = PuzzleLog(
                     u_id = u_id,
                     p_id = p_id,
                     play_times = playTimes
                 )
                 // 初プレイ時にはログの追加それ以外はプレイ回数の増加
-                if (playTimes == 1) { dynamo.addItem(table_p_log, p_log) }
-                else { dynamo.updateItem(table_p_log, listOf(u_id, p_id), mapOf("play_times" to playTimes)) }
-
-                if(updated == "DONE"){
-                    val dummyMap: Map<String, String> = mapOf()
-                    mapOf("response_status" to "success", "result" to dummyMap)
+                if (playTimes == 1) {
+                    dynamo.addItem(table_p_log, p_log)
                 } else {
-                    throw Exception("failed to update game status or failed to update log")
+                    val updateResult = dynamo.updateItem(table_p_log, listOf(u_id, p_id), mapOf("play_times" to playTimes))
+                    if(updateResult != "DONE"){
+                        throw Exception(updateResult)
+                    }
                 }
+
+                val dummyMap: Map<String, String> = mapOf()
+                mapOf("response_status" to "success", "result" to dummyMap)
             }
             catch(e: Exception) {
                 mapOf("response_status" to "fail", "error" to "$e")
@@ -427,65 +427,144 @@ class UpdatePuzzle : RequestHandler<Map<String, Any>, String> {
     }
 }
 
+// /**
+//  * パズルを再開する
+//  *
+//  * @param u_id String: u_id
+//  *
+//  * return String: {"response_status": "success", "result": {"puzzle_info": パズル情報, "saved_data": 一時保存中のデータ}}
+//  */
+// class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
+//     val s3 = S3(Settings().AWS_REGION)
+//     val bucketName = Settings().AWS_BUCKET
+//     override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+//         val res = runBlocking {
+//             try {
+//                 if (event == null) {throw Exception("event is null")}
+//                 if (event["body"] == null) {throw Exception("body is null")}
+//                 val body = utils.formatJsonEnv(event["body"]!!)
+//                 val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
+
+//                 val dynamo = Dynamo(Settings().AWS_REGION)
+//                 val table_status = "status"
+//                 val table_puzzle = "puzzle"
+
+//                 // ユーザーのステータスを取得
+//                 val current_status = dynamo.searchByKey(table_status, listOf(u_id))
+//                 if (!current_status.containsKey("u_id")) {throw Exception("this u_id does not exist")} 
+//                 if (!current_status.containsKey("game_status")) {throw Exception("unexpected error: this u_id does not game_status")}
+
+//                 // 現在のステータス判定
+//                 if((utils.toKotlinType(current_status["game_status"]!!) as String).toInt() != 2) {
+//                     throw Exception("game status is not 2: now is ${(utils.toKotlinType(current_status["game_status"]!!) as String).toInt()}")
+//                 }
+
+//                 // ステータスの情報を取り出す
+//                 val status_infos = if (current_status["status_infos"] != null ) {
+//                     utils.toKotlinType(current_status["status_infos"]!!) as List<Any>
+//                 } else {
+//                     throw Exception("status_infos is null")
+//                 }
+//                 val p_id = if (status_infos[0] != null) {status_infos[0] as String} else {throw Exception("p_id is null")}
+//                 val saved_data = if (status_infos[1] != null) {status_infos[1] as List<String>} else {throw Exception("saved_data is not found")}
+
+//                 // 本を取得
+//                 val puzzle_info = dynamo.searchByKey(table_puzzle, listOf(p_id))
+//                 if (puzzle_info.isEmpty()) {throw Exception("this puzzle is not exist")}
+//                 val formattedResult = utils.toMap(utils.attributeValueToObject(puzzle_info, "puzzle"))
+
+//                 val res = mapOf(
+//                     "p_id" to formattedResult["p_id"],
+//                     "title" to formattedResult["title"],
+//                     "description" to formattedResult["description"],
+//                     "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+//                     "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+//                         mapOf(
+//                             "word" to word["word"],
+//                             "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+//                             "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+//                             "voice" to s3.getObject(bucketName, word["voice"] as String),
+//                             "is_displayed" to word["is_displayed"] as Boolean,
+//                             "is_dummy" to word["is_dummy"] as Boolean
+//                         )
+//                     },
+//                     "create_date" to formattedResult["create_date"],
+//                     "update_date" to formattedResult["update_date"],
+//                 )
+
+//                 // ステータスの更新
+//                 val dummyList: List<String> = listOf()
+//                 val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 1, "status_infos" to dummyList))
+//                 if (updated != "DONE"){throw Exception("failed to update game status: $updated")}
+
+//                 mapOf(
+//                     "response_status" to "success",
+//                     "result" to mapOf(
+//                         "puzzle_info" to res,
+//                         "saved_data" to saved_data
+//                     )
+//                 )
+//             } catch (e: Exception) {
+//                 mapOf("response_status" to "fail", "error" to "$e")
+//             }
+//         }
+//         return gson.toJson(res)
+//     }
+// }
+
 /**
- * パズルを再開する
- * 
- * @param u_id String: u_id
- * 
- * return String: {"response_status": "success", "result": {"puzzle_info": パズル情報, "saved_data": 一時保存中のデータ}}
+ * パズルを検索・取得する
  */
-class RestartPuzzle : RequestHandler<Map<String, Any>, String> {
-    override fun handleRequest(event: Map<String, Any>?, context: Context?): String {
+class ScanPuzzle : RequestHandler<Map<String, Any>, String> {
+    val s3 = S3(Settings().AWS_REGION)
+    val bucketName = Settings().AWS_BUCKET
+    override fun handleRequest(event: Map<String, Any>?, context: Context?): String{
+
         val res = runBlocking {
-            try {
+            try{
                 if (event == null) {throw Exception("event is null")}
                 if (event["body"] == null) {throw Exception("body is null")}
                 val body = utils.formatJsonEnv(event["body"]!!)
-                val u_id = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
 
+                val p_id = if (body["p_id"] != null) {body["p_id"]!! as String} else {throw Exception("p_id is null")}
+
+                // DynamoDBのインスタンス化、テーブル名の設定
                 val dynamo = Dynamo(Settings().AWS_REGION)
-                val table_status = "status"
-                val table_puzzle = "puzzle"
 
-                // ユーザーのステータスを取得
-                val current_status = dynamo.searchByKey(table_status, listOf(u_id))
-                if (!current_status.containsKey("u_id")) {throw Exception("this u_id does not exist")} 
-                if (!current_status.containsKey("game_status")) {throw Exception("unexpected error: this u_id does not game_status")}
+                val result = dynamo.searchByKey("puzzle", listOf(p_id))
+                if(result.isEmpty()){throw Exception("this p_id is not exist")}
 
-                // 現在のステータス判定
-                if((utils.toKotlinType(current_status["game_status"]!!) as String).toInt() != 2) {
-                    throw Exception("game status is not 2: now is ${(utils.toKotlinType(current_status["game_status"]!!) as String).toInt()}")
-                }
-
-                // ステータスの情報を取り出す
-                val status_infos = if (current_status["status_infos"] != null ) {
-                    utils.toKotlinType(current_status["status_infos"]!!) as List<Any>
-                } else {
-                    throw Exception("status_infos is null")
-                }
-                val p_id = if (status_infos[0] != null) {status_infos[0] as String} else {throw Exception("p_id is null")}
-                val saved_data = if (status_infos[1] != null) {status_infos[1] as List<String>} else {throw Exception("saved_data is not found")}
-
-                // 本を取得
-                val puzzle_info = dynamo.searchByKey(table_puzzle, listOf(p_id))
-                if (puzzle_info.isEmpty()) {throw Exception("this puzzle is not exist")}
-
-                // ステータスの更新
-                val dummyList: List<String> = listOf()
-                val updated = dynamo.updateItem(table_status, listOf(u_id), mapOf("game_status" to 1, "status_infos" to dummyList))
-                if (updated != "DONE"){throw Exception("failed to update game status: $updated")}
+                val formattedResult = utils.toMap(utils.attributeValueToObject(result, "puzzle"))
+                val res = mapOf(
+                    "p_id" to formattedResult["p_id"],
+                    "title" to formattedResult["title"],
+                    "description" to formattedResult["description"],
+                    "icon"  to s3.getObject(bucketName, formattedResult["icon"] as String),
+                    "words" to (formattedResult["words"] as List<Map<String, Any>>).map{ word ->
+                        mapOf(
+                            "word" to word["word"],
+                            "shadow" to s3.getObject(bucketName, word["shadow"] as String),
+                            "illustration" to s3.getObject(bucketName, word["illustration"] as String),
+                            "voice" to s3.getObject(bucketName, word["voice"] as String),
+                            "is_displayed" to word["is_displayed"] as Boolean,
+                            "is_dummy" to word["is_dummy"] as Boolean
+                        )
+                    },
+                    "create_date" to formattedResult["create_date"],
+                    "update_date" to formattedResult["update_date"],
+                )
 
                 mapOf(
-                    "response_status" to "success",
-                    "result" to mapOf(
-                        "puzzle_info" to utils.toMap(utils.attributeValueToObject(puzzle_info, table_puzzle)),
-                        "saved_data" to saved_data
-                    )
+                    "resposne_status" to "success",
+                    "result" to res
                 )
             } catch (e: Exception) {
-                mapOf("response_status" to "fail", "error" to "$e")
+                mapOf(
+                    "response_status" to "fail",
+                    "error" to "$e"
+                )
             }
         }
-        return gson.toJson(res)
+        return gson.toJson(res)       // JSONに変換してフロントに渡す
     }
 }

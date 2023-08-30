@@ -1,5 +1,6 @@
 .dropdown {
   display: flex;
+  font-size: 1.5rem;
 }
 
 .menu {
@@ -13,8 +14,9 @@
 }
 
 .sub_menu {
-  background: #b9b9b9;
+  background-color: #DBDBFF;
   position: relative;
+  border-radius: 0 0 1rem 0;
 }
 
 .sub_menu > ul {
@@ -24,11 +26,25 @@
   width: 100%;
 }
 
-.sub_menu > ul > li > a {
-  display: none;
-  color: #ffffff;
+.sub_menu > ul > li {
+  padding: 10% 0;
 }
 
-.menu:hover a {
+.sub_menu > ul > li > a {
   display: inline-block;
+  color: #4169E1;
+}
+
+@media (max-width: 960px) {
+  .menu {
+    width: 8rem;
+  }
+
+  .sub_menu {
+    display: none;
+  }
+
+  .menu:hover .sub_menu {
+    display: block;
+  }
 }

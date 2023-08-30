@@ -23,6 +23,9 @@ import {
   ScanBookLogRequest,
   ScanBookLogResponse,
 } from "@/features/log/types/scanBookLog";
+import { logout } from "@/features/auth/utils/logout";
+import { LogoutButton } from "@/components/elements/LogoutButton";
+import { BackButton } from "@/components/elements/BackButton";
 
 import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
@@ -32,6 +35,8 @@ export const AccountInfo = () => {
   const email = useSelector((store: RootState) => store.email);
   const uid = useSelector((store: RootState) => store.uid);
   const userData = useSelector((store: RootState) => store.user);
+
+  const [password, setPassword] = useState("");
 
   const [volume, setVolume] = useState(
     () => localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
@@ -64,9 +69,7 @@ export const AccountInfo = () => {
 
   const puzzleLogFetcher = async (url: string) => {
     const request: ScanPuzzleLogRequest = {
-      // TODO:uid
-      // u_id: uid!,
-      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
+      u_id: uid!,
     };
     const response = await fetch(url, {
       method: "POST",
@@ -78,9 +81,7 @@ export const AccountInfo = () => {
 
   const bookLogFetcher = async (url: string) => {
     const request: ScanBookLogRequest = {
-      // TODO:uid
-      // u_id: uid!,
-      u_id: "748fb36e-178c-4a7e-8b07-006597becb1e",
+      u_id: uid!,
     };
     const response = await fetch(url, {
       method: "POST",
@@ -90,15 +91,12 @@ export const AccountInfo = () => {
     return json.result;
   };
 
-  const { data: puzzleLogs, error: puzzleLogError } = useSWR(
+  const { data: puzzleLogs } = useSWR(
     `${endpoint}/ScanP_log`,
     puzzleLogFetcher
   );
 
-  const { data: bookLogs, error: bookLogError } = useSWR(
-    `${endpoint}/ScanB_log`,
-    bookLogFetcher
-  );
+  const { data: bookLogs } = useSWR(`${endpoint}/ScanB_log`, bookLogFetcher);
 
   const handleHourChange = (event: {
     target: { value: SetStateAction<string> };
@@ -127,45 +125,93 @@ export const AccountInfo = () => {
     return null;
   }
 
-  if (puzzleLogError || bookLogError) {
-    return <p>{puzzleLogError ? puzzleLogError : bookLogError}</p>;
-  }
-
-  if (
-    userData === undefined ||
-    puzzleLogs === undefined ||
-    bookLogs === undefined
-  ) {
-    return <p>Now Loading</p>;
+  if (password !== userData.child_lock) {
+    return (
+      <div className={styles.child_lock_init}>
+        <h1>アカウント設定</h1>
+        <label>
+          <h2>チャイルドロックを入力</h2>
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className={`${styles.back_button_field}`}>
+            <BackButton />
+          </div>
+        </label>
+      </div>
+    );
   }
 
   return (
-    <div className={`${styles.container}`}>
+    <main className={`${styles.container}`}>
       <div className={`${styles.back_ground}`}></div>
-      <h1>アカウント情報画面</h1>
+      <h1>アカウント設定</h1>
+      <div className={`${styles.back_button_field}`}>
+        <BackButton />
+      </div>
+      <div className={`${styles.logout_button_field}`}>
+        <LogoutButton />
+      </div>
       <Tabs>
         <TabList className={`${styles.tab_list}`}>
           <Tab>アカウント情報</Tab>
           <Tab>設定</Tab>
           <Tab>パズルログ</Tab>
           <Tab>えほんログ</Tab>
+          <hr />
         </TabList>
         <TabPanel className={`${styles.info}`}>
-          <p>メールアドレス：{email}</p>
-          <p>名前：{`${userData.family_name} ${userData.first_name}`}</p>
-          <p>
-            名前（ローマ字）：
-            {`${userData.family_name_roma} ${userData.first_name_roma}`}
-          </p>
-          <p>アカウント名：{userData.account_name}</p>
-          <p>チャイルドロック：{userData.child_lock}</p>
-          <button
-            type="button"
-            name="account_change"
-            onClick={() => router.push("/account-info/edit")}
-          >
-            アカウント情報を変更
-          </button>
+          <table className={`${styles.info_text}`}>
+            <tbody>
+              <tr className={`${styles.email}`}>
+                <td>メールアドレス</td>
+                <td>：</td>
+                <td>{email}</td>
+              </tr>
+              <tr className={`${styles.name}`}>
+                <td>名前</td>
+                <td>：</td>
+                <td>{`${userData.family_name} ${userData.first_name}`}</td>
+              </tr>
+              <tr className={`${styles.name_roma}`}>
+                <td>名前（ローマ字）</td>
+                <td>：</td>
+                <td>{`${userData.family_name_roma} ${userData.first_name_roma}`}</td>
+              </tr>
+              <tr className={`${styles.account_name}`}>
+                <td>アカウント名</td>
+                <td>：</td>
+                <td>{userData.account_name}</td>
+              </tr>
+              <tr className={`${styles.child_lock}`}>
+                <td>チャイルドロック</td>
+                <td>：</td>
+                <td>{userData.child_lock}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br />
+          <div className={`${styles.button_size}`}>
+            <button
+              type="button"
+              name="account_change"
+              onClick={() => router.push("/account-info/edit")}
+              className={`${styles.edit_button}`}
+            >
+              アカウント情報変更
+            </button>
+            <br />
+            <button
+              type="button"
+              name="account_change"
+              onClick={() => router.push("quit")}
+              className={`${styles.quit_button}`}
+            >
+              退会
+            </button>
+          </div>
         </TabPanel>
         <TabPanel className={`${styles.setting}`}>
           <div className={`${styles.font_size}`}>
@@ -326,13 +372,6 @@ export const AccountInfo = () => {
             </label>
           </div>
           <div className={`${styles.buttons}`}>
-            <button
-              type="button"
-              className={`${styles.back_button}`}
-              onClick={() => router.back()}
-            >
-              戻る
-            </button>
             <button type="button" className={`${styles.change_button}`}>
               変更
             </button>
@@ -340,7 +379,7 @@ export const AccountInfo = () => {
         </TabPanel>
         <TabPanel className={`${styles.puzzle_log}`}>
           パズルログ
-          {puzzleLogs.map((log) => (
+          {puzzleLogs?.map((log) => (
             <div key={log.p_id}>
               <div>No.{log.p_id}</div>
               <div>クリア回数：{log.play_times}</div>
@@ -350,7 +389,7 @@ export const AccountInfo = () => {
         </TabPanel>
         <TabPanel className={`${styles.book_log}`}>
           えほんログ
-          {bookLogs.map((log) => (
+          {bookLogs?.map((log) => (
             <div key={log.b_id}>
               <div>No.{log.b_id}</div>
               <div>読んだ回数：{log.play_times}</div>
@@ -359,6 +398,6 @@ export const AccountInfo = () => {
           ))}
         </TabPanel>
       </Tabs>
-    </div>
+    </main>
   );
 };
