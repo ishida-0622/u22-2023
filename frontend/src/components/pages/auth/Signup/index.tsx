@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import {
+  AuthErrorCodes,
   createUserWithEmailAndPassword,
   deleteUser,
   sendEmailVerification,
@@ -17,6 +18,7 @@ import { SignUpRequest, SignUpResponse } from "@/features/auth/types/signup";
 
 import Link from "next/link";
 import styles from "./index.module.scss";
+import { FirebaseError } from "firebase/app";
 
 export const Signup = () => {
   const router = useRouter();
@@ -104,7 +106,23 @@ export const Signup = () => {
     } catch (e) {
       isSubmitActive.current = true;
       console.error(e);
-      alert("作成に失敗しました");
+      if (e instanceof FirebaseError) {
+        switch (e.code) {
+          case AuthErrorCodes.EMAIL_EXISTS:
+            alert("そのメールアドレスは既に登録されています");
+            break;
+          case AuthErrorCodes.INVALID_EMAIL:
+            alert("メールアドレスの形式が不正です");
+            break;
+          case AuthErrorCodes.WEAK_PASSWORD:
+            alert("パスワードの強度が足りません");
+            break;
+          default:
+            alert("作成に失敗しました");
+        }
+      } else {
+        alert("作成に失敗しました");
+      }
     }
   };
 
@@ -313,7 +331,7 @@ export const Signup = () => {
                 }))
               }
             />
-          規約に同意する
+            規約に同意する
           </label>
         </div>
         <div className={`${styles.submit_button_field}`}>
