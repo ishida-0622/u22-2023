@@ -1,0 +1,12 @@
+.logout_button {
+    transform: scale(1.2, 1.2);
+    color: azure;
+    font-weight: bold;
+    background-color: #ee827c;
+    border-radius: 10%;
+    transition: background-color 0.3s ease;
+}
+.logout_button:hover {
+    background-color: #bd352e;
+    cursor: pointer;
+}

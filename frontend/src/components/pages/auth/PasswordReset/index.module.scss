@@ -1,0 +1,80 @@
+.main {
+  font-family: "UD デジタル 教科書体 NP-B", "UD Digi Kyokasho NP-B";
+  background-image: url("./images/meadow.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 1rem 0 1rem 0;
+}
+
+.title_field {
+  .title {
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.email_field {
+  text-align: center;
+  margin: 10rem 0 5rem 0;
+  // max-width: max(50%, 480px);
+
+  .email_text {
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 120%;
+  }
+
+  .email_form {
+    display: inline-block;
+    width: 20rem;
+    height: 2.5rem;
+  }
+
+  input {
+    width: 100%;
+    text-align: left;
+    padding-left: 1rem;
+    border-top-left-radius: 15rem;
+    border-top-right-radius: 15rem;
+    border-bottom-left-radius: 15rem;
+    border-bottom-right-radius: 15rem;
+    border-radius: 40rem;
+    border: 0.25rem solid palevioletred;
+  }
+}
+
+.link {
+  font-size: 1.5rem;
+  text-align: center;
+  justify-content: center;
+  margin-top: 3%;
+}
+
+.submit_button_field {
+  text-align: center;
+  margin: 6rem 0 0 0;
+
+  .submit_button {
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 50% solid #9f000c;
+    border-radius: 2rem;
+    border-color: #9f000c;
+    transition: background-color 0.3s ease;
+    top: calc(50% - 0.5rem);
+    right: 1rem;
+
+    width: 7rem;
+    height: 3rem;
+  }
+
+  .submit_button:hover {
+    background-color: #7c000a;
+    cursor: pointer;
+  }
+}

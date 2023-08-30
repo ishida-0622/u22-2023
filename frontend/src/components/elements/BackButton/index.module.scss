@@ -1,0 +1,11 @@
+.back_button {
+    transform: scale(1.2, 1.2);
+    border-radius: 10%;
+    background-color: #2577fb;
+    color: azure;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.back_button:hover {
+    filter: brightness(70%);
+}
