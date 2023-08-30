@@ -3,41 +3,30 @@
 .turn_calender {
   font-family: "M PLUS Rounded 1c", sans-serif;
   position: absolute;
-  top: 3rem;
 
   .previousButtonInvalid {
     background-color: gray;
-    height: 3.2rem;
-    width: 5rem;
     border-radius: 5%;
   }
+
   .previousButton {
     background-color: lightgray;
-    height: 3.2rem;
-    width: 5rem;
     border-radius: 5%;
   }
+
   .nextButton {
     background-color: lightgray;
-    height: 3.2rem;
-    width: 5rem;
     border-radius: 5%;
   }
+
   .nextButtonInvalid {
     background-color: gray;
-    height: 3.2rem;
-    width: 5rem;
     border-radius: 5%;
   }
 }
 
 .information {
   position: absolute;
-  text-align: left;
-  bottom: 2rem;
-  left: 2rem;
-  width: 30%;
-  height: 40%;
   border: 1px solid black;
   overflow: auto;
   background-color: rgb(255, 255, 255);
@@ -56,23 +45,14 @@
 
 .icon {
   position: absolute;
-  right: 5rem;
-  top: 3rem;
-  width: 8rem;
   height: auto;
   border-radius: 50%;
-  cursor: pointer;
 }
 
 .button_container {
   position: absolute;
-  bottom: 3rem;
-  right: 8rem;
 
   button {
-    height: 12rem;
-    width: 18rem;
-    font-size: 5rem;
     display: inline-block;
     color: rgb(38, 38, 38);
     font-weight: bold;
@@ -97,6 +77,188 @@
     border-bottom: 50% solid rgb(255, 128, 153);
     border-radius: 0.5rem;
     border-color: rgb(255, 128, 153);
-    margin: 0 0 0 2rem;
+  }
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
+  .turn_calender {
+    left: 0;
+    top: 1rem;
+
+    .previousButtonInvalid {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+
+    .previousButton {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+
+    .nextButton {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+
+    .nextButtonInvalid {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+  }
+
+  .information {
+    bottom: 0.5rem;
+    left: 0.5rem;
+    width: 30%;
+    height: 40%;
+  }
+
+  .icon {
+    right: 4rem;
+    top: 1rem;
+    width: 6rem;
+  }
+
+  .button_container {
+    bottom: 2rem;
+    right: 1rem;
+
+    button {
+      height: 9rem;
+      width: 12rem;
+      font-size: 3.5rem;
+      display: inline-block;
+    }
+
+    .reading_button {
+      margin: 0 0 0 2rem;
+    }
+  }
+}
+
+/*PC*/
+@media screen and (min-device-height: 601px) and (max-device-height: 720px) {
+  .turn_calender {
+    left: 0;
+    top: 3rem;
+
+    .previousButtonInvalid {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+
+    .previousButton {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+
+    .nextButton {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+
+    .nextButtonInvalid {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+  }
+
+  .information {
+    bottom: 2rem;
+    left: 2rem;
+    width: 30%;
+    height: 40%;
+  }
+
+  .icon {
+    right: 5rem;
+    top: 3rem;
+    width: 8rem;
+  }
+
+  .button_container {
+    bottom: 3rem;
+    right: 8rem;
+
+    button {
+      height: 12rem;
+      width: 18rem;
+      font-size: 5rem;
+      display: inline-block;
+    }
+
+    .reading_button {
+      margin: 0 0 0 2rem;
+    }
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .turn_calender {
+    left: 0;
+    top: 3rem;
+
+    .previousButtonInvalid {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+
+    .previousButton {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+
+    .nextButton {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+
+    .nextButtonInvalid {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+  }
+
+  .information {
+    bottom: 2rem;
+    left: 2rem;
+    width: 40%;
+    height: 40%;
+  }
+
+  .icon {
+    right: 5rem;
+    top: 3rem;
+    width: 8rem;
+  }
+
+  .button_container {
+    bottom: 3rem;
+    right: 2rem;
+
+    button {
+      height: 16rem;
+      width: 18rem;
+      font-size: 5rem;
+      display: inline-block;
+    }
+
+    .reading_button {
+      margin: 0 0 0 2rem;
+    }
   }
 }
