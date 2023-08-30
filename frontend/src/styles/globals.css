@@ -510,11 +510,13 @@ body {
 }
 
 .react-pdf__Page__textContent {
-  height: 100vh !important;
-  width: auto !important;
+  display: none;
+  /* height: 100vh !important;
+  width: auto !important; */
 }
 
 .react-pdf__Page__annotations {
-  height: 100vh !important;
-  width: auto !important;
+  display: none;
+  /* height: 100vh !important;
+  width: auto !important; */
 }
