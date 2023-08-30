@@ -23,7 +23,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 export const Storytelling = () => {
   const router = useRouter();
-  const bidQuery = router.query["b_id"];
+  const bidQuery = router.query["id"];
   const [currentPage, setCurrentPage] = useState(1);
   const [bookInfo, setbookinfo] = useState<Book>();
   const [currentPageUrl, setCurrentPageUrl] = useState("");
