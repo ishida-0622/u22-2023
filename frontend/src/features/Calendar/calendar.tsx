@@ -93,6 +93,7 @@ export const Calendar = ({ mm }: { mm: number }) => {
     ) {
       return (
         <Image
+          className={styles.login_image}
           src={`https://k-ishida-u22-2023-mock.s3.ap-northeast-1.amazonaws.com/${
             date % 5
           }.png`}
