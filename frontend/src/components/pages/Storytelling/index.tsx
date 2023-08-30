@@ -1,14 +1,13 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Document, Page, pdfjs } from "react-pdf";
 import Modal from "react-modal";
-import { endpoint } from "@/features/api";
-import { StartBookResponse } from "@/features/book/types/start";
 // import { PDFDocumentProxy } from "react-pdf/node_modules/pdfjs-dist/types/src/display/api";
 import {
   LOCAL_STORAGE_VOLUME_KEY,
   VOLUMES,
 } from "@/features/auth/consts/setting";
+import { Book } from "@/features/book/types";
 
 import "react-pdf/dist/Page/TextLayer.css";
 import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -18,73 +17,32 @@ Modal.setAppElement("#__next");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
-export const Storytelling = () => {
+export const Storytelling = (props: Book) => {
   const router = useRouter();
-  const bidQuery = router.query["id"];
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentPageUrl, setCurrentPageUrl] = useState("");
-  const [audios, setAudios] = useState<HTMLAudioElement[]>([]);
-  const [bookResponse, setBookResponse] = useState<StartBookResponse>();
-  const [maxPages, setMaxPages] = useState(1);
   const volume = Number(
     localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [audios, _] = useState<HTMLAudioElement[]>(
+    props.voice.map((v) => {
+      const audio = new Audio(v);
+      audio.volume = volume;
+      return audio;
+    })
+  );
+  const [maxPages, setMaxPages] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const bookFeatcher = useCallback(
-    async (key: string) => {
-      if (bidQuery === null) {
-        alert("絵本の取得に失敗しました。");
-        router.push("/book/select");
-      } else {
-        const req = {
-          b_id: bidQuery,
-        };
-        const res = await fetch(key, {
-          method: "POST",
-          body: JSON.stringify(req),
-        });
-        setBookResponse(await res.json());
-      }
-    },
-    [bidQuery, router]
-  );
-
   useEffect(() => {
-    if (router.isReady) {
-      bookFeatcher(`${endpoint}/ScanBook`);
-    }
-  }, [bookFeatcher, router.isReady]);
-
-  useEffect(() => {
-    if (bookResponse) {
-      if (bookResponse.response_status === "fail") {
-        router.push("/book/select");
-      } else {
-        const res = bookResponse.result;
-        setAudios(
-          res.voice.map((v) => {
-            const audio = new Audio(v);
-            audio.volume = volume;
-            return audio;
-          })
-        );
-        setCurrentPageUrl(res.pdf);
-        new Audio(res.voice[0]).play();
-      }
-    }
-  }, [bookResponse, router, volume]);
-
-  useEffect(() => {
-    if (currentPageUrl !== "") {
-      pdfjs
-        .getDocument(currentPageUrl)
-        // .promise.then((pdf: PDFDocumentProxy) => {
-        .promise.then((pdf: any) => {
-          setMaxPages(pdf.numPages);
-        });
-    }
-  }, [currentPageUrl]);
+    pdfjs
+      .getDocument(props.pdf)
+      // .promise.then((pdf: PDFDocumentProxy) => {
+      .promise.then((pdf: any) => {
+        setMaxPages(pdf.numPages);
+      });
+    new Audio(props.voice[0]).play();
+  }, [props.pdf, props.voice]);
 
   /** モーダルウィンドウを表示にする関数 */
   const openModal = () => setModalIsOpen(true);
@@ -113,9 +71,10 @@ export const Storytelling = () => {
     router.push("/book/select");
   };
 
-  if (!bookResponse) {
-    return <p>loading</p>;
+  if (!props) {
+    return null;
   }
+
   return (
     <main className={styles.main}>
       {/* 絵本を置く場所 */}
@@ -135,7 +94,7 @@ export const Storytelling = () => {
         ←
       </button>
       <div className={styles.book}>
-        <Document file={currentPageUrl}>
+        <Document file={props.pdf}>
           <Page pageNumber={currentPage} />
         </Document>
       </div>
