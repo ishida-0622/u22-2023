@@ -5,14 +5,12 @@ export type UserState = {
   user: User | null;
   uid: string | null;
   email: string | null;
-  gameStatus: number | null;
 };
 
 const initialState: UserState = {
   user: null,
   uid: null,
   email: null,
-  gameStatus: null,
 };
 
 export const userSlice = createSlice({
@@ -28,14 +26,10 @@ export const userSlice = createSlice({
     updateEmail(state, action: PayloadAction<string | null>) {
       state.email = action.payload;
     },
-    updateGameStatus(state, action: PayloadAction<number | null>) {
-      state.gameStatus = action.payload;
-    },
     reset(): UserState {
       return initialState;
     },
   },
 });
 
-export const { updateUid, updateUser, updateEmail, updateGameStatus, reset } =
-  userSlice.actions;
+export const { updateUid, updateUser, updateEmail, reset } = userSlice.actions;

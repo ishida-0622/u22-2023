@@ -1,8 +1,9 @@
+import { useRef, useState } from "react";
 import Router from "next/router";
 import Image from "next/image";
-import { useState } from "react";
 import Modal from "react-modal";
 import { Puzzle } from "@/features/puzzle/types";
+
 import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
@@ -14,15 +15,23 @@ export const Seal = ({
   icon,
   className,
 }: Puzzle & { className?: string }) => {
+  const isDeactivate = useRef(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
-  const startPuzzle = () => Router.push(`/puzzle/play/${p_id}`);
+  const startPuzzle = async () => {
+    if (isDeactivate.current) {
+      console.warn("button is deactivate");
+      return;
+    }
+    isDeactivate.current = true;
+    Router.push(`/puzzle/play/${p_id}`);
+  };
 
   return (
     <div className={`${styles.seal_modal}`}>
       <div className={`${styles.sealWrapper} ${className}`} onClick={openModal}>
-        <p className={`${styles.number}`}>No.{p_id}</p>
+        <p className={`${styles.number}`}>{title}</p>
         <Image
           className={`${styles.seal}`}
           src={icon}

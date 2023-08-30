@@ -1,9 +1,12 @@
 .container {
-  font-size: 1.5rem;
-  background-color: #7ec7d8;
+  font-size: 1.3rem;
+  background-image: url("./images/meadow.jpg");
+  background-size: cover;
+  background-attachment: fixed;
   input {
     width: 100%;
     text-align: left;
+    padding-left: 1rem;
     border-top-left-radius: 15rem;
     border-top-right-radius: 15rem;
     border-bottom-left-radius: 15rem;
@@ -12,7 +15,7 @@
     border: 0.25rem solid palevioletred;
   }
   p {
-    font-size: 100%;
+    line-height: 3rem;
     color: rgb(160, 72, 160);
     display: flex;
     justify-content: center;
@@ -33,7 +36,7 @@
 .form {
   max-width: max(50%, 480px);
   margin: 0 auto 0%;
-  padding: 2rem;
+  padding: 0 2rem 2rem;
   justify-content: space-between;
 }
 
@@ -67,6 +70,13 @@
   margin-top: 2%;
 }
 
+.link {
+  font-size: 1.5rem;
+  text-align: center;
+  justify-content: center;
+  padding: 2% 0 6%;
+}
+
 .checkbox {
   display: flex;
   justify-content: center;
@@ -91,14 +101,13 @@
   font-weight: bold;
   background-color: #df0013;
   border-bottom: 50% solid #9f000c;
-  border-radius: 100vh;
+  border-radius: 2rem;
   border-color: #9f000c;
+  transition: background-color 0.3s ease;
   top: calc(50% - 0.5rem);
-  right: 1rem;
 }
 
 .submit_button:hover {
-  margin-top: 0.2rem;
-  border-bottom: 0.1rem solid #9f000c;
+  background-color: #7c000a;
   cursor: pointer;
 }

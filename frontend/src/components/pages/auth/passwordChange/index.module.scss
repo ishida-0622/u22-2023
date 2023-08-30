@@ -8,13 +8,12 @@
 .title {
   text-align: center;
   font-weight: bold;
-  font-size: 50px; // タイトルのフォントサイズを変数に設定
 }
 
 .password_field {
   text-align: center;
   margin: 4rem 0 5rem 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
 
   .password_form {
     display: inline-block;
@@ -22,26 +21,33 @@
   }
 
   input {
-    width: max(50%, 480px);
-    text-align: left;
-    border-top-left-radius: 15em;
-    border-top-right-radius: 15em;
-    border-bottom-left-radius: 15em;
-    border-bottom-right-radius: 15em;
-    border-radius: 40em 40em 40em 40em;
-    border: 0.25em solid palevioletred;
+  width: max(50%, 480px);
+  text-align: left;
+  padding-left: 1rem;
+  border-top-left-radius: 15rem;
+  border-top-right-radius: 15rem;
+  border-bottom-left-radius: 15rem;
+  border-bottom-right-radius: 15rem;
+  border-radius: 40rem;
+  border: 0.25rem solid palevioletred;
   }
 }
 
 .password_retype_field {
   text-align: center;
   margin: 2rem 0 0 0;
-  font-size: 2rem;
 }
 
 .password_retype_form {
   text-align: center;
   margin: 0 0 0 0;
+}
+
+.link {
+  margin-top: 3%;
+  font-size: 1.5rem;
+  text-align: center;
+  line-height: 3rem;
 }
 
 .submit_button_field {
@@ -52,21 +58,18 @@
     color: azure;
     font-weight: bold;
     background-color: #df0013;
-    border-bottom: 5px solid #9f000c;
-    border-radius: 100vh;
+    border-bottom: 50% solid #9f000c;
+    border-radius: 2rem;
     border-color: #9f000c;
-    top: calc(50% - 0.5em);
-    right: 1rem;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    transition: background-color 0.3s ease;
+    top: calc(50% - 0.5rem);
     font-size: 2rem;
+    right: 1rem;
   }
-
+  
   .submit_button:hover {
-    margin-top: 0.2rem;
-    border-bottom: 0.2rem solid #9f000c;
+    background-color: #7c000a;
     cursor: pointer;
   }
+  
 }

@@ -35,15 +35,14 @@
   color: azure;
   font-weight: bold;
   background-color: #df0013;
-  border-bottom: 5% solid #9f000c;
-  border-radius: 100vh;
+  border-bottom: 50% solid #9f000c;
+  border-radius: 2rem;
   border-color: #9f000c;
-  top: calc(50% - 0.5em);
-  right: 1rem;
+  transition: background-color 0.3s ease;
+  top: calc(50% - 0.5rem);
 }
 
 .submit_button:hover {
-  margin-top: 0.18rem;
-  border-bottom: 0.12rem solid #9f000c;
+  background-color: #7c000a;
   cursor: pointer;
 }

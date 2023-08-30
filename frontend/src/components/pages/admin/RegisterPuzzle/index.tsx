@@ -1,15 +1,18 @@
-import { useState } from "react";
-import styles from "./index.module.scss";
-import { AdminMenubar } from "@/components/elements/AdminMenubar";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import Modal from "react-modal";
+
+import { endpoint } from "@/features/api";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import {
   RegisterPuzzleRequest,
   RegisterPuzzleResponse,
 } from "@/features/puzzle/types/register";
 import { PuzzleWord } from "@/features/puzzle/types";
-import { useRouter } from "next/router";
-import Modal from "react-modal";
-import Link from "next/link";
+
+import styles from "./index.module.scss";
 
 // Modalを表示するHTML要素のidを指定
 Modal.setAppElement("#__next");
@@ -35,8 +38,10 @@ export const RegisterPuzzle = () => {
   const [dummyVoices, setDummyVoices] = useState<(string | null)[]>([]);
 
   const router = useRouter();
+  const isActive = useRef(true);
+
   const puzzleList = () => {
-    router.push("admin/puzzle");
+    router.push("/admin/puzzle");
   };
   const changeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -88,7 +93,13 @@ export const RegisterPuzzle = () => {
     const arr = text.split(",");
     setSplitDummyWord(arr);
     setDummyImages((val) => val.concat([null]).slice(0, arr.length));
-    setDummyShadows((val) => val.concat(["null"]).slice(0, arr.length));
+    setDummyShadows((val) =>
+      val
+        .concat([
+          "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABQQAAAJMAQMAAACW/DlXAAAAA1BMVEX///+nxBvIAAAAf0lEQVR42uzBgQAAAACAoP2pF6kCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOD24JAAAAAAQND/134wAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEt0JwABmDfT1AAAAABJRU5ErkJggg==",
+        ])
+        .slice(0, arr.length)
+    );
     setDummyVoices((val) => val.concat([null]).slice(0, arr.length));
   };
 
@@ -142,6 +153,11 @@ export const RegisterPuzzle = () => {
 
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isActive.current) {
+      console.warn("submit is deactive");
+      return;
+    }
+
     const reg = new RegExp(
       /^([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+(?:,([a-zA-Z]+(\s[a-zA-Z]|[a-zA-Z])*)+)*$/
     );
@@ -174,6 +190,8 @@ export const RegisterPuzzle = () => {
       return;
     }
 
+    isActive.current = false;
+
     const words: PuzzleWord[] = splitWord.map((v, i) => {
       return {
         word: v,
@@ -203,15 +221,9 @@ export const RegisterPuzzle = () => {
       words: words.concat(dummyWords),
     };
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-
-    if (baseUrl === undefined) {
-      throw new Error("base url is undefined");
-    }
-
     try {
       // 登録処理
-      const res = await fetch(`${baseUrl}/RegisterPuzzle`, {
+      const res = await fetch(`${endpoint}/RegisterPuzzle`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -224,7 +236,7 @@ export const RegisterPuzzle = () => {
       }
     } catch (e) {
       console.error(e);
-
+      isActive.current = true;
       alert("登録に失敗しました");
     }
   };

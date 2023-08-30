@@ -1,5 +1,6 @@
-/* リセットCSS */
 @import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
+/* リセットCSS */
 
 /* Box sizing rules */
 *,
@@ -35,10 +36,9 @@ html:focus-within {
 
 /* Set core body defaults */
 body {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  font-family: "M PLUS Rounded 1c", sans-serif;
 }
 
 /* A elements that don't have a class get default styles */
@@ -241,7 +241,6 @@ select {
     top: 14rem;
     left: 62.5rem;
   }
-
 }
 
 /* iPadランドスケープ */
@@ -354,7 +353,6 @@ select {
 
 /* iPhoneランドスケープ */
 @media screen and (max-device-height: 441px) and (orientation: landscape) {
-
   /*iPhon用のページングボタンの設定*/
   .decrement {
     width: 3rem;
@@ -500,5 +498,26 @@ select {
     top: 35%;
     left: 80%;
   }
+}
 
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+}
+
+.react-pdf__Page__canvas {
+  margin: 0 auto;
+  height: 100vh !important;
+  width: auto !important;
+}
+
+.react-pdf__Page__textContent {
+  display: none;
+  /* height: 100vh !important;
+  width: auto !important; */
+}
+
+.react-pdf__Page__annotations {
+  display: none;
+  /* height: 100vh !important;
+  width: auto !important; */
 }

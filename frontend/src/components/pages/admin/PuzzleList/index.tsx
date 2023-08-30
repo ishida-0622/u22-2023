@@ -1,16 +1,19 @@
 import { useLayoutEffect, useState } from "react";
-import styles from "./index.module.scss";
-import { AdminMenubar } from "@/components/elements/AdminMenubar";
+import Image from "next/image";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Puzzle } from "@/features/puzzle/types";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
+
+import { endpoint } from "@/features/api";
+import { AdminMenubar } from "@/components/elements/AdminMenubar";
 import { GetAllPuzzleResponse } from "@/features/puzzle/types/get";
 import { DeletePuzzleRequest } from "@/features/puzzle/types/delete";
 import { DeletePuzzleResponse } from "@/features/puzzle/types/delete";
-import Image from "next/image";
+
+import styles from "./index.module.scss";
 
 Modal.setAppElement("#__next");
 
@@ -56,15 +59,11 @@ export const PuzzleList = () => {
 
   // 削除メソッド
   const deletePuzzle = async (id: string) => {
-    const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-    if (baseUrl === undefined) {
-      throw new Error("api endpoint is undefined");
-    }
     const req: DeletePuzzleRequest = {
       p_id: id,
     };
     try {
-      const res = await fetch(`${baseUrl}/DeletePuzzle`, {
+      const res = await fetch(`${endpoint}/DeletePuzzle`, {
         method: "POST",
         body: JSON.stringify(req),
       });
@@ -94,12 +93,8 @@ export const PuzzleList = () => {
 
   useLayoutEffect(() => {
     const pullPuzzle = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_ENDPOINT;
-      if (baseUrl === undefined) {
-        throw new Error("内部エラー");
-      }
       try {
-        const response = await fetch(`${baseUrl}/GetPuzzles`, {
+        const response = await fetch(`${endpoint}/GetPuzzles`, {
           method: "POST",
           body: JSON.stringify({}),
         });
@@ -185,31 +180,6 @@ export const PuzzleList = () => {
                     width={150}
                     height={100}
                   />
-                </div>
-                <div>
-                  <b>問題：</b>
-                  {puzzle.words.map((word) => (
-                    <div key={word.word}>
-                      <p>単語：{word.word}</p>
-                      <p>シルエット：</p>
-                      <Image
-                        src={word.shadow}
-                        alt={`${word.word} shadow`}
-                        width={150}
-                        height={100}
-                      />
-                      <p>イラスト：</p>
-                      <Image
-                        src={word.illustration}
-                        alt={`${word.word} illust`}
-                        width={150}
-                        height={100}
-                      />
-                      <p>音声：</p>
-                      <audio controls src={word.voice} />
-                      <hr />
-                    </div>
-                  ))}
                 </div>
                 <div>
                   <b>作成日：</b>「{puzzle.create_date}」
