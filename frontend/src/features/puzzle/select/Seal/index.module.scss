@@ -62,7 +62,7 @@
 }
 
 /* iPhoneランドスケープ */
-@media screen and (max-device-height: 441px) and (orientation: landscape) {
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
   .modal_contents {
     button {
       width: 8rem;
