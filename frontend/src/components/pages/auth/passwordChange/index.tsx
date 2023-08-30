@@ -5,6 +5,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { updatePassword } from "firebase/auth";
 import { auth } from "@/features/auth/firebase";
 import { logout } from "@/features/auth/utils/logout";
+import Link from "next/link";
 
 import styles from "./index.module.scss";
 
@@ -53,7 +54,7 @@ export const PasswordChange = () => {
 
   return (
   <div className={`${styles.container}`}>
-    <h2 className={`${styles.title}`}>パスワード再設定</h2>
+    <h1 className={`${styles.title}`}>パスワード再設定</h1>
     <hr />
     <form method="post" onSubmit={handleSubmit}>
       <div className={`${styles.password_field}`}>
@@ -64,16 +65,17 @@ export const PasswordChange = () => {
             type={isHidden.pass ? "password" : "text"}
             name="password"
             id="password"
+            placeholder="6文字以上"
             value={password}
             onChange={changePassword}
             required={true}
           />
           <FontAwesomeIcon
-            icon={isHidden.pass ? faEye : faEyeSlash}
+            icon={isHidden.pass ? faEyeSlash : faEye}
             onClick={() => setIsHidden((v) => ({ ...v, pass: !v.pass }))}
           />
         </label>
-        <br></br>
+        <br />
         <label>
           <p className={`${styles.password_retype_field}`}>再入力</p>
           <input
@@ -81,12 +83,13 @@ export const PasswordChange = () => {
             type={isHidden.passConfirm ? "password" : "text"}
             name="passwordConfirm"
             id="passwordConfirm"
+            placeholder="パスワードを再度入力してください。"
             value={passwordConfirm}
             onChange={changePasswordConfirm}
             required={true}
           />
           <FontAwesomeIcon
-            icon={isHidden.passConfirm ? faEye : faEyeSlash}
+            icon={isHidden.passConfirm ? faEyeSlash : faEye}
             onClick={() =>
               setIsHidden((v) => ({ ...v, passConfirm: !v.passConfirm }))
             }
@@ -97,6 +100,16 @@ export const PasswordChange = () => {
         <button className={`${styles.submit_button}`} type="submit">
           変更する
         </button>
+      </div>
+      <div className={`${styles.link}`}>
+        <div>
+          <Link href="/account-info">
+            アカウント設定画面に戻る
+          </Link>
+        </div>
+        <div>
+          <Link href="/">トップ画面に戻る</Link>
+        </div>
       </div>
     </form>
   </div>

@@ -1,4 +1,5 @@
 /* リセットCSS */
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
 
 /* Box sizing rules */
 *,
@@ -495,4 +496,8 @@ select {
     top: 9rem;
     left: 33.5rem;
   }
+}
+
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif;
 }

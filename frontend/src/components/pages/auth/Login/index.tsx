@@ -7,6 +7,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 import { auth } from "@/features/auth/firebase";
 import { updateEmail, updateUid, updateUser } from "@/store/user";
@@ -25,6 +27,8 @@ export const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [isHiddenPass, setIsHiddenPass] = useState({ pass: true, check: true });
 
   const fetchUserData = async (uid: string) => {
     const req: ScanUserRequest = {
@@ -66,14 +70,17 @@ export const Login = () => {
     try {
       // ログイン処理
       const response = await signInWithEmailAndPassword(auth, email, password);
+      const reg = new RegExp(process.env.NEXT_PUBLIC_ADMIN_REGEXP ?? "^$");
+      if (reg.test(email)) {
+        router.push("/admin");
+        return;
+      }
       if (!response.user.emailVerified) {
         await sendEmailVerification(response.user);
         alert(
           "メールアドレス認証がされていません\n送信されたメールのURLをクリックしてください"
         );
         await signOut(auth);
-        return;
-      }
       // グローバルステートを更新
       dispatch(updateUid(response.user.uid));
       dispatch(updateEmail(response.user.email));
@@ -94,36 +101,44 @@ export const Login = () => {
   return (
     <div className={styles.container}>
       <div className={`${styles.header}`}>
-        <div className={`${styles.logintext}`}></div>
-        <h2>ログイン</h2>
+          <h2>ログイン</h2>
         <p>パパ、ママにそうさしてもらってね！</p>
         <hr />
-        <form method="post" onSubmit={handleSubmit}>
+      </div>
+        <form method="post" onSubmit={handleSubmit} className={`${styles.form}`}>
           <div className="top">
-            <br></br>
+            <br />
             <label>
-              メールアドレス<br></br>
+              メールアドレス<br />
               <input
                 type="text"
                 name="email"
                 id="email"
+                placeholder="example@mail.com"
                 value={email}
                 onChange={changeEmail}
                 required={true}
               />
             </label>
-            <br></br>
+            <br />
             <label>
-              パスワード<br></br>
+              パスワード<br />
               <input
-                type="password"
+                type={isHiddenPass.pass ? "password" : "text"}
                 name="password"
                 id="password"
+                placeholder="パスワードを入力"
                 value={password}
                 onChange={changePassword}
                 required={true}
               />
             </label>
+            <span
+              onClick={() => setIsHiddenPass((v) => ({ ...v, pass: !v.pass }))}
+              role="presentation"
+            >
+              <FontAwesomeIcon icon={isHiddenPass.pass ? faEyeSlash : faEye} />
+            </span>
           </div>
           <div>
             <div className={`${styles.submit_button_field}`}>
@@ -143,7 +158,6 @@ export const Login = () => {
             </div>
           </div>
         </form>
-      </div>
     </div>
   );
 };
