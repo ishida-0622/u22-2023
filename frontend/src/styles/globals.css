@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
 /* リセットCSS */
 
 /* Box sizing rules */
@@ -495,4 +497,24 @@ select {
     top: 9rem;
     left: 33.5rem;
   }
+}
+
+body {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+}
+
+.react-pdf__Page__canvas {
+  margin: 0 auto;
+  height: 100vh !important;
+  width: auto !important;
+}
+
+.react-pdf__Page__textContent {
+  height: 100vh !important;
+  width: auto !important;
+}
+
+.react-pdf__Page__annotations {
+  height: 100vh !important;
+  width: auto !important;
 }

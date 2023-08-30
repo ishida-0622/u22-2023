@@ -23,6 +23,9 @@ import {
   ScanBookLogRequest,
   ScanBookLogResponse,
 } from "@/features/log/types/scanBookLog";
+import { logout } from "@/features/auth/utils/logout";
+import { LogoutButton } from "@/components/elements/LogoutButton";
+import { BackButton } from "@/components/elements/BackButton";
 
 import "react-tabs/style/react-tabs.css";
 import styles from "@/components/pages/AccountInfo/index.module.scss";
@@ -125,13 +128,17 @@ export const AccountInfo = () => {
   if (password !== userData.child_lock) {
     return (
       <div className={styles.child_lock_init}>
+        <h1>アカウント設定</h1>
         <label>
-          チャイルドロックを入力
+          <h2>チャイルドロックを入力</h2>
           <input
             type="text"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <div className={`${styles.back_button_field}`}>
+            <BackButton />
+          </div>
         </label>
       </div>
     );
@@ -140,13 +147,20 @@ export const AccountInfo = () => {
   return (
     <main className={`${styles.container}`}>
       <div className={`${styles.back_ground}`}></div>
-      <h1>アカウント情報画面</h1>
+      <h1>アカウント設定</h1>
+      <div className={`${styles.back_button_field}`}>
+        <BackButton />
+      </div>
+      <div className={`${styles.logout_button_field}`}>
+        <LogoutButton />
+      </div>
       <Tabs>
         <TabList className={`${styles.tab_list}`}>
           <Tab>アカウント情報</Tab>
           <Tab>設定</Tab>
           <Tab>パズルログ</Tab>
           <Tab>えほんログ</Tab>
+          <hr />
         </TabList>
         <TabPanel className={`${styles.info}`}>
           <table className={`${styles.info_text}`}>
@@ -179,13 +193,25 @@ export const AccountInfo = () => {
             </tbody>
           </table>
           <br />
-          <button
-            type="button"
-            name="account_change"
-            onClick={() => router.push("/account-info/edit")}
-          >
-            アカウント情報を変更
-          </button>
+          <div className={`${styles.button_size}`}>
+            <button
+              type="button"
+              name="account_change"
+              onClick={() => router.push("/account-info/edit")}
+              className={`${styles.edit_button}`}
+            >
+              アカウント情報変更
+            </button>
+            <br />
+            <button
+              type="button"
+              name="account_change"
+              onClick={() => router.push("quit")}
+              className={`${styles.quit_button}`}
+            >
+              退会
+            </button>
+          </div>
         </TabPanel>
         <TabPanel className={`${styles.setting}`}>
           <div className={`${styles.font_size}`}>
@@ -346,13 +372,6 @@ export const AccountInfo = () => {
             </label>
           </div>
           <div className={`${styles.buttons}`}>
-            <button
-              type="button"
-              className={`${styles.back_button}`}
-              onClick={() => router.back()}
-            >
-              戻る
-            </button>
             <button type="button" className={`${styles.change_button}`}>
               変更
             </button>

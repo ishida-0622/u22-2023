@@ -79,7 +79,7 @@ export const Top = () => {
         <button
           className={`${styles.reading_button}`}
           onClick={() => {
-            Router.push("#");
+            Router.push("/book/select");
           }}
         >
           えほん
