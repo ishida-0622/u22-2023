@@ -1,16 +1,48 @@
 .previousButtonInvalid {
   background-color: gray;
+  position: absolute;
+  left: 0;
+  top: 50%;
 }
 .previousButton {
   background-color: lightgray;
+  position: absolute;
+  left: 0;
+  top: 50%;
 }
 .nextButton {
   background-color: lightgray;
+  position: absolute;
+  right: 0;
+  top: 50%;
 }
 .nextButtonInvalid {
   background-color: gray;
+  position: absolute;
+  right: 0;
+  top: 50%;
 }
 .book {
-  position: relative;
+  width: 50%;
+  margin: 0 auto;
   z-index: -1;
+  canvas {
+    // margin: 0 auto;
+    z-index: -1;
+    // height: 100%;
+  }
+}
+
+.main {
+  text-align: center;
+}
+
+.exit_button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: azure;
+  font-weight: bold;
+  background-color: #ee827c;
+  border-radius: 10px;
 }

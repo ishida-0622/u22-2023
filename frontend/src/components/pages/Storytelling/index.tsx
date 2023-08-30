@@ -2,8 +2,6 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./index.module.scss";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import { StartBookResponse } from "@/features/book/types/start";
 import { Book } from "@/features/book/types";
 import { Document, Page, pdfjs } from "react-pdf";
@@ -16,6 +14,7 @@ import {
   LOCAL_STORAGE_VOLUME_KEY,
   VOLUMES,
 } from "@/features/auth/consts/setting";
+import { endpoint } from "@/features/api";
 
 Modal.setAppElement("#__next");
 
@@ -31,20 +30,19 @@ export const Storytelling = () => {
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement>(
     new Audio()
   );
+  const [audios, setAudios] = useState<HTMLAudioElement[]>([]);
   const [bookResponse, setBookResponse] = useState<StartBookResponse>();
-  const [setStatus, setSetStatus] = useState<any>();
   const [maxPages, setMaxPages] = useState(1);
   const [usersVolume, setusersVolume] = useState(
     () => localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
   );
   const [volume, setVolume] = useState(Number(usersVolume));
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const uid = useSelector((store: RootState) => store.uid);
 
   const bookFeatcher = async (key: string) => {
     if (bidQuery === null) {
       alert("絵本の取得に失敗しました。");
-      Router.push("/bookshelf");
+      Router.push("/book/select");
     } else {
       const req = {
         b_id: bidQuery,
@@ -56,33 +54,40 @@ export const Storytelling = () => {
       setBookResponse(await res.json());
     }
   };
+
   useEffect(() => {
     if (router.isReady) {
-      bookFeatcher(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/ScanBook`);
-      setStatusFeatcher(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/SetStatus`);
+      bookFeatcher(`${endpoint}/ScanBook`);
     }
   }, [bidQuery, router]);
+
   useEffect(() => {
-    console.log(`book:${bookResponse}`);
     if (bookResponse) {
-      console.log(bookResponse);
       if (bookResponse.response_status === "fail") {
-        //alert("絵本が見つかりませんでした。");
-        // TODO:
-        //Router.push("/bookshelf")
+        Router.push("/book/select");
       } else {
-        setbookinfo(bookResponse.result);
+        const res = bookResponse.result;
+        setbookinfo(res);
+        setAudios(
+          res.voice.map((v) => {
+            const audio = new Audio(v);
+            audio.volume = volume;
+            return audio;
+          })
+        );
+        new Audio(res.voice[0]).play();
       }
     }
   }, [bookResponse]);
+
   useEffect(() => {
     if (bookInfo) {
-      console.log("bookinfo", bookInfo);
       setCurrentPageUrl(bookInfo.pdf);
       setAudioUrl(bookInfo.voice[0]);
       setCurrentAudio(new Audio(audioUrl));
     }
   }, [bookInfo]);
+
   useEffect(() => {
     if (currentPageUrl !== "") {
       pdfjs
@@ -93,39 +98,18 @@ export const Storytelling = () => {
         });
     }
   }, [currentPageUrl]);
+
   useEffect(() => {
     if (bookInfo) {
       setAudioUrl(bookInfo.voice[currentPage - 1]);
     }
   }, [currentPage]);
+
   useEffect(() => {
     if (audioUrl) {
       setCurrentAudio(new Audio(audioUrl));
     }
   }, [audioUrl]);
-
-  const setStatusFeatcher = async (key: string) => {
-    const req = {
-      u_id: uid,
-      game_status: "3",
-    };
-    const res = await fetch(key, {
-      method: "POST",
-      body: JSON.stringify(req),
-    });
-    setSetStatus(await res.json());
-    return;
-  };
-  useEffect(() => {
-    if (setStatus) {
-      console.log(setStatus);
-      // if (setStatus.response_status === "fail") {
-      //     alert("通信に失敗しました。");
-      //     //TODO:
-      //     Router.push("/bookshelf")
-      // }
-    }
-  }, [setStatus]);
 
   /** モーダルウィンドウを表示にする関数 */
   const openModal = () => setModalIsOpen(true);
@@ -137,11 +121,17 @@ export const Storytelling = () => {
   const previousPage = () => {
     if (currentPage !== 1) {
       setCurrentPage(currentPage - 1);
+      audios[currentPage - 1].pause();
+      audios[currentPage - 1].load();
+      audios[currentPage - 2].play();
     }
   };
   const nextPage = () => {
     if (currentPage !== maxPages) {
       setCurrentPage(currentPage + 1);
+      audios[currentPage - 1].pause();
+      audios[currentPage - 1].load();
+      audios[currentPage].play();
     }
   };
   const quit = () => {
@@ -152,7 +142,7 @@ export const Storytelling = () => {
     return <p>loading</p>;
   }
   return (
-    <div>
+    <main className={styles.main}>
       {/* 絵本を置く場所 */}
       {/* previousButtonは前のページを表示するためのボタン
         これ以上さかのぼれない場合previousButtonInvalidにクラス名が変わります
@@ -171,7 +161,7 @@ export const Storytelling = () => {
       </button>
       <div className={styles.book}>
         <Document file={currentPageUrl}>
-          <Page width={300} pageNumber={currentPage} />
+          <Page pageNumber={currentPage} />
         </Document>
       </div>
       <button
@@ -184,16 +174,9 @@ export const Storytelling = () => {
         →
       </button>
       {/* 朗読を始めるボタン */}
-      <AudioPlayer vol={volume} audio={currentAudio} />
-      <input
-        type="range"
-        min="0.0"
-        max="1.0"
-        step="0.1"
-        value={volume}
-        onChange={(event) => setVolume(Number(event.target.value))}
-      ></input>
-      <button onClick={openModal}>よみきかせをやめる</button>
+      <button className={styles.exit_button} onClick={openModal}>
+        よみきかせをやめる
+      </button>
       {/* 終了確認画面 */}
       <dialog>
         <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
@@ -202,6 +185,6 @@ export const Storytelling = () => {
           <button onClick={quit}> やめる </button>
         </Modal>
       </dialog>
-    </div>
+    </main>
   );
 };
