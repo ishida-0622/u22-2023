@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Router from "next/router";
 import useSWR from "swr";
@@ -15,6 +15,7 @@ export const Bookshelf = () => {
   const [selectedId, setSelectedId] = useState<string>("");
   const [bookTable, setBookTable] = useState<string[][][]>([]);
   const [bookMap, setBookMap] = useState<Map<string, string[]>>(new Map());
+  const isDeactivate = useRef(false);
 
   /** モーダルウィンドウを表示にする関数 */
   const openModal = () => setModalIsOpen(true);
@@ -67,6 +68,11 @@ export const Bookshelf = () => {
   };
 
   const startBook = () => {
+    if (isDeactivate.current) {
+      console.warn("button is deactivate");
+      return;
+    }
+    isDeactivate.current = true;
     Router.push(`/book/play/${selectedId}`);
   };
 

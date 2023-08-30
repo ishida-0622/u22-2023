@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Router from "next/router";
 import Image from "next/image";
-import { useSelector } from "react-redux";
 import Modal from "react-modal";
-import { RootState } from "@/store";
 import { Puzzle } from "@/features/puzzle/types";
 
 import styles from "./index.module.scss";
@@ -17,11 +15,16 @@ export const Seal = ({
   icon,
   className,
 }: Puzzle & { className?: string }) => {
-  const uid = useSelector((store: RootState) => store.uid);
+  const isDeactivate = useRef(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   const startPuzzle = async () => {
+    if (isDeactivate.current) {
+      console.warn("button is deactivate");
+      return;
+    }
+    isDeactivate.current = true;
     Router.push(`/puzzle/play/${p_id}`);
   };
 
