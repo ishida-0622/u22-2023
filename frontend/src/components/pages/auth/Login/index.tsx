@@ -81,6 +81,7 @@ export const Login = () => {
           "メールアドレス認証がされていません\n送信されたメールのURLをクリックしてください"
         );
         await signOut(auth);
+        isActive.current = true;
         return;
       }
       // グローバルステートを更新
