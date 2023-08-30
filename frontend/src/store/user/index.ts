@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Status, User } from "@/features/auth/types";
+import { User } from "@/features/auth/types";
 
 export type UserState = {
   user: User | null;
   uid: string | null;
-  status: Status | null;
+  email: string | null;
 };
 
 const initialState: UserState = {
   user: null,
   uid: null,
-  status: null,
+  email: null,
 };
 
 export const userSlice = createSlice({
@@ -23,8 +23,8 @@ export const userSlice = createSlice({
     updateUser(state, action: PayloadAction<User | null>) {
       state.user = action.payload;
     },
-    updateStatus(state, action: PayloadAction<Status | null>) {
-      state.status = action.payload;
+    updateEmail(state, action: PayloadAction<string | null>) {
+      state.email = action.payload;
     },
     reset(): UserState {
       return initialState;
@@ -32,4 +32,4 @@ export const userSlice = createSlice({
   },
 });
 
-export const { updateUid, updateUser, updateStatus } = userSlice.actions;
+export const { updateUid, updateUser, updateEmail, reset } = userSlice.actions;

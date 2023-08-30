@@ -1,0 +1,111 @@
+.container {
+    background-color: #E0EFFF;
+    min-height: 100vh;
+    h1 {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid black;
+    }
+    h2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 1%;
+    }
+}
+
+.adminmenubar {
+  float: left;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.posts {
+    max-width: max(50%, 480px);
+    margin: 0 auto 0%;
+    padding: 1rem;
+    background-color: white;
+    justify-content: space-between;
+    align-items: center;
+    h3 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        .posts_button {
+            display: flex;
+            align-items: center;
+        }
+        button {
+            margin: 0.5rem;
+            color: rgb(47, 47, 232);
+        }
+    }
+    hr {
+        border-top: 1px solid black;
+    }
+    button {
+        color: rgb(47, 47, 232);
+    }
+}
+
+.submit_button_field {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
+}
+.submit_button {
+  box-shadow: none;
+  font-size: 1.5rem;
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #00bfff;
+  border-bottom: 50% solid #00bfff;
+  border-radius: 0.5rem;
+  border-color: #00bfff;
+  top: calc(50% - 0.5rem);
+  transition: background-color 0.3s ease;
+}
+.submit_button:hover {
+    background-color: #0083af;
+    cursor: pointer;
+}
+
+.modal-container {
+    position: relative;
+}
+.modal {
+    background-color: #D3D3D3;
+    padding: 5% 2% 2% 2%;
+    line-height: 2rem;
+}
+
+.close_button_field {
+    position: fixed;
+    float: right;
+    left: 90%;
+    top: 12%;
+}
+.close_button {
+    box-shadow: none;
+    display: inline-block;
+    color: #fff;
+    font-weight: bold;
+    background-color: #c00000;
+    border-bottom: 10% solid #c00000;
+    border-radius: 0.5rem;
+    border-color: #c00000;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+}
+.close_button:hover {
+    background-color: #900000;
+    cursor: pointer;
+}

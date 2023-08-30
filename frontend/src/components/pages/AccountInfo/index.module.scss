@@ -1,0 +1,728 @@
+@use "src/styles/variables";
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
+.container {
+  text-align: center;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  background-color: variables.$base_color;
+  background-color: #E0EFFF;
+  min-height: 100vh;
+  h1 {
+    padding: 0.5% 0 1%;
+    background-color: white;
+  }
+  hr {
+    width: 60%;
+  }
+}
+
+.none {
+  display: none;
+}
+
+.back_button_field {
+  float: right;
+  position: fixed;
+  top: 1rem;
+  left: 80%;
+  width: 10rem;
+}
+
+.logout_button_field {
+  float: right;
+  position: fixed;
+  top: 1rem;
+  left: 88%;
+  width: 10rem;
+}
+
+.volume_label {
+  background-color: rgb(240, 228, 165);
+  border-radius: 0.5rem;
+  border: solid 1px;
+  display: inline-block;
+}
+
+input:checked + .volume_label {
+  background-color: rgb(255, 255, 120);
+}
+
+.info {
+  .info_text {
+    display: inline-block;
+    text-align: left;
+  }
+  .button_size {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 0;
+  }
+  .edit_button {
+    box-shadow: none;
+    font-size: 1.5rem;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #38b48b;
+    border-bottom: 50% solid #38b48b;
+    border-radius: 0.5rem;
+    border-color: #38b48b;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+  }
+  .edit_button:hover {
+    background-color: #1d7055;
+    cursor: pointer;
+  }
+  .quit_button {
+    display: inline-block;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    padding: 0 5.6rem;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 50% solid #9f000c;
+    border-radius: 0.5rem;
+    border-color: #9f000c;
+    transition: background-color 0.3s ease;
+    top: calc(50% - 0.5rem);
+  }
+  .quit_button:hover {
+    background-color: #7c000a;
+    cursor: pointer;
+  }
+}
+
+.child_lock_init {
+  background-color: variables.$base_color;
+  min-height: 100vh;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  text-align: center;
+  h1 {
+    padding: 0.5% 0 1%;
+    margin-bottom: 2%;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+  }
+  input {
+    font-size: 1.5rem;
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
+  /*アカウント情報*/
+  .info {
+    font-size: 1rem;
+  }
+
+  /*ナビゲーション*/
+  .navigate_size {
+    text-align: left;
+    margin: 0 0 0 10rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .navigate_volume {
+    text-align: left;
+    margin: 0 0 0 4rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .navigate_time {
+    text-align: left;
+    margin: 0 0 0 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  /*文字サイズの設定*/
+  .font_size {
+    position: relative;
+    height: 0rem;
+    left: -9rem;
+    z-index: 1;
+
+    .small {
+      font-size: 0.3rem;
+      font-weight: bold;
+    }
+
+    .normal {
+      font-size: 0.89rem;
+      font-weight: bold;
+    }
+
+    .big {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .radio_inline_input {
+      clip: rect(0.0625rem, 0.0625rem, 0.0625rem, 0.0625rem);
+      position: absolute !important;
+    }
+
+    .radio_inline_label {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      margin-top: 1.5rem;
+      margin-right: 1.5rem;
+      margin-left: 1.5rem;
+      border-radius: 0.1875rem;
+      transition: all 0.2s;
+    }
+
+    .radio_inline_input:checked + .radio_inline_label {
+      background: #b54a4a;
+      color: #fff;
+      text-shadow: 0 0 0.0625rem rgba(0, 0, 0, 0.7);
+    }
+
+    .radio_inline_input:focus + .radio_inline_label {
+      outline-color: #4d90fe;
+      outline-offset: -0.125rem;
+      outline-style: auto;
+      outline-width: 0.3125rem;
+    }
+  }
+
+  /*音量の設定*/
+  .volume {
+    position: relative;
+    left: 20rem;
+    width: 20rem;
+
+    .zero {
+      width: 1.8rem;
+      height: 2rem;
+    }
+
+    .zero:hover {
+      cursor: pointer;
+    }
+
+    .one {
+      width: 1.8rem;
+      height: 2.8rem;
+    }
+
+    .one:hover {
+      cursor: pointer;
+    }
+
+    .two {
+      width: 1.8rem;
+      height: 3.6rem;
+    }
+
+    .two:hover {
+      cursor: pointer;
+    }
+
+    .three {
+      width: 1.8rem;
+      height: 4.4rem;
+    }
+
+    .three:hover {
+      cursor: pointer;
+    }
+
+    .four {
+      width: 1.8rem;
+      height: 5.2rem;
+    }
+
+    .four:hover {
+      cursor: pointer;
+    }
+
+    .five {
+      width: 1.8rem;
+      height: 6rem;
+    }
+
+    .five:hover {
+      cursor: pointer;
+    }
+  }
+
+  .time_limit {
+    position: relative;
+    top: 0.5rem;
+
+    .hour_navigate {
+      position: relative;
+      top: 2rem;
+      right: 6rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .minute_navigate {
+      position: relative;
+      top: 2rem;
+      left: -1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .limit_hour {
+      display: inline-block;
+      width: 5rem;
+      position: relative;
+      top: 1rem;
+      right: 8rem;
+      transform: scale(1.5, 1.5);
+    }
+
+    .limit_minute {
+      display: inline-block;
+      width: 5rem;
+      position: relative;
+      top: 1rem;
+      left: -3rem;
+      transform: scale(1.5, 1.5);
+    }
+  }
+
+  .buttons {
+    position: relative;
+    top: 0.5rem;
+    left: 29rem;
+    width: 10rem;
+
+    .change_button {
+      transform: scale(1.2, 1.2);
+      margin: 0 0 0 1rem;
+      border-radius: 10%;
+      color: azure;
+      background-color: #38b48b;
+      font-weight: bold;
+    }
+
+    .change_button:hover {
+      filter: brightness(70%);
+    }
+  }
+}
+
+/*PC*/
+@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+  /*アカウント情報*/
+  .info {
+    font-size: 2rem;
+  }
+
+  /*ナビゲーション*/
+  .navigate_size {
+    text-align: left;
+    margin: 0 0 0 18rem;
+    font-size: 1.5rem;
+  }
+
+  .navigate_volume {
+    text-align: left;
+    margin: 0 0 0 18rem;
+    font-size: 1.5rem;
+  }
+
+  .navigate_time {
+    text-align: left;
+    margin: 0 0 0 18rem;
+    font-size: 1.5rem;
+  }
+
+  /*文字サイズの設定*/
+  .font_size {
+    height: 0.5rem;
+
+    .small {
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+    .normal {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .big {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .radio_inline_input {
+      clip: rect(0.0625rem, 0.0625rem, 0.0625rem, 0.0625rem);
+      position: absolute !important;
+    }
+
+    .radio_inline_label {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      margin-top: 1.5rem;
+      margin-right: 1.5rem;
+      margin-left: 1.5rem;
+      border-radius: 0.1875rem;
+      transition: all 0.2s;
+    }
+
+    .radio_inline_input:checked + .radio_inline_label {
+      background: #b54a4a;
+      color: #fff;
+      text-shadow: 0 0 0.0625rem rgba(0, 0, 0, 0.7);
+    }
+
+    .radio_inline_input:focus + .radio_inline_label {
+      outline-color: #4d90fe;
+      outline-offset: -0.125rem;
+      outline-style: auto;
+      outline-width: 0.3125rem;
+    }
+  }
+
+  /*音量の設定*/
+  .volume {
+    position: relative;
+    top: 8rem;
+    height: 11rem;
+
+    .zero {
+      width: 3rem;
+      height: 3.3rem;
+    }
+
+    .zero:hover {
+      cursor: pointer;
+    }
+
+    .one {
+      width: 3rem;
+      height: 4.6rem;
+    }
+
+    .one:hover {
+      cursor: pointer;
+    }
+
+    .two {
+      width: 3rem;
+      height: 5.9rem;
+    }
+
+    .two:hover {
+      cursor: pointer;
+    }
+
+    .three {
+      width: 3rem;
+      height: 7.2rem;
+    }
+
+    .three:hover {
+      cursor: pointer;
+    }
+
+    .four {
+      width: 3rem;
+      height: 8.5rem;
+    }
+
+    .four:hover {
+      cursor: pointer;
+    }
+
+    .five {
+      width: 3rem;
+      height: 9.8rem;
+    }
+
+    .five:hover {
+      cursor: pointer;
+    }
+  }
+
+  .time_limit {
+    position: relative;
+    top: 10rem;
+    height: 4rem;
+
+    .hour_navigate {
+      position: relative;
+      top: 2rem;
+      right: 2rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .minute_navigate {
+      position: relative;
+      top: 2rem;
+      left: 8rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .limit_hour {
+      display: inline-block;
+      width: 5rem;
+      position: relative;
+      top: 1rem;
+      right: 5rem;
+      transform: scale(1.5, 1.5);
+    }
+
+    .limit_minute {
+      display: inline-block;
+      width: 5rem;
+      position: relative;
+      top: 1rem;
+      left: 5rem;
+      transform: scale(1.5, 1.5);
+    }
+  }
+
+  .buttons {
+    position: relative;
+    top: 9rem;
+    left: 60rem;
+    width: 10rem;
+
+    .back_button {
+      transform: scale(1.5, 1.5);
+      margin: 0 2rem 0 0;
+      border-radius: 10%;
+      background-color: #bed7ff;
+      font-weight: bold;
+    }
+
+    .back_button:hover {
+      filter: brightness(70%);
+    }
+
+    .change_button {
+      transform: scale(1.5, 1.5);
+      margin: 0 0 0 2rem;
+      border-radius: 10%;
+      color: azure;
+      background-color: #38b48b;
+      font-weight: bold;
+    }
+
+    .change_button:hover {
+      filter: brightness(70%);
+    }
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  /*アカウント情報*/
+  .info {
+    font-size: 3rem;
+  }
+
+  /*ナビゲーション*/
+  .navigate_size {
+    text-align: left;
+    margin: 0 0 0 18rem;
+    font-size: 1.5rem;
+  }
+
+  .navigate_volume {
+    text-align: left;
+    margin: 0 0 0 18rem;
+    font-size: 1.5rem;
+  }
+
+  .navigate_time {
+    text-align: left;
+    margin: 0 0 0 18rem;
+    font-size: 1.5rem;
+  }
+
+  /*文字サイズの設定*/
+  .font_size {
+    height: 1rem;
+
+    .small {
+      font-weight: bold;
+    }
+
+    .normal {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .big {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .radio_inline_input {
+      clip: rect(0.0625rem, 0.0625rem, 0.0625rem, 0.0625rem);
+      position: absolute !important;
+    }
+
+    .radio_inline_label {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      margin-top: 1.5rem;
+      margin-right: 1.5rem;
+      margin-left: 1.5rem;
+      border-radius: 0.1875rem;
+      transition: all 0.2s;
+    }
+
+    .radio_inline_input:checked + .radio_inline_label {
+      background: #b54a4a;
+      color: #fff;
+      text-shadow: 0 0 0.0625rem rgba(0, 0, 0, 0.7);
+    }
+
+    .radio_inline_input:focus + .radio_inline_label {
+      outline-color: #4d90fe;
+      outline-offset: -0.125rem;
+      outline-style: auto;
+      outline-width: 0.3125rem;
+    }
+  }
+
+  /*音量の設定*/
+  .volume {
+    position: relative;
+    top: 8rem;
+
+    .zero {
+      width: 4.5rem;
+      height: 5rem;
+    }
+
+    .zero:hover {
+      cursor: pointer;
+    }
+
+    .one {
+      width: 4.5rem;
+      height: 7rem;
+    }
+
+    .one:hover {
+      cursor: pointer;
+    }
+
+    .two {
+      width: 4.5rem;
+      height: 9rem;
+    }
+
+    .two:hover {
+      cursor: pointer;
+    }
+
+    .three {
+      width: 4.5rem;
+      height: 11rem;
+    }
+
+    .three:hover {
+      cursor: pointer;
+    }
+
+    .four {
+      width: 4.5rem;
+      height: 13rem;
+    }
+
+    .four:hover {
+      cursor: pointer;
+    }
+
+    .five {
+      width: 4.5rem;
+      height: 15rem;
+    }
+
+    .five:hover {
+      cursor: pointer;
+    }
+  }
+
+  .time_limit {
+    position: relative;
+    top: 10rem;
+
+    .hour_navigate {
+      position: relative;
+      top: 2rem;
+      right: 2rem;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .minute_navigate {
+      position: relative;
+      top: 2rem;
+      left: 8rem;
+      font-size: 2rem;
+      font-weight: bold;
+    }
+
+    .limit_hour {
+      display: inline-block;
+      width: 5rem;
+      position: relative;
+      top: 1rem;
+      right: 5rem;
+      transform: scale(2, 2);
+    }
+
+    .limit_minute {
+      display: inline-block;
+      width: 5rem;
+      position: relative;
+      top: 1rem;
+      left: 5rem;
+      transform: scale(2, 2);
+    }
+  }
+
+  .buttons {
+    position: relative;
+    top: 16rem;
+
+    .back_button {
+      transform: scale(2, 2);
+      margin: 0 5rem 0 0;
+      border-radius: 10%;
+      background-color: #bed7ff;
+      font-weight: bold;
+    }
+
+    .back_button:hover {
+      filter: brightness(70%);
+    }
+
+    .change_button {
+      transform: scale(2, 2);
+      margin: 0 0 0 5rem;
+      border-radius: 10%;
+      color: azure;
+      background-color: #38b48b;
+      font-weight: bold;
+    }
+
+    .change_button:hover {
+      filter: brightness(70%);
+    }
+  }
+}

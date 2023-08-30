@@ -1,0 +1,25 @@
+.calendar_container {
+    position: relative;
+    top: 3rem;
+}
+
+.calendar_table {
+    width: 70%;
+    height: 30%;
+    border-collapse:collapse;
+}
+
+.calendar_month {
+    font-size: 2rem;
+    border:1px solid #000066;
+    background:#80f476;
+}
+
+.calendar_days {
+    font-size: 1.5rem;
+}
+
+.calendar_day {
+    border:1px solid #000066;
+    background:#ffffff;
+}

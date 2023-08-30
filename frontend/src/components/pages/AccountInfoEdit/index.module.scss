@@ -1,0 +1,139 @@
+@use "src/styles/variables";
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
+.container {
+  text-align: center;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  background-color: #E0EFFF;
+  min-height: 100vh;
+  span {
+    margin-right: 1rem;
+    font-size: 1.7rem;
+  }
+
+  .back_ground {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: variables.$base_color;
+    z-index: -1;
+  }
+
+  .navigation_mail {
+    text-align: left;
+    font-weight: bold;
+  }
+
+  .navigation {
+    text-align: left;
+    font-weight: bold;
+  }
+
+  table {
+    display: inline-block;
+  }
+
+  .link {
+    padding: 2% 0 3%;
+    font-size: 1.7rem;
+  }
+
+  .button_field {
+    display: flex;
+    text-align: center;
+    justify-content: space-evenly;
+    padding-top: 2%;
+    font-size: 1.3rem;
+    .back_button_field {
+      padding-left: 30%;
+    }
+    .edit_button_field {
+      padding-right: 30%;
+    }
+  }
+
+  .edit_button {
+    transform: scale(1.2, 1.2);
+    border-radius: 10%;
+    background-color: #38b48b;
+    color: azure;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  .edit_button:hover {
+    filter: brightness(70%);
+  }
+
+  /*PC*/
+  @media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+    form {
+      margin-top: 3rem;
+    }
+
+    .navigation_mail {
+      margin: 0 0 0 36%;
+      font-size: 1.7rem;
+    }
+
+    .navigation {
+      font-size: 1.7rem;
+    }
+
+    input {
+      width: 22rem;
+      height: 3rem;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 2rem;
+      border-radius: 1rem;
+    }
+  }
+
+  /* iPadランドスケープ */
+  @media screen and (min-device-height: 768px) and (orientation: landscape) {
+    form {
+      margin-top: 5rem;
+    }
+
+    .navigation_mail {
+      margin: 0 0 0 36%;
+      font-size: 2.5rem;
+    }
+
+    .navigation {
+      font-size: 2.5rem;
+    }
+
+    input {
+      width: 30rem;
+      height: 4.5rem;
+      margin: 1rem 0 1.5rem 0;
+      font-size: 3rem;
+      border-radius: 1rem;
+    }
+  }
+
+  /* iPhoneランドスケープ */
+  @media screen and (max-device-height: 441px) and (orientation: landscape) {
+    form {
+      margin-top: 1rem;
+    }
+
+    .navigation_mail {
+      margin: 0 0 0 36%;
+      font-size: 1.3rem;
+    }
+
+    .navigation {
+      font-size: 1.3rem;
+    }
+
+    input {
+      width: 15rem;
+      height: 2.5rem;
+      margin: 0.5rem 0 0.5rem 0;
+      font-size: 2rem;
+      border-radius: 1rem;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+.container {
+    font-size: 1.5rem;
+    background-image: url("./images/meadow.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding-top: 15%;
+    p {
+        font-size: 100%;
+        color: rgb(160, 72, 160);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.submit_button_field {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5%;
+}
+.submit_button {
+    display: inline-block;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 50% solid #9f000c;
+    border-radius: 2rem;
+    border-color: #9f000c;
+    transition: background-color 0.3s ease;
+    top: calc(50% - 0.5rem);
+}
+.submit_button:hover {
+    background-color: #7c000a;
+    cursor: pointer;
+}

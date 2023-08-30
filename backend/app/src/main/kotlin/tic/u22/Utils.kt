@@ -296,21 +296,21 @@ class Utils {
    *
    * return 成功した場合は「Done」、失敗した場合はエラー内容
    */
-  fun decodeFromUri(uri: String, fileName: String): String {
-    try {
-      val formattedUri = mapOf(
-        "type" to uri.split(":")[1].split("/")[0],
-        "extension" to uri.split(";")[0].split("/")[1],
-        "data" to uri.split(",")[1]
-      )
-      val bytes = Base64.getDecoder().decode(formattedUri["data"]);
-      val file = FileOutputStream("files/${fileName}.${formattedUri["extension"]}");
-      file.write(bytes);
-      return "Done"
-    } catch(e: Exception) {
-      return "$e"
-    }
+  fun decodeFromUri(uri: String): ByteArray? {
+      try {
+          val formattedUri =
+            mapOf(
+              "type" to uri.split(":")[1].split("/")[0],
+              "extension" to uri.split(";")[0].split("/")[1],
+              "data" to uri.split(",")[1]
+            )
+          val bytes = Base64.getDecoder().decode(formattedUri["data"])
+          return bytes
+      } catch (e: Exception) {
+          return null
+      }
   }
+
 
   /**
    * 受け取ったJSONを、KotlinのMapオブジェクトに変換する(テスト・本番環境で同じソースを使用するためのメソッド)
@@ -335,8 +335,9 @@ class Utils {
  * 実行環境で使用する設定変数
  */
 class Settings {
-    val AWS_REGION = "us-east-1"
-    val AWS_BUCKET = "club-katogi"
+    val env: MutableMap<String, String> = System.getenv()
+    val AWS_REGION = "${env["REGION"]}"
+    val AWS_BUCKET = "${env["BUCKET"]}"
 }
 
 
@@ -399,7 +400,7 @@ data class Puzzle(
     val p_id: String = "p0000",
     val title: String,
     val description: String,
-    val icon: String = "${Settings().AWS_BUCKET}/puzzle/${p_id}/photo/icon.png",
+    val icon: String = "puzzle/${p_id}/icon.png",
     val words: List<Word>,
     val create_date: String = "${LocalDateTime.now()}",
     val update_date: String = create_date
@@ -468,7 +469,7 @@ data class Notice(
 data class Status(
     val u_id: String,
     val game_status: Int,
-    val status_infos: List<String>?,
+    val status_infos: List<String>? = null,
 ): TableBase
 
 /**
