@@ -28,7 +28,7 @@ export const Seal = ({
   return (
     <div className={`${styles.seal_modal}`}>
       <div className={`${styles.sealWrapper} ${className}`} onClick={openModal}>
-        <p className={`${styles.number}`}>No.{p_id}</p>
+        <p className={`${styles.number}`}>{title}</p>
         <Image
           className={`${styles.seal}`}
           src={icon}
