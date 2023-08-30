@@ -21,7 +21,7 @@ export const Top = () => {
   return (
     <div className={`${styles.container}`}>
       {/* カレンダー置く場所 */}
-      <div id="calendar">
+      <div id="calendar" className={`${styles.calender_container}`}>
         <Calendar mm={addMonth} />
         {/* previousButtonは前の月を表示するためのボタン　
             これ以上さかのぼれない場合previousButtonInvalidにクラス名が変わります
