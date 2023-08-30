@@ -7,6 +7,7 @@
   background-color: variables.$base_color;
   background-color: #E0EFFF;
   min-height: 100vh;
+  
   h1 {
     padding: 0.5% 0 1%;
     background-color: white;
@@ -21,19 +22,15 @@
 }
 
 .back_button_field {
-  float: right;
   position: fixed;
-  top: 1rem;
-  left: 80%;
-  width: 10rem;
+  top: 5%;
+  left: 2%;
 }
 
 .logout_button_field {
-  float: right;
   position: fixed;
-  top: 1rem;
-  left: 88%;
-  width: 10rem;
+  top: 5%;
+  right: 2%;
 }
 
 .volume_label {
@@ -305,7 +302,7 @@ input:checked + .volume_label {
 
     .change_button {
       transform: scale(1.2, 1.2);
-      margin: 0 0 0 1rem;
+      margin: 0 0 1rem 1rem;
       border-radius: 10%;
       color: azure;
       background-color: #38b48b;
@@ -524,6 +521,14 @@ input:checked + .volume_label {
       filter: brightness(70%);
     }
   }
+
+  .back_button_field {
+    transform: scale(2, 2);
+  }
+  
+  .logout_button_field {
+    transform: scale(2, 2);
+  }
 }
 
 /* iPadランドスケープ */
@@ -726,5 +731,15 @@ input:checked + .volume_label {
     .change_button:hover {
       filter: brightness(70%);
     }
+  }
+
+  .back_button_field {
+    left: 5%;
+    transform: scale(1.5, 1.5);
+  }
+  
+  .logout_button_field {
+    right: 5%;
+    transform: scale(1.5, 1.5);
   }
 }
