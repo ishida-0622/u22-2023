@@ -6,8 +6,10 @@ import {
   ScanPuzzleRequest,
   ScanPuzzleResponse,
 } from "@/features/puzzle/types/scan";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 const PuzzlePlayPage = (props: Puzzle) => {
+  useScrollLock();
   return <PuzzlePlay {...props} />;
 };
 
