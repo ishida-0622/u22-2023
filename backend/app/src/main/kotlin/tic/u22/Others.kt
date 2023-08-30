@@ -229,7 +229,7 @@ class SetStatus : RequestHandler<Map<String, Any>, String> {
         if (event["body"] == null) {throw Exception("body is null")}
         val body = utils.formatJsonEnv(event["body"]!!)
         val u_id: String = if (body["u_id"] != null) {body["u_id"]!! as String} else {throw Exception("u_id is null")}
-        val game_status = if (body["game_status"] != null) {body["game_status"]!! as Int} else {throw Exception("game_status is null")}
+        val game_status = if (body["game_status"] != null) {(body["game_status"]!! as String).toInt()} else {throw Exception("game_status is null")}
         if (game_status < 0 || game_status > 4) {throw Exception("game_status is out of range")}
 
         val dynamo = Dynamo(Settings().AWS_REGION)

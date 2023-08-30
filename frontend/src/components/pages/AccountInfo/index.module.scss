@@ -1,12 +1,39 @@
+@use "src/styles/variables";
 @import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
 
 .container {
   text-align: center;
   font-family: "M PLUS Rounded 1c", sans-serif;
+  background-color: variables.$base_color;
+  background-color: #E0EFFF;
+  min-height: 100vh;
+  h1 {
+    padding: 0.5% 0 1%;
+    background-color: white;
+  }
+  hr {
+    width: 60%;
+  }
 }
 
 .none {
   display: none;
+}
+
+.back_button_field {
+  float: right;
+  position: fixed;
+  top: 1rem;
+  left: 80%;
+  width: 10rem;
+}
+
+.logout_button_field {
+  float: right;
+  position: fixed;
+  top: 1rem;
+  left: 88%;
+  width: 10rem;
 }
 
 .volume_label {
@@ -20,8 +47,81 @@ input:checked + .volume_label {
   background-color: rgb(255, 255, 120);
 }
 
+.info {
+  .info_text {
+    display: inline-block;
+    text-align: left;
+  }
+  .button_size {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 0;
+  }
+  .edit_button {
+    box-shadow: none;
+    font-size: 1.5rem;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #38b48b;
+    border-bottom: 50% solid #38b48b;
+    border-radius: 0.5rem;
+    border-color: #38b48b;
+    top: calc(50% - 0.5rem);
+    transition: background-color 0.3s ease;
+  }
+  .edit_button:hover {
+    background-color: #1d7055;
+    cursor: pointer;
+  }
+  .quit_button {
+    display: inline-block;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    padding: 0 5.6rem;
+    color: azure;
+    font-weight: bold;
+    background-color: #df0013;
+    border-bottom: 50% solid #9f000c;
+    border-radius: 0.5rem;
+    border-color: #9f000c;
+    transition: background-color 0.3s ease;
+    top: calc(50% - 0.5rem);
+  }
+  .quit_button:hover {
+    background-color: #7c000a;
+    cursor: pointer;
+  }
+}
+
+.child_lock_init {
+  background-color: variables.$base_color;
+  min-height: 100vh;
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  text-align: center;
+  h1 {
+    padding: 0.5% 0 1%;
+    margin-bottom: 2%;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+  }
+  input {
+    font-size: 1.5rem;
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+}
+
 /* iPhoneランドスケープ */
-@media screen and (max-device-height: 380px) and (orientation: landscape) {
+@media screen and (max-device-height: 441px) and (orientation: landscape) {
+  /*アカウント情報*/
+  .info {
+    font-size: 1rem;
+  }
+
   /*ナビゲーション*/
   .navigate_size {
     text-align: left;
@@ -201,23 +301,12 @@ input:checked + .volume_label {
     left: 29rem;
     width: 10rem;
 
-    .back_button {
-      transform: scale(1.2, 1.2);
-      margin: 0 1rem 0 0;
-      border-radius: 10%;
-      background-color: #bed7ff;
-      font-weight: bold;
-    }
-
-    .back_button:hover {
-      filter: brightness(70%);
-    }
-
     .change_button {
       transform: scale(1.2, 1.2);
       margin: 0 0 0 1rem;
       border-radius: 10%;
-      background-color: #ffbdbd;
+      color: azure;
+      background-color: #38b48b;
       font-weight: bold;
     }
 
@@ -228,7 +317,12 @@ input:checked + .volume_label {
 }
 
 /*PC*/
-@media screen and (min-device-height: 381px) and (max-device-height: 720px) {
+@media screen and (min-device-height: 442px) and (max-device-height: 720px) {
+  /*アカウント情報*/
+  .info {
+    font-size: 2rem;
+  }
+
   /*ナビゲーション*/
   .navigate_size {
     text-align: left;
@@ -419,7 +513,8 @@ input:checked + .volume_label {
       transform: scale(1.5, 1.5);
       margin: 0 0 0 2rem;
       border-radius: 10%;
-      background-color: #ffbdbd;
+      color: azure;
+      background-color: #38b48b;
       font-weight: bold;
     }
 
@@ -431,6 +526,11 @@ input:checked + .volume_label {
 
 /* iPadランドスケープ */
 @media screen and (min-device-height: 768px) and (orientation: landscape) {
+  /*アカウント情報*/
+  .info {
+    font-size: 3rem;
+  }
+
   /*ナビゲーション*/
   .navigate_size {
     text-align: left;
@@ -616,7 +716,8 @@ input:checked + .volume_label {
       transform: scale(2, 2);
       margin: 0 0 0 5rem;
       border-radius: 10%;
-      background-color: #ffbdbd;
+      color: azure;
+      background-color: #38b48b;
       font-weight: bold;
     }
 
