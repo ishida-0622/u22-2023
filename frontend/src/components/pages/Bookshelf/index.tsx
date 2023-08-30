@@ -22,7 +22,7 @@ export const Bookshelf = () => {
     setModalIsOpen(false);
   };
 
-  const featcher = async (key: string) => {
+  const fetcher = async (key: string) => {
     return fetch(key, {
       method: "POST",
       body: JSON.stringify({}),
@@ -31,7 +31,7 @@ export const Bookshelf = () => {
 
   const { data: AllBooks, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API_ENDPOINT}/GetBooks`,
-    featcher
+    fetcher
   );
 
   useEffect(() => {
@@ -101,8 +101,8 @@ export const Bookshelf = () => {
                 <td key={`key${item[0]}`}>
                   <Image
                     src={item[2]}
-                    width={30}
-                    height={30}
+                    width={100}
+                    height={100}
                     alt=""
                     onClick={() => viewInfo(item[0])}
                   ></Image>
