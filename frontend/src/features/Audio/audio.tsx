@@ -8,13 +8,19 @@ import {
 } from "@/features/log/types/scanLoginDates";
 import styles from "@/features/Calendar/calendar.module.scss";
 
-export const AudioPlayer = ({ vol, audio }: { vol: number, audio: HTMLAudioElement}) => {
-    const startAudio = () => {
-        if(audio) {
-         audio.play();
-        }
+export const AudioPlayer = ({
+  vol,
+  audio,
+}: {
+  vol: number;
+  audio: HTMLAudioElement;
+}) => {
+  const startAudio = () => {
+    if (audio) {
+      audio.play();
     }
-    audio.volume = vol;
+  };
+  audio.volume = vol;
 
   return (
     <div>
