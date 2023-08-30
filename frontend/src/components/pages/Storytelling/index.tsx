@@ -11,6 +11,7 @@ import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { AudioPlayer } from "@/features/Audio/audio";
 import Modal from "react-modal";
+import { PDFDocumentProxy } from "react-pdf/node_modules/pdfjs-dist/types/src/display/api";
 import {
     LOCAL_STORAGE_VOLUME_KEY,
     VOLUMES,
@@ -87,7 +88,7 @@ export const Storytelling = () => {
     }, [bookInfo])
     useEffect(() => {
         if(currentPageUrl !== "") {
-            pdfjs.getDocument(currentPageUrl).promise.then((pdf) => {
+            pdfjs.getDocument(currentPageUrl).promise.then((pdf : PDFDocumentProxy) => {
                 setMaxPages(pdf.numPages)
             })
         }
