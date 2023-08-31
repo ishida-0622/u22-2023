@@ -1,0 +1,270 @@
+@import url("https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c");
+
+.turn_calender {
+  font-family: "M PLUS Rounded 1c", sans-serif;
+  position: absolute;
+
+  .previousButtonInvalid {
+    background-color: gray;
+    border-radius: 5%;
+  }
+
+  .previousButton {
+    background-color: lightgray;
+    border-radius: 5%;
+  }
+
+  .nextButton {
+    background-color: lightgray;
+    border-radius: 5%;
+  }
+
+  .nextButtonInvalid {
+    background-color: gray;
+    border-radius: 5%;
+  }
+}
+
+.information {
+  position: absolute;
+  border: 1px solid black;
+  overflow: auto;
+  background-color: rgb(255, 255, 255);
+}
+
+.container {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  background-color: antiquewhite;
+  background-image: url("./images/meadow.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.icon {
+  position: absolute;
+  height: auto;
+  border-radius: 50%;
+}
+
+.button_container {
+  position: absolute;
+
+  button {
+    display: inline-block;
+    color: rgb(38, 38, 38);
+    font-weight: bold;
+    transition: filter 0.3s ease;
+    top: calc(50% - 0.5rem);
+  }
+
+  button:hover {
+    cursor: pointer;
+    filter: brightness(70%);
+  }
+
+  .puzzle_button {
+    background-color: rgb(125, 250, 250);
+    border-bottom: 50% solid rgb(125, 250, 250);
+    border-radius: 0.5rem;
+    border-color: rgb(125, 250, 250);
+  }
+
+  .reading_button {
+    background-color: rgb(255, 128, 153);
+    border-bottom: 50% solid rgb(255, 128, 153);
+    border-radius: 0.5rem;
+    border-color: rgb(255, 128, 153);
+  }
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
+
+  .container {
+    width: 150%;
+    height: 150%;
+  }
+
+  .turn_calender {
+    left: 0;
+    top: 1rem;
+
+    .previousButtonInvalid {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+
+    .previousButton {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+
+    .nextButton {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+
+    .nextButtonInvalid {
+      height: 2.5rem;
+      width: 4rem;
+      border-radius: 5%;
+    }
+  }
+
+  .information {
+    bottom: 0.5rem;
+    left: 0.5rem;
+    width: 30%;
+    height: 40%;
+  }
+
+  .icon {
+    right: 4rem;
+    top: 1rem;
+    width: 6rem;
+  }
+
+  .button_container {
+    bottom: 2rem;
+    right: 1rem;
+
+    button {
+      height: 9rem;
+      width: 12rem;
+      font-size: 3.5rem;
+      display: inline-block;
+    }
+
+    .reading_button {
+      margin: 0 0 0 2rem;
+    }
+  }
+}
+
+/*PC*/
+@media screen and (min-device-height: 601px) and (max-device-height: 720px) {
+  .turn_calender {
+    left: 0;
+    top: 3rem;
+
+    .previousButtonInvalid {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+
+    .previousButton {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+
+    .nextButton {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+
+    .nextButtonInvalid {
+      height: 3.2rem;
+      width: 5rem;
+      border-radius: 5%;
+    }
+  }
+
+  .information {
+    bottom: 2rem;
+    left: 2rem;
+    width: 30%;
+    height: 40%;
+  }
+
+  .icon {
+    right: 5rem;
+    top: 3rem;
+    width: 8rem;
+  }
+
+  .button_container {
+    bottom: 3rem;
+    right: 8rem;
+
+    button {
+      height: 12rem;
+      width: 18rem;
+      font-size: 5rem;
+      display: inline-block;
+    }
+
+    .reading_button {
+      margin: 0 0 0 2rem;
+    }
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .turn_calender {
+    left: 0;
+    top: 3rem;
+
+    .previousButtonInvalid {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+
+    .previousButton {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+
+    .nextButton {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+
+    .nextButtonInvalid {
+      height: 5rem;
+      width: 8rem;
+      border-radius: 5%;
+    }
+  }
+
+  .information {
+    bottom: 2rem;
+    left: 2rem;
+    width: 40%;
+    height: 40%;
+  }
+
+  .icon {
+    right: 5rem;
+    top: 3rem;
+    width: 8rem;
+  }
+
+  .button_container {
+    bottom: 3rem;
+    right: 2rem;
+
+    button {
+      height: 16rem;
+      width: 18rem;
+      font-size: 5rem;
+      display: inline-block;
+    }
+
+    .reading_button {
+      margin: 0 0 0 2rem;
+    }
+  }
+}

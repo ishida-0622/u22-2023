@@ -1,0 +1,112 @@
+.container {
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  //背景画像の設定
+  .back_ground {
+    /* 画像を要素に合わせてカバー */
+    background-size: cover;
+    /* 繰り返しを無効に */
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+  }
+
+  //congratulation！の設定
+  .big_message {
+    font-size: 4.6rem;
+    text-align: center;
+    font-weight: bold;
+    color: transparent;
+    background: linear-gradient(
+      45deg,
+      #e60012 20%,
+      #f39800 30%,
+      #fff100 40%,
+      #009944 50%,
+      #0068b7 60%,
+      #1d2088 70%,
+      #920783 80%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  //シール周辺の整形
+  .seal_field {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    width: 18.9rem;
+    height: 18.9rem;
+    border-radius: 50%;
+    text-align: center;
+    border-color: rgb(100, 100, 100);
+    border-width: 0.15rem;
+    border-style: solid;
+  }
+
+  //シールの整形
+  .got_seal {
+    margin: 0 auto;
+    height: 18.75rem;
+    width: 18.75rem;
+    border-radius: 50%;
+  }
+
+  //シールが光るアニメーション
+  .seal_field:after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 1.87rem;
+    position: absolute;
+    top: 11.25rem;
+    left: 0;
+    background-color: #fffac9;
+    opacity: 0;
+    transform: rotate(45deg);
+    animation: reflection 2s ease-in-out infinite;
+  }
+
+  @keyframes reflection {
+    0% {
+      transform: scale(0) rotate(45deg);
+      opacity: 0;
+    }
+
+    80% {
+      transform: scale(0) rotate(45deg);
+      opacity: 0.5;
+    }
+
+    81% {
+      transform: scale(4) rotate(45deg);
+      opacity: 1;
+    }
+
+    100% {
+      transform: scale(50) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  //You got a seal！の設定
+  .small_message {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
+    .seal_field {
+        transform: scale(0.5, 0.5);
+        top: -5rem;
+    }
+}
