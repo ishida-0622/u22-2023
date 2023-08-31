@@ -331,7 +331,10 @@ export const Signup = () => {
                 }))
               }
             />
-            規約に同意する
+            <Link href={"/signup/policy"} target="_blank">
+              規約
+            </Link>
+            に同意する
           </label>
         </div>
         <div className={`${styles.submit_button_field}`}>
