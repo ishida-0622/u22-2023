@@ -1,13 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import { Document, Page, pdfjs } from "react-pdf";
 import Modal from "react-modal";
 // import { PDFDocumentProxy } from "react-pdf/node_modules/pdfjs-dist/types/src/display/api";
+import { endpoint } from "@/features/api";
+import { RootState } from "@/store";
 import {
   LOCAL_STORAGE_VOLUME_KEY,
   VOLUMES,
 } from "@/features/auth/consts/setting";
 import { Book } from "@/features/book/types";
+import { FinishBookRequest } from "@/features/book/types/finish";
 
 // import "react-pdf/dist/Page/TextLayer.css";
 // import "react-pdf/dist/Page/AnnotationLayer.css";
@@ -22,6 +26,8 @@ export const Storytelling = (props: Book) => {
   const volume = Number(
     localStorage.getItem(LOCAL_STORAGE_VOLUME_KEY) ?? VOLUMES[3]
   );
+  const uid = useSelector((store: RootState) => store.uid);
+  const isFinished = useRef(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [audios, _] = useState<HTMLAudioElement[]>(
@@ -67,6 +73,24 @@ export const Storytelling = (props: Book) => {
       audios[currentPage].play();
     }
   };
+
+  useEffect(() => {
+    if (currentPage === maxPages && uid && !isFinished.current) {
+      isFinished.current = true;
+      const req: FinishBookRequest = {
+        u_id: uid,
+        b_id: props.b_id,
+      };
+      fetch(`${endpoint}/FinishBook`, {
+        method: "POST",
+        body: JSON.stringify(req),
+      }).catch(() => {
+        isFinished.current = false;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
   const quit = () => {
     router.push("/book/select");
   };
