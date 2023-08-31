@@ -102,3 +102,11 @@
     font-weight: bold;
   }
 }
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 600px) and (orientation: landscape) {
+    .seal_field {
+        transform: scale(0.5, 0.5);
+        top: -5rem;
+    }
+}
