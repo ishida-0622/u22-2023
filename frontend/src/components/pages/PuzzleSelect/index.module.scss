@@ -1,0 +1,140 @@
+.container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+
+  .background {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -5;
+  }
+
+  .items {
+    text-align: center;
+  }
+
+  .seal {
+    display: inline-block;
+    position: relative;
+    animation-name: updown1;
+    /* アニメーション名の指定 */
+    animation-delay: 0s;
+    /* アニメーションの開始時間指定 */
+    animation-duration: 3s;
+    /* アニメーション動作時間の指定 */
+    animation-timing-function: ease-in-out;
+    /* アニメーションの動き指定（徐々に早く）*/
+    animation-iteration-count: infinite;
+    z-index: 0;
+  }
+
+  @keyframes updown1 {
+    0% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-1rem);
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .shadow {
+    position: relative;
+    top: 0.5rem;
+    display: inline-block;
+    width: 7.5rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: radial-gradient(#525252, #ffffff00);
+    animation: animationZoom2 3s ease-in-out infinite;
+    animation-delay: 0s;
+    /* アニメーションの開始時間指定 */
+    animation-duration: 3s;
+    /* アニメーション動作時間の指定 */
+    z-index: 0;
+  }
+
+  @keyframes animationZoom2 {
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .star_field {
+    transition: 0.5s;
+    transform: rotateZ(0deg);
+
+    .stars {
+      position: relative;
+      border-bottom: 1rem solid #ffe434;
+      border-right: 1.5rem solid transparent;
+      border-left: 1.5rem solid transparent;
+      transform: rotate(-37deg);
+      z-index: -5;
+    }
+
+    .stars::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -1.5rem;
+      border-bottom: 1rem solid #ffe434;
+      border-right: 1.5rem solid transparent;
+      border-left: 1.5rem solid transparent;
+      transform: rotate(-71.5deg);
+      z-index: -2;
+    }
+
+    .stars::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -1.5rem;
+      border-bottom: 1rem solid #ffe434;
+      border-right: 1.5rem solid transparent;
+      border-left: 1.5rem solid transparent;
+      transform: rotate(71.5deg);
+      z-index: -2;
+    }
+  }
+
+  .star_field:hover {
+    transform: rotateZ(360deg);
+  }
+}
+
+/*スマートフォン用の調整*/
+@media screen and (min-device-width: 668px) and (max-device-width: 896px) and (orientation: landscape) {
+  .seal {
+    left: 20%;
+  }
+
+  .shadow {
+    left: 20%;
+  }
+}
+
+/*iPad(小型)用の調整*/ 
+@media screen and (min-device-width: 1024px) and (max-device-width: 1179px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    transform: scale(0.8, 0.8);
+  }
+}
+
+/* iPadランドスケープ */
+@media screen and (min-device-height: 768px) and (orientation: landscape) {
+  .seal_star {
+    position: relative;
+    right: 3%;
+  }
+}

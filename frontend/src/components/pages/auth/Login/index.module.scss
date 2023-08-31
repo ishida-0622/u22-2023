@@ -1,0 +1,71 @@
+.container {
+  font-size: 1.3rem;
+  background-image: url("./images/meadow.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  input {
+    width: 100%;
+    text-align: left;
+    padding-left: 1rem;
+    border-top-left-radius: 15rem;
+    border-top-right-radius: 15rem;
+    border-bottom-left-radius: 15rem;
+    border-bottom-right-radius: 15rem;
+    border-radius: 40rem;
+    border: 0.25rem solid palevioletred;
+  }
+  p {
+    line-height: 3rem;
+    color: rgb(160, 72, 160);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  span {
+    position: absolute;
+    margin-top: 0.5%;
+    margin-left: 0.5%;
+  }
+}
+
+.header {
+  text-align: center;
+}
+
+.form {
+  max-width: max(50%, 480px);
+  margin: 0 auto 0%;
+  padding: 0 2rem 2rem;
+  justify-content: space-between;
+}
+
+.link {
+  text-align: center;
+  justify-content: space-between;
+  line-height: 3rem;
+}
+
+.submit_button_field {
+  margin: 10% 0;
+  text-align: center;
+  justify-content: space-between;
+}
+
+.submit_button {
+  display: inline-block;
+  color: azure;
+  font-weight: bold;
+  background-color: #df0013;
+  border-bottom: 50% solid #9f000c;
+  border-radius: 2rem;
+  border-color: #9f000c;
+  transition: background-color 0.3s ease;
+  top: calc(50% - 0.5rem);
+  right: 1rem;
+}
+
+.submit_button:hover {
+  background-color: #7c000a;
+  cursor: pointer;
+}
