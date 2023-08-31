@@ -3,8 +3,6 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  width: 100%;
-  height: 100%;
 
   .background {
     position: absolute;
@@ -115,15 +113,15 @@
 /*スマートフォン用の調整*/
 @media screen and (min-device-width: 668px) and (max-device-width: 896px) and (orientation: landscape) {
   .seal {
-    left: 20%;
+    right: 5%;
   }
 
   .shadow {
-    left: 20%;
+    right: 5%;
   }
 }
 
-/*iPad(小型)用の調整*/ 
+/*iPad(小型)用の調整*/
 @media screen and (min-device-width: 1024px) and (max-device-width: 1179px) and (orientation: landscape) {
   .seal_star {
     position: relative;
