@@ -1,5 +1,53 @@
 .calendar_container {
-    position: relative;
+  position: relative;
+}
+
+.calendar_table {
+  border-collapse: collapse;
+}
+
+.calendar_month {
+  border: 1px solid #000066;
+  background: #80f476;
+}
+
+.calendar_day {
+  border: 1px solid #000066;
+  background: #ffffff;
+}
+
+.login_image {
+  margin: 0 auto;
+}
+
+/* iPhoneランドスケープ */
+@media screen and (max-device-height: 700px) and (orientation: landscape) {
+  .calendar_container {
+    top: 1rem;
+  }
+
+  .calendar_table {
+    width: 60%;
+    height: 10%;
+  }
+
+  .calendar_month {
+    font-size: 1.5rem;
+  }
+
+  .calendar_days {
+    font-size: 1rem;
+  }
+
+  .calendar_day {
+    text-align: center;
+    width: 10%;
+  }
+}
+
+/*PC*/
+@media screen and (min-device-height: 700px) and (max-device-height: 720px) {
+  .calendar_container {
     top: 3rem;
 }
 

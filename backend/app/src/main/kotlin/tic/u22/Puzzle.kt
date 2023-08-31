@@ -106,21 +106,13 @@ class GetPuzzles: RequestHandler<Map<String, Any>, String> {
                 val result = dynamo.scanAll(tableName)
                 val formattedResult = result.map{utils.toMap(utils.attributeValueToObject(it, "puzzle"))}
                 val res = formattedResult.map{
+                    val dummyMap: Map<String, Any> = mapOf()
                     mapOf(
                         "p_id" to it["p_id"],
                         "title" to it["title"],
                         "description" to it["description"],
                         "icon"  to s3.getObject(bucketName, it["icon"] as String),
-                        "words" to (it["words"] as List<Map<String, Any>>).map{ word ->
-                            mapOf(
-                                "word" to word["word"],
-                                "shadow" to s3.getObject(bucketName, word["shadow"] as String),
-                                "illustration" to s3.getObject(bucketName, word["illustration"] as String),
-                                "voice" to s3.getObject(bucketName, word["voice"] as String),
-                                "is_displayed" to word["is_displayed"] as Boolean,
-                                "is_dummy" to word["is_dummy"] as Boolean
-                            )
-                        },
+                        "words" to listOf(dummyMap),
                         "create_date" to it["create_date"],
                         "update_date" to it["update_date"],
                     )
